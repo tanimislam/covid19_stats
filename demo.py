@@ -96,7 +96,7 @@ df_cases_deaths_bayeara.plot( 'days_from_beginning', 'death', linewidth = 4.5,
                               ax = ax, logy = True, grid = True )
 ax.set_ylim( 1.0, 1.05 * df_cases_deaths_bayeara.cases.max( ) )
 ax.set_xlim( 0, df_cases_deaths_bayeara.days_from_beginning.max( ) )
-ax.set_xlabel( 'Days from First COVID-19 CASE (%s)' % first_date.strftime( '%d-%m-%' ), fontsize = 24, fontweight = 'bold' )
+ax.set_xlabel( 'Days from First COVID-19 CASE (%s)' % first_date.strftime( '%d-%m-%Y' ), fontsize = 24, fontweight = 'bold' )
 ax.set_ylabel( 'Number of Cases/Deaths', fontsize = 24, fontweight = 'bold' )
 ax.set_title( '\n'.join([
   'Bay Area Trend in COVID-19',
