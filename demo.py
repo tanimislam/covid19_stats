@@ -1,31 +1,8 @@
 #!/usr/bin/env python3
 
-import os, sys, numpy, engine
+import os, sys, numpy, engine, defaults
 
-engine.get_summary_demo_data( doShow = False )
-engine.get_summary_demo_data( prefix = 'richmond', state = 'Virginia',
-                              regionName = 'Richmond Metropolitan Area',
-                              list_of_counties = [
-                                "Richmond",
-                                "Petersburg",
-                                "Hopewell",
-                                "Colonial Heights",
-                                "Amelia",
-                                "Caroline",
-                                "Charles City",
-                                "Chesterfield",
-                                "Dinwiddie",
-                                "Goochland",
-                                "Hanover",
-                                "Henrico",
-                                "King William",
-                                "New Kent",
-                                "Powhatan",
-                                "Prince George",
-                                "Sussex" ], doShow = False )
-
-
-engine.get_summary_demo_data( prefix = 'dc', state = 'District of Columbia',
-                              regionName = 'Washington DC',
-                              list_of_counties = [ "District of Columbia" ], doShow = False )
-
+datas = [ defaults.bay_area_data, defaults.richmond_metro_data, defaults.nyc_data,
+         { 'prefix' : 'us', 'region name' : 'All US',
+          'counties' : engine.all_counties_state } ]
+list(map(lambda dat: engine.get_summary_demo_data( data = dat, doShow = False ), datas ) )
