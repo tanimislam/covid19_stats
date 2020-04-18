@@ -9,21 +9,24 @@ def _get_stat_line( line ):
   dstring = line_split[0]
   county_name = line_split[1]
   state_name = line_split[2]
+  fips = line_split[-3].strip( )
+  if fips == '': return None
   cases_cumulative = int( line_split[-2] )
   death_cumulative = int( line_split[-1] )
   return {
-    'date' : datetime.datetime.strptime(
-      dstring, '%Y-%m-%d' ).date( ),
-    'county' : county_name,
-    'state' : state_name,
-    'cumulative cases' : cases_cumulative,
-    'cumulative death' : death_cumulative }
+      'date' : datetime.datetime.strptime(
+        dstring, '%Y-%m-%d' ).date( ),
+      'county' : county_name,
+      'state' : state_name,
+      'fips' : int( fips ),
+      'cumulative cases' : cases_cumulative,
+      'cumulative death' : death_cumulative }
 
-all_counties_nytimes_covid19_data = list(
-  map(_get_stat_line,
-      list( map(lambda line: line.strip(), filter(
-        lambda line: len( line.strip( ) ) != 0,
-        open( os.path.join( "covid-19-data", "us-counties.csv" ), "r" ).readlines())))[1:]))
+all_counties_nytimes_covid19_data = list(filter(None,
+    map(_get_stat_line,
+        list( map(lambda line: line.strip(), filter(
+            lambda line: len( line.strip( ) ) != 0,
+            open( os.path.join( "covid-19-data", "us-counties.csv" ), "r" ).readlines())))[1:])))
 
 all_counties_state = list(map(
     lambda entry: { 'county' : entry[0], 'state' : entry[1] },
@@ -121,3 +124,4 @@ def get_summary_demo_data( data = defaults.bay_area_data, doShow = True ):
     #
     ## now SHOW!
     if doShow: pylab.show( )
+ 
