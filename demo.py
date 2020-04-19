@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import os, sys, numpy, engine, defaults
+import os, sys, numpy, engine, defaults, engine_geo
 
 datas = [ defaults.bay_area_data, defaults.richmond_metro_data, defaults.nyc_data,
          { 'prefix' : 'us', 'region name' : 'All US',
