@@ -1,16 +1,7 @@
-import os, sys, numpy, shapefile, pickle, gzip, titlecase, time
-import autocrop_image, defaults, subprocess
-import pathos.multiprocessing as multiprocessing
-from multiprocessing import Value, Manager
-from matplotlib.patches import Polygon
-from matplotlib.collections import PatchCollection
-from matplotlib.cm import ScalarMappable
-from matplotlib.colors import LogNorm, to_rgba
-from matplotlib.figure import Figure
-from matplotlib.backends.backend_agg import FigureCanvasAgg
-from mpl_toolkits.basemap import Basemap
-from mpl_toolkits.axes_grid1 import make_axes_locatable
-from distutils.spawn import find_executable
+import os, sys, numpy, shapefile, pickle
+import gzip, pandas, titlecase
+from collections import Counter
+from itertools import chain
 
 def _get_record_shapefile_astup( rec, shape ):
     fips_code = rec[4]
@@ -39,334 +30,118 @@ def load_fips_data( ):
     return pickle.load( gzip.open( os.path.join(
         'resources', 'fips_2018_data.pkl.gz' ) ) )
 
-def my_colorbar( mappable, ax, **kwargs ):
-    """
-    secret saucing (explanation is incomprehensible) from https://joseph-long.com/writing/colorbars/
-    """
-    fig = ax.figure
-    divider = make_axes_locatable(ax)
-    cax = divider.append_axes("right", size="5%", pad=0.05)
-    cbar = fig.colorbar(mappable, cax=cax, **kwargs)
-    return cbar
+def create_msa_2019( ):
+    df = pandas.read_table( os.path.join(
+        'resources', 'msa_2019.csv' ), encoding='latin-1', sep=',')
+    df.pop('MDIV')
+    #
+    ## now get the CBSA's which are actual MSIDs
+    def is_actual_msa( cbsa ):
+        df_sub = df[ df.CBSA == cbsa ].reset_index( )
+        name = titlecase.titlecase( df_sub[ 'LSAD' ][ 0 ] )
+        return name == 'Metropolitan Statistical Area'
+    all_msas = set(filter(is_actual_msa, set(df.CBSA)))
+    #
+    ## now get all the info on the MSA
+    def get_info_msa( msa ):
+        data_msa = { 'msa' : msa }
+        df_sub = df[ df.CBSA == msa ].reset_index( )
+        #
+        ## 2019 population estimate
+        popest_2019 = df_sub.POPESTIMATE2019.max( )
+        data_msa[ 'pop est 2019' ] = popest_2019
+        #
+        ## secret saucing that came from https://stackoverflow.com/questions/22551403/python-pandas-filtering-out-nan-from-a-data-selection-of-a-column-of-strings
+        fips_inside = set(
+            map(lambda val: '%05d' % val, df_sub.dropna( subset=['STCOU'] ).reset_index( ).STCOU ) )
+        name = df_sub.NAME[0].strip( )
+        data_msa[ 'fips' ] = fips_inside
+        #
+        state = ''
+        if len( name.split(',') ) != 1: state = name.split(',')[-1].strip( )
+        data_msa[ 'state' ] = state
+        regionName = name.split(',')[0].strip().split('-')[0].strip()
+        prefix = ''.join(regionName.split()).lower( )
+        data_msa[ 'RNAME' ] = regionName
+        data_msa[ 'prefix' ] = prefix
+        regionName = '%s Metro Area' % regionName
+        data_msa[ 'region name' ] = regionName
+        #
+        return data_msa
+    all_data_msas_pre = list(filter(None, map(get_info_msa, all_msas)) )
+    #
+    ## now find all the msas that have the same RNAME
+    cnt = Counter(list(map(lambda entry: entry['RNAME'], all_data_msas_pre)))
+    msas_to_check = set(filter(lambda rname: cnt[rname] > 1, cnt ))
+    all_data_msas_post = list(filter(lambda entry: entry['RNAME'] != msas_to_check, all_data_msas_pre))
+    for msa in msas_to_check:
+        #
+        ## don't rename the largest metro area
+        msas_here = sorted(filter(lambda entry: entry['RNAME'] == msa, all_data_msas_pre ),
+                           key = lambda entry: entry[ 'pop est 2019' ] )[::-1]
+        all_data_msas_post.append( msas_here[0] )
+        for data_msa in msas_here[1:]:
+            data_msa[ 'RNAME' ] = '%s %s' % ( data_msa[ 'RNAME' ], data_msa[ 'state' ] )
+            data_msa[ 'region name' ] = '%s Metro Area' % data_msa[ 'RNAME' ]
+            data_msa[ 'prefix' ] = '_'.join( data_msa[ 'RNAME' ].split()).lower( )
+            all_data_msas_post.append( data_msa )
 
-def create_and_draw_basemap( ax, bbox, resolution = 'i' ):
-    min_lng, min_lat, max_lng, max_lat = bbox
-    lng_center = 0.5 * ( min_lng + max_lng )
-    lat_center = 0.5 * ( min_lat + max_lat )
-    lng_delta = 1.05 * ( max_lng - min_lng ) * 0.5
-    lat_delta = 1.05 * ( max_lat - min_lat ) * 0.5
-    m = Basemap(
-        projection = 'stere', lon_0 = lng_center, lat_0 = lat_center, lat_ts = lat_center,
-        llcrnrlat = lat_center - lat_delta, urcrnrlat = lat_center + lat_delta,
-        llcrnrlon = lng_center - lng_delta, urcrnrlon = lng_center + lng_delta,
-        resolution = resolution, area_thresh = 1.0, ellps = 'WGS84', ax = ax )
-    m.drawparallels(numpy.arange(min_lat, max_lat, lat_delta / 1.5 ), labels = [1,0,0,1] )
-    m.drawmeridians(numpy.arange(min_lng, max_lng, lng_delta / 1.5 ), labels = [1,0,0,1] )
-    m.drawcoastlines( linewidth = 2 )
-    #
-    ## create a "blue" with alpha = 0.3, and is the first blue color when plotting
-    cblue = list( to_rgba( '#1f77b4' ) )
-    cblue[-1] = 0.3
-    m.drawrivers( linewidth = 5, color = cblue )
-    m.fillcontinents( lake_color = cblue, color = 'white' )
-    return m
+    return sorted(all_data_msas_post, key = lambda entry: entry[ 'pop est 2019' ] )
 
-def plot_cases_bycounty( inc_data, regionName, ax, days_from_beginning = 0, maxnum_colorbar = 5000.0, doTitle = True ):
-    assert( days_from_beginning >= 0 )
-    assert( days_from_beginning <= inc_data[ 'last day' ] )
-    assert( maxnum_colorbar > 1 )
+def merge_msas( regionName, prefix, msaids, all_data_msas ):
+    all_msaids = set( map(lambda entry: entry['msa'],
+                          filter(lambda entry: 'status' not in entry, all_data_msas)))
+    assert( len( set( msaids ) - set( all_msaids ) ) == 0 )
+    assert( len( set( msaids ) ) == len( msaids ) )
     #
-    ## NOW CREATE BASEMAP HIGH REZ
-    m = create_and_draw_basemap( ax, inc_data[ 'bbox' ], resolution = 'h' )
-    boundaries = inc_data['boundaries']
-    df_dfm = inc_data['df'][ inc_data['df']['days_from_beginning'] == days_from_beginning ].copy( )
-    patches = [ ]
-    sm = ScalarMappable( norm = LogNorm( 1.0, maxnum_colorbar ), cmap = 'jet' )
-    for fips in sorted( boundaries ):
-        num_cases = df_dfm['cases_%s' % fips].max( )
-        fc = sm.to_rgba( num_cases )
-        if num_cases == 0: fc = ( 1.0, 1.0, 1.0, 0.0 )
-        for shape in boundaries[ fips ]:
-            x, y = m( shape[:,0], shape[:,1] )
-            poly = Polygon(
-                numpy.array([ x, y ]).T, closed = True,
-                edgecolor = 'k', linewidth = 1.0, linestyle = 'dashed',
-                facecolor = fc, alpha = 0.4 )
-            ax.add_patch( poly )
+    ## now merge these regions
+    all_data_msas_post = list(filter(lambda entry: entry['msa'] not in msaids,
+                                     all_data_msas.copy( ) ) )
     #
-    ## now add the colorbar associated with sm
-    #cb = fig.colorbar( sm, ax = ax, alpha = 0.8 )
-    cb = my_colorbar( sm, ax, alpha = 0.8 )
-    cb.set_label( 'number of cases', fontsize = 18, fontweight = 'bold' )
+    ## use the msa of the largest pop one
     #
-    ## now put in the legend in upper left corner, fontsize = 14, weight = bold
-    ## following info: date, days after beginning, number of cases
-    date_s = df_dfm.date.max().strftime( '%d %B %Y' )
-    num_cases = df_dfm.cases.max( )
-    ax.text(
-        0.01, 0.02, '\n'.join([ '%s' % date_s,
-                               '%d days from 1st case' % days_from_beginning,
-                               '%d cumulative cases' % num_cases ]),
-        color = ( 0.0, 0.0, 0.0, 0.8 ),
-        fontsize = 18, fontweight = 'bold', transform = ax.transAxes,
-        horizontalalignment = 'left', verticalalignment = 'bottom' )
-    if doTitle:
-        ax.set_title( '\n'.join([
-            'Cumulative number of COVID-19 cases',
-            'in %s after %d / %d days from start' % ( regionName, days_from_beginning, inc_data[ 'last day'] ) ] ),
-                    fontsize = 18, fontweight = 'bold' )
+    ## first sort
+    data_msas_here = sorted(filter(lambda entry: entry['msa'] in msaids, all_data_msas ),
+                            key = lambda entry: entry[ 'pop est 2019' ] )[::-1]
+    #
+    ## now perform appropriate merging
+    data_msa_merge = data_msas_here[0]
+    data_msa_merge[ 'pop est 2019' ] = sum(map(lambda entry: entry[ 'pop est 2019' ], data_msas_here))
+    data_msa_merge[ 'fips' ] = set(chain.from_iterable(map(lambda entry: list(entry['fips']), data_msas_here )))
+    data_msa_merge[ 'RNAME' ] = regionName
+    data_msa_merge[ 'status' ] = 'MERGED'
+    data_msa_merge[ 'region name' ] = regionName
+    data_msa_merge[ 'prefix' ] = prefix
+    data_msa_merge[ 'state' ] = '-'.join(sorted(set(map(lambda entry: entry['state'], data_msas_here))))
+    all_data_msas_post.append( data_msa_merge )
+    return sorted( all_data_msas_post, key = lambda entry: entry[ 'pop est 2019' ] )
 
-def plot_deaths_bycounty( inc_data, regionName, ax, days_from_beginning = 0, maxnum_colorbar = 5000.0, doTitle = True ):
-    assert( days_from_beginning >= 0 )
-    assert( days_from_beginning <= inc_data[ 'last day' ] )
-    assert( maxnum_colorbar > 1 )
-    #
-    ## NOW CREATE BASEMAPS
-    m = create_and_draw_basemap( ax, inc_data[ 'bbox' ], resolution = 'h' )
-    boundaries = inc_data['boundaries']
-    df_dfm = inc_data['df'][ inc_data['df']['days_from_beginning'] == days_from_beginning ].copy( )
-    sm = ScalarMappable( norm = LogNorm( 1.0, maxnum_colorbar ), cmap = 'jet' )
-    for fips in sorted( boundaries ):
-        num_deaths = df_dfm['deaths_%s' % fips].max( )
-        fc = sm.to_rgba( num_deaths )
-        if num_deaths == 0: fc = ( 1.0, 1.0, 1.0, 0.0 )
-        for shape in boundaries[ fips ]:
-            x, y = m( shape[:,0], shape[:,1] )
-            poly = Polygon(
-                numpy.array([ x, y ]).T, closed = True,
-                edgecolor = 'k', linewidth = 1.0, linestyle = 'dashed',
-                facecolor = fc, alpha = 0.4 )
-            ax.add_patch( poly )
-    #
-    ## now add the colorbar associated with sm
-    cb = my_colorbar( sm, ax, alpha = 0.8 )
-    cb.set_label( 'number of deaths', fontsize = 18, fontweight = 'bold' )
-    #
-    ## now put in the legend in upper left corner, fontsize = 14, weight = bold
-    ## following info: date, days after beginning, number of cases
-    date_s = df_dfm.date.max().strftime( '%d %B %Y' )
-    num_deaths = df_dfm.death.max( )
-    ax.text(
-        0.01, 0.02, '\n'.join([ '%s' % date_s,
-                               '%d days from 1st case' % days_from_beginning,
-                               '%d cumulative deaths' % num_deaths ]),
-        color = ( 0.0, 0.0, 0.0, 0.8 ),
-        fontsize = 18, fontweight = 'bold', transform = ax.transAxes,
-        horizontalalignment = 'left', verticalalignment = 'bottom' )
-    if doTitle:
-        ax.set_title( '\n'.join([
-            'Cumulative number of COVID-19 deaths',
-            'in %s after %d / %d days from start' % ( regionName, days_from_beginning, inc_data[ 'last day' ] ) ] ),
-                    fontsize = 18, fontweight = 'bold' )
-
-def plot_cases_deaths_region( inc_data, regionName, ax, days_from_beginning = 0, doTitle = True ):
-    assert( days_from_beginning >= 0 )
-    assert( days_from_beginning <= inc_data[ 'last day' ] )
-    df_cases_deaths_region = inc_data[ 'df' ]
-    #
-    first_date = min( df_cases_deaths_region.date )
-    last_date = max( df_cases_deaths_region.date )
-    #
-    df_cases_deaths_regions_bef = df_cases_deaths_region[
-        df_cases_deaths_region.days_from_beginning <= days_from_beginning ].copy( )
-    df_cases_deaths_regions_aft = df_cases_deaths_region[
-        df_cases_deaths_region.days_from_beginning >= days_from_beginning ].copy( )
-    #
-    ## before, full solid color plot
-    df_cases_deaths_regions_bef.plot(
-         'days_from_beginning', 'cases', linewidth = 4.5,
-        ax = ax, logy = True, grid = True )
-    df_cases_deaths_regions_bef.plot(
-         'days_from_beginning', 'death', linewidth = 4.5,
-        ax = ax, logy = True, grid = True )
-    #
-    ## after, alpha = 0.5
-    df_cases_deaths_regions_aft.plot(
-         'days_from_beginning', 'cases', linewidth = 4.5,
-        ax = ax, logy = True, grid = True, alpha = 0.5 )
-    df_cases_deaths_regions_aft.plot(
-         'days_from_beginning', 'death', linewidth = 4.5,
-        ax = ax, logy = True, grid = True, alpha = 0.5 )
-    #
-    ##
-    df_dfm = df_cases_deaths_regions_bef = df_cases_deaths_region[
-        df_cases_deaths_region.days_from_beginning == days_from_beginning ]
-    num_cases = df_dfm.cases.max( )
-    num_death = df_dfm.death.max( )
-    num_cases_tot = numpy.array( df_cases_deaths_region.cases )[-1]
-    num_death_tot = numpy.array( df_cases_deaths_region.death )[-1]
-    #
-    ## now just do colors
-    color_cases = ax.lines[0].get_color( )
-    color_death = ax.lines[1].get_color( )
-    ax.lines[2].set_label( None )
-    ax.lines[3].set_label( None )
-    leg = ax.legend( )
-    ax.lines[2].set_color( color_cases )
-    ax.lines[3].set_color( color_death )
-    ax.scatter([ days_from_beginning ], [ df_dfm.cases.max( ) ], s = 100, color = color_cases )
-    ax.scatter([ days_from_beginning ], [ df_dfm.death.max( ) ], s = 100, color = color_death )
-    ax.lines[0].set_label( 'cases: %d / %d' % ( num_cases, num_cases_tot ) )
-    ax.lines[1].set_label( 'death: %d / %d' % ( num_death, num_death_tot ) )
-    #
-    ax.set_xlim(0.0, inc_data[ 'last day' ] )
-    ax.set_ylim(1.0, 1.15 * df_cases_deaths_region.cases.max( ) )
-    ax.set_aspect( inc_data[ 'last day' ] / numpy.log10( 1.15 * df_cases_deaths_region.cases.max( ) ) )
-    ax.set_xlabel(
-        'Days from First COVID-19 CASE (%s)' %
-        first_date.strftime( '%d-%m-%Y' ),
-        fontsize = 18, fontweight = 'bold' )
-    ax.set_ylabel( 'Cumulative Number of Cases/Deaths', fontsize = 12, fontweight = 'bold' )
-    if doTitle:
-        ax.set_title( '\n'.join(
-            [
-                '%s Trend in COVID-19' % titlecase.titlecase( regionName ),
-                'through %d / %d days from beginning' % ( days_from_beginning, inc_data[ 'last day' ] )
-            ]), fontsize = 18, fontweight = 'bold' )
-    #
-    ## text on last day
-    ax.text( 0.02, 0.75, '\n'.join([
-        'last day: %s' % last_date.strftime('%d-%m-%Y'),
-        '%d days after first case' % inc_data[ 'last day' ] ]),
-            transform = ax.transAxes, fontsize = 18, fontweight = 'bold',
-            horizontalalignment = 'left', verticalalignment = 'center', color = 'purple' )
-                                   
-    ## tick labels size 20, bold
-    for tick in ax.xaxis.get_major_ticks( ) + ax.yaxis.get_major_ticks( ):
-        tick.label.set_fontsize( 14 )
-        tick.label.set_fontweight( 'bold' )
-    #
-    ## legend size 24, bold
-    leg = ax.legend( )
-    for txt in leg.texts:
-        txt.set_fontsize( 18 )
-        txt.set_fontweight( 'bold' )
-
-def create_plots_daysfrombeginning( inc_data, regionName, prefix, days_from_beginning = 0,
-                                   dirname = os.getcwd( ), maxnum_colorbar = 5000 ):
+def create_and_store_msas_2019( ):
     from engine import get_county_state
-    assert( os.path.isdir( dirname ) )
-    assert( days_from_beginning >= 0 )
-    assert( days_from_beginning <= inc_data[ 'last day' ] )
-    assert( maxnum_colorbar > 1 )
-    fig = Figure( )
-    ax_deaths = fig.add_subplot(111)
+    all_data_msas = create_msa_2019( )
     #
-    ## first plot, get correct width multiplication
-    plot_deaths_bycounty(
-        inc_data, regionName, ax_deaths,
-        days_from_beginning = days_from_beginning, doTitle = False,
-        maxnum_colorbar = maxnum_colorbar )
-    ratio_width_height = ax_deaths.get_xlim( )[1] / ax_deaths.get_ylim( )[1]
-    height_units = 2.0
-    width_units = 1 + ratio_width_height
+    ## SF, San Jose, Napa MSAs -> Bay Area
+    all_data_msas_post = merge_msas( 'Bay Area', 'bayarea', { 41860, 41940, 34900 }, all_data_msas )
     #
-    ## now create a figure of correct size, just trialing and erroring it
-    fig = Figure( )
-    fig.set_size_inches([ 18.0 * width_units / height_units, 18.0 * 0.8 ] )
-    ax_deaths = fig.add_subplot(222)
-    ax_cases = fig.add_subplot(224)
-    ax_cd = fig.add_subplot(223)
+    ## New York to NYC
+    all_data_msas_post = merge_msas( 'NYC Metro Area', 'nyc', { 35620 }, all_data_msas_post )
     #
-    ## now plots
-    plot_deaths_bycounty(
-        inc_data, regionName, ax_deaths,
-        days_from_beginning = days_from_beginning, doTitle = False,
-        maxnum_colorbar = maxnum_colorbar )
-    plot_cases_bycounty(
-        inc_data, regionName, ax_cases,
-        days_from_beginning = days_from_beginning, doTitle = False,
-        maxnum_colorbar = maxnum_colorbar )
-    plot_cases_deaths_region(
-        inc_data, regionName, ax_cd,
-        days_from_beginning = days_from_beginning, doTitle = False )
+    ## Los Angeles, Riverside, Oxnard -> Los Angeles
+    ## from wikipedia entry: https://en.wikipedia.org/wiki/Greater_Los_Angeles
+    all_data_msas_post = merge_msas( 'LA Metro Area', 'losangeles', { 31080, 40140, 37100 }, all_data_msas_post )
     #
-    ## legend plot
-    df_cases_deaths_region = inc_data[ 'df' ]
-    first_date = min( df_cases_deaths_region.date )
-    last_date = max( df_cases_deaths_region.date )
-    max_fips_cases = max( map(lambda key: (
-        key.replace('cases_','').strip( ),
-        df_cases_deaths_region[ key ].max( ) ),
-       filter(lambda key: key.startswith('cases_'), df_cases_deaths_region)),
-      key = lambda fips_case: fips_case[1] )
-    fips_max, cases_max = max_fips_cases
-    cs = get_county_state( fips_max )
-    ax_leg = fig.add_subplot(221)
-    ax_leg.set_aspect( 1.0 )
-    ax_leg.axis('off')
-    ax_leg.text(-0.1, 1.0, '\n'.join([
-        'First COVID-19 CASE: %s' % first_date.strftime( '%d-%m-%Y' ),
-        'Latest COVID-19 CASE: %s' % last_date.strftime( '%d-%m-%Y' ),
-        'Most County Cases: %d' % cases_max,
-        '%s County, %s' % ( cs['county'], cs['state'] ),
-        'Showing Day %d / %d' % ( days_from_beginning, inc_data[ 'last day' ] ) ]),
-                fontsize = 24, fontweight = 'bold', transform = ax_leg.transAxes,
-                horizontalalignment = 'left', verticalalignment = 'top' )
-    canvas = FigureCanvasAgg( fig )
-    fname = os.path.join( dirname, 'covid19_%s_%s.%04d.png' % (
-        prefix, last_date.strftime('%d%m%Y'), days_from_beginning ) )
-    canvas.print_figure( fname, bbox_inches = 'tight' )
-    autocrop_image.autocrop_image( fname, fixEven = True )
-    return fname
-
-def get_summary_movie_frombeginning(
-    data = defaults.bay_area_data,
-    dirname = os.getcwd( ), maxnum_colorbar = 5000.0 ):
-    from engine import get_incident_data
+    ## now dump out
+    pickle.dump( all_data_msas, gzip.open( os.path.join( 'resources', 'msa_2019.pkl.gz' ), 'wb' ) )
+    pickle.dump( all_data_msas_post, gzip.open( os.path.join( 'resources', 'msa_2019_post.pkl.gz' ), 'wb' ) )
     #
-    ffmpeg_exec = find_executable( 'ffmpeg' )
-    if ffmpeg_exec is None:
-        raise ValueError("Error, ffmpeg could not be found." )
-    #
-    prefix = data[ 'prefix' ]
-    regionName = data[ 'region name' ]
-    counties_and_states = data[ 'counties' ]
-    inc_data = get_incident_data( data )
-    #
-    all_days_from_begin = list(range(inc_data['last day'] + 1 ) )
-    m = Manager( )
-    lck = m.Lock( )
-    lst = m.list( )
-    def myfunc( input_tuple ):
-        days_from_beginning, time00 = input_tuple
-        fname = create_plots_daysfrombeginning(
-            inc_data, regionName, dirname = dirname,
-            days_from_beginning = days_from_beginning, prefix = prefix,
-            maxnum_colorbar = maxnum_colorbar )
-        lck.acquire( )
-        lst.append( fname )
-        if len( lst ) % 10 == 0 and len( lst ) != 0:
-            print( 'took %0.3f seconds to process %d / %d days.' % (
-                time.time( ) - time00,
-                len( lst ), len( all_days_from_begin ) ) )
-        lck.release( )
-        return fname
-    #
-    ## first make all the plots
-    time0 = time.time( )
-    with multiprocessing.Pool( processes = multiprocessing.cpu_count( ) ) as pool:
-        input_tuples = list(zip( all_days_from_begin, [ time0 ] * len( all_days_from_begin ) ) )
-        allfiles = sorted(pool.map( myfunc, input_tuples ) )
-    print( 'took %0.3f seconds to process all %d days.' % (
-        time.time( ) - time0, len( all_days_from_begin ) ) )
-    #
-    ## now make the movie
-    allfiles_prefixes = set(map(
-        lambda fname: '.'.join(os.path.basename( fname ).split('.')[:-2]), allfiles))
-    assert( len( allfiles_prefixes ) == 1 )
-    movie_prefix = max( allfiles_prefixes )
-    movie_name = os.path.join( dirname, '%s.mp4' % movie_prefix )
-    allfile_name = os.path.join( dirname, '%s.%%04d.png' % movie_prefix )
-    #
-    ## thank instructions from https://hamelot.io/visualization/using-ffmpeg-to-convert-a-set-of-images-into-a-video/
-    ## make MP4 movie, 5 fps, quality = 25
-    proc = subprocess.Popen([ ffmpeg_exec, '-y', '-r', '5', '-f', 'image2', '-i', allfile_name,
-                             '-vcodec', 'libx264', '-crf', '25', '-pix_fmt', 'yuv420p',
-                             movie_name ], stdout = subprocess.PIPE,
-                            stderr = subprocess.STDOUT )
-    stdout_val, stderr_val = proc.communicate( )
-    #
-    ## now later remove those images
-    list(map(lambda fname: os.remove( fname ), allfiles ) )
-    return movie_name
+    ## now create a data structure of dictionaries with prefixes
+    msas_dict = { }
+    for entry in all_data_msas_post:
+        prefix = entry[ 'prefix' ]
+        regionName = entry[ 'region name' ]
+        counties = list(filter(None, map(get_county_state, entry['fips'])))
+        msas_dict[ prefix ] = { 'prefix' : prefix, 'region name' : regionName, 'counties' : counties }
+    pickle.dump( msas_dict, gzip.open( os.path.join( 'resources', 'msa_2019_dict.pkl.gz' ), 'wb' ) )
+    
+def load_msas_data( ):
+    return pickle.load( gzip.open( os.path.join( 'resources', 'msa_2019_dict.pkl.gz' ), 'rb' ) )
