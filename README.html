@@ -1,0 +1,29 @@
+<h1 id="readme">README</h1>
+<p>Hello world! This is my COVID-19 tracker. There is a git submodule, the <a href="https://github.com/nytimes/covid-19-data">NY Times COVID-19 repository</a>, that needs to be updated frequently to get the latest data. The easiest way to update is to run this command in the checked out repo,</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">git</span> -C covid-19-data pull</span></code></pre></div>
+<p>This is not nearly as sophisticated as what’s in <a href="https://ncov2019.live">ncov2019.live</a>, and described in <a href="https://www.newyorker.com/magazine/2020/03/30/the-high-schooler-who-became-a-covid-19-watchdog">this New Yorker article</a>.</p>
+<p>The code that processes the COVID-19 recorded cases and deaths, dumps out the data into the Pandas serialized data format, and makes plots, is in <code>engine.py</code>. Running <code>demo.py</code> this way, <code>python3 demo.py</code>, produces the latest summary data for the Bay Area, the Richmond metro area, DC, NYC metro, and the United States (here, as of 11 APRIL 2020).</p>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><img width=100% src="figures/bayarea-11042020.png"></td>
+<td style="text-align: center;"><img width=100% src="figures/dc-11042020.png"></td>
+<td style="text-align: center;"><img width=100% src="figures/richmond-11042020.png"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">SF Bay Area</td>
+<td style="text-align: center;">DC</td>
+<td style="text-align: center;">Richmond metro</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><img width=100% src="figures/nyc-11042020.png"></td>
+<td style="text-align: center;"><img width=100% src="figures/us-11042020.png"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">NYC Metro</td>
+<td style="text-align: center;">United States</td>
+<td style="text-align: center;"></td>
+</tr>
+</tbody>
+</table>
