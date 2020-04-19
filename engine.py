@@ -42,8 +42,10 @@ fips_countystate_dict = dict(map(lambda f_c_s: ( f_c_s[0], {
         map(_get_fips_county_state, all_counties_nytimes_covid19_data ) ) ) )
 
 def get_county_state( fips ):
-    assert( fips in fips_countystate_dict )
+    if fips not in fips_countystate_dict: return None
     return fips_countystate_dict[ fips ]
+
+data_msas_2019 = engine_geo.load_msas_data( )
 
 
 def get_data_county( county_name, state = 'California' ):
