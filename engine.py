@@ -1,8 +1,11 @@
-import os, sys, numpy, glob, pylab, tabulate, datetime, pandas, titlecase
+import os, sys, numpy, glob, pylab, tabulate
+import datetime, pandas, titlecase
 import defaults, engine_geo
 from itertools import chain
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_agg import FigureCanvasAgg
+
+_mainDir = os.path.dirname( os.path.abspath( __file__ ) )
 
 def _get_stat_line( line ):
   line_split = list(map(lambda tok: tok.strip(), line.split(',')))
@@ -29,7 +32,7 @@ all_counties_nytimes_covid19_data = list(filter(None,
     map(_get_stat_line,
         list( map(lambda line: line.strip(), filter(
             lambda line: len( line.strip( ) ) != 0,
-            open( os.path.join( "covid-19-data", "us-counties.csv" ), "r" ).readlines())))[1:])))
+            open( os.path.join( _mainDir, "covid-19-data", "us-counties.csv" ), "r" ).readlines())))[1:])))
 
 all_counties_state = list(map(
     lambda entry: { 'county' : entry[0], 'state' : entry[1] },
@@ -41,12 +44,27 @@ fips_countystate_dict = dict(map(lambda f_c_s: ( f_c_s[0], {
     'county' : f_c_s[1], 'state' : f_c_s[2] } ), set(
         map(_get_fips_county_state, all_counties_nytimes_covid19_data ) ) ) )
 
+cs_fips_dict = dict(map(lambda f_c_s: ( ( f_c_s[1], f_c_s[2] ), f_c_s[0] ), set(
+    map(_get_fips_county_state, all_counties_nytimes_covid19_data ))))
+
+#
+## now stuff associated with the fips : county/state mapping
 def get_county_state( fips ):
     if fips not in fips_countystate_dict: return None
     return fips_countystate_dict[ fips ]
-
+#
 data_msas_2019 = engine_geo.load_msas_data( )
+fips_msas_2019 = dict(chain.from_iterable(
+    map(lambda entry: map(lambda fips: ( fips, entry['prefix'] ), entry['fips']), 
+        data_msas_2019.values( ) ) ) )
 
+def get_fips_msa( county, state ):
+    tup = ( county, state )
+    assert( tup in cs_fips_dict )
+    fips = cs_fips_dict[ tup ]
+    msaname = fips_msas_2019[ fips ]
+    data_msa = data_msas_2019[ msaname ]
+    return ( fips, data_msa )
 
 def get_data_county( county_name, state = 'California' ):
   data_by_date = sorted(filter(lambda entry: county_name in entry['county'] and
@@ -142,6 +160,24 @@ def get_maximum_cases( inc_data ):
                        key = lambda tup: tup[1] )
     return max_case_tup
 
+def display_tabulated_metros( ):
+    all_metros = sorted(
+        data_msas_2019.values( ),
+        key = lambda entry: entry['population'])[::-1]
+    #
+    ## secret sauce formatting comma'd integers from https://intellipaat.com/community/2447/how-to-print-number-with-commas-as-thousands-separators
+    def _get_string_commas_num( num ):
+        return "%s" % f"{num:,d}"
+    
+    data_tabulated = list(map(lambda tup: (
+        tup[0] + 1, tup[1][ 'prefix' ],
+        tup[ 1 ][ 'region name' ],
+        _get_string_commas_num( tup[ 1 ][ 'population' ] ) ),
+                              enumerate(all_metros)))
+    print( 'HERE ARE THE %d METRO AREAS, ORDERED BY POPULATION\n' % len( all_metros ) )
+    print( '%s\n' % tabulate.tabulate(
+        data_tabulated, headers = [ 'RANK', 'IDENTIFIER', 'NAME', 'POPULATION' ] ) )
+
 def get_summary_demo_data( data = defaults.bay_area_data, doShow = True ):
     prefix = data[ 'prefix' ]
     regionName = data[ 'region name' ]
@@ -198,3 +234,4 @@ def get_summary_demo_data( data = defaults.bay_area_data, doShow = True ):
     #
     ## now SHOW!
     if doShow: pylab.show( )
+
