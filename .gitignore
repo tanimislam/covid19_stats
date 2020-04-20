@@ -1,4 +1,4 @@
 __pycache__
 *.pyc
-movies
-covid19_*
+scratch
+foo.py

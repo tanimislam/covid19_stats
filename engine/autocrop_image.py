@@ -1,11 +1,10 @@
-import os, sys, numpy
-from PIL import Image, ImageChops
+import os, numpy
+from PIL import Image
 
 def autocrop_perproc(input_tuple):
     inputfilename, outputfilename = input_tuple
     val = autocrop_image(inputfilename, outputfilename = outputfilename )
-    return inputfilename, val
-    
+    return inputfilename, val    
 
 def autocrop_image(inputfilename, outputfilename = None,
                    trans = False, fixEven = False ):
