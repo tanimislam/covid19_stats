@@ -187,7 +187,6 @@ def create_and_store_msas_2019( ):
     for entry in all_data_msas_post:
         prefix = entry[ 'prefix' ]
         regionName = entry[ 'region name' ]
-        counties = list(filter(None, map(get_county_state, entry['fips'])))
         fips = list(filter(lambda fips: get_county_state( fips ) is not None, entry['fips'] ) )
         #
         ## now put in the entire population
@@ -195,7 +194,7 @@ def create_and_store_msas_2019( ):
         msas_dict[ prefix ] = {
             'prefix' : prefix, 'region name' : regionName,
             'fips' : fips,
-            'counties' : counties, 'population' : population }
+            'population' : population }
     pickle.dump( msas_dict, gzip.open( os.path.join(
         mainDir, 'resources', 'msa_2019_dict.pkl.gz' ), 'wb' ) )
     
