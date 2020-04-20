@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 
-import os, sys, numpy, tabulate, tempfile
+import os, sys, numpy, tabulate, tempfile, warnings
 from engine import viz, core
 from argparse import ArgumentParser
+
+#
+## suppress warnings
+warnings.simplefilter( 'ignore' )
 
 #
 ## secret sauce formatting comma'd integers from https://intellipaat.com/community/2447/how-to-print-number-with-commas-as-thousands-separators
