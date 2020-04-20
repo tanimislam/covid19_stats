@@ -1,9 +1,9 @@
 import os, sys, numpy, shapefile, pickle
-import gzip, pandas, titlecase
+import gzip, pandas, titlecase, logging
+import pathos.multiprocessing as multiprocessing
 from collections import Counter
 from itertools import chain
-
-_mainDir = os.path.dirname( os.path.abspath( __file__ ) )
+from engine import mainDir
 
 def _get_record_shapefile_astup( rec, shape ):
     fips_code = rec[4]
@@ -25,25 +25,63 @@ def create_and_store_fips_2018( ):
     fips_2018_data = dict(map(lambda rec_shape: _get_record_shapefile_astup(
         rec_shape[0], rec_shape[1] ), zip( sf.records(), sf.shapes())))
     pickle.dump( fips_2018_data, gzip.open( os.path.join(
-        _mainDir, 'resources', 'fips_2018_data.pkl.gz' ), 'wb'))
+        mainDir, 'resources', 'fips_2018_data.pkl.gz' ), 'wb'))
+
+def do_bbox_intersect( bbox1, bbox2 ):
+    lng1_min, lat1_min, lng1_max, lat1_max = bbox1
+    lng2_min, lat2_min, lng2_max, lat2_max = bbox2
+    if lng1_max < lng2_min or lng2_max < lng1_min: return False
+    if lat1_max < lat2_min or lat2_max < lat1_min: return False
+    return True
+        
+def get_fips_adjacency( fips, fips_data ):
+    assert( fips in fips_data )
+    fips_excl = set( fips_data ) - set( [ fips ] )
+    possible_fips = set(filter(
+        lambda fipsc: do_bbox_intersect( fips_data[ fips ][ 'bbox' ], fips_data[ fipsc ][ 'bbox' ] ), fips_excl))
+    all_points_fips = numpy.concatenate( fips_data[ fips ][ 'points' ] )
+    set_points_fips_as_tuples = set(map(lambda idx: tuple( all_points_fips[idx,:]), range(all_points_fips.shape[0])))
+    actual_adj = [ ]
+    for fipsc in possible_fips:
+        all_points = numpy.concatenate( fips_data[ fipsc ][ 'points' ] )
+        set_points_as_tuples = set(map(lambda idx: tuple( all_points[ idx, : ] ), range(all_points.shape[0])))
+        len_inc = len( set_points_as_tuples & set_points_fips_as_tuples )
+        if len_inc >= 2:
+            logging.debug( '%s,%s: %d points' % ( fips, fipsc, len_inc ) )
+            actual_adj.append( fipsc )
+    return set( actual_adj )
+
+def construct_adjacency( fips_data ):
+    with multiprocessing.Pool( processes = multiprocessing.cpu_count( ) ) as pool:
+        all_adj = dict(map(lambda fips: ( fips, get_fips_adjacency( fips, fips_data ) ), fips_data ) )
+        set_of_adjacents = set(chain.from_iterable(
+            map(lambda fips: map(lambda fips2: tuple(sorted([ fips, fips2 ])), all_adj[fips]), all_adj)))
+        pickle.dump( set_of_adjacents, gzip.open( os.path.join(
+            mainDir, 'resources', 'fips_2018_adj.pkl.gz' ), 'wb' ) )
+
+def load_fips_adj( ):
+    assert( os.path.exists( os.path.join( 
+        mainDir, 'resources', 'fips_2018_adj.pkl.gz' ) ) )
+    return pickle.load( gzip.open( os.path.join(
+        mainDir, 'resources', 'fips_2018_adj.pkl.gz' ) ) )
 
 def load_fips_data( ):
     assert( os.path.exists( os.path.join(
-        _mainDir, 'resources', 'fips_2018_data.pkl.gz' ) ) )
+        mainDir, 'resources', 'fips_2018_data.pkl.gz' ) ) )
     return pickle.load( gzip.open( os.path.join(
-        _mainDir, 'resources', 'fips_2018_data.pkl.gz' ) ) )
+        mainDir, 'resources', 'fips_2018_data.pkl.gz' ) ) )
 
 def create_msa_2019( ):
     df = pandas.read_table( os.path.join(
-        _mainDir, 'resources', 'msa_2019.csv' ), encoding='latin-1', sep=',')
+        mainDir, 'resources', 'msa_2019.csv' ), encoding='latin-1', sep=',')
     df.pop('MDIV')
     #
     ## now get the CBSA's which are actual MSIDs
-    def is_actual_msa( cbsa ):
+    def _is_actual_msa( cbsa ):
         df_sub = df[ df.CBSA == cbsa ].reset_index( )
         name = titlecase.titlecase( df_sub[ 'LSAD' ][ 0 ] )
         return name == 'Metropolitan Statistical Area'
-    all_msas = set(filter(is_actual_msa, set(df.CBSA)))
+    all_msas = set(filter(_is_actual_msa, set(df.CBSA)))
     #
     ## now get all the info on the MSA
     def get_info_msa( msa ):
@@ -58,6 +96,8 @@ def create_msa_2019( ):
         fips_inside = set(
             map(lambda val: '%05d' % val, df_sub.dropna( subset=['STCOU'] ).reset_index( ).STCOU ) )
         name = df_sub.NAME[0].strip( )
+        #
+        ## now perform 
         data_msa[ 'fips' ] = fips_inside
         #
         state = ''
@@ -120,7 +160,7 @@ def merge_msas( regionName, prefix, msaids, all_data_msas ):
     return sorted( all_data_msas_post, key = lambda entry: entry[ 'pop est 2019' ] )
 
 def create_and_store_msas_2019( ):
-    from engine import get_county_state
+    from engine.core import get_county_state
     all_data_msas = create_msa_2019( )
     #
     ## SF, San Jose, Napa MSAs -> Bay Area
@@ -129,15 +169,18 @@ def create_and_store_msas_2019( ):
     ## New York to NYC
     all_data_msas_post = merge_msas( 'NYC Metro Area', 'nyc', { 35620 }, all_data_msas_post )
     #
+    ## Washington to DC
+    all_data_msas_post = merge_msas( 'DC Metro Area', 'dc', { 47900 }, all_data_msas_post )    
+    #
     ## Los Angeles, Riverside, Oxnard -> Los Angeles
     ## from wikipedia entry: https://en.wikipedia.org/wiki/Greater_Los_Angeles
     all_data_msas_post = merge_msas( 'LA Metro Area', 'losangeles', { 31080, 40140, 37100 }, all_data_msas_post )
     #
     ## now dump out
     pickle.dump( all_data_msas, gzip.open( os.path.join(
-        _mainDir, 'resources', 'msa_2019.pkl.gz' ), 'wb' ) )
+        mainDir, 'resources', 'msa_2019.pkl.gz' ), 'wb' ) )
     pickle.dump( all_data_msas_post, gzip.open( os.path.join(
-        _mainDir, 'resources', 'msa_2019_post.pkl.gz' ), 'wb' ) )
+        mainDir, 'resources', 'msa_2019_post.pkl.gz' ), 'wb' ) )
     #
     ## now create a data structure of dictionaries with prefixes
     msas_dict = { }
@@ -154,8 +197,8 @@ def create_and_store_msas_2019( ):
             'fips' : fips,
             'counties' : counties, 'population' : population }
     pickle.dump( msas_dict, gzip.open( os.path.join(
-        _mainDir, 'resources', 'msa_2019_dict.pkl.gz' ), 'wb' ) )
+        mainDir, 'resources', 'msa_2019_dict.pkl.gz' ), 'wb' ) )
     
 def load_msas_data( ):
     return pickle.load( gzip.open( os.path.join(
-        _mainDir, 'resources', 'msa_2019_dict.pkl.gz' ), 'rb' ) )
+        mainDir, 'resources', 'msa_2019_dict.pkl.gz' ), 'rb' ) )
