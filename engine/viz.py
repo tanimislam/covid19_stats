@@ -335,7 +335,7 @@ def create_summary_movie_frombeginning(
     #
     prefix = data[ 'prefix' ]
     regionName = data[ 'region name' ]
-    counties_and_states = data[ 'counties' ]
+    counties_and_states = list( map( get_county_state, data[ 'fips' ] ) )
     inc_data = get_incident_data( data )
     #
     all_days_from_begin = list(range(inc_data['last day'] + 1 ) )
@@ -389,7 +389,7 @@ def create_summary_movie_frombeginning(
 def get_summary_demo_data( data, maxnum_colorbar = 5000.0 ):
     prefix = data[ 'prefix' ]
     regionName = data[ 'region name' ]
-    counties_and_states = data[ 'counties' ]
+    counties_and_states = list( map( get_county_state, data[ 'fips' ] ) )
     inc_data = get_incident_data( data )
     df_cases_deaths_region = inc_data[ 'df' ]
     #
