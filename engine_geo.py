@@ -3,6 +3,8 @@ import gzip, pandas, titlecase
 from collections import Counter
 from itertools import chain
 
+_mainDir = os.path.dirname( os.path.abspath( __file__ ) )
+
 def _get_record_shapefile_astup( rec, shape ):
     fips_code = rec[4]
     num_shapes = int( rec[0] )
@@ -22,17 +24,18 @@ def create_and_store_fips_2018( ):
     sf = shapefile.Reader( os.path.join( 'resources', 'cb_2018_us_county_500k.shp' ) )
     fips_2018_data = dict(map(lambda rec_shape: _get_record_shapefile_astup(
         rec_shape[0], rec_shape[1] ), zip( sf.records(), sf.shapes())))
-    pickle.dump( fips_2018_data, gzip.open( os.path.join( 'resources', 'fips_2018_data.pkl.gz' ), 'wb'))
+    pickle.dump( fips_2018_data, gzip.open( os.path.join(
+        _mainDir, 'resources', 'fips_2018_data.pkl.gz' ), 'wb'))
 
 def load_fips_data( ):
     assert( os.path.exists( os.path.join(
-        'resources', 'fips_2018_data.pkl.gz' ) ) )
+        _mainDir, 'resources', 'fips_2018_data.pkl.gz' ) ) )
     return pickle.load( gzip.open( os.path.join(
-        'resources', 'fips_2018_data.pkl.gz' ) ) )
+        _mainDir, 'resources', 'fips_2018_data.pkl.gz' ) ) )
 
 def create_msa_2019( ):
     df = pandas.read_table( os.path.join(
-        'resources', 'msa_2019.csv' ), encoding='latin-1', sep=',')
+        _mainDir, 'resources', 'msa_2019.csv' ), encoding='latin-1', sep=',')
     df.pop('MDIV')
     #
     ## now get the CBSA's which are actual MSIDs
@@ -61,7 +64,7 @@ def create_msa_2019( ):
         if len( name.split(',') ) != 1: state = name.split(',')[-1].strip( )
         data_msa[ 'state' ] = state
         regionName = name.split(',')[0].strip().split('-')[0].strip()
-        prefix = ''.join(regionName.split()).lower( )
+        prefix = ''.join(regionName.split()).lower( ).replace('.','').split('/')[0].strip()
         data_msa[ 'RNAME' ] = regionName
         data_msa[ 'prefix' ] = prefix
         regionName = '%s Metro Area' % regionName
@@ -131,8 +134,10 @@ def create_and_store_msas_2019( ):
     all_data_msas_post = merge_msas( 'LA Metro Area', 'losangeles', { 31080, 40140, 37100 }, all_data_msas_post )
     #
     ## now dump out
-    pickle.dump( all_data_msas, gzip.open( os.path.join( 'resources', 'msa_2019.pkl.gz' ), 'wb' ) )
-    pickle.dump( all_data_msas_post, gzip.open( os.path.join( 'resources', 'msa_2019_post.pkl.gz' ), 'wb' ) )
+    pickle.dump( all_data_msas, gzip.open( os.path.join(
+        _mainDir, 'resources', 'msa_2019.pkl.gz' ), 'wb' ) )
+    pickle.dump( all_data_msas_post, gzip.open( os.path.join(
+        _mainDir, 'resources', 'msa_2019_post.pkl.gz' ), 'wb' ) )
     #
     ## now create a data structure of dictionaries with prefixes
     msas_dict = { }
@@ -140,8 +145,17 @@ def create_and_store_msas_2019( ):
         prefix = entry[ 'prefix' ]
         regionName = entry[ 'region name' ]
         counties = list(filter(None, map(get_county_state, entry['fips'])))
-        msas_dict[ prefix ] = { 'prefix' : prefix, 'region name' : regionName, 'counties' : counties }
-    pickle.dump( msas_dict, gzip.open( os.path.join( 'resources', 'msa_2019_dict.pkl.gz' ), 'wb' ) )
+        fips = list(filter(lambda fips: get_county_state( fips ) is not None, entry['fips'] ) )
+        #
+        ## now put in the entire population
+        population = entry[ 'pop est 2019' ]
+        msas_dict[ prefix ] = {
+            'prefix' : prefix, 'region name' : regionName,
+            'fips' : fips,
+            'counties' : counties, 'population' : population }
+    pickle.dump( msas_dict, gzip.open( os.path.join(
+        _mainDir, 'resources', 'msa_2019_dict.pkl.gz' ), 'wb' ) )
     
 def load_msas_data( ):
-    return pickle.load( gzip.open( os.path.join( 'resources', 'msa_2019_dict.pkl.gz' ), 'rb' ) )
+    return pickle.load( gzip.open( os.path.join(
+        _mainDir, 'resources', 'msa_2019_dict.pkl.gz' ), 'rb' ) )
