@@ -1,4 +1,4 @@
-import os, sys, numpy, glob, pylab, tabulate
+import os, sys, numpy, glob, tabulate
 import datetime, pandas, titlecase, networkx
 import pathos.multiprocessing as multiprocessing
 from itertools import chain
