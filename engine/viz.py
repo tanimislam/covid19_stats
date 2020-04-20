@@ -1,7 +1,6 @@
-import os, sys, numpy, titlecase, time, tempfile, shutil
-import autocrop_image, defaults, subprocess, engine_geo
+import os, sys, numpy, titlecase, time
+import subprocess, tempfile, shutil, datetime
 import pathos.multiprocessing as multiprocessing
-from engine import get_county_state
 from multiprocessing import Value, Manager
 from matplotlib.patches import Polygon
 from matplotlib.collections import PatchCollection
@@ -12,8 +11,9 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg
 from mpl_toolkits.basemap import Basemap
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from distutils.spawn import find_executable
-
-_mainDir = os.path.dirname( os.path.abspath( __file__ ) )
+#
+from engine import mainDir, gis, autocrop_image
+from engine.core import get_incident_data, get_county_state, get_msa_data, calculate_total_bbox, get_boundary_dict
 
 def my_colorbar( mappable, ax, **kwargs ):
     """
@@ -40,9 +40,11 @@ def create_and_draw_basemap( ax, bbox, resolution = 'i' ):
     m.drawmeridians(numpy.arange(min_lng, max_lng, lng_delta / 1.5 ), labels = [1,0,0,1] )
     #
     ## create a "black" with alpha = 0.4
-    cblack = list( to_rgba( 'black' ) )
-    cblack[-1] = 0.4
-    m.drawcoastlines( linewidth = 2, color = cblack )
+    try:
+        cblack = list( to_rgba( 'black' ) )
+        cblack[-1] = 0.4
+        m.drawcoastlines( linewidth = 2, color = cblack )
+    except: pass
     #
     ## create a "blue" with alpha = 0.3, and is the first blue color when plotting
     cblue = list( to_rgba( '#1f77b4' ) )
@@ -50,6 +52,36 @@ def create_and_draw_basemap( ax, bbox, resolution = 'i' ):
     m.drawrivers( linewidth = 5, color = cblue )
     m.fillcontinents( lake_color = cblue, color = 'white' )
     return m
+
+def display_msa( msaname ):
+    fig = Figure( )
+    fig.set_size_inches([18,18])
+    ax = fig.add_subplot(111)
+    #
+    data_msa = get_msa_data( msaname )
+    bbox = calculate_total_bbox( data_msa['fips'] )
+    bdict = get_boundary_dict( data_msa[ 'fips' ] )
+    m = create_and_draw_basemap( ax, bbox, resolution = 'h' )
+    fc = ( 1.0, 1.0, 1.0, 0.0 )
+    for fips in sorted( bdict ):
+        for shape in bdict[ fips ]:
+            x, y = m( shape[:,0], shape[:,1] )
+            poly = Polygon(
+                numpy.array([ x, y ]).T, closed = True,
+                edgecolor = 'k', linewidth = 2.0, linestyle = 'dashed',
+                facecolor = fc, alpha = 1.0 )
+            ax.add_patch( poly )
+            x_cent = x.mean( )
+            y_cent = y.mean( )
+            ax.text( x_cent, y_cent, fips, fontsize = 10, fontweight = 'bold', color = 'red' )
+    #
+    ## now info on this MSA
+    ax.text( 0.01, 0.98, 'COUNTIES IN %s.' % data_msa[ 'region name' ], fontsize = 20, fontweight = 'bold',
+            transform = ax.transAxes, horizontalalignment = 'left', verticalalignment = 'top' )
+    canvas = FigureCanvasAgg( fig )
+    canvas.print_figure( 'msa_%s_counties.png' % msaname, bbox_inches = 'tight' )
+    autocrop_image.autocrop_image( 'msa_%s_counties.png' % msaname )
+    
 
 def plot_cases_bycounty( inc_data, regionName, ax, days_from_beginning = 0, maxnum_colorbar = 5000.0, doTitle = True ):
     assert( days_from_beginning >= 0 )
@@ -60,7 +92,6 @@ def plot_cases_bycounty( inc_data, regionName, ax, days_from_beginning = 0, maxn
     m = create_and_draw_basemap( ax, inc_data[ 'bbox' ], resolution = 'h' )
     boundaries = inc_data['boundaries']
     df_dfm = inc_data['df'][ inc_data['df']['days_from_beginning'] == days_from_beginning ].copy( )
-    patches = [ ]
     sm = ScalarMappable( norm = LogNorm( 1.0, maxnum_colorbar ), cmap = 'jet' )
     for fips in sorted( boundaries ):
         num_cases = df_dfm['cases_%s' % fips].max( )
@@ -275,6 +306,7 @@ def create_plots_daysfrombeginning( inc_data, regionName, prefix, days_from_begi
     ax_leg.set_aspect( 1.0 )
     ax_leg.axis('off')
     ax_leg.text(-0.1, 1.0, '\n'.join([
+        regionName,
         'First COVID-19 CASE: %s' % first_date.strftime( '%d-%m-%Y' ),
         'Latest COVID-19 CASE: %s' % last_date.strftime( '%d-%m-%Y' ),
         'Most County Cases: %d' % cases_max,
@@ -290,9 +322,8 @@ def create_plots_daysfrombeginning( inc_data, regionName, prefix, days_from_begi
     return fname
 
 def create_summary_movie_frombeginning(
-    data = defaults.bay_area_data,
+    data = get_msa_data( 'bayarea' ),
     maxnum_colorbar = 5000.0 ):
-    from engine import get_incident_data
     #
     ## barf out if cannot find ffmpeg
     ffmpeg_exec = find_executable( 'ffmpeg' )
@@ -354,3 +385,87 @@ def create_summary_movie_frombeginning(
     list(map(lambda fname: os.remove( fname ), allfiles ) )
     shutil.rmtree( dirname )
     return movie_name
+
+def get_summary_demo_data( data, maxnum_colorbar = 5000.0 ):
+    prefix = data[ 'prefix' ]
+    regionName = data[ 'region name' ]
+    counties_and_states = data[ 'counties' ]
+    inc_data = get_incident_data( data )
+    df_cases_deaths_region = inc_data[ 'df' ]
+    #
+    first_date = min( df_cases_deaths_region.date )
+    last_date = max( df_cases_deaths_region.date )
+    #
+    ## pickle this pandas data
+    last_date_str = datetime.datetime.now( ).date( ).strftime('%d%m%Y' )
+    df_cases_deaths_region.to_pickle(
+        'covid19_%s_%s.pkl.gz' % ( prefix, last_date_str ) )
+    #
+    ## now make a plot, logarithmic
+    fig = Figure( )
+    ax = fig.add_subplot(111)
+    fig.set_size_inches([ 12.0, 9.6 ])
+    df_cases_deaths_region.plot(
+        'days_from_beginning', 'cases', linewidth = 4.5,
+        ax = ax, logy = True, grid = True )
+    df_cases_deaths_region.plot(
+        'days_from_beginning', 'death', linewidth = 4.5,
+        ax = ax, logy = True, grid = True )
+    ax.set_ylim( 1.0, 1.05 * df_cases_deaths_region.cases.max( ) )
+    ax.set_xlim( 0, df_cases_deaths_region.days_from_beginning.max( ) )
+    ax.set_xlabel(
+        'Days from First COVID-19 CASE (%s)' %
+        first_date.strftime( '%d-%m-%Y' ),
+        fontsize = 24, fontweight = 'bold' )
+    ax.set_ylabel( 'Cumulative Number of Cases/Deaths', fontsize = 24, fontweight = 'bold' )
+    ax.set_title( '\n'.join(
+        [
+         '%s Trend in COVID-19' % titlecase.titlecase( regionName ),
+         'from %s through %s' % (
+        first_date.strftime( '%d-%m-%Y' ),
+        last_date.strftime( '%d-%m-%Y' ) ) ]),
+                 fontsize = 24, fontweight = 'bold' )
+    #
+    ## tick labels size 20, bold
+    for tick in ax.xaxis.get_major_ticks( ) + ax.yaxis.get_major_ticks( ):
+        tick.label.set_fontsize( 20 )
+        tick.label.set_fontweight( 'bold' )
+    #
+    ## legend size 24, bold
+    leg = ax.legend( )
+    for txt in leg.texts:
+        txt.set_fontsize( 24 )
+        txt.set_fontweight( 'bold' )
+    #
+    ## save figures
+    canvas = FigureCanvasAgg( fig )
+    file_prefix = 'covid19_cds_%s_%s' % ( prefix, last_date_str )
+    canvas.print_figure( '%s.pdf' % file_prefix, bbox_inches = 'tight' )
+    canvas.print_figure( '%s.png' % file_prefix, bbox_inches = 'tight' )
+    autocrop_image.autocrop_image( '%s.png' % file_prefix )
+    #
+    ## now create figures CASES
+    fig1 = Figure( )
+    ax1 = fig1.add_subplot(111)
+    fig1.set_size_inches([ 12.0, 12.0 ])
+    plot_cases_bycounty(
+        inc_data, regionName, ax1, days_from_beginning = inc_data[ 'last day' ],
+        maxnum_colorbar = maxnum_colorbar, doTitle = True )
+    canvas = FigureCanvasAgg( fig1 )
+    file_prefix = 'covid19_cases_%s_%s' % ( prefix, last_date_str )
+    canvas.print_figure( '%s.pdf' % file_prefix, bbox_inches = 'tight' )
+    canvas.print_figure( '%s.png' % file_prefix, bbox_inches = 'tight' )
+    autocrop_image.autocrop_image( '%s.png' % file_prefix )
+    #
+    ## now create figures DEATHS
+    fig2 = Figure( )
+    ax1 = fig2.add_subplot(111)
+    fig2.set_size_inches([ 12.0, 12.0 ])
+    plot_deaths_bycounty(
+        inc_data, regionName, ax1, days_from_beginning = inc_data[ 'last day' ],
+        maxnum_colorbar = maxnum_colorbar, doTitle = True )
+    canvas = FigureCanvasAgg( fig2 )
+    file_prefix = 'covid19_death_%s_%s' % ( prefix, last_date_str )
+    canvas.print_figure( '%s.pdf' % file_prefix, bbox_inches = 'tight' )
+    canvas.print_figure( '%s.png' % file_prefix, bbox_inches = 'tight' )
+    autocrop_image.autocrop_image( '%s.png' % file_prefix )

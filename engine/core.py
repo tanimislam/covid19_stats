@@ -1,11 +1,10 @@
 import os, sys, numpy, glob, pylab, tabulate
-import datetime, pandas, titlecase
-import defaults, engine_geo
+import datetime, pandas, titlecase, networkx
+import pathos.multiprocessing as multiprocessing
 from itertools import chain
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_agg import FigureCanvasAgg
-
-_mainDir = os.path.dirname( os.path.abspath( __file__ ) )
+from engine import gis, mainDir
 
 def _get_stat_line( line ):
   line_split = list(map(lambda tok: tok.strip(), line.split(',')))
@@ -32,13 +31,15 @@ all_counties_nytimes_covid19_data = list(filter(None,
     map(_get_stat_line,
         list( map(lambda line: line.strip(), filter(
             lambda line: len( line.strip( ) ) != 0,
-            open( os.path.join( _mainDir, "covid-19-data", "us-counties.csv" ), "r" ).readlines())))[1:])))
+            open( os.path.join( mainDir, "covid-19-data", "us-counties.csv" ), "r" ).readlines())))[1:])))
 
 all_counties_state = list(map(
     lambda entry: { 'county' : entry[0], 'state' : entry[1] },
     set(map(lambda entry: ( entry['county'], entry['state'] ), all_counties_nytimes_covid19_data ) ) ) )
 
-fips_data_2018 = engine_geo.load_fips_data( )
+fips_data_2018 = gis.load_fips_data( )
+
+fips_adj_2018 = gis.load_fips_adj( )
 
 fips_countystate_dict = dict(map(lambda f_c_s: ( f_c_s[0], {
     'county' : f_c_s[1], 'state' : f_c_s[2] } ), set(
@@ -48,12 +49,37 @@ cs_fips_dict = dict(map(lambda f_c_s: ( ( f_c_s[1], f_c_s[2] ), f_c_s[0] ), set(
     map(_get_fips_county_state, all_counties_nytimes_covid19_data ))))
 
 #
+## from a collection of FIPS, find the clusterings -- which set are adjacent to each other, which aren't
+def get_clustering_fips( collection_of_fips ):
+    fips_rem = set( collection_of_fips )
+    #
+    ## our adjacency matrix from this
+    subset = set(filter(lambda tup: all(map(lambda tok: tok in fips_rem, tup)), fips_adj_2018 )) | \
+      set(map(lambda fips: ( fips, fips ), fips_rem ))
+    G = networkx.Graph( sorted( subset ) )
+    #
+    ## now greedy clustering algo
+    fips_clusters = [ ]
+    while len( fips_rem ) > 0:
+        first_fips = min( fips_rem )
+        fips_excl = fips_rem - set([ first_fips, ])
+        fips_clust = [ first_fips ]
+        for fips in fips_excl:
+            try:
+                dist = networkx.shortest_path_length( G, first_fips, fips )
+                fips_clust.append( fips )
+            except: pass
+        fips_clusters.append( set( fips_clust ) )
+        fips_rem = fips_rem - set( fips_clust )
+    return fips_clusters
+            
+#
 ## now stuff associated with the fips : county/state mapping
 def get_county_state( fips ):
     if fips not in fips_countystate_dict: return None
     return fips_countystate_dict[ fips ]
 #
-data_msas_2019 = engine_geo.load_msas_data( )
+data_msas_2019 = gis.load_msas_data( )
 fips_msas_2019 = dict(chain.from_iterable(
     map(lambda entry: map(lambda fips: ( fips, entry['prefix'] ), entry['fips']), 
         data_msas_2019.values( ) ) ) )
@@ -66,16 +92,21 @@ def get_fips_msa( county, state ):
     data_msa = data_msas_2019[ msaname ]
     return ( fips, data_msa )
 
+def get_msa_data( msaname ):
+    assert( msaname in data_msas_2019 )
+    return data_msas_2019[ msaname ].copy( )
+
 def get_data_county( county_name, state = 'California' ):
   data_by_date = sorted(filter(lambda entry: county_name in entry['county'] and
                                entry['state'] == state, all_counties_nytimes_covid19_data ),
                         key = lambda entry: entry['date'] )
   return data_by_date
 
-def get_incident_data( data = defaults.bay_area_data ):
+def get_incident_data( data = data_msas_2019['bayarea'] ):
     prefix = data[ 'prefix' ]
     regionName = data[ 'region name' ]
-    counties_and_states = data[ 'counties' ]
+    fips_collection = set( data['fips'] )
+    counties_and_states = list(map(lambda fips: fips_countystate_dict[ fips ], fips_collection ) )
     #
     ## now this creates a dictionary of incidents and deaths per county (in Bay Area) per date
     all_data_region = sorted( chain.from_iterable(
@@ -110,9 +141,6 @@ def get_incident_data( data = defaults.bay_area_data ):
         map(lambda mydate: ( mydate - min( cases_deaths_region_bydate ) ).days, 
             df_cases_deaths_region.date ) )
     #
-    ## now get fips data for counties in this collection
-    fips_collection = set(map(lambda entry: entry['fips'], all_data_region))
-    #
     ## now get the cumulative cases and cumulative deaths by FIPS code
     cases_deaths_region_byfips_bydate = { }
     for mydate in all_data_region_bydate:
@@ -137,7 +165,7 @@ def get_incident_data( data = defaults.bay_area_data ):
     #
     ## now calculate the bounding box of this collection of fips data
     total_bbox = calculate_total_bbox( fips_collection )
-    boundary_dict = dict(map(lambda fips: ( fips, fips_data_2018[ fips ][ 'points' ] ), fips_collection ) )
+    boundary_dict = get_boundary_dict( fips_collection )
     incident_data = {
         'df' : df_cases_deaths_region, 'bbox' : total_bbox, 'boundaries' : boundary_dict,
         'last day' : df_cases_deaths_region.days_from_beginning.max( ) }
@@ -152,6 +180,10 @@ def calculate_total_bbox( fips_collection ):
     max_lat = bbox_tot_array[:,3].max( )
     return (min_lng, min_lat, max_lng, max_lat)
 
+def get_boundary_dict( fips_collection ):
+    boundary_dict = dict(map(lambda fips: ( fips, fips_data_2018[ fips ][ 'points' ] ), fips_collection ) )
+    return boundary_dict
+
 def get_maximum_cases( inc_data ):
     df = inc_data[ 'df' ]
     max_case_tup = max(map(lambda key: (
@@ -160,78 +192,49 @@ def get_maximum_cases( inc_data ):
                        key = lambda tup: tup[1] )
     return max_case_tup
 
-def display_tabulated_metros( ):
+def display_tabulated_metros( form = 'simple' ):
+    assert( form in ( 'simple', 'github', 'rst' ) )
     all_metros = sorted(
         data_msas_2019.values( ),
         key = lambda entry: entry['population'])[::-1]
+
+    #
+    ## now get incident data for each metro
+    incident_data_dict = { }
+    with multiprocessing.Pool( processes = multiprocessing.cpu_count( ) ) as pool:
+        incident_data_dict = dict(pool.map(
+            lambda prefix: ( prefix, get_incident_data( data_msas_2019[ prefix ] ) ),
+            data_msas_2019 ) )
+    date_last = max(map(lambda inc_data: inc_data['df'].date.max( ), incident_data_dict.values()))
+    
     #
     ## secret sauce formatting comma'd integers from https://intellipaat.com/community/2447/how-to-print-number-with-commas-as-thousands-separators
     def _get_string_commas_num( num ):
         return "%s" % f"{num:,d}"
+
+    def _get_row( tup ):
+        idx, data_msa = tup
+        rank = idx + 1
+        prefix = data_msa[ 'prefix' ]
+        regionName = data_msa[ 'region name' ]
+        population_s = _get_string_commas_num( data_msa[ 'population' ] )
+        #
+        inc_data = incident_data_dict[ prefix ]
+        df = inc_data[ 'df' ]
+        date_first_s = df.date.min( ).strftime( '%d %B %Y' )
+        last_day     = inc_data[ 'last day' ]
+        num_cases    = df.cases.max( )
+        num_death    = df.death.max( )
+        return (
+            rank, prefix, regionName, population_s,
+            date_first_s, last_day,
+            num_cases, num_death )
     
-    data_tabulated = list(map(lambda tup: (
-        tup[0] + 1, tup[1][ 'prefix' ],
-        tup[ 1 ][ 'region name' ],
-        _get_string_commas_num( tup[ 1 ][ 'population' ] ) ),
-                              enumerate(all_metros)))
-    print( 'HERE ARE THE %d METRO AREAS, ORDERED BY POPULATION\n' % len( all_metros ) )
+    data_tabulated = list(map(
+        _get_row, enumerate(all_metros)))
+    print( 'HERE ARE THE %d METRO AREAS, ORDERED BY POPULATION' % len( all_metros ) )
+    print( 'DATA AS OF %s.' % date_last.strftime( '%d %B %Y' ) )
     print( '%s\n' % tabulate.tabulate(
-        data_tabulated, headers = [ 'RANK', 'IDENTIFIER', 'NAME', 'POPULATION' ] ) )
-
-def get_summary_demo_data( data = defaults.bay_area_data, doShow = True ):
-    prefix = data[ 'prefix' ]
-    regionName = data[ 'region name' ]
-    counties_and_states = data[ 'counties' ]
-    inc_data = get_incident_data( data )
-    df_cases_deaths_region = inc_data[ 'df' ]
-    #
-    first_date = min( df_cases_deaths_region.date )
-    last_date = max( df_cases_deaths_region.date )
-    #
-    ## pickle this pandas data
-    cur_date_str = datetime.datetime.now( ).date( ).strftime('%d%m%Y' )
-    df_cases_deaths_region.to_pickle(
-        'covid19_%s_%s.pkl.gz' % ( prefix, cur_date_str ) )
-    #
-    ## now make a plot, logarithmic
-    fig, ax = pylab.subplots( )
-    fig.set_size_inches([ 12.0, 9.6 ])
-    df_cases_deaths_region.plot(
-        'days_from_beginning', 'cases', linewidth = 4.5,
-        ax = ax, logy = True, grid = True )
-    df_cases_deaths_region.plot(
-        'days_from_beginning', 'death', linewidth = 4.5,
-        ax = ax, logy = True, grid = True )
-    ax.set_ylim( 1.0, 1.05 * df_cases_deaths_region.cases.max( ) )
-    ax.set_xlim( 0, df_cases_deaths_region.days_from_beginning.max( ) )
-    ax.set_xlabel(
-        'Days from First COVID-19 CASE (%s)' %
-        first_date.strftime( '%d-%m-%Y' ),
-        fontsize = 24, fontweight = 'bold' )
-    ax.set_ylabel( 'Cumulative Number of Cases/Deaths', fontsize = 24, fontweight = 'bold' )
-    ax.set_title( '\n'.join(
-        [
-         '%s Trend in COVID-19' % titlecase.titlecase( regionName ),
-         'from %s through %s' % (
-        first_date.strftime( '%d-%m-%Y' ),
-        last_date.strftime( '%d-%m-%Y' ) ) ]),
-                 fontsize = 24, fontweight = 'bold' )
-    #
-    ## tick labels size 20, bold
-    for tick in ax.xaxis.get_major_ticks( ) + ax.yaxis.get_major_ticks( ):
-        tick.label.set_fontsize( 20 )
-        tick.label.set_fontweight( 'bold' )
-    #
-    ## legend size 24, bold
-    leg = ax.legend( )
-    for txt in leg.texts:
-        txt.set_fontsize( 24 )
-        txt.set_fontweight( 'bold' )
-    #
-    ## save figures
-    fig.savefig(  'covid19_%s_%s.pdf' % ( prefix, cur_date_str ), bbox_inches = 'tight' )
-    fig.savefig(  'covid19_%s_%s.png' % ( prefix, cur_date_str ), bbox_inches = 'tight' )
-    #
-    ## now SHOW!
-    if doShow: pylab.show( )
-
+        data_tabulated, headers = [
+            'RANK', 'IDENTIFIER', 'NAME', 'POPULATION', 'FIRST INC.',
+            'NUM DAYS', 'NUM CASES', 'NUM DEATHS' ] ) )
