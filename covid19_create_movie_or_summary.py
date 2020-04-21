@@ -28,9 +28,9 @@ def _summarize_data( data_msa, maxnum ):
         'FIRST CASE:  %s.' % first_date.strftime( '%d %B %Y' ),
         'LATEST CASE: %s (%d days after first case)' % (
             last_date.strftime( '%d %B %Y' ), last_day ),
-        'MAXIMUM NUMBER OF CASES: %d (in %s County, %s)' % (
+        'MAXIMUM NUMBER OF CASES: %d (in %s, %s)' % (
             max_cases, max_cs[ 'county' ], max_cs[ 'state' ] ),
-        'MAXIMUM NUMBER OF CASES FOR VISUALIZATION: %d.' % maxnum,
+        'MAXIMUM NUMBER OF CASES FOR VISUALIZATION: %s.' % _get_string_commas_num( maxnum ),
         ] ) )
 
 def _try_continue( ):
@@ -54,19 +54,25 @@ def main( ):
     parser_moviemetro.add_argument( '-M', '--maxnum', dest='maxnum', type=int, action='store', default = 5000,
                                    help = ' '.join([
                                        'The limit of cases/deaths to visualize.',
-                                       'Default is 5000.',
+                                       'Default is %s.' % _get_string_commas_num( 5000 ),
                                        'You should use a limit larger (by at least 2, no more than 10) than the maximum number of cases recorded for a county in that MSA.' ]) )
+    parser_moviemetro.add_argument(
+        '-y', '--yes', dest='do_yes_moviemetro', action='store_true', default = False,
+        help = 'If chosen, then do not confirm --maxnum.' )
     #
     parser_summmetro  = subparsers.add_parser( 's', help = 'Make a summary plot, and incident data file, of COVID-19 cases and deaths trend, for the specific Metropolitan Statistical Area (MSA).' )
-    parser_summmetro.add_argument( '-n', '--name', dest='summmetro_name', type=str, action='store', default = 'bayarea',
+    parser_summmetro.add_argument( '-n', '--name', dest='summmetro_name', type=str, action='store', default = 'bayarea', metavar = 'NAME',
                                   help = ' '.join([
                                       'Create a summary plot and incident data file of this metropolitan area.',
                                       'Default is "bayarea".' ]))
-    parser_summmetro.add_argument( '-M', '--maxnum', dest='summmetro_maxnum', type=int, action='store', default = 5000,
+    parser_summmetro.add_argument( '-M', '--maxnum', dest='summmetro_maxnum', type=int, action='store', default = 5000, metavar = 'MAXNUM',
                                   help = ' '.join([
                                       'The limit of cases/deaths to visualize.',
-                                      'Default is 5000.',
+                                      'Default is %s.' % _get_string_commas_num( 5000 ),
                                       'You should use a limit larger (by at least 2, no more than 10) than the maximum number of cases recorded for a county in that MSA.' ]) )
+    parser_summmetro.add_argument(
+        '-y', '--yes', dest='do_yes_summmetro', action='store_true', default = False,
+        help = 'If chosen, then do not confirm --maxnum.' )
     args = parser.parse_args( )
     #
     ## just show the metros
@@ -87,10 +93,14 @@ def main( ):
             return
         data_msa = core.data_msas_2019[ msaname ]
         _summarize_data( data_msa, maxnum )
+        if args.do_yes_moviemetro:
+            movie_name = viz.create_summary_movie_frombeginning(
+                data = data_msa, maxnum_colorbar = maxnum )
+            return
         status = _try_continue( )
         if status:        
             movie_name = viz.create_summary_movie_frombeginning(
-            data = data_msa, maxnum_colorbar = maxnum )
+                data = data_msa, maxnum_colorbar = maxnum )
             return
     if args.choose_option == 's':
         #
@@ -106,6 +116,9 @@ def main( ):
             return
         
         data_msa = core.data_msas_2019[ msaname ]
+        if args.do_yes_summmetro:
+            viz.get_summary_demo_data( data_msa, maxnum_colorbar = maxnum )
+            return
         _summarize_data( data_msa, maxnum )
         status = _try_continue( )
         if status:
