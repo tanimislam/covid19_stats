@@ -28,8 +28,9 @@ def _summarize_data( data_msa, maxnum ):
         'FIRST CASE:  %s.' % first_date.strftime( '%d %B %Y' ),
         'LATEST CASE: %s (%d days after first case)' % (
             last_date.strftime( '%d %B %Y' ), last_day ),
-        'MAXIMUM NUMBER OF CASES: %d (in %s, %s)' % (
-            max_cases, max_cs[ 'county' ], max_cs[ 'state' ] ),
+        'MAXIMUM NUMBER OF CASES: %s (in %s, %s)' % (
+            _get_string_commas_num(max_cases),
+            max_cs[ 'county' ], max_cs[ 'state' ] ),
         'MAXIMUM NUMBER OF CASES FOR VISUALIZATION: %s.' % _get_string_commas_num( maxnum ),
         ] ) )
 

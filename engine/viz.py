@@ -317,7 +317,7 @@ def create_plots_daysfrombeginning( inc_data, regionName, prefix, days_from_begi
         'First COVID-19 CASE: %s' % first_date.strftime( '%d-%m-%Y' ),
         'Latest COVID-19 CASE: %s' % last_date.strftime( '%d-%m-%Y' ),
         'Most County Cases: %d' % cases_max,
-        '%s County, %s' % ( cs['county'], cs['state'] ),
+        '%s, %s' % ( cs['county'], cs['state'] ),
         'Showing Day %d / %d' % ( days_from_beginning, inc_data[ 'last day' ] ) ]),
                 fontsize = 24, fontweight = 'bold', transform = ax_leg.transAxes,
                 horizontalalignment = 'left', verticalalignment = 'top' )
