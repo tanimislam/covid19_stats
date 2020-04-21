@@ -53,23 +53,28 @@ def create_and_draw_basemap( ax, bbox, resolution = 'i' ):
     m.fillcontinents( lake_color = cblue, color = 'white' )
     return m
 
-def display_msa( msaname ):
-    fig = Figure( )
+def display_msa( msaname, doShow = False ):
+    import pylab
+    if doShow:
+        fig, ax = pylab.subplots( )
+    else:
+        fig = Figure( )
+        ax = fig.add_subplot(111)
     fig.set_size_inches([18,18])
-    ax = fig.add_subplot(111)
     #
     data_msa = get_msa_data( msaname )
     bbox = calculate_total_bbox( data_msa['fips'] )
     bdict = get_boundary_dict( data_msa[ 'fips' ] )
     m = create_and_draw_basemap( ax, bbox, resolution = 'h' )
-    fc = ( 1.0, 1.0, 1.0, 0.0 )
+    fc = list( to_rgba( '#1f77b4' ) )
+    fc[-1] = 0.25
     for fips in sorted( bdict ):
         for shape in bdict[ fips ]:
             x, y = m( shape[:,0], shape[:,1] )
             poly = Polygon(
                 numpy.array([ x, y ]).T, closed = True,
                 edgecolor = 'k', linewidth = 2.0, linestyle = 'dashed',
-                facecolor = fc, alpha = 1.0 )
+                facecolor = tuple(fc), alpha = 1.0 )
             ax.add_patch( poly )
             x_cent = x.mean( )
             y_cent = y.mean( )
@@ -78,9 +83,11 @@ def display_msa( msaname ):
     ## now info on this MSA
     ax.text( 0.01, 0.98, 'COUNTIES IN %s.' % data_msa[ 'region name' ], fontsize = 20, fontweight = 'bold',
             transform = ax.transAxes, horizontalalignment = 'left', verticalalignment = 'top' )
-    canvas = FigureCanvasAgg( fig )
-    canvas.print_figure( 'msa_%s_counties.png' % msaname, bbox_inches = 'tight' )
-    autocrop_image.autocrop_image( 'msa_%s_counties.png' % msaname )
+    if not doShow:
+        canvas = FigureCanvasAgg( fig )
+        canvas.print_figure( 'msa_%s_counties.png' % msaname, bbox_inches = 'tight' )
+        autocrop_image.autocrop_image( 'msa_%s_counties.png' % msaname )
+    else: pylab.show( )
     
 
 def plot_cases_bycounty( inc_data, regionName, ax, days_from_beginning = 0, maxnum_colorbar = 5000.0, doTitle = True ):

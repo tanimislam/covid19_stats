@@ -5,6 +5,68 @@ from collections import Counter
 from itertools import chain
 from engine import mainDir
 
+_us_state_abbrev = {
+    'Alabama': 'AL',
+    'Alaska': 'AK',
+    'American Samoa': 'AS',
+    'Arizona': 'AZ',
+    'Arkansas': 'AR',
+    'California': 'CA',
+    'Colorado': 'CO',
+    'Connecticut': 'CT',
+    'Delaware': 'DE',
+    'District of Columbia': 'DC',
+    'Florida': 'FL',
+    'Georgia': 'GA',
+    'Guam': 'GU',
+    'Hawaii': 'HI',
+    'Idaho': 'ID',
+    'Illinois': 'IL',
+    'Indiana': 'IN',
+    'Iowa': 'IA',
+    'Kansas': 'KS',
+    'Kentucky': 'KY',
+    'Louisiana': 'LA',
+    'Maine': 'ME',
+    'Maryland': 'MD',
+    'Massachusetts': 'MA',
+    'Michigan': 'MI',
+    'Minnesota': 'MN',
+    'Mississippi': 'MS',
+    'Missouri': 'MO',
+    'Montana': 'MT',
+    'Nebraska': 'NE',
+    'Nevada': 'NV',
+    'New Hampshire': 'NH',
+    'New Jersey': 'NJ',
+    'New Mexico': 'NM',
+    'New York': 'NY',
+    'North Carolina': 'NC',
+    'North Dakota': 'ND',
+    'Northern Mariana Islands':'MP',
+    'Ohio': 'OH',
+    'Oklahoma': 'OK',
+    'Oregon': 'OR',
+    'Pennsylvania': 'PA',
+    'Puerto Rico': 'PR',
+    'Rhode Island': 'RI',
+    'South Carolina': 'SC',
+    'South Dakota': 'SD',
+    'Tennessee': 'TN',
+    'Texas': 'TX',
+    'Utah': 'UT',
+    'Vermont': 'VT',
+    'Virgin Islands': 'VI',
+    'Virginia': 'VA',
+    'Washington': 'WA',
+    'West Virginia': 'WV',
+    'Wisconsin': 'WI',
+    'Wyoming': 'WY'
+}
+
+# thank you to @kinghelix and @trevormarburger for this idea
+_abbrev_us_state = dict(map(reversed, _us_state_abbrev.items()))
+
 def _get_record_shapefile_astup( rec, shape ):
     fips_code = rec[4]
     num_shapes = int( rec[0] )
@@ -71,10 +133,48 @@ def load_fips_data( ):
     return pickle.load( gzip.open( os.path.join(
         mainDir, 'resources', 'fips_2018_data.pkl.gz' ) ) )
 
+def create_and_store_fips_counties_2019( ):
+    df = pandas.read_table( os.path.join(
+        mainDir, 'resources', 'msa_2019.csv' ), encoding='latin-1', sep=',')
+    df.pop('MDIV')
+    df_fips = df.dropna( subset=['STCOU'] ).reset_index( )
+    fips = list(map(lambda val: '%05d' % val, df_fips.STCOU ) )
+    states = list(map(lambda val: _abbrev_us_state[ val.split(',')[-1].strip( ) ], df_fips.NAME))
+    counties = list(map(lambda val: val.split(',')[0].strip( ), df_fips.NAME))
+    fips_countystate_dict = dict(map(lambda f_c_s: ( f_c_s[0], { 'county' : f_c_s[1], 'state' : f_c_s[2] } ),
+                                     zip(fips,counties,states)))
+    cs_fips_dict = dict(map(lambda f_c_s: ( ( f_c_s[1], f_c_s[2] ), f_c_s[0] ),
+                            zip(fips,counties,states)))
+    pickle.dump( fips_countystate_dict, gzip.open( os.path.join(
+        mainDir, 'resources', 'msa_2019_fips_cs_dict.pkl.gz' ), 'wb' ) )
+    pickle.dump( cs_fips_dict, gzip.open( os.path.join(
+        mainDir, 'resources', 'msa_2019_cs_fips_dict.pkl.gz' ), 'wb' ) )
+
+def load_fips_counties_data( ):
+    assert(all(map(lambda fname: os.path.isfile(
+        os.path.join( mainDir, 'resources', fname ) ),
+                   (  'msa_2019_fips_cs_dict.pkl.gz',  'msa_2019_cs_fips_dict.pkl.gz' ) ) ) )
+    fips_countystate_dict = pickle.load( gzip.open( os.path.join(
+        mainDir, 'resources', 'msa_2019_fips_cs_dict.pkl.gz' ), 'rb' ) )
+    cs_fips_dict = pickle.load( gzip.open( os.path.join(
+        mainDir, 'resources', 'msa_2019_cs_fips_dict.pkl.gz' ), 'rb' ) )
+    #
+    return fips_countystate_dict, cs_fips_dict
+    
 def create_msa_2019( ):
     df = pandas.read_table( os.path.join(
         mainDir, 'resources', 'msa_2019.csv' ), encoding='latin-1', sep=',')
     df.pop('MDIV')
+    #
+    ## now fips with county and state
+    df_fips = df.dropna( subset=['STCOU'] ).reset_index( )
+    fips = list(map(lambda val: '%05d' % val, df_fips.STCOU ) )
+    states = list(map(lambda val: _abbrev_us_state[ val.split(',')[-1].strip( ) ], df_fips.NAME))
+    counties = list(map(lambda val: val.split(',')[0].strip( ), df_fips.NAME))
+    fips_countystate_dict = dict(map(lambda f_c_s: ( f_c_s[0], { 'county' : f_c_s[1], 'state' : f_c_s[2] } ),
+                                     zip(fips,counties,states)))
+    cs_fips_dict = dict(map(lambda f_c_s: ( ( f_c_s[1], f_c_s[2] ), f_c_s[0] ),
+                            zip(fips,counties,states)))
     #
     ## now get the CBSA's which are actual MSIDs
     def _is_actual_msa( cbsa ):
@@ -159,9 +259,10 @@ def merge_msas( regionName, prefix, msaids, all_data_msas ):
     all_data_msas_post.append( data_msa_merge )
     return sorted( all_data_msas_post, key = lambda entry: entry[ 'pop est 2019' ] )
 
-def create_and_store_msas_2019( ):
+def create_and_store_msas_and_fips_2019( ):
     from engine.core import get_county_state
     all_data_msas = create_msa_2019( )
+    print( 'NYC fips: %s (%d).' % ( sorted( all_data_msas[-1]['fips'] ), len( all_data_msas[-1]['fips'] ) ) )
     #
     ## SF, San Jose, Napa MSAs -> Bay Area
     all_data_msas_post = merge_msas( 'Bay Area', 'bayarea', { 41860, 41940, 34900 }, all_data_msas )
@@ -170,7 +271,7 @@ def create_and_store_msas_2019( ):
     all_data_msas_post = merge_msas( 'NYC Metro Area', 'nyc', { 35620 }, all_data_msas_post )
     #
     ## Washington to DC
-    all_data_msas_post = merge_msas( 'DC Metro Area', 'dc', { 47900 }, all_data_msas_post )    
+    all_data_msas_post = merge_msas( 'DC Metro Area', 'dc', { 47900 }, all_data_msas_post )
     #
     ## Los Angeles, Riverside, Oxnard -> Los Angeles
     ## from wikipedia entry: https://en.wikipedia.org/wiki/Greater_Los_Angeles
@@ -187,7 +288,7 @@ def create_and_store_msas_2019( ):
     for entry in all_data_msas_post:
         prefix = entry[ 'prefix' ]
         regionName = entry[ 'region name' ]
-        fips = list(filter(lambda fips: get_county_state( fips ) is not None, entry['fips'] ) )
+        fips = entry[ 'fips' ].copy( )
         #
         ## now put in the entire population
         population = entry[ 'pop est 2019' ]
@@ -195,6 +296,7 @@ def create_and_store_msas_2019( ):
             'prefix' : prefix, 'region name' : regionName,
             'fips' : fips,
             'population' : population }
+    print( 'NYC fips: %s (%d).' % ( sorted( msas_dict['nyc']['fips'] ), len( msas_dict['nyc']['fips'] ) ) )
     pickle.dump( msas_dict, gzip.open( os.path.join(
         mainDir, 'resources', 'msa_2019_dict.pkl.gz' ), 'wb' ) )
     

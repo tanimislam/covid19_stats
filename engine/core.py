@@ -18,8 +18,6 @@ def _get_stat_line( line ):
   return {
       'date' : datetime.datetime.strptime(
         dstring, '%Y-%m-%d' ).date( ),
-      'county' : county_name,
-      'state' : state_name,
       'fips' : fips,
       'cumulative cases' : cases_cumulative,
       'cumulative death' : death_cumulative }
@@ -33,20 +31,17 @@ all_counties_nytimes_covid19_data = list(filter(None,
             lambda line: len( line.strip( ) ) != 0,
             open( os.path.join( mainDir, "covid-19-data", "us-counties.csv" ), "r" ).readlines())))[1:])))
 
-all_counties_state = list(map(
-    lambda entry: { 'county' : entry[0], 'state' : entry[1] },
-    set(map(lambda entry: ( entry['county'], entry['state'] ), all_counties_nytimes_covid19_data ) ) ) )
-
+#
+## FIPS data for county shapes 2018
 fips_data_2018 = gis.load_fips_data( )
 
+#
+## FIPS data for county adjacency 2018
 fips_adj_2018 = gis.load_fips_adj( )
 
-fips_countystate_dict = dict(map(lambda f_c_s: ( f_c_s[0], {
-    'county' : f_c_s[1], 'state' : f_c_s[2] } ), set(
-        map(_get_fips_county_state, all_counties_nytimes_covid19_data ) ) ) )
-
-cs_fips_dict = dict(map(lambda f_c_s: ( ( f_c_s[1], f_c_s[2] ), f_c_s[0] ), set(
-    map(_get_fips_county_state, all_counties_nytimes_covid19_data ))))
+#
+## CENSUS dictionary of FIPS to COUNTY/STATE
+fips_countystate_dict, cs_fips_dict = gis.load_fips_counties_data( )
 
 #
 ## from a collection of FIPS, find the clusterings -- which set are adjacent to each other, which aren't
@@ -96,9 +91,9 @@ def get_msa_data( msaname ):
     assert( msaname in data_msas_2019 )
     return data_msas_2019[ msaname ].copy( )
 
-def get_data_county( county_name, state = 'California' ):
-  data_by_date = sorted(filter(lambda entry: county_name in entry['county'] and
-                               entry['state'] == state, all_counties_nytimes_covid19_data ),
+def get_data_fips( fips ):
+  data_by_date = sorted(filter(lambda entry: entry['fips'] == fips,
+                               all_counties_nytimes_covid19_data ),
                         key = lambda entry: entry['date'] )
   return data_by_date
 
@@ -106,11 +101,11 @@ def get_incident_data( data = data_msas_2019['bayarea'] ):
     prefix = data[ 'prefix' ]
     regionName = data[ 'region name' ]
     fips_collection = set( data['fips'] )
-    counties_and_states = list(map(lambda fips: fips_countystate_dict[ fips ], fips_collection ) )
     #
-    ## now this creates a dictionary of incidents and deaths per county (in Bay Area) per date
-    all_data_region = sorted( chain.from_iterable(
-        map(lambda cs: get_data_county( cs['county'], state = cs['state'] ), counties_and_states ) ),
+    ## now this creates a dictionary of incidents and deaths per county
+    all_data_region = sorted(
+        chain.from_iterable(map(
+            get_data_fips, fips_collection ) ),
         key = lambda entry: entry['date'] )
     #
     ## now create a dictionary of cases, with key being the date, value being list of entries of counties for that date
