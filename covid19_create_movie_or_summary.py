@@ -86,7 +86,7 @@ def main( ):
         msaname = args.name.strip( )
         if msaname not in core.data_msas_2019:
             print( 'Error, the chosen MSA name %s not one of the %d defined.' % (
-                msaname, len( data.engine_msas_2019 ) ) )
+                msaname, len( core.data_msas_2019 ) ) )
             return
         maxnum = args.maxnum
         if maxnum < 1:
@@ -109,7 +109,7 @@ def main( ):
         msaname = args.summmetro_name.strip( )
         if msaname not in core.data_msas_2019:
             print( 'Error, the chosen MSA name %s not one of the %d defined.' % (
-                msaname, len( data.engine_msas_2019 ) ) )
+              msaname, len( core.data_msas_2019 ) ) )
             return
         maxnum = args.summmetro_maxnum
         if maxnum < 1:
