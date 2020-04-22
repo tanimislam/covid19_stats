@@ -1,6 +1,7 @@
 import os, sys, numpy, titlecase, time
 import subprocess, tempfile, shutil, datetime
 import pathos.multiprocessing as multiprocessing
+from itertools import chain
 from multiprocessing import Value, Manager
 from matplotlib.patches import Polygon
 from matplotlib.collections import PatchCollection
@@ -12,8 +13,7 @@ from mpl_toolkits.basemap import Basemap
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from distutils.spawn import find_executable
 #
-from engine import mainDir, gis, autocrop_image
-from engine.core import get_incident_data, get_county_state, get_msa_data, calculate_total_bbox, get_boundary_dict
+from engine import mainDir, gis, core, autocrop_image
 
 def my_colorbar( mappable, ax, **kwargs ):
     """
@@ -53,6 +53,45 @@ def create_and_draw_basemap( ax, bbox, resolution = 'i' ):
     m.fillcontinents( lake_color = cblue, color = 'white' )
     return m
 
+def display_fips_geom( fips_data ):
+    import pylab
+    assert( 'bbox' in fips_data and 'points' in fips_data )
+    fig, ax = pylab.subplots( )
+    bbox = fips_data[ 'bbox' ]
+    m = create_and_draw_basemap( ax, bbox, resolution = 'h' )
+    fc = list( to_rgba( '#1f77b4' ) )
+    fc[-1] = 0.25
+    for shape in fips_data[ 'points' ]:
+        x, y = m( shape[:,0], shape[:,1] )
+        poly = Polygon(
+            numpy.array([ x, y ]).T, closed = True,
+            edgecolor = 'k', linewidth = 2.0, linestyle = 'dashed',
+            facecolor = tuple(fc), alpha = 1.0 )
+        ax.add_patch( poly )
+    pylab.show( )
+
+def display_fips( collection_of_fips ):
+    import pylab
+    fig, ax = pylab.subplots( )
+    bdict = core.get_boundary_dict( collection_of_fips )
+    bbox = core.calculate_total_bbox( chain.from_iterable( bdict.values( ) ) )
+    bdict = core.get_boundary_dict( collection_of_fips )
+    m = create_and_draw_basemap( ax, bbox, resolution = 'h' )
+    fc = list( to_rgba( '#1f77b4' ) )
+    fc[-1] = 0.25
+    for fips in sorted( bdict ):
+        for shape in bdict[ fips ]:
+            x, y = m( shape[:,0], shape[:,1] )
+            poly = Polygon(
+                numpy.array([ x, y ]).T, closed = True,
+                edgecolor = 'k', linewidth = 2.0, linestyle = 'dashed',
+                facecolor = tuple(fc), alpha = 1.0 )
+            ax.add_patch( poly )
+            x_cent = x.mean( )
+            y_cent = y.mean( )
+            ax.text( x_cent, y_cent, fips, fontsize = 10, fontweight = 'bold', color = 'red' )
+    pylab.show( )
+
 def display_msa( msaname, doShow = False ):
     import pylab
     if doShow:
@@ -62,9 +101,9 @@ def display_msa( msaname, doShow = False ):
         ax = fig.add_subplot(111)
     fig.set_size_inches([18,18])
     #
-    data_msa = get_msa_data( msaname )
-    bbox = calculate_total_bbox( data_msa['fips'] )
-    bdict = get_boundary_dict( data_msa[ 'fips' ] )
+    data_msa = core.get_msa_data( msaname )
+    bdict = core.get_boundary_dict( data_msa[ 'fips' ] )
+    bbox = core.calculate_total_bbox( chain.from_iterable( bdict.values( ) ) )
     m = create_and_draw_basemap( ax, bbox, resolution = 'h' )
     fc = list( to_rgba( '#1f77b4' ) )
     fc[-1] = 0.25
@@ -89,7 +128,6 @@ def display_msa( msaname, doShow = False ):
         autocrop_image.autocrop_image( 'msa_%s_counties.png' % msaname )
     else: pylab.show( )
     
-
 def plot_cases_bycounty( inc_data, regionName, ax, days_from_beginning = 0, maxnum_colorbar = 5000.0, doTitle = True ):
     assert( days_from_beginning >= 0 )
     assert( days_from_beginning <= inc_data[ 'last day' ] )
@@ -308,7 +346,7 @@ def create_plots_daysfrombeginning( inc_data, regionName, prefix, days_from_begi
        filter(lambda key: key.startswith('cases_'), df_cases_deaths_region)),
       key = lambda fips_case: fips_case[1] )
     fips_max, cases_max = max_fips_cases
-    cs = get_county_state( fips_max )
+    cs = core.get_county_state( fips_max )
     ax_leg = fig.add_subplot(221)
     ax_leg.set_aspect( 1.0 )
     ax_leg.axis('off')
@@ -329,7 +367,7 @@ def create_plots_daysfrombeginning( inc_data, regionName, prefix, days_from_begi
     return fname
 
 def create_summary_movie_frombeginning(
-    data = get_msa_data( 'bayarea' ),
+    data = core.get_msa_data( 'bayarea' ),
     maxnum_colorbar = 5000.0 ):
     #
     ## barf out if cannot find ffmpeg
@@ -342,8 +380,8 @@ def create_summary_movie_frombeginning(
     #
     prefix = data[ 'prefix' ]
     regionName = data[ 'region name' ]
-    counties_and_states = list( map( get_county_state, data[ 'fips' ] ) )
-    inc_data = get_incident_data( data )
+    counties_and_states = list( map( core.get_county_state, data[ 'fips' ] ) )
+    inc_data = core.get_incident_data( data )
     #
     all_days_from_begin = list(range(inc_data['last day'] + 1 ) )
     m = Manager( )
@@ -396,8 +434,8 @@ def create_summary_movie_frombeginning(
 def get_summary_demo_data( data, maxnum_colorbar = 5000.0 ):
     prefix = data[ 'prefix' ]
     regionName = data[ 'region name' ]
-    counties_and_states = list( map( get_county_state, data[ 'fips' ] ) )
-    inc_data = get_incident_data( data )
+    counties_and_states = list( map( core.get_county_state, data[ 'fips' ] ) )
+    inc_data = core.get_incident_data( data )
     df_cases_deaths_region = inc_data[ 'df' ]
     #
     first_date = min( df_cases_deaths_region.date )

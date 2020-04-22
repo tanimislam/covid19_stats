@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import os, sys, numpy, tabulate, tempfile, warnings
-from engine import viz, core
+from engine import core, viz
 from argparse import ArgumentParser
 
 #
