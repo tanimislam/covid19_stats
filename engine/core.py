@@ -7,33 +7,91 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg
 from engine import gis, mainDir
 
 def _get_stat_line( line ):
-  line_split = list(map(lambda tok: tok.strip(), line.split(',')))
-  dstring = line_split[0]
-  county_name = line_split[1]
-  state_name = line_split[2]
-  fips = line_split[-3].strip( )
-  if fips == '': return None
-  cases_cumulative = int( line_split[-2] )
-  death_cumulative = int( line_split[-1] )
-  return {
-      'date' : datetime.datetime.strptime(
+    line_split = list(map(lambda tok: tok.strip(), line.split(',')))
+    dstring = line_split[0]
+    county_name = line_split[1].strip( )
+    state_name = line_split[2].strip( )
+    fips = line_split[-3].strip( )
+    #
+    ## NYC IS SPECIAL!!!
+    if county_name == 'New York City': fips = '00001'
+    if fips == '': return None
+    cases_cumulative = int( line_split[-2] )
+    death_cumulative = int( line_split[-1] )
+    return {
+        'date' : datetime.datetime.strptime(
         dstring, '%Y-%m-%d' ).date( ),
-      'fips' : fips,
-      'cumulative cases' : cases_cumulative,
-      'cumulative death' : death_cumulative }
-
-def _get_fips_county_state( entry ):
-    return ( entry[ 'fips' ], entry[ 'county' ], entry[ 'state' ] )
+        'county' : county_name,
+        'state' : state_name,
+        'fips' : fips,
+        'cumulative cases' : cases_cumulative,
+        'cumulative death' : death_cumulative }
 
 all_counties_nytimes_covid19_data = list(filter(None,
     map(_get_stat_line,
         list( map(lambda line: line.strip(), filter(
             lambda line: len( line.strip( ) ) != 0,
-            open( os.path.join( mainDir, "covid-19-data", "us-counties.csv" ), "r" ).readlines())))[1:])))
+    open( os.path.join( mainDir, "covid-19-data", "us-counties.csv" ), "r" ).readlines())))[1:])))
+
 
 #
 ## FIPS data for county shapes 2018
 fips_data_2018 = gis.load_fips_data( )
+
+def get_boundary_dict( fips_collection ):
+    boundary_dict = dict(map(lambda fips: (
+        fips, fips_data_2018[ fips ][ 'points' ] ), fips_collection ) )
+    return boundary_dict
+
+
+def calculate_total_bbox( shapes ):
+    def _get_bbox( shp ):
+        lng_min = shp[:,0].min( )
+        lng_max = shp[:,0].max( )
+        lat_min = shp[:,1].min( )
+        lat_max = shp[:,1].max( )
+        return lng_min, lat_min, lng_max, lat_max
+    bbox_shapes = numpy.array(list(map(_get_bbox, shapes)))
+    lng_min = bbox_shapes[:,0].min( )
+    lat_min = bbox_shapes[:,1].min( )
+    lng_max = bbox_shapes[:,2].max( )
+    lat_max = bbox_shapes[:,3].max( )
+    return lng_min, lat_min, lng_max, lat_max
+
+#
+## create a custom FIPS dataset for NYC alone, FIPS #00001
+def create_nyc_custom_fips( bdict ):
+    from shapely.geometry import Polygon, MultiPolygon
+    from shapely.ops import unary_union
+    def _create_poly( shape ):
+        lngs = shape[:,0]
+        lats = shape[:,1]
+        p = Polygon( list(zip( lngs, lats ) ) )
+        return p
+    
+    #
+    ## these are the FIPS for the FIVE NYC BOROUGHS
+    #fips_five_boroughs = fips_missing_2019 & data_nyc['fips']
+    #
+    ## first get a boundary dict: fips -> points
+    #bdict = get_boundary_dict( fips_five_boroughs )
+    #
+    ## second, construct a list of all the Polygons corresponding to these boroughs
+    all_polys = list(map(_create_poly, chain.from_iterable( bdict.values( ) ) ) )
+    #
+    ## third, make a collection of MultiPolygon from the unary_union of these Polygons
+    newpolys = unary_union( MultiPolygon( all_polys ) )
+    #
+    ## fourth, get the new shapes, ordered by area from smallest to largest
+    newshapes = list(map(lambda poly: numpy.array( poly.exterior.coords.xy ).T, # take a Polygon, convert it into shape format we understand
+        sorted( newpolys.geoms, key = lambda poly: poly.area )[::-1] # sort by maximum to minimum area
+        ) )
+    #
+    ## fifth (and finally), return this new FIPS data structure: { 'bbox' : bbox, 'points' : list-of-shapes }
+    ## FIPS # is 00001
+    bbox = calculate_total_bbox( newshapes ) # bbox
+    geom_nyc = { 'bbox' : bbox, 'points' : newshapes }
+    return geom_nyc
 
 #
 ## FIPS data for county adjacency 2018
@@ -42,42 +100,47 @@ fips_adj_2018 = gis.load_fips_adj( )
 #
 ## CENSUS dictionary of FIPS to COUNTY/STATE
 fips_countystate_dict, cs_fips_dict = gis.load_fips_counties_data( )
-
-#
-## from a collection of FIPS, find the clusterings -- which set are adjacent to each other, which aren't
-def get_clustering_fips( collection_of_fips ):
-    fips_rem = set( collection_of_fips )
-    #
-    ## our adjacency matrix from this
-    subset = set(filter(lambda tup: all(map(lambda tok: tok in fips_rem, tup)), fips_adj_2018 )) | \
-      set(map(lambda fips: ( fips, fips ), fips_rem ))
-    G = networkx.Graph( sorted( subset ) )
-    #
-    ## now greedy clustering algo
-    fips_clusters = [ ]
-    while len( fips_rem ) > 0:
-        first_fips = min( fips_rem )
-        fips_excl = fips_rem - set([ first_fips, ])
-        fips_clust = [ first_fips ]
-        for fips in fips_excl:
-            try:
-                dist = networkx.shortest_path_length( G, first_fips, fips )
-                fips_clust.append( fips )
-            except: pass
-        fips_clusters.append( set( fips_clust ) )
-        fips_rem = fips_rem - set( fips_clust )
-    return fips_clusters
-            
-#
-## now stuff associated with the fips : county/state mapping
-def get_county_state( fips ):
-    if fips not in fips_countystate_dict: return None
-    return fips_countystate_dict[ fips ]
 #
 data_msas_2019 = gis.load_msas_data( )
 fips_msas_2019 = dict(chain.from_iterable(
     map(lambda entry: map(lambda fips: ( fips, entry['prefix'] ), entry['fips']), 
         data_msas_2019.values( ) ) ) )
+#
+## these are the FIPS missing, highlighting NYC
+## include FIPS = 00001 EXCEPT for fips_adj_2018
+## SHOULD WE ALSO DELETE THE FIVE BOROUGHS FIPS??
+_fips_missing_2019 = set( fips_msas_2019 ) - set(
+    map(lambda entry: entry['fips'], all_counties_nytimes_covid19_data ) )
+_fips_five_boroughs = _fips_missing_2019 & data_msas_2019['nyc']['fips']
+#
+fips_data_2018[ '00001' ] = create_nyc_custom_fips(
+    get_boundary_dict( _fips_five_boroughs ) )
+## DELETE
+for fips in _fips_five_boroughs: fips_data_2018.pop( fips )
+#
+fips_countystate_dict[ '00001' ] = { 'county' : 'New York City', 'state' : 'New York' }
+#
+cs_fips_dict[ ( 'New York City', 'New York' ) ] = '00001'
+## DELETE FIRST THEN SECOND
+for cs_found in map(lambda fips: fips_countystate_dict[ fips ], _fips_five_boroughs ):
+    tup = ( cs_found[ 'county' ], cs_found[ 'state' ] )
+    cs_fips_dict.pop( tup )
+for fips in _fips_five_boroughs: fips_countystate_dict.pop( fips )
+#
+## AND DELETE??
+oldfips = data_msas_2019[ 'nyc' ][ 'fips' ].copy( )
+data_msas_2019[ 'nyc' ][ 'fips' ] = set(list( oldfips ) + [ '00001' ] ) - _fips_five_boroughs
+#
+fips_msas_2019[ '00001' ] = 'nyc'
+## DELETE
+for fips in _fips_five_boroughs: fips_msas_2019.pop( fips )
+
+
+#
+## now stuff associated with the fips : county/state mapping
+def get_county_state( fips ):
+    if fips not in fips_countystate_dict: return None
+    return fips_countystate_dict[ fips ]
 
 def get_fips_msa( county, state ):
     tup = ( county, state )
@@ -159,25 +222,13 @@ def get_incident_data( data = data_msas_2019['bayarea'] ):
                 sorted( cases_deaths_region_bydate ) ) )
     #
     ## now calculate the bounding box of this collection of fips data
-    total_bbox = calculate_total_bbox( fips_collection )
     boundary_dict = get_boundary_dict( fips_collection )
+    total_bbox = calculate_total_bbox( chain.from_iterable(
+        boundary_dict.values( ) ) )
     incident_data = {
         'df' : df_cases_deaths_region, 'bbox' : total_bbox, 'boundaries' : boundary_dict,
         'last day' : df_cases_deaths_region.days_from_beginning.max( ) }
     return incident_data
-
-def calculate_total_bbox( fips_collection ):
-    bbox_tot_array = numpy.array(
-        list(map(lambda fips: fips_data_2018[ fips ][ 'bbox' ], fips_collection ) ) )
-    min_lng = bbox_tot_array[:,0].min( )
-    min_lat = bbox_tot_array[:,1].min( )
-    max_lng = bbox_tot_array[:,2].max( )
-    max_lat = bbox_tot_array[:,3].max( )
-    return (min_lng, min_lat, max_lng, max_lat)
-
-def get_boundary_dict( fips_collection ):
-    boundary_dict = dict(map(lambda fips: ( fips, fips_data_2018[ fips ][ 'points' ] ), fips_collection ) )
-    return boundary_dict
 
 def get_maximum_cases( inc_data ):
     df = inc_data[ 'df' ]
@@ -233,3 +284,28 @@ def display_tabulated_metros( form = 'simple' ):
         data_tabulated, headers = [
             'RANK', 'IDENTIFIER', 'NAME', 'POPULATION', 'FIRST INC.',
             'NUM DAYS', 'NUM CASES', 'NUM DEATHS' ] ) )
+
+#
+## from a collection of FIPS, find the clusterings -- which set are adjacent to each other, which aren't
+def get_clustering_fips( collection_of_fips, adj = fips_adj_2018 ):
+    fips_rem = set( collection_of_fips )
+    #
+    ## our adjacency matrix from this
+    subset = set(filter(lambda tup: all(map(lambda tok: tok in fips_rem, tup)), adj )) | \
+      set(map(lambda fips: ( fips, fips ), fips_rem ))
+    G = networkx.Graph( sorted( subset ) )
+    #
+    ## now greedy clustering algo
+    fips_clusters = [ ]
+    while len( fips_rem ) > 0:
+        first_fips = min( fips_rem )
+        fips_excl = fips_rem - set([ first_fips, ])
+        fips_clust = [ first_fips ]
+        for fips in fips_excl:
+            try:
+                dist = networkx.shortest_path_length( G, first_fips, fips )
+                fips_clust.append( fips )
+            except: pass
+        fips_clusters.append( set( fips_clust ) )
+        fips_rem = fips_rem - set( fips_clust )
+    return fips_clusters

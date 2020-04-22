@@ -113,13 +113,15 @@ def get_fips_adjacency( fips, fips_data ):
             actual_adj.append( fipsc )
     return set( actual_adj )
 
-def construct_adjacency( fips_data ):
+def construct_adjacency( fips_data, filename = os.path.join(
+            mainDir, 'resources', 'fips_2018_adj.pkl.gz' ) ):
     with multiprocessing.Pool( processes = multiprocessing.cpu_count( ) ) as pool:
         all_adj = dict(map(lambda fips: ( fips, get_fips_adjacency( fips, fips_data ) ), fips_data ) )
         set_of_adjacents = set(chain.from_iterable(
             map(lambda fips: map(lambda fips2: tuple(sorted([ fips, fips2 ])), all_adj[fips]), all_adj)))
-        pickle.dump( set_of_adjacents, gzip.open( os.path.join(
-            mainDir, 'resources', 'fips_2018_adj.pkl.gz' ), 'wb' ) )
+        if filename is not None:
+            pickle.dump( set_of_adjacents, gzip.open( filename, 'wb' ) )
+        else: return set_of_adjacents
 
 def load_fips_adj( ):
     assert( os.path.exists( os.path.join( 
