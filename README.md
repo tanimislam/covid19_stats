@@ -49,3 +49,10 @@ Here is some output from using this COVID-19 tracker.
 | SF Bay Area                                                     | Washington, DC                                                     | Richmond, VA                                                       |
 | <img width=100% src="figures/covid19_nyc_cds_20042020.png">     | <img width=100% src="figures/covid19_losangeles_cds_20042020.png"> | <img width=100% src="figures/covid19_neworleans_cds_20042020.png"> |
 | NYC Metro                                                       | Los Angeles                                                        | New Orleans                                                        |
+
+* Video animations of the COVID-19 trends in cases/deaths for NYC up to 20 APRIL 2020, Chicago up to 19 APRIL 2020, and Seattle up to 19 APRIL 2020
+
+| | |
+|:---------------------------------------------------------------:|:------------------------------------------------------------------:|
+| <img width=100% src="figures/covid19_nyc_20042020.gif" | <img width=100% src="figures/covid19_chicago_19042020.gif" | <img width=100% src="figures/covid19_seattle_19042020.gif" | 
+| NYC Metro | Chicago | Seattle |
