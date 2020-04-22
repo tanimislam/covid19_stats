@@ -4,3 +4,4 @@ pyshp
 titlecase
 pathos
 basemap
+shapely

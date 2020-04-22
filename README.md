@@ -10,9 +10,11 @@ I have made major changes in the functionality and implementation from the origi
 
 * The API code has been refactored into the ``engine`` subdirectory, and is divided into three main submodules: ``engine.core`` provides the higher level API calls for processing the COVID-19 data; ``engine.gis`` provides the lower-level APIs to write out, read in, and process the raw GIS data provided mainly by the US Census Bureau; and ``engine.viz`` does the visualization part.
 
-* There is a single command line tool, ``covid19_create_movie_or_summary.py``, that can do the following: summarizes US metropolitan statistical areas (MSA) and gives their latest COVID-19 statistics; makes movie animations of the COVID-19 cases and deaths, from first case to latest incident date, for a given MSA; and prints out summary plots, and incident data, of COVID-19 cases and deaths for the latest incident day.
+* There is a single command line interface (CLI), ``covid19_create_movie_or_summary.py``, that can do the following: summarizes US metropolitan statistical areas (MSA) and gives their latest COVID-19 statistics; makes movie animations of the COVID-19 cases and deaths, from first case to latest incident date, for a given MSA; and prints out summary plots, and incident data, of COVID-19 cases and deaths for the latest incident day.
 
 * The ``testing`` subdirectory contains [Jupyter Notebooks](https://jupyter.org) that illuminate bits and pieces of this COVID-19 tracker's functionality.
+
+* Some video output of the CLI is located in the ``movies`` subdirectory.
 
 Here is some output from using this COVID-19 tracker.
 
@@ -50,9 +52,63 @@ Here is some output from using this COVID-19 tracker.
 | <img width=100% src="figures/covid19_nyc_cds_20042020.png">     | <img width=100% src="figures/covid19_losangeles_cds_20042020.png"> | <img width=100% src="figures/covid19_neworleans_cds_20042020.png"> |
 | NYC Metro                                                       | Los Angeles                                                        | New Orleans                                                        |
 
+<!--- COMMENT OUT FOR NOW BECAUSE NOT WORKING
 * GIF'd video animations of the COVID-19 trends in cases/deaths for NYC up to 20 APRIL 2020, Chicago up to 19 APRIL 2020, and Seattle up to 19 APRIL 2020.
 
 | | |
 |:---------------------------------------------------------------:|:------------------------------------------------------------------:|:------------------------------------------------------------------:|
 | <img width=100% src="figures/covid19_nyc_20042020.gif">         | <img width=100% src="figures/covid19_chicago_19042020.gif">        | <img width=100% src="figures/covid19_seattle_19042020.gif">        | 
 | NYC Metro                                                       | Chicago                                                            | Seattle                                                            |
+ --->
+ 
+The remainder of this README has two sections: *GETTING STARTED* and *USING THE CLI*.
+ 
+## GETTING STARTED
+
+First clone this repo using the command
+```bash
+git clone https://github.com/tanimislam/covid19_stats.git
+```
+You will get the main directory structure, but you will notice that the ``covid-19-data`` submodule is empty. To populate it, run
+```bash
+git submodule update --init --recursive
+```
+The requirements are in the ``requirements.txt``. You should be able to install these Python packages into your *user* Python library (typically at ``~/.local/lib/python3.X/site-packages``) by running,
+```bash
+pip install -r requirements.txt
+```
+However, [Basemap](https://matplotlib.org/basemap/) can be a bugbear to install. Here is what worked for me when installing on the Linux machine.
+
+1. First, although [Basemap](https://matplotlib.org/basemap/) will install, your Python shell (and hence your CLI) won't be able to find it. This is almost certainly a bug in Basemap. Running ``from mpl_toolkits.basemap import Basemap`` won't work. First, look for where ``basemap`` is installed. In my case, it was located at ``~/.local/lib/python3.7/site-packages/basemap-1.2.1-py3.7-linux-x86_64.egg/``. The directory structure right below it looks like this,
+```bash
+EGG-INFO  _geoslib.cpython-37m-x86_64-linux-gnu.so  _geoslib.py  mpl_toolkits  __pycache__
+```
+
+2. ``cd`` into ``mpl_toolkits``. You should see a ``basemap`` subdirectory when you look in it.
+```bash
+basemap  __init__.py  __pycache__
+```
+
+3. You should also have an ``mpl_toolkits`` library module installed locally. In my case it was ``~/.local/lib/python3.7/site-packages/mpl_toolkits/``. Inside it looks like,
+```bash
+axes_grid  axes_grid1  axisartist  mplot3d  tests
+```
+
+4. In the real ``mpl_toolkits`` directory, make a symbolic link to the ``basemap`` directory underneath, e.g., ``~/.local/lib/python3.7/site-packages/basemap-1.2.1-py3.7-linux-x86_64.egg/``. Thus in the correct ``mpl_toolkits`` subdirectory, run, e.g.,
+```bash
+ln -sf ~/.local/lib/python3.7/site-packages/basemap-1.2.1-py3.7-linux-x86_64.egg/mpl_toolkits/basemap basemap
+```
+If you have ve done everything correctly, its data structure will look like what is shown below, with a valid symbolic link to ``basemap``.
+```bash
+axes_grid
+axes_grid1
+axisartist
+basemap -> ~/.local/lib/python3.7/site-packages/basemap-1.2.1-py3.7-linux-x86_64.egg/
+mplot3d
+tests
+```
+
+If you're lucky, running ``from mpl_toolkits.basemap import Basemap`` will work without further issues.
+
+## USING THE CLI
+
