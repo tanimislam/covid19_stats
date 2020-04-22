@@ -54,5 +54,5 @@ Here is some output from using this COVID-19 tracker.
 
 | | |
 |:---------------------------------------------------------------:|:------------------------------------------------------------------:|:------------------------------------------------------------------:|
-| <img width=100% src="figures/covid19_nyc_20042020.gif"> | <img width=100% src="figures/covid19_chicago_19042020.gif"> | <img width=100% src="figures/covid19_seattle_19042020.gif"> | 
-| NYC Metro | Chicago | Seattle |
+| <img width=100% src="figures/covid19_nyc_20042020.gif">         | <img width=100% src="figures/covid19_chicago_19042020.gif">        | <img width=100% src="figures/covid19_seattle_19042020.gif">        | 
+| NYC Metro                                                       | Chicago                                                            | Seattle                                                            |
