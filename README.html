@@ -1,272 +1,294 @@
 <h1 id="readme">README</h1>
 <p>Hello world! This is my COVID-19 tracker. There is a git submodule, the <a href="https://github.com/nytimes/covid-19-data">NY Times COVID-19 repository</a>, that needs to be updated frequently to get the latest data. The easiest way to update is to run this command in the checked out repo,</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">git</span> -C covid-19-data pull origin master</span></code></pre></div>
-<p>This is not nearly as sophisticated as what’s in <a href="https://ncov2019.live">ncov2019.live</a>, and described in <a href="https://www.newyorker.com/magazine/2020/03/30/the-high-schooler-who-became-a-covid-19-watchdog">this New Yorker article</a>.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">git</span> -C covid-19-data pull origin master</code></pre></div>
+<p>This is not nearly as sophisticated as what's in <a href="https://ncov2019.live">ncov2019.live</a>, and described in <a href="https://www.newyorker.com/magazine/2020/03/30/the-high-schooler-who-became-a-covid-19-watchdog">this New Yorker article</a>.</p>
 <p>I have made major changes in the functionality and implementation from the original commits, since commit <a href="https://github.com/tanimislam/covid19_stats/commit/78917dd20c43bd65320cf51958fa481febef4338">#78917</a> for instance.</p>
 <ul>
 <li><p>The API code has been refactored into the <code>engine</code> subdirectory, and is divided into three main submodules: <code>engine.core</code> provides the higher level API calls for processing the COVID-19 data; <code>engine.gis</code> provides the lower-level APIs to write out, read in, and process the raw GIS data provided mainly by the US Census Bureau; and <code>engine.viz</code> does the visualization part.</p></li>
-<li><p>There is a single command line tool, <code>covid19_create_movie_or_summary.py</code>, that can do the following: summarizes US metropolitan statistical areas (MSA) and gives their latest COVID-19 statistics; makes movie animations of the COVID-19 cases and deaths, from first case to latest incident date, for a given MSA; and prints out summary plots, and incident data, of COVID-19 cases and deaths for the latest incident day.</p></li>
-<li><p>The <code>testing</code> subdirectory contains <a href="https://jupyter.org">Jupyter Notebooks</a> that illuminate bits and pieces of this COVID-19 tracker’s functionality.</p></li>
+<li><p>There is a single command line interface (CLI), <code>covid19_create_movie_or_summary.py</code>, that can do the following: summarizes US metropolitan statistical areas (MSA) and gives their latest COVID-19 statistics; makes movie animations of the COVID-19 cases and deaths, from first case to latest incident date, for a given MSA; and prints out summary plots, and incident data, of COVID-19 cases and deaths for the latest incident day.</p></li>
+<li><p>The <code>testing</code> subdirectory contains <a href="https://jupyter.org">Jupyter Notebooks</a> that illuminate bits and pieces of this COVID-19 tracker's functionality.</p></li>
+<li><p>Some video output of the CLI is located in the <code>movies</code> subdirectory.</p></li>
 </ul>
 <p>Here is some output from using this COVID-19 tracker.</p>
 <ul>
-<li><p>The summary of COVID-19 statistics for the top 20 MSAs by estimated 2019 population.</p>
+<li>The summary of COVID-19 statistics for the top 20 MSAs by estimated 2019 population.</li>
+</ul>
 <table>
 <thead>
 <tr class="header">
-<th>RANK ID</th>
-<th>ENTIFIER NA</th>
-<th>ME PO</th>
-<th>PULATION FI</th>
-<th style="text-align: left;">RST INC.</th>
-<th style="text-align: left;">NUM DAYS</th>
-<th style="text-align: left;">NUM CASES</th>
-<th style="text-align: left;">NUM DEATHS</th>
+<th align="right">RANK</th>
+<th align="left">IDENTIFIER</th>
+<th align="left">NAME</th>
+<th align="left">POPULATION</th>
+<th align="left">FIRST INC.</th>
+<th align="right">NUM DAYS</th>
+<th align="right">NUM CASES</th>
+<th align="right">NUM DEATHS</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>1 ny</td>
-<td>c NY</td>
-<td>C Metro Area 19</td>
-<td>,216,182 01</td>
-<td style="text-align: left;">March 2020</td>
-<td style="text-align: left;">50</td>
-<td style="text-align: left;">308986</td>
-<td style="text-align: left;">17731</td>
+<td align="right">1</td>
+<td align="left">nyc</td>
+<td align="left">NYC Metro Area</td>
+<td align="left">19,216,182</td>
+<td align="left">01 March 2020</td>
+<td align="right">50</td>
+<td align="right">308986</td>
+<td align="right">17731</td>
 </tr>
 <tr class="even">
-<td>2 lo</td>
-<td>sangeles LA</td>
-<td>Metro Area 18</td>
-<td>,711,436 25</td>
-<td style="text-align: left;">January 2020</td>
-<td style="text-align: left;">86</td>
-<td style="text-align: left;">20173</td>
-<td style="text-align: left;">808</td>
+<td align="right">2</td>
+<td align="left">losangeles</td>
+<td align="left">LA Metro Area</td>
+<td align="left">18,711,436</td>
+<td align="left">25 January 2020</td>
+<td align="right">86</td>
+<td align="right">20173</td>
+<td align="right">808</td>
 </tr>
 <tr class="odd">
-<td>3 ch</td>
-<td>icago Ch</td>
-<td>icago Metro Area 9,</td>
-<td>458,539 24</td>
-<td style="text-align: left;">January 2020</td>
-<td style="text-align: left;">87</td>
-<td style="text-align: left;">30653</td>
-<td style="text-align: left;">1301</td>
+<td align="right">3</td>
+<td align="left">chicago</td>
+<td align="left">Chicago Metro Area</td>
+<td align="left">9,458,539</td>
+<td align="left">24 January 2020</td>
+<td align="right">87</td>
+<td align="right">30653</td>
+<td align="right">1301</td>
 </tr>
 <tr class="even">
-<td>4 da</td>
-<td>llas Da</td>
-<td>llas Metro Area 7,</td>
-<td>573,136 09</td>
-<td style="text-align: left;">March 2020</td>
-<td style="text-align: left;">42</td>
-<td style="text-align: left;">5200</td>
-<td style="text-align: left;">138</td>
+<td align="right">4</td>
+<td align="left">dallas</td>
+<td align="left">Dallas Metro Area</td>
+<td align="left">7,573,136</td>
+<td align="left">09 March 2020</td>
+<td align="right">42</td>
+<td align="right">5200</td>
+<td align="right">138</td>
 </tr>
 <tr class="odd">
-<td>5 ho</td>
-<td>uston Ho</td>
-<td>uston Metro Area 7,</td>
-<td>066,141 04</td>
-<td style="text-align: left;">March 2020</td>
-<td style="text-align: left;">47</td>
-<td style="text-align: left;">7073</td>
-<td style="text-align: left;">125</td>
+<td align="right">5</td>
+<td align="left">houston</td>
+<td align="left">Houston Metro Area</td>
+<td align="left">7,066,141</td>
+<td align="left">04 March 2020</td>
+<td align="right">47</td>
+<td align="right">7073</td>
+<td align="right">125</td>
 </tr>
 <tr class="even">
-<td>6 ba</td>
-<td>yarea Ba</td>
-<td>y Area 6,</td>
-<td>860,207 31</td>
-<td style="text-align: left;">January 2020</td>
-<td style="text-align: left;">80</td>
-<td style="text-align: left;">6272</td>
-<td style="text-align: left;">210</td>
+<td align="right">6</td>
+<td align="left">bayarea</td>
+<td align="left">Bay Area</td>
+<td align="left">6,860,207</td>
+<td align="left">31 January 2020</td>
+<td align="right">80</td>
+<td align="right">6272</td>
+<td align="right">210</td>
 </tr>
 <tr class="odd">
-<td>7 dc</td>
-<td>DC</td>
-<td>Metro Area 6,</td>
-<td>280,487 05</td>
-<td style="text-align: left;">March 2020</td>
-<td style="text-align: left;">46</td>
-<td style="text-align: left;">15075</td>
-<td style="text-align: left;">438</td>
+<td align="right">7</td>
+<td align="left">dc</td>
+<td align="left">DC Metro Area</td>
+<td align="left">6,280,487</td>
+<td align="left">05 March 2020</td>
+<td align="right">46</td>
+<td align="right">15075</td>
+<td align="right">438</td>
 </tr>
 <tr class="even">
-<td>8 mi</td>
-<td>ami Mi</td>
-<td>ami Metro Area 6,</td>
-<td>166,488 06</td>
-<td style="text-align: left;">March 2020</td>
-<td style="text-align: left;">45</td>
-<td style="text-align: left;">15992</td>
-<td style="text-align: left;">467</td>
+<td align="right">8</td>
+<td align="left">miami</td>
+<td align="left">Miami Metro Area</td>
+<td align="left">6,166,488</td>
+<td align="left">06 March 2020</td>
+<td align="right">45</td>
+<td align="right">15992</td>
+<td align="right">467</td>
 </tr>
 <tr class="odd">
-<td>9 ph</td>
-<td>iladelphia Ph</td>
-<td>iladelphia Metro Area 6,</td>
-<td>102,434 06</td>
-<td style="text-align: left;">March 2020</td>
-<td style="text-align: left;">45</td>
-<td style="text-align: left;">24201</td>
-<td style="text-align: left;">1004</td>
+<td align="right">9</td>
+<td align="left">philadelphia</td>
+<td align="left">Philadelphia Metro Area</td>
+<td align="left">6,102,434</td>
+<td align="left">06 March 2020</td>
+<td align="right">45</td>
+<td align="right">24201</td>
+<td align="right">1004</td>
 </tr>
 <tr class="even">
-<td>10 at</td>
-<td>lanta At</td>
-<td>lanta Metro Area 6,</td>
-<td>020,364 02</td>
-<td style="text-align: left;">March 2020</td>
-<td style="text-align: left;">49</td>
-<td style="text-align: left;">9688</td>
-<td style="text-align: left;">342</td>
+<td align="right">10</td>
+<td align="left">atlanta</td>
+<td align="left">Atlanta Metro Area</td>
+<td align="left">6,020,364</td>
+<td align="left">02 March 2020</td>
+<td align="right">49</td>
+<td align="right">9688</td>
+<td align="right">342</td>
 </tr>
 <tr class="odd">
-<td>11 ph</td>
-<td>oenix Ph</td>
-<td>oenix Metro Area 4,</td>
-<td>948,203 26</td>
-<td style="text-align: left;">January 2020</td>
-<td style="text-align: left;">85</td>
-<td style="text-align: left;">2892</td>
-<td style="text-align: left;">82</td>
+<td align="right">11</td>
+<td align="left">phoenix</td>
+<td align="left">Phoenix Metro Area</td>
+<td align="left">4,948,203</td>
+<td align="left">26 January 2020</td>
+<td align="right">85</td>
+<td align="right">2892</td>
+<td align="right">82</td>
 </tr>
 <tr class="even">
-<td>12 bo</td>
-<td>ston Bo</td>
-<td>ston Metro Area 4,</td>
-<td>873,019 01</td>
-<td style="text-align: left;">February 2020</td>
-<td style="text-align: left;">79</td>
-<td style="text-align: left;">30399</td>
-<td style="text-align: left;">1298</td>
+<td align="right">12</td>
+<td align="left">boston</td>
+<td align="left">Boston Metro Area</td>
+<td align="left">4,873,019</td>
+<td align="left">01 February 2020</td>
+<td align="right">79</td>
+<td align="right">30399</td>
+<td align="right">1298</td>
 </tr>
 <tr class="odd">
-<td>13 de</td>
-<td>troit De</td>
-<td>troit Metro Area 4,</td>
-<td>319,629 10</td>
-<td style="text-align: left;">March 2020</td>
-<td style="text-align: left;">41</td>
-<td style="text-align: left;">25200</td>
-<td style="text-align: left;">2072</td>
+<td align="right">13</td>
+<td align="left">detroit</td>
+<td align="left">Detroit Metro Area</td>
+<td align="left">4,319,629</td>
+<td align="left">10 March 2020</td>
+<td align="right">41</td>
+<td align="right">25200</td>
+<td align="right">2072</td>
 </tr>
 <tr class="even">
-<td>14 se</td>
-<td>attle Se</td>
-<td>attle Metro Area 3,</td>
-<td>979,845 21</td>
-<td style="text-align: left;">January 2020</td>
-<td style="text-align: left;">90</td>
-<td style="text-align: left;">8651</td>
-<td style="text-align: left;">492</td>
+<td align="right">14</td>
+<td align="left">seattle</td>
+<td align="left">Seattle Metro Area</td>
+<td align="left">3,979,845</td>
+<td align="left">21 January 2020</td>
+<td align="right">90</td>
+<td align="right">8651</td>
+<td align="right">492</td>
 </tr>
 <tr class="odd">
-<td>15 mi</td>
-<td>nneapolis Mi</td>
-<td>nneapolis Metro Area 3,</td>
-<td>640,043 06</td>
-<td style="text-align: left;">March 2020</td>
-<td style="text-align: left;">45</td>
-<td style="text-align: left;">1626</td>
-<td style="text-align: left;">106</td>
+<td align="right">15</td>
+<td align="left">minneapolis</td>
+<td align="left">Minneapolis Metro Area</td>
+<td align="left">3,640,043</td>
+<td align="left">06 March 2020</td>
+<td align="right">45</td>
+<td align="right">1626</td>
+<td align="right">106</td>
 </tr>
 <tr class="even">
-<td>16 sa</td>
-<td>ndiego Sa</td>
-<td>n Diego Metro Area 3,</td>
-<td>338,330 10</td>
-<td style="text-align: left;">February 2020</td>
-<td style="text-align: left;">70</td>
-<td style="text-align: left;">2325</td>
-<td style="text-align: left;">72</td>
+<td align="right">16</td>
+<td align="left">sandiego</td>
+<td align="left">San Diego Metro Area</td>
+<td align="left">3,338,330</td>
+<td align="left">10 February 2020</td>
+<td align="right">70</td>
+<td align="right">2325</td>
+<td align="right">72</td>
 </tr>
 <tr class="odd">
-<td>17 ta</td>
-<td>mpa Ta</td>
-<td>mpa Metro Area 3,</td>
-<td>194,831 01</td>
-<td style="text-align: left;">March 2020</td>
-<td style="text-align: left;">50</td>
-<td style="text-align: left;">1873</td>
-<td style="text-align: left;">41</td>
+<td align="right">17</td>
+<td align="left">tampa</td>
+<td align="left">Tampa Metro Area</td>
+<td align="left">3,194,831</td>
+<td align="left">01 March 2020</td>
+<td align="right">50</td>
+<td align="right">1873</td>
+<td align="right">41</td>
 </tr>
 <tr class="even">
-<td>18 de</td>
-<td>nver De</td>
-<td>nver Metro Area 2,</td>
-<td>967,239 05</td>
-<td style="text-align: left;">March 2020</td>
-<td style="text-align: left;">46</td>
-<td style="text-align: left;">5963</td>
-<td style="text-align: left;">248</td>
+<td align="right">18</td>
+<td align="left">denver</td>
+<td align="left">Denver Metro Area</td>
+<td align="left">2,967,239</td>
+<td align="left">05 March 2020</td>
+<td align="right">46</td>
+<td align="right">5963</td>
+<td align="right">248</td>
 </tr>
 <tr class="odd">
-<td>19 st</td>
-<td>louis St</td>
-<td>. Louis Metro Area 2,</td>
-<td>803,228 07</td>
-<td style="text-align: left;">March 2020</td>
-<td style="text-align: left;">44</td>
-<td style="text-align: left;">4559</td>
-<td style="text-align: left;">178</td>
+<td align="right">19</td>
+<td align="left">stlouis</td>
+<td align="left">St. Louis Metro Area</td>
+<td align="left">2,803,228</td>
+<td align="left">07 March 2020</td>
+<td align="right">44</td>
+<td align="right">4559</td>
+<td align="right">178</td>
 </tr>
 <tr class="even">
-<td>20 ba</td>
-<td>ltimore Ba</td>
-<td>ltimore Metro Area 2,</td>
-<td>800,053 08</td>
-<td style="text-align: left;">March 2020</td>
-<td style="text-align: left;">43</td>
-<td style="text-align: left;">5609</td>
-<td style="text-align: left;">185</td>
-</tr>
-</tbody>
-</table></li>
-<li><p>The COVID-19 trends in cases and deaths for these 6 metropolitan areas through 20 APRIL 2020: SF Bay Area; Washington, DC; Richmond, VA; NYC; Los Angeles; and New Orleans.</p></li>
-</ul>
-<table>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;"><img width=100% src="figures/covid19_bayarea_cds_20042020.png"></td>
-<td style="text-align: center;"><img width=100% src="figures/covid19_dc_cds_20042020.png"></td>
-<td style="text-align: center;"><img width=100% src="figures/covid19_richmond_cds_20042020.png"></td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">SF Bay Area</td>
-<td style="text-align: center;">Washington, DC</td>
-<td style="text-align: center;">Richmond, VA</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;"><img width=100% src="figures/covid19_nyc_cds_20042020.png"></td>
-<td style="text-align: center;"><img width=100% src="figures/covid19_losangeles_cds_20042020.png"></td>
-<td style="text-align: center;"><img width=100% src="figures/covid19_neworleans_cds_20042020.png"></td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">NYC Metro</td>
-<td style="text-align: center;">Los Angeles</td>
-<td style="text-align: center;">New Orleans</td>
+<td align="right">20</td>
+<td align="left">baltimore</td>
+<td align="left">Baltimore Metro Area</td>
+<td align="left">2,800,053</td>
+<td align="left">08 March 2020</td>
+<td align="right">43</td>
+<td align="right">5609</td>
+<td align="right">185</td>
 </tr>
 </tbody>
 </table>
 <ul>
-<li>GIF’d video animations of the COVID-19 trends in cases/deaths for NYC up to 20 APRIL 2020, Chicago up to 19 APRIL 2020, and Seattle up to 19 APRIL 2020</li>
+<li>The COVID-19 trends in cases and deaths for these 6 metropolitan areas through 20 APRIL 2020: SF Bay Area; Washington, DC; Richmond, VA; NYC; Los Angeles; and New Orleans.</li>
 </ul>
 <table>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;"><img width=100% src="figures/covid19_nyc_20042020.gif"></td>
-<td style="text-align: center;"><img width=100% src="figures/covid19_chicago_19042020.gif"></td>
-<td style="text-align: center;"><img width=100% src="figures/covid19_seattle_19042020.gif"></td>
+<td align="center"><img width=100% src="figures/covid19_bayarea_cds_20042020.png"></td>
+<td align="center"><img width=100% src="figures/covid19_dc_cds_20042020.png"></td>
+<td align="center"><img width=100% src="figures/covid19_richmond_cds_20042020.png"></td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">NYC Metro</td>
-<td style="text-align: center;">Chicago</td>
-<td style="text-align: center;">Seattle</td>
+<td align="center">SF Bay Area</td>
+<td align="center">Washington, DC</td>
+<td align="center">Richmond, VA</td>
+</tr>
+<tr class="odd">
+<td align="center"><img width=100% src="figures/covid19_nyc_cds_20042020.png"></td>
+<td align="center"><img width=100% src="figures/covid19_losangeles_cds_20042020.png"></td>
+<td align="center"><img width=100% src="figures/covid19_neworleans_cds_20042020.png"></td>
+</tr>
+<tr class="even">
+<td align="center">NYC Metro</td>
+<td align="center">Los Angeles</td>
+<td align="center">New Orleans</td>
 </tr>
 </tbody>
 </table>
+<!--- COMMENT OUT FOR NOW BECAUSE NOT WORKING
+* GIF'd video animations of the COVID-19 trends in cases/deaths for NYC up to 20 APRIL 2020, Chicago up to 19 APRIL 2020, and Seattle up to 19 APRIL 2020.
+
+| | |
+|:---------------------------------------------------------------:|:------------------------------------------------------------------:|:------------------------------------------------------------------:|
+| <img width=100% src="figures/covid19_nyc_20042020.gif">         | <img width=100% src="figures/covid19_chicago_19042020.gif">        | <img width=100% src="figures/covid19_seattle_19042020.gif">        | 
+| NYC Metro                                                       | Chicago                                                            | Seattle                                                            |
+ --->
+<p>The remainder of this README has two sections: <em>GETTING STARTED</em> and <em>USING THE CLI</em>.</p>
+<h2 id="getting-started">GETTING STARTED</h2>
+<p>First clone this repo using the command</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">git</span> clone https://github.com/tanimislam/covid19_stats.git</code></pre></div>
+<p>You will get the main directory structure, but you will notice that the <code>covid-19-data</code> submodule is empty. To populate it, run</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">git</span> submodule update --init --recursive</code></pre></div>
+<p>The requirements are in the <code>requirements.txt</code>. You should be able to install these Python packages into your <em>user</em> Python library (typically at <code>~/.local/lib/python3.X/site-packages</code>) by running,</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">pip</span> install -r requirements.txt</code></pre></div>
+<p>However, <a href="https://matplotlib.org/basemap/">Basemap</a> can be a bugbear to install. Here is what worked for me when installing on the Linux machine.</p>
+<ol style="list-style-type: decimal">
+<li><p>First, although <a href="https://matplotlib.org/basemap/">Basemap</a> will install, your Python shell (and hence your CLI) won't be able to find it. This is almost certainly a bug in Basemap. Running <code>from mpl_toolkits.basemap import Basemap</code> won't work. First, look for where <code>basemap</code> is installed. In my case, it was located at <code>~/.local/lib/python3.7/site-packages/basemap-1.2.1-py3.7-linux-x86_64.egg/</code>. The directory structure right below it looks like this,</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">EGG-INFO</span>  _geoslib.cpython-37m-x86_64-linux-gnu.so  _geoslib.py  mpl_toolkits  __pycache__</code></pre></div></li>
+<li><p><code>cd</code> into <code>mpl_toolkits</code>. You should see a <code>basemap</code> subdirectory when you look in it.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">basemap</span>  __init__.py  __pycache__</code></pre></div></li>
+<li><p>You should also have an <code>mpl_toolkits</code> library module installed locally. In my case it was <code>~/.local/lib/python3.7/site-packages/mpl_toolkits/</code>. Inside it looks like,</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">axes_grid</span>  axes_grid1  axisartist  mplot3d  tests</code></pre></div></li>
+<li><p>In the real <code>mpl_toolkits</code> directory, make a symbolic link to the <code>basemap</code> directory underneath, e.g., <code>~/.local/lib/python3.7/site-packages/basemap-1.2.1-py3.7-linux-x86_64.egg/</code>. Thus in the correct <code>mpl_toolkits</code> subdirectory, run, e.g.,</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">ln</span> -sf ~/.local/lib/python3.7/site-packages/basemap-1.2.1-py3.7-linux-x86_64.egg/mpl_toolkits/basemap basemap</code></pre></div>
+<p>If you have ve done everything correctly, its data structure will look like what is shown below, with a valid symbolic link to <code>basemap</code>.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">axes_grid</span>
+<span class="ex">axes_grid1</span>
+<span class="ex">axisartist</span>
+<span class="ex">basemap</span> -<span class="op">&gt;</span> ~/.local/lib/python3.7/site-packages/basemap-1.2.1-py3.7-linux-x86_64.egg/
+<span class="ex">mplot3d</span>
+<span class="ex">tests</span></code></pre></div></li>
+</ol>
+<p>If you're lucky, running <code>from mpl_toolkits.basemap import Basemap</code> will work without further issues.</p>
+<h2 id="using-the-cli">USING THE CLI</h2>
