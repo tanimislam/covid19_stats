@@ -43,7 +43,8 @@ Here is some output from using this COVID-19 tracker.
 	
 * The COVID-19 trends in cases and deaths for these 6 metropolitan areas through 20 APRIL 2020: SF Bay Area; Washington, DC; Richmond, VA; NYC; Los Angeles; and New Orleans.
 
-|-----------------------------------------------------------------|--------------------------------------------------------------------|--------------------------------------------------------------------|
+| | | |
+|:---------------------------------------------------------------:|:------------------------------------------------------------------:|:------------------------------------------------------------------:|
 | <img width=100% src="figures/covid19_bayarea_cds_20042020.png"> | <img width=100% src="figures/covid19_dc_cds_20042020.png">         | <img width=100% src="figures/covid19_richmond_cds_20042020.png">   |
 | SF Bay Area                                                     | Wasington, DC                                                      | Richmond, VA                                                       |
 | <img width=100% src="figures/covid19_nyc_cds_20042020.png">     | <img width=100% src="figures/covid19_losangeles_cds_20042020.png"> | <img width=100% src="figures/covid19_neworleans_cds_20042020.png"> |
