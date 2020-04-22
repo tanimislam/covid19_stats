@@ -1,29 +1,232 @@
 <h1 id="readme">README</h1>
 <p>Hello world! This is my COVID-19 tracker. There is a git submodule, the <a href="https://github.com/nytimes/covid-19-data">NY Times COVID-19 repository</a>, that needs to be updated frequently to get the latest data. The easiest way to update is to run this command in the checked out repo,</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">git</span> -C covid-19-data pull</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">git</span> -C covid-19-data pull origin master</span></code></pre></div>
 <p>This is not nearly as sophisticated as what’s in <a href="https://ncov2019.live">ncov2019.live</a>, and described in <a href="https://www.newyorker.com/magazine/2020/03/30/the-high-schooler-who-became-a-covid-19-watchdog">this New Yorker article</a>.</p>
-<p>The code that processes the COVID-19 recorded cases and deaths, dumps out the data into the Pandas serialized data format, and makes plots, is in <code>engine.py</code>. Running <code>demo.py</code> this way, <code>python3 demo.py</code>, produces the latest summary data for the Bay Area, the Richmond metro area, DC, NYC metro, and the United States (here, as of 11 APRIL 2020).</p>
+<p>I have made major changes in the functionality and implementation from the original commits, since commit <a href="https://github.com/tanimislam/covid19_stats/commit/78917dd20c43bd65320cf51958fa481febef4338">#78917</a> for instance.</p>
+<ul>
+<li><p>The API code has been refactored into the <code>engine</code> subdirectory, and is divided into three main submodules: <code>engine.core</code> provides the higher level API calls for processing the COVID-19 data; <code>engine.gis</code> provides the lower-level APIs to write out, read in, and process the raw GIS data provided mainly by the US Census Bureau; and <code>engine.viz</code> does the visualization part.</p></li>
+<li><p>There is a single command line tool, <code>covid19_create_movie_or_summary.py</code>, that can do the following: summarizes US metropolitan statistical areas (MSA) and gives their latest COVID-19 statistics; makes movie animations of the COVID-19 cases and deaths, from first case to latest incident date, for a given MSA; and prints out summary plots, and incident data, of COVID-19 cases and deaths for the latest incident day.</p></li>
+<li><p>The <code>testing</code> subdirectory contains <a href="https://jupyter.org">Jupyter Notebooks</a> that illuminate bits and pieces of this COVID-19 tracker’s functionality.</p></li>
+</ul>
+<p>Here is some output from using this COVID-19 tracker.</p>
+<ul>
+<li><p>The summary of COVID-19 statistics for the top 20 MSAs by estimated 2019 population.</p>
 <table>
+<thead>
+<tr class="header">
+<th>RANK ID</th>
+<th>ENTIFIER NA</th>
+<th>ME PO</th>
+<th>PULATION FI</th>
+<th style="text-align: left;">RST INC.</th>
+<th style="text-align: left;">NUM DAYS</th>
+<th style="text-align: left;">NUM CASES</th>
+<th style="text-align: left;">NUM DEATHS</th>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;"><img width=100% src="figures/bayarea-11042020.png"></td>
-<td style="text-align: center;"><img width=100% src="figures/dc-11042020.png"></td>
-<td style="text-align: center;"><img width=100% src="figures/richmond-11042020.png"></td>
+<td>1 ny</td>
+<td>c NY</td>
+<td>C Metro Area 19</td>
+<td>,216,182 01</td>
+<td style="text-align: left;">March 2020</td>
+<td style="text-align: left;">50</td>
+<td style="text-align: left;">308986</td>
+<td style="text-align: left;">17731</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">SF Bay Area</td>
-<td style="text-align: center;">DC</td>
-<td style="text-align: center;">Richmond metro</td>
+<td>2 lo</td>
+<td>sangeles LA</td>
+<td>Metro Area 18</td>
+<td>,711,436 25</td>
+<td style="text-align: left;">January 2020</td>
+<td style="text-align: left;">86</td>
+<td style="text-align: left;">20173</td>
+<td style="text-align: left;">808</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;"><img width=100% src="figures/nyc-11042020.png"></td>
-<td style="text-align: center;"><img width=100% src="figures/us-11042020.png"></td>
-<td style="text-align: center;"></td>
+<td>3 ch</td>
+<td>icago Ch</td>
+<td>icago Metro Area 9,</td>
+<td>458,539 24</td>
+<td style="text-align: left;">January 2020</td>
+<td style="text-align: left;">87</td>
+<td style="text-align: left;">30653</td>
+<td style="text-align: left;">1301</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">NYC Metro</td>
-<td style="text-align: center;">United States</td>
-<td style="text-align: center;"></td>
+<td>4 da</td>
+<td>llas Da</td>
+<td>llas Metro Area 7,</td>
+<td>573,136 09</td>
+<td style="text-align: left;">March 2020</td>
+<td style="text-align: left;">42</td>
+<td style="text-align: left;">5200</td>
+<td style="text-align: left;">138</td>
+</tr>
+<tr class="odd">
+<td>5 ho</td>
+<td>uston Ho</td>
+<td>uston Metro Area 7,</td>
+<td>066,141 04</td>
+<td style="text-align: left;">March 2020</td>
+<td style="text-align: left;">47</td>
+<td style="text-align: left;">7073</td>
+<td style="text-align: left;">125</td>
+</tr>
+<tr class="even">
+<td>6 ba</td>
+<td>yarea Ba</td>
+<td>y Area 6,</td>
+<td>860,207 31</td>
+<td style="text-align: left;">January 2020</td>
+<td style="text-align: left;">80</td>
+<td style="text-align: left;">6272</td>
+<td style="text-align: left;">210</td>
+</tr>
+<tr class="odd">
+<td>7 dc</td>
+<td>DC</td>
+<td>Metro Area 6,</td>
+<td>280,487 05</td>
+<td style="text-align: left;">March 2020</td>
+<td style="text-align: left;">46</td>
+<td style="text-align: left;">15075</td>
+<td style="text-align: left;">438</td>
+</tr>
+<tr class="even">
+<td>8 mi</td>
+<td>ami Mi</td>
+<td>ami Metro Area 6,</td>
+<td>166,488 06</td>
+<td style="text-align: left;">March 2020</td>
+<td style="text-align: left;">45</td>
+<td style="text-align: left;">15992</td>
+<td style="text-align: left;">467</td>
+</tr>
+<tr class="odd">
+<td>9 ph</td>
+<td>iladelphia Ph</td>
+<td>iladelphia Metro Area 6,</td>
+<td>102,434 06</td>
+<td style="text-align: left;">March 2020</td>
+<td style="text-align: left;">45</td>
+<td style="text-align: left;">24201</td>
+<td style="text-align: left;">1004</td>
+</tr>
+<tr class="even">
+<td>10 at</td>
+<td>lanta At</td>
+<td>lanta Metro Area 6,</td>
+<td>020,364 02</td>
+<td style="text-align: left;">March 2020</td>
+<td style="text-align: left;">49</td>
+<td style="text-align: left;">9688</td>
+<td style="text-align: left;">342</td>
+</tr>
+<tr class="odd">
+<td>11 ph</td>
+<td>oenix Ph</td>
+<td>oenix Metro Area 4,</td>
+<td>948,203 26</td>
+<td style="text-align: left;">January 2020</td>
+<td style="text-align: left;">85</td>
+<td style="text-align: left;">2892</td>
+<td style="text-align: left;">82</td>
+</tr>
+<tr class="even">
+<td>12 bo</td>
+<td>ston Bo</td>
+<td>ston Metro Area 4,</td>
+<td>873,019 01</td>
+<td style="text-align: left;">February 2020</td>
+<td style="text-align: left;">79</td>
+<td style="text-align: left;">30399</td>
+<td style="text-align: left;">1298</td>
+</tr>
+<tr class="odd">
+<td>13 de</td>
+<td>troit De</td>
+<td>troit Metro Area 4,</td>
+<td>319,629 10</td>
+<td style="text-align: left;">March 2020</td>
+<td style="text-align: left;">41</td>
+<td style="text-align: left;">25200</td>
+<td style="text-align: left;">2072</td>
+</tr>
+<tr class="even">
+<td>14 se</td>
+<td>attle Se</td>
+<td>attle Metro Area 3,</td>
+<td>979,845 21</td>
+<td style="text-align: left;">January 2020</td>
+<td style="text-align: left;">90</td>
+<td style="text-align: left;">8651</td>
+<td style="text-align: left;">492</td>
+</tr>
+<tr class="odd">
+<td>15 mi</td>
+<td>nneapolis Mi</td>
+<td>nneapolis Metro Area 3,</td>
+<td>640,043 06</td>
+<td style="text-align: left;">March 2020</td>
+<td style="text-align: left;">45</td>
+<td style="text-align: left;">1626</td>
+<td style="text-align: left;">106</td>
+</tr>
+<tr class="even">
+<td>16 sa</td>
+<td>ndiego Sa</td>
+<td>n Diego Metro Area 3,</td>
+<td>338,330 10</td>
+<td style="text-align: left;">February 2020</td>
+<td style="text-align: left;">70</td>
+<td style="text-align: left;">2325</td>
+<td style="text-align: left;">72</td>
+</tr>
+<tr class="odd">
+<td>17 ta</td>
+<td>mpa Ta</td>
+<td>mpa Metro Area 3,</td>
+<td>194,831 01</td>
+<td style="text-align: left;">March 2020</td>
+<td style="text-align: left;">50</td>
+<td style="text-align: left;">1873</td>
+<td style="text-align: left;">41</td>
+</tr>
+<tr class="even">
+<td>18 de</td>
+<td>nver De</td>
+<td>nver Metro Area 2,</td>
+<td>967,239 05</td>
+<td style="text-align: left;">March 2020</td>
+<td style="text-align: left;">46</td>
+<td style="text-align: left;">5963</td>
+<td style="text-align: left;">248</td>
+</tr>
+<tr class="odd">
+<td>19 st</td>
+<td>louis St</td>
+<td>. Louis Metro Area 2,</td>
+<td>803,228 07</td>
+<td style="text-align: left;">March 2020</td>
+<td style="text-align: left;">44</td>
+<td style="text-align: left;">4559</td>
+<td style="text-align: left;">178</td>
+</tr>
+<tr class="even">
+<td>20 ba</td>
+<td>ltimore Ba</td>
+<td>ltimore Metro Area 2,</td>
+<td>800,053 08</td>
+<td style="text-align: left;">March 2020</td>
+<td style="text-align: left;">43</td>
+<td style="text-align: left;">5609</td>
+<td style="text-align: left;">185</td>
 </tr>
 </tbody>
-</table>
+</table></li>
+<li><p>The COVID-19 trends in cases and deaths for these 6 metropolitan areas through 20 APRIL 2020: SF Bay Area; Washington, DC; Richmond, VA; NYC; Los Angeles; and New Orleans.</p></li>
+</ul>
+<p>|—————————————————–|——————————————————–|——————————————————–|| <img width=100% src="figures/bayarea-20042020.png"> | <img width=100% src="figures/dc-20042020.png"> | <img width=100% src="figures/richmond-20042020.png"> || SF Bay Area | Wasington, DC | Richmond, VA || <img width=100% src="figures/nyc-20042020.png"> | <img width=100% src="figures/losangeles-20042020.png"> | <img width=100% src="figures/neworleans-20042020.png"> || NYC Metro | Los Angeles | New Orleans |</p>
