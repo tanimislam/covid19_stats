@@ -160,6 +160,15 @@ def get_data_fips( fips ):
                         key = lambda entry: entry['date'] )
   return data_by_date
 
+def get_max_cases_county( inc_data ):
+  df = inc_data['df']
+  fips_max, case_max = max(map(lambda key: ( key.split('_')[-1].strip( ), df[key].max( ) ),
+                               filter(lambda key: key.startswith('cases_'), df)),
+                           key = lambda tup: tup[-1] )
+  cs_max = get_county_state( fips_max )
+  return { 'fips' : fips_max, 'cases' : case_max, 'county' : cs_max[ 'county'],
+           'state' : cs_max[ 'state' ] }
+
 def get_incident_data( data = data_msas_2019['bayarea'] ):
     prefix = data[ 'prefix' ]
     regionName = data[ 'region name' ]
@@ -238,10 +247,20 @@ def get_maximum_cases( inc_data ):
                        key = lambda tup: tup[1] )
     return max_case_tup
 
-def display_tabulated_metros( form = 'simple' ):
+def display_tabulated_metros( form = 'simple', selected_metros = None ):
     assert( form in ( 'simple', 'github', 'rst' ) )
     all_metros = sorted(
         data_msas_2019.values( ),
+        key = lambda entry: entry['population'])[::-1]
+    #
+    ## now if selected metros is not None
+    ## only display selected metros by population max to min
+    if selected_metros is not None:
+      selected_metros_act = set( selected_metros ) & set(map(lambda entry: entry['prefix'], all_metros ) )
+      if len( selected_metros_act ) == 0:
+        raise ValueError( "Error, no metros chosen" )
+      all_metros = sorted(
+        filter(lambda entry: entry['prefix'] in selected_metros_act, all_metros ),
         key = lambda entry: entry['population'])[::-1]
 
     #
@@ -271,10 +290,17 @@ def display_tabulated_metros( form = 'simple' ):
         last_day     = inc_data[ 'last day' ]
         num_cases    = df.cases.max( )
         num_death    = df.death.max( )
+        max_case_data= get_max_cases_county( inc_data )
+        max_case_co  = max_case_data[ 'cases' ]
+        max_case_co_county = max_case_data[ 'county' ]
+        max_case_co_state  = max_case_data[ 'state'  ]
         return (
-            rank, prefix, regionName, population_s,
-            date_first_s, last_day,
-            num_cases, num_death )
+          rank, prefix, regionName, population_s,
+          date_first_s, last_day,
+          _get_string_commas_num(num_cases),
+          _get_string_commas_num(num_death),
+          _get_string_commas_num(max_case_co),
+          '%s, %s' % ( max_case_co_county, max_case_co_state ) )
     
     data_tabulated = list(map(
         _get_row, enumerate(all_metros)))
@@ -283,7 +309,7 @@ def display_tabulated_metros( form = 'simple' ):
     print( '%s\n' % tabulate.tabulate(
         data_tabulated, headers = [
             'RANK', 'IDENTIFIER', 'NAME', 'POPULATION', 'FIRST INC.',
-            'NUM DAYS', 'NUM CASES', 'NUM DEATHS' ] ) )
+            'NUM DAYS', 'NUM CASES', 'NUM DEATHS', 'MAX CASE COUNTY', 'MAX CASE COUNTY NAME'  ] ) )
 
 #
 ## from a collection of FIPS, find the clusterings -- which set are adjacent to each other, which aren't
