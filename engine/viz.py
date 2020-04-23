@@ -442,7 +442,7 @@ def get_summary_demo_data( data, maxnum_colorbar = 5000.0 ):
     last_date = max( df_cases_deaths_region.date )
     #
     ## pickle this pandas data
-    last_date_str = datetime.datetime.now( ).date( ).strftime('%d%m%Y' )
+    last_date_str = last_date.strftime('%d%m%Y' )
     df_cases_deaths_region.to_pickle(
         'covid19_%s_%s.pkl.gz' % ( prefix, last_date_str ) )
     #
@@ -484,7 +484,7 @@ def get_summary_demo_data( data, maxnum_colorbar = 5000.0 ):
     #
     ## save figures
     canvas = FigureCanvasAgg( fig )
-    file_prefix = 'covid19_cds_%s_%s' % ( prefix, last_date_str )
+    file_prefix = 'covid19_%s_cds_%s' % ( prefix, last_date_str )
     canvas.print_figure( '%s.pdf' % file_prefix, bbox_inches = 'tight' )
     canvas.print_figure( '%s.png' % file_prefix, bbox_inches = 'tight' )
     autocrop_image.autocrop_image( '%s.png' % file_prefix )
@@ -497,7 +497,7 @@ def get_summary_demo_data( data, maxnum_colorbar = 5000.0 ):
         inc_data, regionName, ax1, days_from_beginning = inc_data[ 'last day' ],
         maxnum_colorbar = maxnum_colorbar, doTitle = True )
     canvas = FigureCanvasAgg( fig1 )
-    file_prefix = 'covid19_cases_%s_%s' % ( prefix, last_date_str )
+    file_prefix = 'covid19_%s_cases_%s' % ( prefix, last_date_str )
     canvas.print_figure( '%s.pdf' % file_prefix, bbox_inches = 'tight' )
     canvas.print_figure( '%s.png' % file_prefix, bbox_inches = 'tight' )
     autocrop_image.autocrop_image( '%s.png' % file_prefix )
@@ -510,7 +510,7 @@ def get_summary_demo_data( data, maxnum_colorbar = 5000.0 ):
         inc_data, regionName, ax1, days_from_beginning = inc_data[ 'last day' ],
         maxnum_colorbar = maxnum_colorbar, doTitle = True )
     canvas = FigureCanvasAgg( fig2 )
-    file_prefix = 'covid19_death_%s_%s' % ( prefix, last_date_str )
+    file_prefix = 'covid19_%s_death_%s' % ( prefix, last_date_str )
     canvas.print_figure( '%s.pdf' % file_prefix, bbox_inches = 'tight' )
     canvas.print_figure( '%s.png' % file_prefix, bbox_inches = 'tight' )
     autocrop_image.autocrop_image( '%s.png' % file_prefix )
