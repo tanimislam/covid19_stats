@@ -57,7 +57,7 @@ Here is some output from using this COVID-19 tracker.
 
 | | | |
 |:---------------------------------------------------------------:|:------------------------------------------------------------------:|:------------------------------------------------------------------:|
-| <img width=100% src="figures/covid19_nyc_20042020.gif">         | <img width=100% src="figures/covid19_chicago_19042020.gif">        | <img width=100% src="figures/covid19_seattle_19042020.gif">        | 
+| <img width=100% src="figures/covid19_nyc_latest.gif">         | <img width=100% src="figures/covid19_chicago_latest.gif">        | <img width=100% src="figures/covid19_seattle_latest.gif">        | 
 | NYC Metro                                                       | Chicago                                                            | Seattle                                                            |
  
 The remainder of this README has two sections: *GETTING STARTED* and *USING THE CLI*.
@@ -108,6 +108,12 @@ tests
 ```
 
 If you're lucky, running ``from mpl_toolkits.basemap import Basemap`` will work without further issues.
+
+Furthermore, just run this from the main directory,
+```bash
+git -C covid-19-data pull origin master
+```
+in order to get the latest COVID-19 data.
 
 ## USING THE CLI
 
