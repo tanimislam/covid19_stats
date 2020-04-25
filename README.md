@@ -75,8 +75,7 @@ Here is some output from using this COVID-19 tracker.
 
 The remainder of this README has two sections: [*GETTING STARTED*](#getting-started) and [*USING THE CLI*](#using-cli).
 
-#getting-started
-## GETTING STARTED
+## <a id="getting-started"></a> GETTING STARTED
 
 First clone this repo using the command
 ```bash
@@ -130,7 +129,7 @@ git -C covid-19-data pull origin master
 ```
 in order to get the latest COVID-19 data.
 
-## < a id="using-cli"></a> USING THE CLI
+## <a id="using-cli"></a> USING THE CLI
 
 ``covid19_create_movie_or_summary.py`` is the only top-level CLI currently in the repository. It has three modes of operation. Its help output, while running ``covid19_create_movie_or_summary.py -h``, produces the following,
 ```bash
