@@ -75,8 +75,7 @@ Here is some output from using this COVID-19 tracker.
 
 The remainder of this README has two sections: [*GETTING STARTED*](#getting-started) and [*USING THE CLI*](#using-cli).
 
-#getting-started
-## GETTING STARTED
+## <a id="getting-started"></a> GETTING STARTED
 
 First clone this repo using the command
 ```bash
