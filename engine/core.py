@@ -309,7 +309,8 @@ def display_tabulated_metros( form = 'simple', selected_metros = None ):
     print( '%s\n' % tabulate.tabulate(
         data_tabulated, headers = [
             'RANK', 'IDENTIFIER', 'NAME', 'POPULATION', 'FIRST INC.',
-            'NUM DAYS', 'NUM CASES', 'NUM DEATHS', 'MAX CASE COUNTY', 'MAX CASE COUNTY NAME'  ] ) )
+            'NUM DAYS', 'NUM CASES', 'NUM DEATHS', 'MAX CASE COUNTY', 'MAX CASE COUNTY NAME'  ],
+      tablefmt = form, stralign = 'left' ) )
 
 #
 ## from a collection of FIPS, find the clusterings -- which set are adjacent to each other, which aren't
