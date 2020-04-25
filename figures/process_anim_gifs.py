@@ -41,11 +41,11 @@ for metro in filter(lambda metro: len( dict_giffiles[ metro ] ) > 1, dict_giffil
 ## now make symbolic links of them EXCEPT FOR (nyc, chicago,seattle)
 for metro in set( dict_giffiles ) - set( metros_2_exclude ):
   linkname = 'covid19_%s_latest.gif' % metro
-  giffile = max(dict_giffiles[ metro ])[ 'giffile' ]
+  giffile = dict_giffiles[ metro ][0][ 'giffile' ]
   os.symlink( giffile, linkname )
 #
 ## now do copy of nyc, chicago, seattle
 for metro in set( dict_giffiles ) & set( metros_2_exclude ):
   filename = 'covid19_%s_latest.gif' % metro
-  giffile = max(dict_giffiles[ metro ])[ 'giffile' ]
+  giffile = dict_giffiles[ metro ][0][ 'giffile' ]
   shutil.copy( giffile, filename )
