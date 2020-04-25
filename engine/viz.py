@@ -13,7 +13,7 @@ from mpl_toolkits.basemap import Basemap
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from distutils.spawn import find_executable
 #
-from engine import mainDir, gis, core, autocrop_image
+from engine import mainDir, gis, core, autocrop_image, get_string_commas_num
 
 def my_colorbar( mappable, ax, **kwargs ):
     """
@@ -162,7 +162,7 @@ def plot_cases_bycounty( inc_data, regionName, ax, days_from_beginning = 0, maxn
     ax.text(
         0.01, 0.02, '\n'.join([ '%s' % date_s,
                                '%d days from 1st case' % days_from_beginning,
-                               '%d cumulative cases' % num_cases ]),
+                               '%s cumulative cases' % get_string_commas_num( num_cases ) ]),
         color = ( 0.0, 0.0, 0.0, 0.8 ),
         fontsize = 18, fontweight = 'bold', transform = ax.transAxes,
         horizontalalignment = 'left', verticalalignment = 'bottom' )
@@ -205,7 +205,7 @@ def plot_deaths_bycounty( inc_data, regionName, ax, days_from_beginning = 0, max
     ax.text(
         0.01, 0.02, '\n'.join([ '%s' % date_s,
                                '%d days from 1st case' % days_from_beginning,
-                               '%d cumulative deaths' % num_deaths ]),
+                               '%s cumulative deaths' % get_string_commas_num( num_deaths ) ]),
         color = ( 0.0, 0.0, 0.0, 0.8 ),
         fontsize = 18, fontweight = 'bold', transform = ax.transAxes,
         horizontalalignment = 'left', verticalalignment = 'bottom' )
@@ -450,12 +450,16 @@ def get_summary_demo_data( data, maxnum_colorbar = 5000.0 ):
     fig = Figure( )
     ax = fig.add_subplot(111)
     fig.set_size_inches([ 12.0, 9.6 ])
+    num_cases = df_cases_deaths_region.cases.max( )
+    num_death = df_cases_deaths_region.death.max( )
     df_cases_deaths_region.plot(
-        'days_from_beginning', 'cases', linewidth = 4.5,
-        ax = ax, logy = True, grid = True )
+      'days_from_beginning', 'cases', linewidth = 4.5,
+      ax = ax, logy = True, grid = True )
     df_cases_deaths_region.plot(
         'days_from_beginning', 'death', linewidth = 4.5,
         ax = ax, logy = True, grid = True )
+    ax.lines[0].set_label( 'cases: %s' % get_string_commas_num( num_cases ) )
+    ax.lines[1].set_label( 'death: %s' % get_string_commas_num( num_death ) )
     ax.set_ylim( 1.0, 1.05 * df_cases_deaths_region.cases.max( ) )
     ax.set_xlim( 0, df_cases_deaths_region.days_from_beginning.max( ) )
     ax.set_xlabel(
@@ -488,6 +492,8 @@ def get_summary_demo_data( data, maxnum_colorbar = 5000.0 ):
     canvas.print_figure( '%s.pdf' % file_prefix, bbox_inches = 'tight' )
     canvas.print_figure( '%s.png' % file_prefix, bbox_inches = 'tight' )
     autocrop_image.autocrop_image( '%s.png' % file_prefix )
+    try: autocrop_image.autocrop_image_pdf( '%s.pdf' % file_prefix )
+    except: pass
     #
     ## now create figures CASES
     fig1 = Figure( )
@@ -501,6 +507,8 @@ def get_summary_demo_data( data, maxnum_colorbar = 5000.0 ):
     canvas.print_figure( '%s.pdf' % file_prefix, bbox_inches = 'tight' )
     canvas.print_figure( '%s.png' % file_prefix, bbox_inches = 'tight' )
     autocrop_image.autocrop_image( '%s.png' % file_prefix )
+    try: autocrop_image.autocrop_image_pdf( '%s.pdf' % file_prefix )
+    except: pass
     #
     ## now create figures DEATHS
     fig2 = Figure( )
@@ -514,3 +522,5 @@ def get_summary_demo_data( data, maxnum_colorbar = 5000.0 ):
     canvas.print_figure( '%s.pdf' % file_prefix, bbox_inches = 'tight' )
     canvas.print_figure( '%s.png' % file_prefix, bbox_inches = 'tight' )
     autocrop_image.autocrop_image( '%s.png' % file_prefix )
+    try: autocrop_image.autocrop_image_pdf( '%s.pdf' % file_prefix )
+    except: pass

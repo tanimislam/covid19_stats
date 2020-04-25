@@ -5,3 +5,4 @@ titlecase
 pathos
 basemap
 shapely
+PyPDF2

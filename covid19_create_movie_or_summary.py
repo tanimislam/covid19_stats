@@ -1,17 +1,12 @@
 #!/usr/bin/env python3
 
 import os, sys, numpy, tabulate, tempfile, warnings
-from engine import core, viz
+from engine import core, viz, get_string_commas_num
 from argparse import ArgumentParser
 
 #
 ## suppress warnings
 warnings.simplefilter( 'ignore' )
-
-#
-## secret sauce formatting comma'd integers from https://intellipaat.com/community/2447/how-to-print-number-with-commas-as-thousands-separators
-def _get_string_commas_num( num ):
-    return "%s" % f"{num:,d}"
 
 def _summarize_data( data_msa, maxnum ):
     regionName = data_msa[ 'region name' ]
@@ -24,14 +19,14 @@ def _summarize_data( data_msa, maxnum ):
     last_day = inc_data[ 'last day' ]
     print( '\n'.join([
         'HERE ARE DETAILS FOR %s.' % regionName,
-        '2019 EST. POP = %s.' % _get_string_commas_num( population ),
+        '2019 EST. POP = %s.' % get_string_commas_num( population ),
         'FIRST CASE:  %s.' % first_date.strftime( '%d %B %Y' ),
         'LATEST CASE: %s (%d days after first case)' % (
             last_date.strftime( '%d %B %Y' ), last_day ),
         'MAXIMUM NUMBER OF CASES: %s (in %s, %s)' % (
-            _get_string_commas_num(max_cases),
+            get_string_commas_num(max_cases),
             max_cs[ 'county' ], max_cs[ 'state' ] ),
-        'MAXIMUM NUMBER OF CASES FOR VISUALIZATION: %s.' % _get_string_commas_num( maxnum ),
+        'MAXIMUM NUMBER OF CASES FOR VISUALIZATION: %s.' % get_string_commas_num( maxnum ),
         ] ) )
 
 def _try_continue( ):
@@ -57,7 +52,7 @@ def main( ):
   parser_moviemetro.add_argument( '-M', '--maxnum', dest='maxnum', type=int, action='store', default = 5000,
                                   help = ' '.join([
                                     'The limit of cases/deaths to visualize.',
-                                    'Default is %s.' % _get_string_commas_num( 5000 ),
+                                    'Default is %s.' % get_string_commas_num( 5000 ),
                                     'You should use a limit larger (by at least 2, no more than 10) than the maximum number of cases recorded for a county in that MSA.' ]) )
   parser_moviemetro.add_argument(
     '-y', '--yes', dest='do_yes_moviemetro', action='store_true', default = False,
@@ -71,7 +66,7 @@ def main( ):
   parser_summmetro.add_argument( '-M', '--maxnum', dest='summmetro_maxnum', type=int, action='store', default = 5000, metavar = 'MAXNUM',
                                  help = ' '.join([
                                    'The limit of cases/deaths to visualize.',
-                                   'Default is %s.' % _get_string_commas_num( 5000 ),
+                                   'Default is %s.' % get_string_commas_num( 5000 ),
                                    'You should use a limit larger (by at least 2, no more than 10) than the maximum number of cases recorded for a county in that MSA.' ]) )
   parser_summmetro.add_argument(
     '-y', '--yes', dest='do_yes_summmetro', action='store_true', default = False,
@@ -105,28 +100,28 @@ def main( ):
       movie_name = viz.create_summary_movie_frombeginning(
         data = data_msa, maxnum_colorbar = maxnum )
       return
-    if args.choose_option == 's':
-        #
-        ## now create the following stuff...
-        msaname = args.summmetro_name.strip( )
-        if msaname not in core.data_msas_2019:
-            print( 'Error, the chosen MSA name %s not one of the %d defined.' % (
-              msaname, len( core.data_msas_2019 ) ) )
-            return
-        maxnum = args.summmetro_maxnum
-        if maxnum < 1:
-            print( 'Error, maximum number for visualization %d < 1.' % maxnum )
-            return
-        
-        data_msa = core.data_msas_2019[ msaname ]
-        if args.do_yes_summmetro:
-            viz.get_summary_demo_data( data_msa, maxnum_colorbar = maxnum )
-            return
-        _summarize_data( data_msa, maxnum )
-        status = _try_continue( )
-        if status:
-            viz.get_summary_demo_data( data_msa, maxnum_colorbar = maxnum )
-            return
+  if args.choose_option == 's':
+    #
+    ## now create the following stuff...
+    msaname = args.summmetro_name.strip( )
+    if msaname not in core.data_msas_2019:
+      print( 'Error, the chosen MSA name %s not one of the %d defined.' % (
+        msaname, len( core.data_msas_2019 ) ) )
+      return
+    maxnum = args.summmetro_maxnum
+    if maxnum < 1:
+      print( 'Error, maximum number for visualization %d < 1.' % maxnum )
+      return
+    
+    data_msa = core.data_msas_2019[ msaname ]
+    if args.do_yes_summmetro:
+      viz.get_summary_demo_data( data_msa, maxnum_colorbar = maxnum )
+      return
+    _summarize_data( data_msa, maxnum )
+    status = _try_continue( )
+    if status:
+      viz.get_summary_demo_data( data_msa, maxnum_colorbar = maxnum )
+      return
             
             
 if __name__ == '__main__':
