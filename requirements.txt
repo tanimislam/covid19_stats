@@ -6,3 +6,4 @@ pathos
 basemap
 shapely
 PyPDF2
+git+https://github.com/tanimislam/nprstuff.git#egg=nprstuff
