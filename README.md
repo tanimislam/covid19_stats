@@ -131,7 +131,7 @@ However, [Basemap](https://matplotlib.org/basemap/) can be a bugbear to install.
 	 ln -sf ~/.local/lib/python3.7/site-packages/basemap-1.2.1-py3.7-linux-x86_64.egg/mpl_toolkits/basemap basemap
 	 ```
 
-   If you have ve done everything correctly, its data structure will look like what is shown below, with a valid symbolic link to ``basemap``.
+   If you have done everything correctly, its data structure will look like what is shown below, with a valid symbolic link to ``basemap``.
      ```bash
 	 axes_grid
 	 axes_grid1
@@ -143,8 +143,10 @@ However, [Basemap](https://matplotlib.org/basemap/) can be a bugbear to install.
 
 If you're lucky, running ``from mpl_toolkits.basemap import Basemap`` will work without further issues.
 
-Furthermore, just run this from the main directory,
-```bash
+### <a id="subsec-updating-data"></a> Updating the COVID-19 Database
+
+Just run this from the main directory,
+```bash 
 git -C covid-19-data pull origin master
 ```
 in order to get the latest COVID-19 data.
