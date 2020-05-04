@@ -128,87 +128,135 @@ def display_msa( msaname, doShow = False ):
         autocrop_image.autocrop_image( 'msa_%s_counties.png' % msaname )
     else: pylab.show( )
     
-def plot_cases_bycounty( inc_data, regionName, ax, days_from_beginning = 0, maxnum_colorbar = 5000.0, doTitle = True ):
+def plot_cases_bycounty(
+    inc_data, regionName, ax, days_from_beginning = 0,
+    maxnum_colorbar = 5000.0, doTitle = True, cases_plot_artists = { } ):
     assert( days_from_beginning >= 0 )
     assert( days_from_beginning <= inc_data[ 'last day' ] )
     assert( maxnum_colorbar > 1 )
     #
     ## NOW CREATE BASEMAP HIGH REZ
-    m = create_and_draw_basemap( ax, inc_data[ 'bbox' ], resolution = 'h' )
+    if 'isBaseMapped' not in cases_plot_artists:
+        m = create_and_draw_basemap( ax, inc_data[ 'bbox' ], resolution = 'h' )
+        cases_plot_artists[ 'isBaseMapped' ] = m
+        cases_plot_artists[ 'sm' ] = ScalarMappable( norm = LogNorm( 1.0, maxnum_colorbar ), cmap = 'jet' )
+    #
+    ## draw boundaries if not defined
     boundaries = inc_data['boundaries']
     df_dfm = inc_data['df'][ inc_data['df']['days_from_beginning'] == days_from_beginning ].copy( )
-    sm = ScalarMappable( norm = LogNorm( 1.0, maxnum_colorbar ), cmap = 'jet' )
+    sm = cases_plot_artists[ 'sm' ]
     for fips in sorted( boundaries ):
         num_cases = df_dfm['cases_%s' % fips].max( )
         fc = sm.to_rgba( num_cases )
         if num_cases == 0: fc = ( 1.0, 1.0, 1.0, 0.0 )
-        for shape in boundaries[ fips ]:
-            x, y = m( shape[:,0], shape[:,1] )
-            poly = Polygon(
-                numpy.array([ x, y ]).T, closed = True,
-                edgecolor = 'k', linewidth = 1.0, linestyle = 'dashed',
-                facecolor = fc, alpha = 0.4 )
-            ax.add_patch( poly )
+        if 'cases_polys_%s' % fips not in cases_plot_artists:
+            cases_plot_artists.setdefault( 'cases_polys_%s' % fips, [] )
+            for shape in boundaries[ fips ]:
+                x, y = m( shape[:,0], shape[:,1] )
+                poly = Polygon(
+                    numpy.array([ x, y ]).T, closed = True,
+                    edgecolor = 'k', linewidth = 1.0, linestyle = 'dashed',
+                    facecolor = fc, alpha = 0.4 )
+                ax.add_patch( poly )
+                cases_plot_artists[ 'cases_polys_%s' % fips ].append( poly )
+        else:
+            for poly in cases_plot_artists[ 'cases_polys_%s' % fips ]:
+                poly.set_facecolor( fc )
+                poly.set_alpha( 0.4 )
+    
     #
     ## now add the colorbar associated with sm
     #cb = fig.colorbar( sm, ax = ax, alpha = 0.8 )
-    cb = my_colorbar( sm, ax, alpha = 0.8 )
-    cb.set_label( 'number of cases', fontsize = 18, fontweight = 'bold' )
+    if 'cb' not in cases_plot_artists:        
+        cb = my_colorbar( sm, ax, alpha = 0.8 )
+        cb.set_label( 'number of cases', fontsize = 18, fontweight = 'bold' )
+        cases_plot_artists[ 'cb' ] = cb
     #
     ## now put in the legend in upper left corner, fontsize = 14, weight = bold
     ## following info: date, days after beginning, number of cases
     date_s = df_dfm.date.max().strftime( '%d %B %Y' )
     num_cases = df_dfm.cases.max( )
-    ax.text(
-        0.01, 0.02, '\n'.join([ '%s' % date_s,
-                               '%d days from 1st case' % days_from_beginning,
-                               '%s cumulative cases' % get_string_commas_num( num_cases ) ]),
-        color = ( 0.0, 0.0, 0.0, 0.8 ),
-        fontsize = 18, fontweight = 'bold', transform = ax.transAxes,
-        horizontalalignment = 'left', verticalalignment = 'bottom' )
+    if 'cases_text' not in cases_plot_artists:
+        txt = ax.text(
+            0.01, 0.02, '\n'.join([
+                '%s' % date_s,
+                '%d days from 1st case' % days_from_beginning,
+                '%s cumulative cases' % get_string_commas_num( num_cases ) ]),
+            color = ( 0.0, 0.0, 0.0, 0.8 ),
+            fontsize = 18, fontweight = 'bold', transform = ax.transAxes,
+            horizontalalignment = 'left', verticalalignment = 'bottom' )
+        cases_plot_artists[ 'cases_text' ] = txt
+    else:
+        cases_plot_artists[ 'cases_text' ].set_text('\n'.join([
+            '%s' % date_s,
+            '%d days from 1st case' % days_from_beginning,
+            '%s cumulative cases' % get_string_commas_num( num_cases ) ] ) )
+            
     if doTitle:
         ax.set_title( '\n'.join([
             'Cumulative number of COVID-19 cases',
             'in %s after %d / %d days from start' % ( regionName, days_from_beginning, inc_data[ 'last day'] ) ] ),
                     fontsize = 18, fontweight = 'bold' )
 
-def plot_deaths_bycounty( inc_data, regionName, ax, days_from_beginning = 0, maxnum_colorbar = 5000.0, doTitle = True ):
+def plot_deaths_bycounty(
+    inc_data, regionName, ax, days_from_beginning = 0,
+    maxnum_colorbar = 5000.0, doTitle = True, death_plot_artists = { } ):
     assert( days_from_beginning >= 0 )
     assert( days_from_beginning <= inc_data[ 'last day' ] )
     assert( maxnum_colorbar > 1 )
     #
     ## NOW CREATE BASEMAPS
-    m = create_and_draw_basemap( ax, inc_data[ 'bbox' ], resolution = 'h' )
+    if 'isBaseMapped' not in death_plot_artists:
+        m = create_and_draw_basemap( ax, inc_data[ 'bbox' ], resolution = 'h' )
+        death_plot_artists[ 'isBaseMapped' ] = m
+        death_plot_artists[ 'sm' ] = ScalarMappable( norm = LogNorm( 1.0, maxnum_colorbar ), cmap = 'jet' )
     boundaries = inc_data['boundaries']
     df_dfm = inc_data['df'][ inc_data['df']['days_from_beginning'] == days_from_beginning ].copy( )
-    sm = ScalarMappable( norm = LogNorm( 1.0, maxnum_colorbar ), cmap = 'jet' )
+    sm = death_plot_artists[ 'sm' ]
     for fips in sorted( boundaries ):
         num_deaths = df_dfm['deaths_%s' % fips].max( )
         fc = sm.to_rgba( num_deaths )
         if num_deaths == 0: fc = ( 1.0, 1.0, 1.0, 0.0 )
-        for shape in boundaries[ fips ]:
-            x, y = m( shape[:,0], shape[:,1] )
-            poly = Polygon(
-                numpy.array([ x, y ]).T, closed = True,
-                edgecolor = 'k', linewidth = 1.0, linestyle = 'dashed',
-                facecolor = fc, alpha = 0.4 )
-            ax.add_patch( poly )
+        if 'death_polys_%s' % fips not in death_plot_artists:
+            death_plot_artists.setdefault( 'death_polys_%s' % fips, [ ] )
+            for shape in boundaries[ fips ]:
+                x, y = m( shape[:,0], shape[:,1] )
+                poly = Polygon(
+                    numpy.array([ x, y ]).T, closed = True,
+                    edgecolor = 'k', linewidth = 1.0, linestyle = 'dashed',
+                    facecolor = fc, alpha = 0.4 )
+                ax.add_patch( poly )
+                death_plot_artists[ 'death_polys_%s' % fips ].append( poly )
+        else:
+            for poly in death_plot_artists[ 'death_polys_%s' % fips ]:
+                poly.set_facecolor( fc )
+                poly.set_alpha( 0.4 )
     #
     ## now add the colorbar associated with sm
-    cb = my_colorbar( sm, ax, alpha = 0.8 )
-    cb.set_label( 'number of deaths', fontsize = 18, fontweight = 'bold' )
+    if 'cb' not in death_plot_artists:
+        cb = my_colorbar( sm, ax, alpha = 0.8 )
+        cb.set_label( 'number of deaths', fontsize = 18, fontweight = 'bold' )
+        death_plot_artists[ 'cb' ] = cb
     #
     ## now put in the legend in upper left corner, fontsize = 14, weight = bold
     ## following info: date, days after beginning, number of cases
     date_s = df_dfm.date.max().strftime( '%d %B %Y' )
     num_deaths = df_dfm.death.max( )
-    ax.text(
-        0.01, 0.02, '\n'.join([ '%s' % date_s,
-                               '%d days from 1st case' % days_from_beginning,
-                               '%s cumulative deaths' % get_string_commas_num( num_deaths ) ]),
-        color = ( 0.0, 0.0, 0.0, 0.8 ),
-        fontsize = 18, fontweight = 'bold', transform = ax.transAxes,
-        horizontalalignment = 'left', verticalalignment = 'bottom' )
+    if 'death_text' not in death_plot_artists:
+        txt = ax.text(
+            0.01, 0.02, '\n'.join([
+                '%s' % date_s,
+                '%d days from 1st case' % days_from_beginning,
+                '%s cumulative deaths' % get_string_commas_num( num_deaths ) ]),
+            color = ( 0.0, 0.0, 0.0, 0.8 ),
+            fontsize = 18, fontweight = 'bold', transform = ax.transAxes,
+            horizontalalignment = 'left', verticalalignment = 'bottom' )
+        death_plot_artists[ 'death_text' ] = txt
+    else:
+        death_plot_artists[ 'death_text' ].set_text('\n'.join([
+             '%s' % date_s,
+                '%d days from 1st case' % days_from_beginning,
+                '%s cumulative deaths' % get_string_commas_num( num_deaths ) ] ) )
     if doTitle:
         ax.set_title( '\n'.join([
             'Cumulative number of COVID-19 deaths',
@@ -219,6 +267,7 @@ def plot_cases_deaths_region( inc_data, regionName, ax, days_from_beginning = 0,
     assert( days_from_beginning >= 0 )
     assert( days_from_beginning <= inc_data[ 'last day' ] )
     df_cases_deaths_region = inc_data[ 'df' ]
+    ax.clear( ) # first clear everything in this axes
     #
     first_date = min( df_cases_deaths_region.date )
     last_date = max( df_cases_deaths_region.date )
@@ -298,23 +347,31 @@ def plot_cases_deaths_region( inc_data, regionName, ax, days_from_beginning = 0,
         txt.set_fontsize( 18 )
         txt.set_fontweight( 'bold' )
 
-def create_plots_daysfrombeginning( inc_data, regionName, prefix, days_from_beginning = 0,
+def create_plots_daysfrombeginning( inc_data, regionName, prefix, days_from_beginning = [ 0 ],
                                    dirname = os.getcwd( ), maxnum_colorbar = 5000 ):
+    if any(filter(lambda day: day < 0, days_from_beginning ) ):
+        print( 'error days_from_beginning = %s.' % days_from_beginning )
     assert( os.path.isdir( dirname ) )
-    assert( days_from_beginning >= 0 )
-    assert( days_from_beginning <= inc_data[ 'last day' ] )
+    #assert(all(filter(lambda day: day >= 0, days_from_beginning ) ) )
+    #assert(all(filter(lambda day: day <= inc_data[ 'last day' ], days_from_beginning ) ) )
     assert( maxnum_colorbar > 1 )
     fig = Figure( )
     ax_deaths = fig.add_subplot(111)
     #
     ## first plot, get correct width multiplication
+    sorted_days = sorted( set( days_from_beginning ) )
+    first_day = min( days_from_beginning )
     plot_deaths_bycounty(
         inc_data, regionName, ax_deaths,
-        days_from_beginning = days_from_beginning, doTitle = False,
-        maxnum_colorbar = maxnum_colorbar )
+        days_from_beginning = first_day, doTitle = False,
+        maxnum_colorbar = maxnum_colorbar,
+        death_plot_artists = { } )
     ratio_width_height = ax_deaths.get_xlim( )[1] / ax_deaths.get_ylim( )[1]
     height_units = 2.0
     width_units = 1 + ratio_width_height
+    #
+    ## get collection of filenames to return
+    fnames = [ ]
     #
     ## now create a figure of correct size, just trialing and erroring it
     fig = Figure( )
@@ -324,17 +381,21 @@ def create_plots_daysfrombeginning( inc_data, regionName, prefix, days_from_begi
     ax_cd = fig.add_subplot(223)
     #
     ## now plots
+    death_plot_artists = { }
+    cases_plot_artists = { }
     plot_deaths_bycounty(
         inc_data, regionName, ax_deaths,
-        days_from_beginning = days_from_beginning, doTitle = False,
-        maxnum_colorbar = maxnum_colorbar )
+        days_from_beginning = first_day, doTitle = False,
+        maxnum_colorbar = maxnum_colorbar,
+        death_plot_artists = death_plot_artists )
     plot_cases_bycounty(
         inc_data, regionName, ax_cases,
-        days_from_beginning = days_from_beginning, doTitle = False,
-        maxnum_colorbar = maxnum_colorbar )
+        days_from_beginning = first_day, doTitle = False,
+        maxnum_colorbar = maxnum_colorbar,
+        cases_plot_artists = cases_plot_artists )
     plot_cases_deaths_region(
         inc_data, regionName, ax_cd,
-        days_from_beginning = days_from_beginning, doTitle = False )
+        days_from_beginning = first_day, doTitle = False )
     #
     ## legend plot
     df_cases_deaths_region = inc_data[ 'df' ]
@@ -350,21 +411,51 @@ def create_plots_daysfrombeginning( inc_data, regionName, prefix, days_from_begi
     ax_leg = fig.add_subplot(221)
     ax_leg.set_aspect( 1.0 )
     ax_leg.axis('off')
-    ax_leg.text(-0.1, 1.0, '\n'.join([
+    ax_leg_txt = ax_leg.text(-0.1, 1.0, '\n'.join([
         regionName,
         'First COVID-19 CASE: %s' % first_date.strftime( '%d-%m-%Y' ),
         'Latest COVID-19 CASE: %s' % last_date.strftime( '%d-%m-%Y' ),
         'Most County Cases: %d' % cases_max,
         '%s, %s' % ( cs['county'], cs['state'] ),
-        'Showing Day %d / %d' % ( days_from_beginning, inc_data[ 'last day' ] ) ]),
+        'Showing Day %d / %d' % ( first_day, inc_data[ 'last day' ] ) ]),
                 fontsize = 24, fontweight = 'bold', transform = ax_leg.transAxes,
                 horizontalalignment = 'left', verticalalignment = 'top' )
     canvas = FigureCanvasAgg( fig )
     fname = os.path.join( dirname, 'covid19_%s_%s.%04d.png' % (
-        prefix, last_date.strftime('%d%m%Y'), days_from_beginning ) )
+        prefix, last_date.strftime('%d%m%Y'), first_day ) )
     canvas.print_figure( fname, bbox_inches = 'tight' )
     autocrop_image.autocrop_image( fname, fixEven = True )
-    return fname
+    fnames.append( fname )
+    #
+    ## now do for the remaining days
+    for day in sorted_days[1:]:
+        plot_deaths_bycounty(
+            inc_data, regionName, ax_deaths,
+            days_from_beginning = day, doTitle = False,
+            maxnum_colorbar = maxnum_colorbar,
+            death_plot_artists = death_plot_artists )
+        plot_cases_bycounty(
+            inc_data, regionName, ax_cases,
+            days_from_beginning = day, doTitle = False,
+            maxnum_colorbar = maxnum_colorbar,
+            cases_plot_artists = cases_plot_artists )
+        plot_cases_deaths_region(
+            inc_data, regionName, ax_cd,
+            days_from_beginning = day, doTitle = False )
+        ax_leg_txt.set_text( '\n'.join([
+            regionName,
+            'First COVID-19 CASE: %s' % first_date.strftime( '%d-%m-%Y' ),
+            'Latest COVID-19 CASE: %s' % last_date.strftime( '%d-%m-%Y' ),
+            'Most County Cases: %d' % cases_max,
+            '%s, %s' % ( cs['county'], cs['state'] ),
+            'Showing Day %d / %d' % ( day, inc_data[ 'last day' ] ) ]) )
+        canvas = FigureCanvasAgg( fig )
+        fname = os.path.join( dirname, 'covid19_%s_%s.%04d.png' % (
+            prefix, last_date.strftime('%d%m%Y'), day ) )
+        canvas.print_figure( fname, bbox_inches = 'tight' )
+        autocrop_image.autocrop_image( fname, fixEven = True )
+        fnames.append( fname )
+    return fnames
 
 def create_summary_movie_frombeginning(
     data = core.get_msa_data( 'bayarea' ),
@@ -384,29 +475,28 @@ def create_summary_movie_frombeginning(
     inc_data = core.get_incident_data( data )
     #
     all_days_from_begin = list(range(inc_data['last day'] + 1 ) )
-    m = Manager( )
-    lck = m.Lock( )
-    lst = m.list( )
     def myfunc( input_tuple ):
-        days_from_beginning, time00 = input_tuple
-        fname = create_plots_daysfrombeginning(
+        days_collection, time00 = input_tuple
+        fnames = create_plots_daysfrombeginning(
             inc_data, regionName, dirname = dirname,
-            days_from_beginning = days_from_beginning, prefix = prefix,
+            days_from_beginning = days_collection, prefix = prefix,
             maxnum_colorbar = maxnum_colorbar )
-        lck.acquire( )
-        lst.append( fname )
-        if len( lst ) % 10 == 0 and len( lst ) != 0:
-            print( 'took %0.3f seconds to process %d / %d days.' % (
-                time.time( ) - time00,
-                len( lst ), len( all_days_from_begin ) ) )
-        lck.release( )
-        return fname
+        print( 'took %0.3f seconds to process %d of %d days.' % (
+            time.time( ) - time00,
+            len( fnames ), len( all_days_from_begin ) ) )
+        return fnames
     #
     ## first make all the plots
     time0 = time.time( )
     with multiprocessing.Pool( processes = multiprocessing.cpu_count( ) ) as pool:
-        input_tuples = list(zip( all_days_from_begin, [ time0 ] * len( all_days_from_begin ) ) )
-        allfiles = sorted(pool.map( myfunc, input_tuples ) )
+        numprocs = multiprocessing.cpu_count( )
+        input_tuples = list(zip(map(lambda idx: all_days_from_begin[idx::numprocs], range(numprocs)),
+                                [ time0 ] * numprocs ) )
+        for tup in input_tuples:
+            days_collection, _ = tup
+            if any(filter(lambda day: day < 0, days_collection ) ):
+                print( 'error days collection: %s.' % days_collection )
+        allfiles = sorted(chain.from_iterable( pool.map( myfunc, input_tuples ) ) )
     print( 'took %0.3f seconds to process all %d days.' % (
         time.time( ) - time0, len( all_days_from_begin ) ) )
     #
