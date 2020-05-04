@@ -86,7 +86,7 @@ Here is some output from using this COVID-19 tracker.
 	| NYC Metro                                                       | Los Angeles                                                        | New Orleans                                                        |
 
 
-* <a id="gif-animations"></a>GIF'd video animations of the COVID-19 trends in cases/deaths for NYC, Chicago, and Seattle up to 24 APRIL 2020.
+* <a id="gif-animations"></a>GIF'd video animations of the COVID-19 trends in cases/deaths for NYC, Chicago, and Seattle up to 2 MAY 2020.
 
 	| | | |
 	|:---------------------------------------------------------------:|:------------------------------------------------------------------:|:------------------------------------------------------------------:|
