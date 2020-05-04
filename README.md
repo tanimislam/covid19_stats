@@ -91,10 +91,7 @@ Here is some output from using this COVID-19 tracker.
 	| | | |
 	|:---------------------------------------------------------------:|:------------------------------------------------------------------:|:------------------------------------------------------------------:|
 	| <img width=100% src="figures/covid19_nyc_latest.gif">         | <img width=100% src="figures/covid19_chicago_latest.gif">        | <img width=100% src="figures/covid19_seattle_latest.gif">        | 
-	| NYC Metro                                                       | Chicago                                                            | Seattle                                                            |
-	|:---------------------------------------------------------------:|:------------------------------------------------------------------:|:------------------------------------------------------------------:|
-	| <img width=100% src="figures/covid19_nyc_latest.gif">         | <img width=100% src="figures/covid19_chicago_latest.gif">        | <img width=100% src="figures/covid19_seattle_latest.gif">        | 
-	| NYC Metro                                                       | Chicago                                                            | Seattle                                                            |
+	| NYC Metro                                                       | Chicago                                                            | Seattle                                                         |
 
 The remainder of this README has two sections: [*GETTING STARTED*](#getting-started) and [*USING THE CLI*](#using-cli).
 
