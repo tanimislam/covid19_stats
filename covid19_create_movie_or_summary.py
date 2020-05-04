@@ -39,7 +39,7 @@ def _try_continue( ):
 
 def main( ):
   parser = ArgumentParser( )
-  subparsers = parser.add_subparsers( help = 'Choose either showing list of metros, or make a movie of a metro region', dest = 'choose_option' )
+  subparsers = parser.add_subparsers( help = 'Choose one of three options: (M) summarizes stats from metros; (m) make a movie of a metro region; and (s) dumps summary plots of last incident date, and cumulative covid-19 stats, of a metro region.', dest = 'choose_option' )
   parser_showmetros = subparsers.add_parser( 'M', help = 'If chosen, then list all the metropolitan areas through which we can look.' )
   parser_showmetros.add_argument( '-f', '--format', help = 'Format of the table that displays MSA summary. Default is "simple".',
                                   type=str, action='store', choices = [ 'simple', 'github', 'rst' ], default = 'simple' )
