@@ -25,7 +25,7 @@ def my_colorbar( mappable, ax, **kwargs ):
     cbar = fig.colorbar(mappable, cax=cax, **kwargs)
     return cbar
 
-def create_and_draw_basemap( ax, bbox, resolution = 'i' ):
+def create_and_draw_basemap( ax, bbox, resolution = 'i', river_linewidth = 5, river_alpha = 0.3 ):
     min_lng, min_lat, max_lng, max_lat = bbox
     lng_center = 0.5 * ( min_lng + max_lng )
     lat_center = 0.5 * ( min_lat + max_lat )
@@ -48,12 +48,13 @@ def create_and_draw_basemap( ax, bbox, resolution = 'i' ):
     #
     ## create a "blue" with alpha = 0.3, and is the first blue color when plotting
     cblue = list( to_rgba( '#1f77b4' ) )
-    cblue[-1] = 0.3
-    m.drawrivers( linewidth = 5, color = cblue )
+    cblue[-1] = river_alpha
+    m.drawrivers( linewidth = river_linewidth, color = cblue )
     m.fillcontinents( lake_color = cblue, color = 'white' )
     return m
 
-def create_and_draw_basemap_smarter( ax, boundary_dict, resolution = 'i', scaling = 1.3 ):
+def create_and_draw_basemap_smarter( ax, boundary_dict, resolution = 'i', scaling = 1.3,
+                                    river_linewidth = 5, river_alpha = 0.3 ):
     #
     ## smarter than create_and_draw_basemap, because here we solve for the basemap with the lat/lng deltas
     ## that encompass ALL the boundary points of FIPS counties
@@ -81,8 +82,8 @@ def create_and_draw_basemap_smarter( ax, boundary_dict, resolution = 'i', scalin
     #
     ## create a "blue" with alpha = 0.3, and is the first blue color when plotting
     cblue = list( to_rgba( '#1f77b4' ) )
-    cblue[-1] = 0.3
-    m.drawrivers( linewidth = 5, color = cblue )
+    cblue[-1] = river_alpha
+    m.drawrivers( linewidth = river_linewidth, color = cblue )
     m.fillcontinents( lake_color = cblue, color = 'white' )
     return m
     
@@ -250,7 +251,9 @@ def plot_cases_or_deaths_bycounty(
     if 'isBaseMapped' not in plot_artists:
         if not doSmarter:
             m = create_and_draw_basemap( ax, inc_data[ 'bbox' ], resolution = resolution )
-        else: m = create_and_draw_basemap_smarter( ax, inc_data[ 'boundaries' ], resolution = resolution )
+        else: m = create_and_draw_basemap_smarter(
+            ax, inc_data[ 'boundaries' ],
+            resolution = resolution, river_linewidth = 1.0, river_alpha = 0.15 )
         plot_artists[ 'isBaseMapped' ] = m
         plot_artists[ 'sm' ] = ScalarMappable( norm = LogNorm( 1.0, maxnum_colorbar ), cmap = 'jet' )
     #
