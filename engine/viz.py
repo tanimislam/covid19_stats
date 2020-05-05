@@ -25,7 +25,8 @@ def my_colorbar( mappable, ax, **kwargs ):
     cbar = fig.colorbar(mappable, cax=cax, **kwargs)
     return cbar
 
-def create_and_draw_basemap( ax, bbox, resolution = 'i', river_linewidth = 5, river_alpha = 0.3 ):
+def create_and_draw_basemap( ax, bbox, resolution = 'i', river_linewidth = 5, river_alpha = 0.3,
+                            coast_linewidth = 2, coast_alpha = 0.4 ):
     min_lng, min_lat, max_lng, max_lat = bbox
     lng_center = 0.5 * ( min_lng + max_lng )
     lat_center = 0.5 * ( min_lat + max_lat )
@@ -42,8 +43,8 @@ def create_and_draw_basemap( ax, bbox, resolution = 'i', river_linewidth = 5, ri
     ## create a "black" with alpha = 0.4
     try:
         cblack = list( to_rgba( 'black' ) )
-        cblack[-1] = 0.4
-        m.drawcoastlines( linewidth = 2, color = cblack )
+        cblack[-1] = coast_alpha
+        m.drawcoastlines( linewidth = coast_linewidth, color = cblack )
     except: pass
     #
     ## create a "blue" with alpha = 0.3, and is the first blue color when plotting
@@ -54,7 +55,8 @@ def create_and_draw_basemap( ax, bbox, resolution = 'i', river_linewidth = 5, ri
     return m
 
 def create_and_draw_basemap_smarter( ax, boundary_dict, resolution = 'i', scaling = 1.3,
-                                    river_linewidth = 5, river_alpha = 0.3 ):
+                                    river_linewidth = 5, river_alpha = 0.3 ,
+                                    coast_linewidth = 2, coast_alpha = 0.4):
     #
     ## smarter than create_and_draw_basemap, because here we solve for the basemap with the lat/lng deltas
     ## that encompass ALL the boundary points of FIPS counties
@@ -253,7 +255,8 @@ def plot_cases_or_deaths_bycounty(
             m = create_and_draw_basemap( ax, inc_data[ 'bbox' ], resolution = resolution )
         else: m = create_and_draw_basemap_smarter(
             ax, inc_data[ 'boundaries' ],
-            resolution = resolution, river_linewidth = 1.0, river_alpha = 0.15 )
+            resolution = resolution, river_linewidth = 1.0, river_alpha = 0.15,
+            coast_linewidth = 1.0, coast_alpha = 0.25 )
         plot_artists[ 'isBaseMapped' ] = m
         plot_artists[ 'sm' ] = ScalarMappable( norm = LogNorm( 1.0, maxnum_colorbar ), cmap = 'jet' )
     #
