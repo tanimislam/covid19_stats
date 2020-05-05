@@ -40,7 +40,7 @@ def create_and_draw_basemap( ax, bbox, resolution = 'i', river_linewidth = 5, ri
     m.drawparallels(numpy.arange(min_lat, max_lat, lat_delta / 1.5 ), labels = [1,0,0,1] )
     m.drawmeridians(numpy.arange(min_lng, max_lng, lng_delta / 1.5 ), labels = [1,0,0,1] )
     #
-    ## create a "black" with alpha = 0.4
+    ## create a "black" with alpha = coast_alpha
     try:
         cblack = list( to_rgba( 'black' ) )
         cblack[-1] = coast_alpha
@@ -78,8 +78,8 @@ def create_and_draw_basemap_smarter( ax, boundary_dict, resolution = 'i', scalin
     ## create a "black" with alpha = 0.4
     try:
         cblack = list( to_rgba( 'black' ) )
-        cblack[-1] = 0.4
-        m.drawcoastlines( linewidth = 2, color = cblack )
+        cblack[-1] = coast_alpha
+        m.drawcoastlines( linewidth = coast_linewidth, color = cblack )
     except: pass
     #
     ## create a "blue" with alpha = 0.3, and is the first blue color when plotting
