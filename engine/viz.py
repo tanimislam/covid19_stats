@@ -474,7 +474,7 @@ def create_plots_daysfrombeginning( inc_data, regionName, prefix, days_from_begi
         regionName,
         'First COVID-19 CASE: %s' % first_date.strftime( '%d-%m-%Y' ),
         'Latest COVID-19 CASE: %s' % last_date.strftime( '%d-%m-%Y' ),
-        'Most County Cases: %s' % get_string_commas( cases_max ),
+        'Most County Cases: %s' % get_string_commas_num( cases_max ),
         '%s, %s' % ( cs['county'], cs['state'] ),
         'Showing Day %d / %d' % ( first_day, inc_data[ 'last day' ] ) ]),
                 fontsize = 24, fontweight = 'bold', transform = ax_leg.transAxes,
