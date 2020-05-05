@@ -90,8 +90,15 @@ Here is some output from using this COVID-19 tracker.
 
 	| | | |
 	|:---------------------------------------------------------------:|:------------------------------------------------------------------:|:------------------------------------------------------------------:|
-	| <img width=100% src="figures/covid19_nyc_latest.gif">         | <img width=100% src="figures/covid19_chicago_latest.gif">        | <img width=100% src="figures/covid19_seattle_latest.gif">        | 
-	| NYC Metro                                                       | Chicago                                                            | Seattle                                                         |
+	| <img width=100% src="figures/covid19_nyc_latest.gif">           | <img width=100% src="figures/covid19_chicago_latest.gif">          | <img width=100% src="figures/covid19_seattle_latest.gif">          | 
+	| NYC Metro                                                       | Chicago                                                            | Seattle                                                            |
+
+  And here is the animation for the continental United States, up to 4 MAY 2020.
+  
+    | |
+	|:--------------------------------------------------------:|
+	| <img width=100% src="figures/covid19_conus_latest.gif">  |
+	| Continental United States
 
 The remainder of this README has two sections: [*GETTING STARTED*](#getting-started) and [*USING THE CLI*](#using-cli).
 
