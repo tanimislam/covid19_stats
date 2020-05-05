@@ -113,14 +113,15 @@ _fips_missing_2019 = set( fips_msas_2019 ) - set(
     map(lambda entry: entry['fips'], all_counties_nytimes_covid19_data ) )
 _fips_five_boroughs = _fips_missing_2019 & data_msas_2019['nyc']['fips']
 #
-fips_data_2018[ '00001' ] = create_nyc_custom_fips(
+nyc_fips = '00001'
+fips_data_2018[ nyc_fips ] = create_nyc_custom_fips(
     get_boundary_dict( _fips_five_boroughs ) )
 ## DELETE
 for fips in _fips_five_boroughs: fips_data_2018.pop( fips )
 #
-fips_countystate_dict[ '00001' ] = { 'county' : 'New York City', 'state' : 'New York' }
+fips_countystate_dict[ nyc_fips ] = { 'county' : 'New York City', 'state' : 'New York' }
 #
-cs_fips_dict[ ( 'New York City', 'New York' ) ] = '00001'
+cs_fips_dict[ ( 'New York City', 'New York' ) ] = nyc_fips
 ## DELETE FIRST THEN SECOND
 for cs_found in map(lambda fips: fips_countystate_dict[ fips ], _fips_five_boroughs ):
     tup = ( cs_found[ 'county' ], cs_found[ 'state' ] )
@@ -129,12 +130,35 @@ for fips in _fips_five_boroughs: fips_countystate_dict.pop( fips )
 #
 ## AND DELETE??
 oldfips = data_msas_2019[ 'nyc' ][ 'fips' ].copy( )
-data_msas_2019[ 'nyc' ][ 'fips' ] = set(list( oldfips ) + [ '00001' ] ) - _fips_five_boroughs
+data_msas_2019[ 'nyc' ][ 'fips' ] = set(list( oldfips ) + [ nyc_fips ] ) - _fips_five_boroughs
 #
-fips_msas_2019[ '00001' ] = 'nyc'
+fips_msas_2019[ nyc_fips ] = 'nyc'
 ## DELETE
 for fips in _fips_five_boroughs: fips_msas_2019.pop( fips )
 
+#
+## now data by states and by CONUS (continental US)
+## will refactor so that later on it will live in engine.gis
+## however, because right now because of NYC definition,
+## and violence done to LOTS of GIS data, move it here AFTER violence
+_conus_states = set( map(lambda elem: elem['state'], fips_countystate_dict.values( ) ) ) - set([
+    'Alaska', 'Hawaii', 'Puerto Rico' ] )
+data_conus = {
+    'RNAME' : 'CONUS',
+    'region name' : 'CONUS',
+    'prefix' : 'conus',
+    'fips' : list(filter(lambda fips: fips_countystate_dict[ fips ][ 'state' ] in 
+                         _conus_states, fips_countystate_dict)),
+    'population' : int( 320e6) }
+#
+## now do data for all states
+data_states = { '_'.join( state.lower( ).split()) : {
+    'RNAME' : state,
+    'region name' : state,
+    'prefix' : '_'.join( state.lower().split()),
+    'fips' : list(filter(lambda fips: fips_countystate_dict[ fips ][ 'state' ] == state,
+                         fips_countystate_dict)) } for
+               state in _conus_states }
 
 #
 ## now stuff associated with the fips : county/state mapping
