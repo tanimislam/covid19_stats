@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import os, sys, numpy, tempfile, warnings, tabulate
-from engine import core, viz, get_string_commas_num
+from engine import core, viz, get_string_commas_num, find_plausible_maxnum
 from argparse import ArgumentParser
 
 #
