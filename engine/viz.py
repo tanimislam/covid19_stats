@@ -1,4 +1,4 @@
-import os, sys, numpy, titlecase, time
+import os, sys, numpy, titlecase, time, pandas
 import subprocess, tempfile, shutil, datetime
 import pathos.multiprocessing as multiprocessing
 from itertools import chain
@@ -52,6 +52,110 @@ def create_and_draw_basemap( ax, bbox, resolution = 'i' ):
     m.drawrivers( linewidth = 5, color = cblue )
     m.fillcontinents( lake_color = cblue, color = 'white' )
     return m
+
+def create_and_draw_basemap_smarter( ax, boundary_dict, resolution = 'i', scaling = 1.3 ):
+    #
+    ## smarter than create_and_draw_basemap, because here we solve for the basemap with the lat/lng deltas
+    ## that encompass ALL the boundary points of FIPS counties
+    proj_dat = determine_corners_center_stereo( boundary_dict, scaling = scaling )
+    m = Basemap(
+        projection = 'stere', lon_0 = proj_dat['lng_cent'], lat_0 = proj_dat['lat_cent'],
+        llcrnrlat = proj_dat['lat_min'], urcrnrlat = proj_dat[ 'lat_max' ],
+        llcrnrlon = proj_dat['lng_min'], urcrnrlon = proj_dat[ 'lng_max' ],
+        resolution = resolution, area_thresh = 1.0, ellps = 'WGS84', ax = ax )
+    max_lat = proj_dat[ 'lat_max' ]
+    min_lat = proj_dat[ 'lat_min' ]
+    lat_delta = 0.5 * ( max_lat - min_lat )
+    max_lng = proj_dat[ 'lng_max' ]
+    min_lng = proj_dat[ 'lng_min' ]
+    lng_delta = 0.5 * ( max_lng - min_lng )
+    m.drawparallels(numpy.arange(min_lat, max_lat, lat_delta / 1.5 ), labels = [1,0,0,1] )
+    m.drawmeridians(numpy.arange(min_lng, max_lng, lng_delta / 1.5 ), labels = [1,0,0,1] )
+    #
+    ## create a "black" with alpha = 0.4
+    try:
+        cblack = list( to_rgba( 'black' ) )
+        cblack[-1] = 0.4
+        m.drawcoastlines( linewidth = 2, color = cblack )
+    except: pass
+    #
+    ## create a "blue" with alpha = 0.3, and is the first blue color when plotting
+    cblue = list( to_rgba( '#1f77b4' ) )
+    cblue[-1] = 0.3
+    m.drawrivers( linewidth = 5, color = cblue )
+    m.fillcontinents( lake_color = cblue, color = 'white' )
+    return m
+    
+def determine_corners_center_stereo( boundary_dict, scaling = 1.0 ):
+    import scipy.optimize
+    all_latlngs = numpy.concatenate( list(chain.from_iterable( boundary_dict.values( ) ) ), axis = 0 )
+    phis = numpy.radians( all_latlngs[:,0] )
+    thets = numpy.pi / 2 - numpy.radians( all_latlngs[:,1])
+    v_z = numpy.array([
+        numpy.mean( numpy.cos( phis ) * numpy.sin( thets ) ),
+        numpy.mean( numpy.sin( phis ) * numpy.sin( thets ) ),
+        numpy.mean( numpy.cos( thets ) ) ])
+    v_z = v_z / numpy.linalg.norm( v_z )
+    cand_phi = numpy.arctan2( v_z[1], v_z[0] )
+    cand_thet= numpy.arccos( v_z[2] )
+    #
+    def penalty_centroid( thet, phi ):
+        v_z = numpy.array([ numpy.cos( phi ) * numpy.sin( thet ), numpy.sin( phi ) * numpy.sin( thet ), numpy.cos( thet ) ] )
+        v_y = numpy.array([ -numpy.cos( phi ) * numpy.cos( thet ), -numpy.sin( phi ) * numpy.cos( thet ), numpy.sin( thet ) ] )
+        v_x = numpy.array([ -numpy.sin( phi ), numpy.cos( phi ), 0 ])
+        v_z = v_z / numpy.linalg.norm( v_z )
+        v_y = v_y / numpy.linalg.norm( v_y )
+        v_x = v_x / numpy.linalg.norm( v_x )
+        #
+        ## position on unit sphere, +Y true north, +X true east
+        zvals = numpy.cos( phis ) * numpy.sin( thets ) * v_z[0] + numpy.sin( phis ) * numpy.sin( thets ) * v_z[1] + numpy.cos( thets ) * v_z[2]
+        xvals = numpy.cos( phis ) * numpy.sin( thets ) * v_x[0] + numpy.sin( phis ) * numpy.sin( thets ) * v_x[1] + numpy.cos( thets ) * v_x[2]
+        yvals = numpy.cos( phis ) * numpy.sin( thets ) * v_y[0] + numpy.sin( phis ) * numpy.sin( thets ) * v_y[1] + numpy.cos( thets ) * v_y[2]
+        #
+        ## stereoproj
+        Xvs = xvals / zvals
+        Yvs = yvals / zvals
+        pen_x = 0.5 * ( Xvs.max( ) + Xvs.min( ) )
+        pen_y = 0.5 * ( Yvs.max( ) + Yvs.min( ) )
+        return pen_x**2 + pen_y**2
+
+    thet, phi = scipy.optimize.fmin(lambda vec: penalty_centroid( vec[0], vec[1] ), [ cand_thet, cand_phi ], disp = False )
+    #
+    ## central latlngs?
+    lat_cent = 90.0 - numpy.degrees( thet )
+    lng_cent = numpy.degrees( phi )
+    #
+    ## now determine the dataframe for stereographic projections
+    df_latlng_stereos = pandas.DataFrame({ 'lat' : all_latlngs[:,1], 'lng' : all_latlngs[:,0] })
+    #
+    ## now stereo proj
+    v_z = numpy.array([ numpy.cos( phi ) * numpy.sin( thet ), numpy.sin( phi ) * numpy.sin( thet ), numpy.cos( thet ) ] )
+    v_y = numpy.array([ -numpy.cos( phi ) * numpy.cos( thet ), -numpy.sin( phi ) * numpy.cos( thet ), numpy.sin( thet ) ] )
+    v_x = numpy.array([ -numpy.sin( phi ), numpy.cos( phi ), 0 ])
+    v_z = v_z / numpy.linalg.norm( v_z )
+    v_y = v_y / numpy.linalg.norm( v_y )
+    v_x = v_x / numpy.linalg.norm( v_x )
+    #
+    ## position on unit sphere, +Y true north, +X true east
+    zvals = numpy.cos( phis ) * numpy.sin( thets ) * v_z[0] + numpy.sin( phis ) * numpy.sin( thets ) * v_z[1] + numpy.cos( thets ) * v_z[2]
+    xvals = numpy.cos( phis ) * numpy.sin( thets ) * v_x[0] + numpy.sin( phis ) * numpy.sin( thets ) * v_x[1] + numpy.cos( thets ) * v_x[2]
+    yvals = numpy.cos( phis ) * numpy.sin( thets ) * v_y[0] + numpy.sin( phis ) * numpy.sin( thets ) * v_y[1] + numpy.cos( thets ) * v_y[2]
+    #
+    ## stereoproj
+    Xvs = xvals / zvals
+    Yvs = yvals / zvals
+    df_latlng_stereos[ 'Xvs' ] = Xvs
+    df_latlng_stereos[ 'Yvs' ] = Yvs
+    lng_max = df_latlng_stereos[ df_latlng_stereos.Xvs == df_latlng_stereos.Xvs.max( ) ].lng.max( )
+    lng_min = df_latlng_stereos[ df_latlng_stereos.Xvs == df_latlng_stereos.Xvs.min( ) ].lng.min( )
+    lat_max = df_latlng_stereos[ df_latlng_stereos.Yvs == df_latlng_stereos.Yvs.max( ) ].lat.max( )
+    lat_min = df_latlng_stereos[ df_latlng_stereos.Yvs == df_latlng_stereos.Yvs.min( ) ].lat.min( )
+    return {
+        'lat_cent' : lat_cent, 'lng_cent' : lng_cent,
+        'lat_min' : lat_cent + scaling * ( lat_min - lat_cent ),
+        'lat_max' : lat_cent + scaling * ( lat_max - lat_cent ),
+        'lng_min' : lng_cent + scaling * ( lng_min - lng_cent ),
+        'lng_max' : lng_cent + scaling * ( lng_max - lng_cent ) }
 
 def display_fips_geom( fips_data ):
     import pylab
@@ -128,145 +232,94 @@ def display_msa( msaname, doShow = False ):
         autocrop_image.autocrop_image( 'msa_%s_counties.png' % msaname )
     else: pylab.show( )
     
-def plot_cases_bycounty(
-    inc_data, regionName, ax, days_from_beginning = 0,
-    maxnum_colorbar = 5000.0, doTitle = True, cases_plot_artists = { } ):
+def plot_cases_or_deaths_bycounty(
+    inc_data, regionName, ax, type_disp = 'cases', days_from_beginning = 0, resolution = 'h',
+    maxnum_colorbar = 5000.0, doTitle = True, plot_artists = { },
+    poly_line_width = 1.0, doSmarter = False ):
+    assert( resolution in ( 'c', 'l', 'i', 'h', 'f' ) )
+    assert( type_disp in ( 'cases', 'deaths' ) )
     assert( days_from_beginning >= 0 )
     assert( days_from_beginning <= inc_data[ 'last day' ] )
     assert( maxnum_colorbar > 1 )
+    if type_disp == 'cases':
+        key = 'cases'
+    elif type_disp == 'deaths':
+        key = 'death'
     #
     ## NOW CREATE BASEMAP HIGH REZ
-    if 'isBaseMapped' not in cases_plot_artists:
-        m = create_and_draw_basemap( ax, inc_data[ 'bbox' ], resolution = 'h' )
-        cases_plot_artists[ 'isBaseMapped' ] = m
-        cases_plot_artists[ 'sm' ] = ScalarMappable( norm = LogNorm( 1.0, maxnum_colorbar ), cmap = 'jet' )
+    if 'isBaseMapped' not in plot_artists:
+        if not doSmarter:
+            m = create_and_draw_basemap( ax, inc_data[ 'bbox' ], resolution = resolution )
+        else: m = create_and_draw_basemap_smarter( ax, inc_data[ 'boundaries' ], resolution = resolution )
+        plot_artists[ 'isBaseMapped' ] = m
+        plot_artists[ 'sm' ] = ScalarMappable( norm = LogNorm( 1.0, maxnum_colorbar ), cmap = 'jet' )
     #
     ## draw boundaries if not defined
     boundaries = inc_data['boundaries']
     df_dfm = inc_data['df'][ inc_data['df']['days_from_beginning'] == days_from_beginning ].copy( )
-    sm = cases_plot_artists[ 'sm' ]
+    sm = plot_artists[ 'sm' ]
     for fips in sorted( boundaries ):
-        num_cases = df_dfm['cases_%s' % fips].max( )
-        fc = sm.to_rgba( num_cases )
-        if num_cases == 0: fc = ( 1.0, 1.0, 1.0, 0.0 )
-        if 'cases_polys_%s' % fips not in cases_plot_artists:
-            cases_plot_artists.setdefault( 'cases_polys_%s' % fips, [] )
+        nums = df_dfm['%s_%s' % ( type_disp, fips )].max( )
+        fc = sm.to_rgba( nums )
+        if nums == 0: fc = ( 1.0, 1.0, 1.0, 0.0 )
+        art_key = '%s_polys_%s' % ( key, fips )
+        if art_key not in plot_artists:
+            plot_artists.setdefault( art_key, [ ] )
             for shape in boundaries[ fips ]:
                 x, y = m( shape[:,0], shape[:,1] )
                 poly = Polygon(
                     numpy.array([ x, y ]).T, closed = True,
-                    edgecolor = 'k', linewidth = 1.0, linestyle = 'dashed',
+                    linewidth = poly_line_width, linestyle = 'dashed',
                     facecolor = fc, alpha = 0.4 )
                 ax.add_patch( poly )
-                cases_plot_artists[ 'cases_polys_%s' % fips ].append( poly )
+                plot_artists[ art_key ].append( poly )
         else:
-            for poly in cases_plot_artists[ 'cases_polys_%s' % fips ]:
+            for poly in plot_artists[ art_key ]:
                 poly.set_facecolor( fc )
                 poly.set_alpha( 0.4 )
     
     #
     ## now add the colorbar associated with sm
     #cb = fig.colorbar( sm, ax = ax, alpha = 0.8 )
-    if 'cb' not in cases_plot_artists:        
+    if 'cb' not in plot_artists:        
         cb = my_colorbar( sm, ax, alpha = 0.8 )
         cb.set_label( 'number of cases', fontsize = 18, fontweight = 'bold' )
-        cases_plot_artists[ 'cb' ] = cb
+        plot_artists[ 'cb' ] = cb
     #
     ## now put in the legend in upper left corner, fontsize = 14, weight = bold
     ## following info: date, days after beginning, number of cases
     date_s = df_dfm.date.max().strftime( '%d %B %Y' )
-    num_cases = df_dfm.cases.max( )
-    if 'cases_text' not in cases_plot_artists:
+    num_tot = df_dfm[ key ].max( )
+    if '%s_text' % key not in plot_artists:
         txt = ax.text(
             0.01, 0.02, '\n'.join([
                 '%s' % date_s,
                 '%d days from 1st case' % days_from_beginning,
-                '%s cumulative cases' % get_string_commas_num( num_cases ) ]),
+                '%s cumulative %s' % ( type_disp, get_string_commas_num( num_tot ) ) ]),
             color = ( 0.0, 0.0, 0.0, 0.8 ),
             fontsize = 18, fontweight = 'bold', transform = ax.transAxes,
             horizontalalignment = 'left', verticalalignment = 'bottom' )
-        cases_plot_artists[ 'cases_text' ] = txt
+        plot_artists[ '%s_text' % key ] = txt
     else:
-        cases_plot_artists[ 'cases_text' ].set_text('\n'.join([
+        plot_artists[ '%s_text' % key ].set_text('\n'.join([
             '%s' % date_s,
             '%d days from 1st case' % days_from_beginning,
-            '%s cumulative cases' % get_string_commas_num( num_cases ) ] ) )
+            '%s cumulative %s' % ( type_disp, get_string_commas_num( num_tot ) ) ] ) )
             
     if doTitle:
         ax.set_title( '\n'.join([
-            'Cumulative number of COVID-19 cases',
+            'Cumulative number of COVID-19 %s' % type_disp,
             'in %s after %d / %d days from start' % ( regionName, days_from_beginning, inc_data[ 'last day'] ) ] ),
-                    fontsize = 18, fontweight = 'bold' )
-
-def plot_deaths_bycounty(
-    inc_data, regionName, ax, days_from_beginning = 0,
-    maxnum_colorbar = 5000.0, doTitle = True, death_plot_artists = { } ):
-    assert( days_from_beginning >= 0 )
-    assert( days_from_beginning <= inc_data[ 'last day' ] )
-    assert( maxnum_colorbar > 1 )
-    #
-    ## NOW CREATE BASEMAPS
-    if 'isBaseMapped' not in death_plot_artists:
-        m = create_and_draw_basemap( ax, inc_data[ 'bbox' ], resolution = 'h' )
-        death_plot_artists[ 'isBaseMapped' ] = m
-        death_plot_artists[ 'sm' ] = ScalarMappable( norm = LogNorm( 1.0, maxnum_colorbar ), cmap = 'jet' )
-    boundaries = inc_data['boundaries']
-    df_dfm = inc_data['df'][ inc_data['df']['days_from_beginning'] == days_from_beginning ].copy( )
-    sm = death_plot_artists[ 'sm' ]
-    for fips in sorted( boundaries ):
-        num_deaths = df_dfm['deaths_%s' % fips].max( )
-        fc = sm.to_rgba( num_deaths )
-        if num_deaths == 0: fc = ( 1.0, 1.0, 1.0, 0.0 )
-        if 'death_polys_%s' % fips not in death_plot_artists:
-            death_plot_artists.setdefault( 'death_polys_%s' % fips, [ ] )
-            for shape in boundaries[ fips ]:
-                x, y = m( shape[:,0], shape[:,1] )
-                poly = Polygon(
-                    numpy.array([ x, y ]).T, closed = True,
-                    edgecolor = 'k', linewidth = 1.0, linestyle = 'dashed',
-                    facecolor = fc, alpha = 0.4 )
-                ax.add_patch( poly )
-                death_plot_artists[ 'death_polys_%s' % fips ].append( poly )
-        else:
-            for poly in death_plot_artists[ 'death_polys_%s' % fips ]:
-                poly.set_facecolor( fc )
-                poly.set_alpha( 0.4 )
-    #
-    ## now add the colorbar associated with sm
-    if 'cb' not in death_plot_artists:
-        cb = my_colorbar( sm, ax, alpha = 0.8 )
-        cb.set_label( 'number of deaths', fontsize = 18, fontweight = 'bold' )
-        death_plot_artists[ 'cb' ] = cb
-    #
-    ## now put in the legend in upper left corner, fontsize = 14, weight = bold
-    ## following info: date, days after beginning, number of cases
-    date_s = df_dfm.date.max().strftime( '%d %B %Y' )
-    num_deaths = df_dfm.death.max( )
-    if 'death_text' not in death_plot_artists:
-        txt = ax.text(
-            0.01, 0.02, '\n'.join([
-                '%s' % date_s,
-                '%d days from 1st case' % days_from_beginning,
-                '%s cumulative deaths' % get_string_commas_num( num_deaths ) ]),
-            color = ( 0.0, 0.0, 0.0, 0.8 ),
-            fontsize = 18, fontweight = 'bold', transform = ax.transAxes,
-            horizontalalignment = 'left', verticalalignment = 'bottom' )
-        death_plot_artists[ 'death_text' ] = txt
-    else:
-        death_plot_artists[ 'death_text' ].set_text('\n'.join([
-             '%s' % date_s,
-                '%d days from 1st case' % days_from_beginning,
-                '%s cumulative deaths' % get_string_commas_num( num_deaths ) ] ) )
-    if doTitle:
-        ax.set_title( '\n'.join([
-            'Cumulative number of COVID-19 deaths',
-            'in %s after %d / %d days from start' % ( regionName, days_from_beginning, inc_data[ 'last day' ] ) ] ),
                     fontsize = 18, fontweight = 'bold' )
 
 def plot_cases_deaths_region( inc_data, regionName, ax, days_from_beginning = 0, doTitle = True ):
     assert( days_from_beginning >= 0 )
     assert( days_from_beginning <= inc_data[ 'last day' ] )
-    df_cases_deaths_region = inc_data[ 'df' ]
+    df_cases_deaths_region = pandas.DataFrame({
+        'date' : inc_data[ 'df' ].date,
+        'cases' : inc_data[ 'df' ].cases,
+        'death' : inc_data[ 'df' ].death,
+        'days_from_beginning' : inc_data[ 'df' ].days_from_beginning } )
     ax.clear( ) # first clear everything in this axes
     #
     first_date = min( df_cases_deaths_region.date )
@@ -311,8 +364,8 @@ def plot_cases_deaths_region( inc_data, regionName, ax, days_from_beginning = 0,
     ax.lines[3].set_color( color_death )
     ax.scatter([ days_from_beginning ], [ df_dfm.cases.max( ) ], s = 100, color = color_cases )
     ax.scatter([ days_from_beginning ], [ df_dfm.death.max( ) ], s = 100, color = color_death )
-    ax.lines[0].set_label( 'cases: %d / %d' % ( num_cases, num_cases_tot ) )
-    ax.lines[1].set_label( 'death: %d / %d' % ( num_death, num_death_tot ) )
+    ax.lines[0].set_label( 'cases: %s / %s' % tuple(map(get_string_commas_num, (num_cases, num_cases_tot ) ) ) )
+    ax.lines[1].set_label( 'death: %s / %s' % tuple(map(get_string_commas_num, (num_death, num_death_tot ) ) ) )
     #
     ax.set_xlim(0.0, inc_data[ 'last day' ] )
     ax.set_ylim(1.0, 1.15 * df_cases_deaths_region.cases.max( ) )
@@ -321,7 +374,7 @@ def plot_cases_deaths_region( inc_data, regionName, ax, days_from_beginning = 0,
         'Days from First COVID-19 CASE (%s)' %
         first_date.strftime( '%d-%m-%Y' ),
         fontsize = 18, fontweight = 'bold' )
-    ax.set_ylabel( 'Cumulative Number of Cases/Deaths', fontsize = 12, fontweight = 'bold' )
+    ax.set_ylabel( 'Cumulative Number of Cases/Deaths', fontsize = 18, fontweight = 'bold' )
     if doTitle:
         ax.set_title( '\n'.join(
             [
@@ -349,23 +402,23 @@ def plot_cases_deaths_region( inc_data, regionName, ax, days_from_beginning = 0,
 
 def create_plots_daysfrombeginning( inc_data, regionName, prefix, days_from_beginning = [ 0 ],
                                    dirname = os.getcwd( ), maxnum_colorbar = 5000 ):
-    if any(filter(lambda day: day < 0, days_from_beginning ) ):
-        print( 'error days_from_beginning = %s.' % days_from_beginning )
     assert( os.path.isdir( dirname ) )
     #assert(all(filter(lambda day: day >= 0, days_from_beginning ) ) )
     #assert(all(filter(lambda day: day <= inc_data[ 'last day' ], days_from_beginning ) ) )
     assert( maxnum_colorbar > 1 )
+    doSmarter = False
+    if prefix == 'conus': doSmarter = True
     fig = Figure( )
     ax_deaths = fig.add_subplot(111)
     #
     ## first plot, get correct width multiplication
     sorted_days = sorted( set( days_from_beginning ) )
     first_day = min( days_from_beginning )
-    plot_deaths_bycounty(
-        inc_data, regionName, ax_deaths,
+    plot_cases_or_deaths_bycounty(
+        inc_data, regionName, ax_deaths, type_disp = 'deaths',
         days_from_beginning = first_day, doTitle = False,
         maxnum_colorbar = maxnum_colorbar,
-        death_plot_artists = { } )
+        plot_artists = { }, doSmarter = doSmarter )
     ratio_width_height = ax_deaths.get_xlim( )[1] / ax_deaths.get_ylim( )[1]
     height_units = 2.0
     width_units = 1 + ratio_width_height
@@ -383,16 +436,16 @@ def create_plots_daysfrombeginning( inc_data, regionName, prefix, days_from_begi
     ## now plots
     death_plot_artists = { }
     cases_plot_artists = { }
-    plot_deaths_bycounty(
-        inc_data, regionName, ax_deaths,
+    plot_cases_or_deaths_bycounty(
+        inc_data, regionName, ax_deaths, type_disp = 'deaths',
         days_from_beginning = first_day, doTitle = False,
         maxnum_colorbar = maxnum_colorbar,
-        death_plot_artists = death_plot_artists )
-    plot_cases_bycounty(
-        inc_data, regionName, ax_cases,
+        plot_artists = death_plot_artists, doSmarter = doSmarter )
+    plot_cases_or_deaths_bycounty(
+        inc_data, regionName, ax_cases, type_disp = 'cases',
         days_from_beginning = first_day, doTitle = False,
         maxnum_colorbar = maxnum_colorbar,
-        cases_plot_artists = cases_plot_artists )
+        plot_artists = cases_plot_artists, doSmarter = doSmarter )
     plot_cases_deaths_region(
         inc_data, regionName, ax_cd,
         days_from_beginning = first_day, doTitle = False )
@@ -429,16 +482,16 @@ def create_plots_daysfrombeginning( inc_data, regionName, prefix, days_from_begi
     #
     ## now do for the remaining days
     for day in sorted_days[1:]:
-        plot_deaths_bycounty(
-            inc_data, regionName, ax_deaths,
+        plot_cases_or_deaths_bycounty(
+            inc_data, regionName, ax_deaths, type_disp = 'deaths',
             days_from_beginning = day, doTitle = False,
             maxnum_colorbar = maxnum_colorbar,
-            death_plot_artists = death_plot_artists )
-        plot_cases_bycounty(
-            inc_data, regionName, ax_cases,
+            plot_artists = death_plot_artists )
+        plot_cases_or_deaths_bycounty(
+            inc_data, regionName, ax_cases, type_disp = 'cases',
             days_from_beginning = day, doTitle = False,
             maxnum_colorbar = maxnum_colorbar,
-            cases_plot_artists = cases_plot_artists )
+            plot_artists = cases_plot_artists )
         plot_cases_deaths_region(
             inc_data, regionName, ax_cd,
             days_from_beginning = day, doTitle = False )
@@ -521,7 +574,9 @@ def create_summary_movie_frombeginning(
     shutil.rmtree( dirname )
     return movie_name
 
-def get_summary_demo_data( data, maxnum_colorbar = 5000.0 ):
+def get_summary_demo_data( data = core.get_msa_data( 'bayarea' ), maxnum_colorbar = 5000.0 ):
+    doSmarter = False
+    if data[ 'prefix' ] == 'conus': doSmarter = True
     prefix = data[ 'prefix' ]
     regionName = data[ 'region name' ]
     counties_and_states = list( map( core.get_county_state, data[ 'fips' ] ) )
@@ -589,9 +644,10 @@ def get_summary_demo_data( data, maxnum_colorbar = 5000.0 ):
     fig1 = Figure( )
     ax1 = fig1.add_subplot(111)
     fig1.set_size_inches([ 12.0, 12.0 ])
-    plot_cases_bycounty(
-        inc_data, regionName, ax1, days_from_beginning = inc_data[ 'last day' ],
-        maxnum_colorbar = maxnum_colorbar, doTitle = True )
+    plot_cases_or_deaths_bycounty(
+        inc_data, regionName, ax1, type_disp = 'cases',
+        days_from_beginning = inc_data[ 'last day' ],
+        maxnum_colorbar = maxnum_colorbar, doTitle = True, doSmarter = doSmarter )
     canvas = FigureCanvasAgg( fig1 )
     file_prefix = 'covid19_%s_cases_%s' % ( prefix, last_date_str )
     canvas.print_figure( '%s.pdf' % file_prefix, bbox_inches = 'tight' )
@@ -604,9 +660,10 @@ def get_summary_demo_data( data, maxnum_colorbar = 5000.0 ):
     fig2 = Figure( )
     ax1 = fig2.add_subplot(111)
     fig2.set_size_inches([ 12.0, 12.0 ])
-    plot_deaths_bycounty(
-        inc_data, regionName, ax1, days_from_beginning = inc_data[ 'last day' ],
-        maxnum_colorbar = maxnum_colorbar, doTitle = True )
+    plot_cases_or_deaths_bycounty(
+        inc_data, regionName, ax1, type_disp = 'deaths',
+        days_from_beginning = inc_data[ 'last day' ],
+        maxnum_colorbar = maxnum_colorbar, doTitle = True, doSmarter = doSmarter )
     canvas = FigureCanvasAgg( fig2 )
     file_prefix = 'covid19_%s_death_%s' % ( prefix, last_date_str )
     canvas.print_figure( '%s.pdf' % file_prefix, bbox_inches = 'tight' )

@@ -5,10 +5,9 @@ from collections import Counter
 from itertools import chain
 from engine import mainDir
 
-_us_state_abbrev = {
+us_state_abbrev = {
     'Alabama': 'AL',
     'Alaska': 'AK',
-    'American Samoa': 'AS',
     'Arizona': 'AZ',
     'Arkansas': 'AR',
     'California': 'CA',
@@ -18,7 +17,6 @@ _us_state_abbrev = {
     'District of Columbia': 'DC',
     'Florida': 'FL',
     'Georgia': 'GA',
-    'Guam': 'GU',
     'Hawaii': 'HI',
     'Idaho': 'ID',
     'Illinois': 'IL',
@@ -43,7 +41,6 @@ _us_state_abbrev = {
     'New York': 'NY',
     'North Carolina': 'NC',
     'North Dakota': 'ND',
-    'Northern Mariana Islands':'MP',
     'Ohio': 'OH',
     'Oklahoma': 'OK',
     'Oregon': 'OR',
@@ -56,7 +53,6 @@ _us_state_abbrev = {
     'Texas': 'TX',
     'Utah': 'UT',
     'Vermont': 'VT',
-    'Virgin Islands': 'VI',
     'Virginia': 'VA',
     'Washington': 'WA',
     'West Virginia': 'WV',
@@ -65,7 +61,7 @@ _us_state_abbrev = {
 }
 
 # thank you to @kinghelix and @trevormarburger for this idea
-_abbrev_us_state = dict(map(reversed, _us_state_abbrev.items()))
+abbrev_us_state = dict(map(reversed, us_state_abbrev.items()))
 
 def _get_record_shapefile_astup( rec, shape ):
     fips_code = rec[4]
@@ -147,19 +143,79 @@ def create_and_store_fips_counties_2019( ):
                                      zip(fips,counties,states)))
     cs_fips_dict = dict(map(lambda f_c_s: ( ( f_c_s[1], f_c_s[2] ), f_c_s[0] ),
                             zip(fips,counties,states)))
-    pickle.dump( fips_countystate_dict, gzip.open( os.path.join(
-        mainDir, 'resources', 'msa_2019_fips_cs_dict.pkl.gz' ), 'wb' ) )
-    pickle.dump( cs_fips_dict, gzip.open( os.path.join(
-        mainDir, 'resources', 'msa_2019_cs_fips_dict.pkl.gz' ), 'wb' ) )
+    #pickle.dump( fips_countystate_dict, gzip.open( os.path.join(
+    #    mainDir, 'resources', 'msa_2019_fips_cs_dict.pkl.gz' ), 'wb' ) )
+    #pickle.dump( cs_fips_dict, gzip.open( os.path.join(
+    #    mainDir, 'resources', 'msa_2019_cs_fips_dict.pkl.gz' ), 'wb' ) )
+    #
+    ## now do the same for those
+    df_rem = pandas.read_csv(
+        os.path.join( mainDir, 'resources', 'all-geocodes-v2018.csv' ),
+        encoding='latin-1',sep=',')
+    df_rem_county_fips = df_rem[ df_rem[ 'Summary Level' ] == 50 ].reset_index( )
+    df_rem_state_fips = df_rem[ df_rem[ 'Summary Level' ] == 40 ].reset_index( )
+    df_rem_county_fips.pop( 'index' )
+    df_rem_state_fips.pop( 'index' )
+    #
+    df_rem_county_fips[ 'fips' ] = list(map(
+        lambda tup: '%02d%03d' % ( tup[0], tup[1] ),
+        zip( df_rem_county_fips[ 'State Code (FIPS)' ],
+             df_rem_county_fips[ 'County Code (FIPS)' ] ) ) )
+    fips_state_dict = dict(map(
+        lambda tup: ( tup[0], tup[1] ),
+        zip( df_rem_state_fips[ 'State Code (FIPS)' ],
+            df_rem_state_fips[ 'Area Name (including legal/statistical area description)' ] ) ) )
+    #
+    ## efficient set operations by creating a series
+    ## all the county FIPS that are NOT in MSAs
+    df_fips_msa = pandas.DataFrame({ 'fips' : list( fips_countystate_dict ) } )
+    df_rem_county_fips = df_rem_county_fips[
+        df_rem_county_fips.fips.isin( df_fips_msa.fips ) == False ].reset_index( )
+    #
+    ## now add STATE NAME as key to df_rem_county_fips
+    df_rem_county_fips[ 'state' ] = list(map(
+        lambda key: fips_state_dict[ key ],
+        df_rem_county_fips[ 'State Code (FIPS)' ] ) )
+    #
+    ## have all data, now create a dictionary from this!
+    rem_fips_cs_dict = dict(map(
+        lambda tup: ( tup[0], { 'county' : tup[1], 'state' : tup[2] } ),
+        zip( df_rem_county_fips[ 'fips' ], df_rem_county_fips[  'Area Name (including legal/statistical area description)' ],
+            df_rem_county_fips[ 'state' ] ) ) )
+    rem_cs_fips_dict = dict(map(
+        lambda tup: ( (  tup[1], tup[2] ), tup[ 0 ] ),
+        zip( df_rem_county_fips[ 'fips' ], df_rem_county_fips[  'Area Name (including legal/statistical area description)' ],
+            df_rem_county_fips[ 'state' ] ) ) )
+    #
+    ## now validation
+    ## VALID #1: length of both dicts is identical
+    assert( len( rem_fips_cs_dict ) == len( rem_cs_fips_dict ) )
+    #
+    ## VALID #2: NO intersection in keys between rem_fips_dict and fips_countystate_dict
+    assert( len( set( rem_cs_fips_dict ) & set( fips_countystate_dict ) ) == 0 )
+    #
+    ## VALID #3: NO intersection in keys between cs_fips_dict and rem_cs_fips_dict
+    assert( len( set( cs_fips_dict ) & set( rem_cs_fips_dict ) ) == 0 )
+    #
+    ## NOW save to unified dataset
+    fips_countystate_dict = dict(chain.from_iterable([ fips_countystate_dict.items( ), rem_fips_cs_dict.items( ) ]) )
+    cs_fips_dict = dict(chain.from_iterable([ cs_fips_dict.items( ), rem_cs_fips_dict.items( ) ] ) )
+    #
+    ## now dump out into ALL
+    pickle.dump( fips_countystate_dict,
+                gzip.open( os.path.join( mainDir, 'resources', 'all_2019_fips_cs_dict.pkl.gz' ), 'wb' ) )
+    pickle.dump( cs_fips_dict,
+                gzip.open( os.path.join( mainDir, 'resources', 'all_2019_cs_fips_dict.pkl.gz' ), 'wb' ) )
+                                                     
 
 def load_fips_counties_data( ):
     assert(all(map(lambda fname: os.path.isfile(
         os.path.join( mainDir, 'resources', fname ) ),
-                   (  'msa_2019_fips_cs_dict.pkl.gz',  'msa_2019_cs_fips_dict.pkl.gz' ) ) ) )
+                   ( 'all_2019_fips_cs_dict.pkl.gz', 'all_2019_cs_fips_dict.pkl.gz' ) ) ) )
     fips_countystate_dict = pickle.load( gzip.open( os.path.join(
-        mainDir, 'resources', 'msa_2019_fips_cs_dict.pkl.gz' ), 'rb' ) )
+        mainDir, 'resources', 'all_2019_fips_cs_dict.pkl.gz' ), 'rb' ) )
     cs_fips_dict = pickle.load( gzip.open( os.path.join(
-        mainDir, 'resources', 'msa_2019_cs_fips_dict.pkl.gz' ), 'rb' ) )
+        mainDir, 'resources', 'all_2019_cs_fips_dict.pkl.gz' ), 'rb' ) )
     #
     return fips_countystate_dict, cs_fips_dict
     

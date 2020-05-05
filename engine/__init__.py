@@ -8,4 +8,4 @@ sys.path.append( mainDir )
 #
 ## secret sauce formatting comma'd integers from https://intellipaat.com/community/2447/how-to-print-number-with-commas-as-thousands-separators
 def get_string_commas_num( num ):
-  return "%s" % f"{num:,d}"
+    return "%s" % f"{num:,d}"
