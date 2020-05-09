@@ -12,8 +12,9 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg
 from mpl_toolkits.basemap import Basemap
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from distutils.spawn import find_executable
+from nprstuff.core import autocrop_image
 #
-from engine import mainDir, gis, core, autocrop_image, get_string_commas_num
+from engine import mainDir, gis, core, get_string_commas_num
 
 def my_colorbar( mappable, ax, **kwargs ):
     """
@@ -244,10 +245,8 @@ def plot_cases_or_deaths_bycounty(
     assert( days_from_beginning >= 0 )
     assert( days_from_beginning <= inc_data[ 'last day' ] )
     assert( maxnum_colorbar > 1 )
-    if type_disp == 'cases':
-        key = 'cases'
-    elif type_disp == 'deaths':
-        key = 'death'
+    if type_disp == 'cases': key = 'cases'
+    elif type_disp == 'deaths': key = 'death'
     #
     ## NOW CREATE BASEMAP HIGH REZ
     if 'isBaseMapped' not in plot_artists:
@@ -664,10 +663,10 @@ def get_summary_demo_data( data = core.get_msa_data( 'bayarea' ), maxnum_colorba
     #
     ## now create figures DEATHS
     fig2 = Figure( )
-    ax1 = fig2.add_subplot(111)
+    ax2 = fig2.add_subplot(111)
     fig2.set_size_inches([ 12.0, 12.0 ])
     plot_cases_or_deaths_bycounty(
-        inc_data, regionName, ax1, type_disp = 'deaths',
+        inc_data, regionName, ax2, type_disp = 'deaths',
         days_from_beginning = inc_data[ 'last day' ],
         maxnum_colorbar = maxnum_colorbar, doTitle = True, doSmarter = doSmarter )
     canvas = FigureCanvasAgg( fig2 )
