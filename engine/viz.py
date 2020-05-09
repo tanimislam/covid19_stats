@@ -1,5 +1,5 @@
 import os, sys, numpy, titlecase, time, pandas
-import subprocess, tempfile, shutil, datetime
+import subprocess, tempfile, shutil, datetime, logging
 import pathos.multiprocessing as multiprocessing
 from itertools import chain
 from multiprocessing import Value, Manager
@@ -263,10 +263,11 @@ def plot_cases_or_deaths_bycounty(
     boundaries = inc_data['boundaries']
     df_dfm = inc_data['df'][ inc_data['df']['days_from_beginning'] == days_from_beginning ].copy( )
     sm = plot_artists[ 'sm' ]
+    m = plot_artists[ 'isBaseMapped' ]
     for fips in sorted( boundaries ):
         nums = df_dfm['%s_%s' % ( type_disp, fips )].max( )
-        fc = sm.to_rgba( nums )
         if nums == 0: fc = ( 1.0, 1.0, 1.0, 0.0 )
+        else: fc = sm.to_rgba( nums )
         art_key = '%s_polys_%s' % ( key, fips )
         if art_key not in plot_artists:
             plot_artists.setdefault( art_key, [ ] )
@@ -515,6 +516,89 @@ def create_plots_daysfrombeginning( inc_data, regionName, prefix, days_from_begi
         fnames.append( fname )
     return fnames
 
+def create_summary_cases_or_deaths_movie_frombeginning(
+    data = core.get_msa_data( 'bayarea' ), maxnum_colorbar = 5000.0,
+    type_disp = 'cases' ):
+    assert( type_disp in ( 'cases', 'deaths' ) )
+    #
+    ## barf out if cannot find ffmpeg
+    ffmpeg_exec = find_executable( 'ffmpeg' )
+    if ffmpeg_exec is None:
+        raise ValueError("Error, ffmpeg could not be found." )
+    #
+    ## create directory
+    dirname = tempfile.mkdtemp( suffix = 'covid19' )
+    #
+    prefix = data[ 'prefix' ]
+    regionName = data[ 'region name' ]
+    counties_and_states = list( map( core.get_county_state, data[ 'fips' ] ) )
+    inc_data = core.get_incident_data( data )
+    last_date = max( inc_data['df'].date )
+    #
+    all_days_from_begin = list(range(inc_data['last day'] + 1 ) )
+    numprocs = multiprocessing.cpu_count( )
+    if data['prefix'] != 'conus': input_status = { 'doSmarter' : False, 'resolution' : 'h' }
+    else: input_status = { 'doSmarter' : True, 'resolution' : 'i' }
+    def myfunc( input_tuple ):
+        days_collection, i_status = input_tuple
+        time00 = i_status[ 'time00' ]
+        resolution = i_status[ 'resolution' ]
+        doSmarter = i_status[ 'doSmarter' ]
+        days_coll_sorted = sorted( days_collection )
+        fig = Figure( )
+        fig.set_size_inches([24,18])
+        ax = fig.add_subplot(111)
+        plot_artists = { }
+        fnames = [ ]
+        for day in sorted( set( days_collection ) ):
+            plot_cases_or_deaths_bycounty(
+                inc_data, regionName, ax, type_disp = type_disp, days_from_beginning = day,
+                resolution = resolution, doSmarter = doSmarter, plot_artists = plot_artists )
+            canvas = FigureCanvasAgg( fig )
+            fname = os.path.join( dirname, 'covid19_%s_%s_%s.%04d.png' % (
+                prefix, type_disp, last_date.strftime('%d%m%Y'), day ) )
+            canvas.print_figure( fname, bbox_inches = 'tight' )
+            autocrop_image.autocrop_image( fname, fixEven = True )
+            fnames.append( fname )
+        logging.info( 'took %0.3f seconds to process %d of %d days.' % (
+            time.time( ) - time00, len( fnames ), len( all_days_from_begin ) ) )
+        return fnames
+
+    input_status[ 'time00' ] = time.time( )
+    with multiprocessing.Pool( processes = numprocs ) as pool:
+        input_tuples = list(zip(map(lambda idx: all_days_from_begin[idx::numprocs], range(numprocs)),
+                                [ input_status ] * numprocs ) )
+        for tup in input_tuples:
+            days_collection, _ = tup
+            if any(filter(lambda day: day < 0, days_collection ) ):
+                logging.info( 'error days collection: %s.' % days_collection )
+        allfiles = sorted(chain.from_iterable( pool.map(
+            myfunc, input_tuples ) ) )
+    logging.info( 'took %0.3f seconds to process all %d days.' % (
+        time.time( ) - input_status[ 'time00' ], len( all_days_from_begin ) ) )
+    #
+    ## now make the movie
+    allfiles_prefixes = set(map(
+        lambda fname: '.'.join(os.path.basename( fname ).split('.')[:-2]), allfiles))
+    assert( len( allfiles_prefixes ) == 1 )
+    movie_prefix = max( allfiles_prefixes )
+    movie_name = '%s.mp4' % movie_prefix # movie goes into directory where exec launched
+    allfile_name = os.path.join( dirname, '%s.%%04d.png' % movie_prefix )
+    #
+    ## thank instructions from https://hamelot.io/visualization/using-ffmpeg-to-convert-a-set-of-images-into-a-video/
+    ## make MP4 movie, 5 fps, quality = 25
+    proc = subprocess.Popen([
+        ffmpeg_exec, '-y', '-r', '5', '-f', 'image2', '-i', allfile_name,
+        '-vcodec', 'libx264', '-crf', '25', '-pix_fmt', 'yuv420p',
+        movie_name ], stdout = subprocess.PIPE, stderr = subprocess.STDOUT )
+    stdout_val, stderr_val = proc.communicate( )
+    #
+    ## now later remove those images and then remove the directory
+    list(map(lambda fname: os.remove( fname ), allfiles ) )
+    shutil.rmtree( dirname )
+    return movie_name
+        
+
 def create_summary_movie_frombeginning(
     data = core.get_msa_data( 'bayarea' ),
     maxnum_colorbar = 5000.0 ):
@@ -539,7 +623,7 @@ def create_summary_movie_frombeginning(
             inc_data, regionName, dirname = dirname,
             days_from_beginning = days_collection, prefix = prefix,
             maxnum_colorbar = maxnum_colorbar )
-        print( 'took %0.3f seconds to process %d of %d days.' % (
+        logging.info( 'took %0.3f seconds to process %d of %d days.' % (
             time.time( ) - time00,
             len( fnames ), len( all_days_from_begin ) ) )
         return fnames
@@ -553,9 +637,9 @@ def create_summary_movie_frombeginning(
         for tup in input_tuples:
             days_collection, _ = tup
             if any(filter(lambda day: day < 0, days_collection ) ):
-                print( 'error days collection: %s.' % days_collection )
+                logging.info( 'error days collection: %s.' % days_collection )
         allfiles = sorted(chain.from_iterable( pool.map( myfunc, input_tuples ) ) )
-    print( 'took %0.3f seconds to process all %d days.' % (
+    logging.info( 'took %0.3f seconds to process all %d days.' % (
         time.time( ) - time0, len( all_days_from_begin ) ) )
     #
     ## now make the movie

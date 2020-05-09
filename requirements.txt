@@ -1,9 +1,12 @@
-tabulate
+basemap
+networkx
+numpy
 pandas
 pyshp
-titlecase
 pathos
-basemap
-shapely
 PyPDF2
+scipy
+shapely
+tabulate
+titlecase
 git+https://github.com/tanimislam/nprstuff.git#egg=nprstuff

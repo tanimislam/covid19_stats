@@ -1,4 +1,4 @@
-import os, sys, numpy, glob, tabulate
+import os, sys, numpy, glob, tabulate, logging
 import datetime, pandas, titlecase, networkx
 import pathos.multiprocessing as multiprocessing
 from itertools import chain
@@ -142,10 +142,13 @@ for fips in _fips_five_boroughs: fips_msas_2019.pop( fips )
 
 #
 ## now do the same thing for the five boroughs
+## remove data for 5 boroughs, replace with fake NYC FIPS
 _fips_popdict_remove = set( _fips_five_boroughs ) & set( fips_popdict_2019 )
+logging.debug( 'REMOVING THESE FIPS: %s.' % _fips_popdict_remove )
 _pop_five_boroughs = sum(map(lambda fips: fips_popdict_2019[ fips ],
                              _fips_popdict_remove ) )
-list(map(lambda pop: fips_popdict_2019.pop( fips ), _fips_popdict_remove ) )
+for fips in _fips_popdict_remove:
+    if fips in fips_popdict_2019: fips_popdict_2019.pop( fips )
 fips_popdict_2019[ nyc_fips ] = _pop_five_boroughs
 
 #
