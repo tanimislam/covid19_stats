@@ -95,7 +95,7 @@ Here is some output from using this COVID-19 tracker.
 
   And here is the animation for the continental United States, up to 4 MAY 2020.
   
-    | |
+    |                                                          |
 	|:--------------------------------------------------------:|
 	| <img width=100% src="figures/covid19_conus_latest.gif">  |
 	| Continental United States

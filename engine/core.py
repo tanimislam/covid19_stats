@@ -59,6 +59,10 @@ def calculate_total_bbox( shapes ):
     return lng_min, lat_min, lng_max, lat_max
 
 #
+## now population data for fips found from MSAs
+fips_popdict_2019 = gis.load_fips_popmap_2019( )
+
+#
 ## create a custom FIPS dataset for NYC alone, FIPS #00001
 def create_nyc_custom_fips( bdict ):
     from shapely.geometry import Polygon, MultiPolygon
@@ -135,6 +139,14 @@ data_msas_2019[ 'nyc' ][ 'fips' ] = set(list( oldfips ) + [ nyc_fips ] ) - _fips
 fips_msas_2019[ nyc_fips ] = 'nyc'
 ## DELETE
 for fips in _fips_five_boroughs: fips_msas_2019.pop( fips )
+
+#
+## now do the same thing for the five boroughs
+_fips_popdict_remove = set( _fips_five_boroughs ) & set( fips_popdict_2019 )
+_pop_five_boroughs = sum(map(lambda fips: fips_popdict_2019[ fips ],
+                             _fips_popdict_remove ) )
+list(map(lambda pop: fips_popdict_2019.pop( fips ), _fips_popdict_remove ) )
+fips_popdict_2019[ nyc_fips ] = _pop_five_boroughs
 
 #
 ## now data by states and by CONUS (continental US)

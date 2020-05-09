@@ -160,6 +160,22 @@ def load_fips_counties_data( ):
         mainDir, 'resources', 'all_2019_cs_fips_dict.pkl.gz' ), 'rb' ) )
     #
     return fips_countystate_dict, cs_fips_dict
+
+def create_fips_popmap_2019( ):
+    df = pandas.read_table( os.path.join(
+        mainDir, 'resources', 'msa_2019.csv' ), encoding='latin-1', sep=',')
+    df.pop('MDIV')
+    #
+    ## now this is gives info on ALL populations in counties that we find
+    df_fips_pops = df.dropna( subset=['STCOU'] ).reset_index( )
+    df_fips_pops.STCOU = list(map(lambda val: '%05d' % val, df_fips_pops.STCOU))
+    fips_pop_dict = dict(zip( df_fips_pops.STCOU, df_fips_pops.POPESTIMATE2019 ) )
+    pickle.dump( fips_pop_dict, gzip.open( os.path.join(
+        mainDir, 'resources', 'fips_2019_popdict.pkl.gz' ), 'wb' ) )
+
+def load_fips_popmap_2019( ):
+    return pickle.load( gzip.open( os.path.join(
+        mainDir, 'resources', 'fips_2019_popdict.pkl.gz' ), 'rb' ) )
     
 def create_msa_2019( ):
     df = pandas.read_table( os.path.join(
