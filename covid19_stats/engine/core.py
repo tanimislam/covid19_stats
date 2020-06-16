@@ -4,7 +4,9 @@ import pathos.multiprocessing as multiprocessing
 from itertools import chain
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_agg import FigureCanvasAgg
-from engine import gis, mainDir
+#
+from covid19_stats import resourceDir, covid19ResDir
+from covid19_stats.engine import gis
 
 def _get_stat_line( line ):
     line_split = list(map(lambda tok: tok.strip(), line.split(',')))
@@ -31,7 +33,7 @@ all_counties_nytimes_covid19_data = list(filter(None,
     map(_get_stat_line,
         list( map(lambda line: line.strip(), filter(
             lambda line: len( line.strip( ) ) != 0,
-    open( os.path.join( mainDir, "covid-19-data", "us-counties.csv" ), "r" ).readlines())))[1:])))
+    open( os.path.join( covid19ResDir, "us-counties.csv" ), "r" ).readlines())))[1:])))
 
 
 #
