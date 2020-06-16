@@ -10,4 +10,4 @@ resourceDir = os.path.join( _mainDir, 'resources' )
 covid19ResDir = os.path.join( _mainDir, 'covid-19-data' )
 #
 ## must both exist
-assert(all(map( dirname,  os.path.isdir( dirname ), ( resourceDir, covid19ResDir ) ) ) )
+assert(all(map(lambda dirname: os.path.isdir( dirname ), ( resourceDir, covid19ResDir ) ) ) )

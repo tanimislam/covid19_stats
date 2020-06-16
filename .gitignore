@@ -4,3 +4,4 @@ scratch
 foo.py
 .ipynb*
 README.html
+*.egg-info
