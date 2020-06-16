@@ -14,7 +14,7 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 from distutils.spawn import find_executable
 from nprstuff.core import autocrop_image
 #
-from engine import mainDir, gis, core, get_string_commas_num
+from covid19_stats.engine import gis, core, get_string_commas_num
 
 def my_colorbar( mappable, ax, **kwargs ):
     """
