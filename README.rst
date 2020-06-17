@@ -76,7 +76,8 @@ Here is some output from using this COVID-19 tracker.
       48  birmingham        Birmingham Metro Area                   1,090,435     13 March 2020             94  3,794        144           2,571              Jefferson County, Alabama
       49  grandrapids       Grand Rapids Metro Area                 1,077,370     12 March 2020             95  5,682        172           4,469              Kent County, Michigan
       50  rochester         Rochester Metro Area                    1,069,644     11 March 2020             96  4,178        316           3,381              Monroe County, New York
-
+  ======  ================  ======================================  ============  ================  ==========  ===========  ============  =================  ====================================
+  
 * The COVID-19 trends in cases and deaths for these 6 metropolitan areas through 15 JUNE 2020: SF Bay Area; Washington, DC; Richmond, VA; NYC; Los Angeles; and New Orleans.
 
 .. |cds_bayarea| image:: figures/covid19_bayarea_cds_15062020.png
@@ -99,117 +100,159 @@ Here is some output from using this COVID-19 tracker.
    :width: 100%
    :align: middle
 
-.. |cds_neworleans| image:: figures/covid19_neworleans_cds_15062020.png
+..
+..     .. |cds_neworleans| image:: figures/covid19_neworleans_cds_15062020.png
+..   :width: 100%
+..   :align: middle
+.. 
+	   
+..
+	   
+.. |anim_gif_nyc| image:: figures/covid19_nyc_15062020.gif
    :width: 100%
    :align: middle
 
-  ============= ================ =================
-  |cds_bayarea| |cds_dc|         |cds_richmond|
-  SF Bay Area   Washington, DC   Richmond, VA
-  |cds_nyc|     |cds_losangeles| |cds_neworleans|
-  NYC Metro     Los Angeles      New Orleans
-  ============ ================= =================
+.. |anim_gif_chicago| image:: figures/covid19_chicago_15062020.gif
+   :width: 100%
+   :align: middle
 
-* GIF'd video animations of the COVID-19 trends in cases/deaths for NYC, Chicago, and Seattle up to 15 JUNE 2020.
+.. |anim_gif_seattle| image:: figures/covid19_seattle_15062020.gif
+   :width: 100%
+   :align: middle
 
-   ========= ======= =======
-   \                
-   NYC Metro Chicago Seattle
-   ========= ======= =======
+..
 
-   And here is the animation for the continental United States, up to 4
-   MAY 2020.
+.. |anim_gif_conus| image:: figures/covid19_conus_15062020.gif
+   :width: 100%
+   :align: middle
+	   
 
-   =========================
-   \ 
-   Continental United States
-   =========================
+   
+  ==============  =================- =================
+  |cds_bayarea|   |cds_dc|           |cds_richmond|
+  SF Bay Area     Washington, DC     Richmond, VA
+  |cds_nyc|       |cds_losangeles|   |cds_losangeles|
+  NYC Metro       Los Angeles        New Orleans
+  ==============  ================== =================
 
-The remainder of this README has two sections: `GETTING
-STARTED <#getting-started>`__ and `USING THE CLI <#using-cli>`__.
+* GIF'd video animations of the COVID-19 trends in cases/deaths for NYC, Chicago, and Seattle up to 15 JUNE 2020.	  
 
+.. _gif_animations:
+	   
+  ============== ================== ==================
+  |anim_gif_nyc| |anim_gif_chicago| |anim_gif_seattle|               
+  NYC Metro      Chicago            Seattle
+  ============== ================== ==================
+
+  And here is the animation for the continental United States, up to 15 JUNE 2020.
+
+  =========================== ==
+  |anim_gif_conus|            
+  Continental United States   
+  =========================== ==    
+
+  The remainder of this README has two sections: `GETTING STARTED <getting_started_>`_ and `USING THE CLI <using_cli_>`_.
+
+.. _getting_started:
+   
  GETTING STARTED
----------------
+-------------------
 
-First clone this repo using the command
+First clone this repo using the command,
 
-.. code:: bash
+.. code-block:: console
 
    git clone https://github.com/tanimislam/covid19_stats.git
 
-You will get the main directory structure, but you will notice that the
-``covid-19-data`` submodule is empty. To populate it, run
+You will get the main directory structure, but you will notice that the ``covid19_stats/covid-19-data`` submodule is empty. To populate it, run
 
-.. code:: bash
+.. code-block:: console
 
    git submodule update --init --recursive
 
-The requirements are in the ``requirements.txt``. You should be able to
-install these Python packages into your *user* Python library (typically
-at ``~/.local/lib/python3.X/site-packages``) by running,
+The requirements are in the ``requirements.txt``. You should be able to install these Python packages into your *user* Python library (typically at ``~/.local/lib/python3.X/site-packages``) by running,
 
-.. code:: bash
+.. code-block:: console
 
    pip install -r requirements.txt
+   pip install --user -e .
 
-However, `Basemap <https://matplotlib.org/basemap/>`__ can be a bugbear
-to install. Here is what worked for me when installing on the Linux
-machine.
+Of course, if you feel adventurous, you can install all-in-one-go by doing this,
 
-1. First, although `Basemap <https://matplotlib.org/basemap/>`__ will
-   install, your Python shell (and hence your CLI) won’t be able to find
-   it. This is almost certainly a bug in Basemap. Running
-   ``from mpl_toolkits.basemap import Basemap`` won’t work. First, look
-   for where ``basemap`` is installed. In my case, it was located at
-   ``~/.local/lib/python3.7/site-packages/basemap-1.2.1-py3.7-linux-x86_64.egg/``.
-   The directory structure right below it looks like this,
-   ``bash   EGG-INFO  _geoslib.cpython-37m-x86_64-linux-gnu.so  _geoslib.py  mpl_toolkits  __pycache__``
+.. code-block:: console
 
-2. ``cd`` into ``mpl_toolkits``. You should see a ``basemap``
-   subdirectory when you look in it.
-   ``bash   basemap  __init__.py  __pycache__``
+   pip install --user git+https://github.com/tanimislam/covid19_stats.git#egginfo=covid19_stats
+   
+However, `Basemap <https://matplotlib.org/basemap/>`__ can be a bugbear to install. Here is what worked for me when installing on the Linux machine.
 
-3. You should also have an ``mpl_toolkits`` library module installed
-   locally. In my case it was
-   ``~/.local/lib/python3.7/site-packages/mpl_toolkits/``. Inside it
-   looks like,
-   ``bash   axes_grid  axes_grid1  axisartist  mplot3d  tests``
+1. First, although Basemap_ will install, your Python shell (and hence your CLI) won’t be able to find it. This is almost certainly a bug in Basemap. Running ``from mpl_toolkits.basemap import Basemap`` won’t work. First, look for where ``basemap`` is installed. In my case, it was located at ``~/.local/lib/python3.7/site-packages/basemap-1.2.1-py3.7-linux-x86_64.egg/``. The directory structure right below it looks like this,
 
-4. In the real ``mpl_toolkits`` directory, make a symbolic link to the
-   ``basemap`` directory underneath, e.g.,
-   ``~/.local/lib/python3.7/site-packages/basemap-1.2.1-py3.7-linux-x86_64.egg/``.
-   Thus in the correct ``mpl_toolkits`` subdirectory, run, e.g.,
-   ``bash   ln -sf ~/.local/lib/python3.7/site-packages/basemap-1.2.1-py3.7-linux-x86_64.egg/mpl_toolkits/basemap basemap``
+   .. code-block:: console
 
-   If you have done everything correctly, its data structure will look
-   like what is shown below, with a valid symbolic link to ``basemap``.
-   ``bash   axes_grid   axes_grid1   axisartist   basemap -> ~/.local/lib/python3.7/site-packages/basemap-1.2.1-py3.7-linux-x86_64.egg/   mplot3d   tests``
+      EGG-INFO
+      _geoslib.cpython-37m-x86_64-linux-gnu.so
+      _geoslib.py
+      mpl_toolkits
+      __pycache__
 
-If you’re lucky, running ``from mpl_toolkits.basemap import Basemap``
-will work without further issues.
+2. ``cd`` into ``mpl_toolkits``. You should see a ``basemap`` subdirectory when you look in it.
+
+   .. code-block:: console
+
+      basemap
+      __init__.py
+      __pycache__
+
+3. You should also have an ``mpl_toolkits`` library module installed locally. In my case it was ``~/.local/lib/python3.7/site-packages/mpl_toolkits/``. Inside it looks like,
+
+   .. code-block:: console
+
+      axes_grid
+      axes_grid1
+      axisartist
+      mplot3d
+      tests
+
+4. In the real ``mpl_toolkits`` directory, make a symbolic link to the ``basemap`` directory underneath, e.g., ``~/.local/lib/python3.7/site-packages/basemap-1.2.1-py3.7-linux-x86_64.egg/``. Thus in the correct ``mpl_toolkits`` subdirectory, run, e.g.,
+
+   .. code-block:: console
+
+      ln -sf ~/.local/lib/python3.7/site-packages/basemap-1.2.1-py3.7-linux-x86_64.egg/mpl_toolkits/basemap basemap
+
+   If you have done everything correctly, its data structure will look like what is shown below, with a valid symbolic link to ``basemap``.
+
+   .. code-block:: console
+
+      axes_grid
+      axes_grid1
+      axisartist
+      basemap -> ~/.local/lib/python3.7/site-packages/basemap-1.2.1-py3.7-linux-x86_64.egg/
+      mplot3d
+      tests
+
+If you’re lucky, running ``from mpl_toolkits.basemap import Basemap`` will work without further issues.
 
  Updating the COVID-19 Database
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Just run this from the main directory,
 
-.. code:: bash
+.. code-block:: console
 
-   git -C covid-19-data pull origin master
+   git -C covid19_stats/covid-19-data pull origin master
 
 in order to get the latest COVID-19 data.
 
- USING THE CLI
--------------
+.. _using_cli:
 
-``covid19_create_movie_or_summary.py`` is the only top-level CLI
-currently in the repository. It has three modes of operation. Its help
-output, while running ``covid19_create_movie_or_summary.py -h``,
-produces the following,
+ USING THE CLI
+---------------
+
+``covid19_create_movie_or_summary`` is the only top-level CLI currently in the repository. It has three modes of operation. Its help output, while running ``covid19_create_movie_or_summary -h``, produces the following,
 
 .. code:: bash
 
-   usage: covid19_create_movie_or_summary.py [-h] {M,m,s} ...
+   usage: covid19_create_movie_or_summary [-h] {M,m,s} ...
 
    positional arguments:
      {M,m,s}     Choose either showing list of metros, or make a movie of a metro
@@ -225,151 +268,139 @@ produces the following,
    optional arguments:
      -h, --help  show this help message and exit
 
--  \ ``covid19_create_movie_or_summary.py M`` (METRO flag) lists the
-   COVID-19 stats for all, or user-selected, metropolitan statistical
-   areas (MSAs) by population. For example, here are the statistics for
-   the top 30 MSAs. \```bash covid19_create_movie_or_summary.py M
+* ``covid19_create_movie_or_summary M`` (METRO flag) lists the COVID-19 stats for all, or user-selected, metropolitan statistical areas (MSAs) by population. For example, here are the statistics for the top 30 MSAs.
 
-   HERE ARE THE 380 METRO AREAS, ORDERED BY POPULATION DATA AS OF 24
-   April 2020. RANK IDENTIFIER NAME POPULATION FIRST INC. NUM DAYS NUM
-   CASES NUM DEATHS MAX CASE COUNTY MAX CASE COUNTY NAME —— —————-
-   ————————————– ———— —————- ———- ———– ———— —————– ———————————— 1 nyc
-   NYC Metro Area 19,216,182 01 March 2020 54 342,209 20,541 150,484 New
-   York City, New York 2 losangeles LA Metro Area 18,711,436 25 January
-   2020 90 25,847 1,094 18,545 Los Angeles County, California 3 chicago
-   Chicago Metro Area 9,458,539 24 January 2020 91 38,306 1,728 27,616
-   Cook County, Illinois 4 dallas Dallas Metro Area 7,573,136 09 March
-   2020 46 6,207 169 2,834 Dallas County, Texas 5 houston Houston Metro
-   Area 7,066,141 04 March 2020 51 7,937 138 5,482 Harris County, Texas
-   6 bayarea Bay Area 6,860,207 31 January 2020 84 6,875 249 2,018 Santa
-   Clara County, California 7 dc DC Metro Area 6,280,487 05 March 2020
-   50 18,782 675 4,403 Prince George’s County, Maryland 8 miami Miami
-   Metro Area 6,166,488 06 March 2020 49 18,114 604 10,925 Miami-Dade
-   County, Florida 9 philadelphia Philadelphia Metro Area 6,102,434 06
-   March 2020 49 29,605 1,273 11,877 Philadelphia County, Pennsylvania
-   10 atlanta Atlanta Metro Area 6,020,364 02 March 2020 53 11,054 395
-   2,500 Fulton County, Georgia 11 phoenix Phoenix Metro Area 4,948,203
-   26 January 2020 89 3,433 129 3,116 Maricopa County, Arizona 12 boston
-   Boston Metro Area 4,873,019 01 February 2020 83 39,079 1,859 11,681
-   Middlesex County, Massachusetts 13 detroit Detroit Metro Area
-   4,319,629 10 March 2020 45 28,002 2,582 15,407 Wayne County, Michigan
-   14 seattle Seattle Metro Area 3,979,845 21 January 2020 94 9,251 542
-   5,691 King County, Washington 15 minneapolis Minneapolis Metro Area
-   3,640,043 06 March 2020 49 1,981 176 1,200 Hennepin County, Minnesota
-   16 sandiego San Diego Metro Area 3,338,330 10 February 2020 74 2,826
-   112 2,826 San Diego County, California 17 tampa Tampa Metro Area
-   3,194,831 01 March 2020 54 2,011 52 1,022 Hillsborough County,
-   Florida 18 denver Denver Metro Area 2,967,239 05 March 2020 50 7,412
-   399 2,385 Denver County, Colorado 19 stlouis St. Louis Metro Area
-   2,803,228 07 March 2020 48 5,285 248 2,625 St. Louis County, Missouri
-   20 baltimore Baltimore Metro Area 2,800,053 08 March 2020 47 6,681
-   250 2,234 Baltimore County, Maryland 21 charlotte Charlotte Metro
-   Area 2,636,883 11 March 2020 44 2,700 76 1,407 Mecklenburg County,
-   North Carolina 22 orlando Orlando Metro Area 2,608,147 12 March 2020
-   43 2,317 54 1,289 Orange County, Florida 23 sanantonio San Antonio
-   Metro Area 2,550,960 12 February 2020 72 1,393 54 1,206 Bexar County,
-   Texas 24 portland Portland Metro Area 2,492,412 28 February 2020 56
-   1,616 74 596 Multnomah County, Oregon 25 sacramento Sacramento Metro
-   Area 2,363,730 21 February 2020 63 1,357 62 1,019 Sacramento County,
-   California 26 pittsburgh Pittsburgh Metro Area 2,317,600 13 March
-   2020 42 2,213 160 1,177 Allegheny County, Pennsylvania 27 lasvegas
-   Las Vegas Metro Area 2,266,715 05 March 2020 50 3,443 168 3,443 Clark
-   County, Nevada 28 austin Austin Metro Area 2,227,083 13 March 2020 42
-   1,800 40 1,379 Travis County, Texas 29 cincinnati Cincinnati Metro
-   Area 2,221,208 14 March 2020 41 1,956 108 932 Hamilton County, Ohio
-   30 kansascity Kansas City Metro Area 2,157,990 07 March 2020 48 1,617
-   110 527 Wyandotte County, Kansas \``\`
+  .. code-block:: console
 
-   One can also select MSAs with the ``--metros`` flag. The ``-f`` or
-   ``--format`` flag prints out a table of MSAs formatted in one of
-   three ways: ``simple``, the default, is the tabular format shown
-   above; ``github`` is `Github flavored
-   Markdown <https://github.github.com/gfm/>`__; and ``rst`` is
-   `reStructuredText <https://docutils.sourceforge.io/rst.html>`__. This
-   is described in the help output, produced by
-   ``covid19_create_movie_or_summary.py M -h``, \```bash usage:
-   covid19_create_movie_or_summary.py M [-h] [-f {simple,github,rst}]
-   [–metros METROS]
+       covid19_create_movie_or_summary M
 
-   optional arguments: -h, –help show this help message and exit -f
-   {simple,github,rst}, –format {simple,github,rst} Format of the table
-   that displays MSA summary. Default is “simple”. –metros METROS If
-   chosen, list of selected metros for which to summarize COVID-19 data.
-   \``\`
+       HERE ARE THE 380 METRO AREAS, ORDERED BY POPULATION
+       DATA AS OF 15 June 2020.
+       RANK  IDENTIFIER        NAME                                    POPULATION    FIRST INC.          NUM DAYS  NUM CASES    NUM DEATHS    MAX CASE COUNTY    MAX CASE COUNTY NAME
+     ------  ----------------  --------------------------------------  ------------  ----------------  ----------  -----------  ------------  -----------------  ------------------------------------
+	  1  nyc               NYC Metro Area                          19,216,182    01 March 2020            106  483,453      39,029        215,011            New York City, New York
+	  2  losangeles        LA Metro Area                           18,711,436    25 January 2020          142  102,983      3,801         73,791             Los Angeles County, California
+	  3  chicago           Chicago Metro Area                      9,458,539     24 January 2020          143  125,857      6,001         85,184             Cook County, Illinois
+	  4  dallas            Dallas Metro Area                       7,573,136     09 March 2020             98  27,201       606           14,537             Dallas County, Texas
+	  5  houston           Houston Metro Area                      7,066,141     04 March 2020            103  23,848       427           17,282             Harris County, Texas
+	  6  bayarea           Bay Area                                6,860,207     31 January 2020          136  16,178       474           4,394              Alameda County, California
+	  7  dc                DC Metro Area                           6,280,487     05 March 2020            102  78,449       2,933         17,920             Prince George's County, Maryland
+	  8  miami             Miami Metro Area                        6,166,488     06 March 2020            101  40,295       1,613         22,196             Miami-Dade County, Florida
+	  9  philadelphia      Philadelphia Metro Area                 6,102,434     06 March 2020            101  68,012       5,026         24,475             Philadelphia County, Pennsylvania
+	 10  atlanta           Atlanta Metro Area                      6,020,364     02 March 2020            105  28,075       1,255         5,308              Gwinnett County, Georgia
+	 11  phoenix           Phoenix Metro Area                      4,948,203     26 January 2020          141  20,940       601           19,372             Maricopa County, Arizona
+	 12  boston            Boston Metro Area                       4,873,019     01 February 2020         135  77,267       5,373         23,227             Middlesex County, Massachusetts
+	 13  detroit           Detroit Metro Area                      4,319,629     10 March 2020             97  42,039       4,746         21,816             Wayne County, Michigan
+	 14  seattle           Seattle Metro Area                      3,979,845     21 January 2020          146  14,829       838           8,799              King County, Washington
+	 15  minneapolis       Minneapolis Metro Area                  3,640,043     06 March 2020            101  20,392       1,124         10,281             Hennepin County, Minnesota
+	 16  sandiego          San Diego Metro Area                    3,338,330     10 February 2020         126  9,673        320           9,673              San Diego County, California
+	 17  tampa             Tampa Metro Area                        3,194,831     01 March 2020            106  6,899        221           3,826              Hillsborough County, Florida
+	 18  denver            Denver Metro Area                       2,967,239     05 March 2020            102  18,591       1,121         6,376              Denver County, Colorado
+	 19  stlouis           St. Louis Metro Area                    2,803,228     07 March 2020            100  12,264       975           5,604              St. Louis County, Missouri
+	 20  baltimore         Baltimore Metro Area                    2,800,053     08 March 2020             99  23,162       1,169         7,220              Baltimore County, Maryland
+	 21  charlotte         Charlotte Metro Area                    2,636,883     11 March 2020             96  11,902       248           7,321              Mecklenburg County, North Carolina
+	 22  orlando           Orlando Metro Area                      2,608,147     12 March 2020             95  5,401        95            3,281              Orange County, Florida
+	 23  sanantonio        San Antonio Metro Area                  2,550,960     12 February 2020         124  5,169        105           4,449              Bexar County, Texas
+	 24  portland          Portland Metro Area                     2,492,412     28 February 2020         108  3,707        142           1,559              Multnomah County, Oregon
+	 25  sacramento        Sacramento Metro Area                   2,363,730     21 February 2020         115  2,555        96            1,793              Sacramento County, California
+	 26  pittsburgh        Pittsburgh Metro Area                   2,317,600     13 March 2020             94  3,765        316           2,086              Allegheny County, Pennsylvania
+	 27  lasvegas          Las Vegas Metro Area                    2,266,715     05 March 2020            102  8,815        379           8,815              Clark County, Nevada
+	 28  austin            Austin Metro Area                       2,227,083     13 March 2020             94  7,004        145           4,664              Travis County, Texas
+	 29  cincinnati        Cincinnati Metro Area                   2,221,208     14 March 2020             93  7,070        353           3,250              Hamilton County, Ohio
+	 30  kansascity        Kansas City Metro Area                  2,157,990     07 March 2020            100  5,518        197           1,750              Wyandotte County, Kansas
 
--  \ ``covid19_create_movie_or_summary.py s`` (SHOW flag) summarizes the
-   latest COVID-19 statistics for a specified MSA. The help output,
-   while running ``covid19_create_movie_or_summary.py s -h``, is shown
-   below, \```bash usage: covid19_create_movie_or_summary.py s [-h] [-n
-   NAME] [-M MAXNUM] [-y]
+* One can also select MSAs with the ``--metros`` flag. The ``-f`` or ``--format`` flag prints out a table of MSAs formatted in one of three ways: ``simple``, the default, is the tabular format shown above; ``github`` is `Github flavored Markdown`_; and ``rst`` is reStructuredText_. This is described in the help output, produced by ``covid19_create_movie_or_summary M -h``,
 
-   optional arguments: -h, –help show this help message and exit -n
-   NAME, –name NAME Create a summary plot and incident data file of this
-   metropolitan area. Default is “bayarea”. -M MAXNUM, –maxnum MAXNUM
-   The limit of cases/deaths to visualize. Default is 5,000. You should
-   use a limit larger (by at least 2, no more than 10) than the maximum
-   number of cases recorded for a county in that MSA. -y, –yes If
-   chosen, then do not confirm –maxnum. \``\`
+  .. code-block:: console
 
-   The required ``-n`` or ``--name`` flag specifies the MSA. The ``-M``
-   or ``--maxnum`` sets the color limits of cases and deaths to this
-   number (the default is 5000); and the ``-y`` or ``--yes`` flag
-   suppresses the intermediate prompt that asks the user whether the
-   specified or default maximum number is sufficient. For example, for
-   the NYC metro area,
-   ``bash   covid19_create_movie_or_summary.py s -n nyc   HERE ARE DETAILS FOR NYC Metro Area.   2019 EST. POP = 19,216,182.   FIRST CASE:  01 March 2020.   LATEST CASE: 24 April 2020 (54 days after first case)   MAXIMUM NUMBER OF CASES: 150,484 (in New York City, New York)   MAXIMUM NUMBER OF CASES FOR VISUALIZATION: 5,000.   CONTINUE (must choose one) [y/n]:``
+     usage: covid19_create_movie_or_summary M [-h] [-f {simple,github,rst}]
+					   [--metros METROS]
 
-   The maximum number of cases and deaths for visualization is 5000,
-   whereas the county with the most cases has over 150k; coloring of
-   cases and deaths by counties is insufficient to visually resolve the
-   absolute and relative time trend of cases and deaths in
-   ``New York City``. Here, I would suggest running
-   ``covid19_create_movie_or_summary.py s -n nyc -M 200000`` to get
-   sufficient contrast.
+     optional arguments:
+       -h, --help            show this help message and exit
+       -f {simple,github,rst}, --format {simple,github,rst}
+			     Format of the table that displays MSA summary. Default
+			     is "simple".
+       --metros METROS       If chosen, list of selected metros for which to
+			     summarize COVID-19 data.
 
-   This mode of operation, for example for NYC will output the following
-   seven files:
+* ``covid19_create_movie_or_summary s`` (SHOW flag) summarizes the latest COVID-19 statistics for a specified MSA. The help output, while running ``covid19_create_movie_or_summary s -h``, is shown below,
 
-   -  ``covid19_nyc_23042020.pkl.gz`` is the `Pandas
-      DataFrame <https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html>`__
-      of the COVID-19 cases and deaths, total and per county, from the
-      date of first incident to the latest incident.
+.. _show_mode:
+  
+   .. code-block:: console
 
-   -  ``covid19_nyc_cds_23042020.pdf`` and
-      ``covid19_nyc_cds_23042020.png`` are the PDF and PNG showing the
-      trend of COVID-19 cases and deaths in the NYC metro area.
+      usage: covid19_create_movie_or_summary s [-h] [-n NAME] [-M MAXNUM] [--conus]
+					       [-y]
 
-   -  ``covid19_nyc_cases_23042020.pdf`` and
-      ``covid19_nyc_cases_23042020.png`` are the PDF and PNG showing the
-      county map, colored by number of COVID-19 cases, on the LAST
-      incident day.
+      optional arguments:
+	-h, --help            show this help message and exit
+	-n NAME, --name NAME  Create a summary plot and incident data file of this
+			      metropolitan area. Default is "bayarea".
+	-M MAXNUM, --maxnum MAXNUM
+			      The limit of cases/deaths to visualize. Default is a
+			      plausible amount for the chosen MSA or CONUS. You
+			      should use a limit larger (by at least 2, no more than
+			      10) than the maximum number of cases recorded for a
+			      county in that MSA or CONUS.
+	--conus               If chosen, then make a movie of the COVID-19 cases and
+			      deaths trends for the Continental US (CONUS).
+	-y, --yes             If chosen, then do not confirm --maxnum.
 
-   -  ``covid19_nyc_death_23042020.pdf`` and
-      ``covid19_nyc_death_23042020.png`` are the PDF and PNG showing the
-      county map, colored by number of COVID-19 deaths, on the LAST
-      incident day.
+  The required ``-n`` or ``--name`` flag specifies the MSA. The ``-M`` or ``--maxnum`` sets the color limits of cases and deaths to this number (the default is a number that is comfortable above the maximum number of cases in a county in the MSA); and the ``-y`` or ``--yes`` flag suppresses the intermediate prompt that asks the user whether the specified or default maximum number is sufficient. For example, for the NYC metro area,
 
--  \ ``covid19_create_movie_or_summary.py m`` (MOVIE flag) creates an
-   `MP4 <https://en.wikipedia.org/wiki/MPEG-4_Part_14>`__ movie of
-   COVID-19 cases and deaths for the MSA you specify (see the `high
-   quality GIF animations <#gif-animations>`__ of these MP4 movies). The
-   help output, while running
-   ``covid19_create_movie_or_summary.py m -h``, is shown below, \```bash
-   usage: covid19_create_movie_or_summary.py m [-h] [-n NAME] [-M
-   MAXNUM] [-y]
+  .. code-block:: console
 
-   optional arguments: -h, –help show this help message and exit -n
-   NAME, –name NAME Make a movie of this metropolitan area. Default is
-   “bayarea” -M MAXNUM, –maxnum MAXNUM The limit of cases/deaths to
-   visualize. Default is 5,000. You should use a limit larger (by at
-   least 2, no more than 10) than the maximum number of cases recorded
-   for a county in that MSA. -y, –yes If chosen, then do not confirm
-   –maxnum. \`\ ``The meaning of the``-M``and``-y`\` flags are the same
-   as in `SHOW mode <#show-mode>`__.
+     bash$ covid19_create_movie_or_summary s -n nyc
+  
+     HERE ARE DETAILS FOR NYC Metro Area.
+     2019 EST. POP = 19,216,182.
+     FIRST CASE:  01 March 2020.
+     LATEST CASE: 15 June 2020 (106 days after first case)
+     MAXIMUM NUMBER OF CASES: 215,011 (in New York City, New York)
+     MAXIMUM NUMBER OF CASES FOR VISUALIZATION: 320,000.
+     CONTINUE (must choose one) [y/n]:
 
+  This mode of operation, for example for NYC will output the following seven files:
+
+  - ``covid19_nyc_15062020.pkl.gz`` is the `Pandas DataFrame`_  of the COVID-19 cases and deaths, total and per county, from the date of first incident to the latest incident.
+
+  - ``covid19_nyc_cds_15062020.pdf`` and ``covid19_nyc_cds_15062020.png`` are the PDF and PNG showing the trend of COVID-19 cases and deaths in the NYC metro area.
+
+  - ``covid19_nyc_cases_15062020.pdf`` and ``covid19_nyc_cases_15062020.png`` are the PDF and PNG showing the county map, colored by number of COVID-19 cases, on the LAST incident day.
+
+  - ``covid19_nyc_death_15062020.pdf`` and ``covid19_nyc_death_15062020.png`` are the PDF and PNG showing the county map, colored by number of COVID-19 deaths, on the LAST incident day.
+
+* ``covid19_create_movie_or_summary m`` (MOVIE flag) creates an MP4_ movie of COVID-19 cases and deaths for the MSA you specify (see the `high quality GIF animations <gif_animations_>`_ of these MP4 movies). The help output, while running ``covid19_create_movie_or_summary m -h``, is shown below,
+
+  .. code-block:: console
+
+     usage: covid19_create_movie_or_summary m [-h] [-n NAME] [-M MAXNUM] [--conus]
+					      [-y]
+
+     optional arguments:
+       -h, --help            show this help message and exit
+       -n NAME, --name NAME  Make a movie of this metropolitan area. Default is
+			     "bayarea"
+       -M MAXNUM, --maxnum MAXNUM
+			     The limit of cases/deaths to visualize. Default is a
+			     plausible amount for the chosen MSA or CONUS. You
+			     should use a limit larger (by at least 2, no more than
+			     10) than the maximum number of cases recorded for a
+			     county in that MSA or CONUS.
+       --conus               If chosen, then make a movie of the COVID-19 cases and
+			     deaths trends for the Continental US (CONUS).
+       -y, --yes             If chosen, then do not confirm --maxnum.
+
+  The meaning of the ``-M`` and ``-y`` flags are the same as in `SHOW mode <show_mode_>`_.
 
 .. _`NY Times COVID-19 repository`: https://github.com/nytimes/covid-19-data
 .. _`ncov2019.live`: https://ncov2019.live
 .. _`this New Yorker article`: https://www.newyorker.com/magazine/2020/03/30/the-high-schooler-who-became-a-covid-19-watchdog
 .. _`#78917`: https://github.com/tanimislam/covid19_stats/commit/78917dd20c43bd65320cf51958fa481febef4338
 .. _`Jupyter Notebooks`: https://jupyter.org
+.. _Basemap: https://matplotlib.org/basemap
+.. _`Github flavored Markdown`: https://github.github.com/gfm
+.. _reStructuredText: https://docutils.sourceforge.io/rst.html
+.. _`Pandas DataFrame`: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.htm
+.. _MP4: https://en.wikipedia.org/wiki/MPEG-4_Part_14
