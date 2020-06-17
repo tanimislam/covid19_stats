@@ -90,9 +90,9 @@ Here is some output from using this COVID-19 tracker.
   NYC Metro       Los Angeles        New Orleans
   ==============  =================  =================
 
-* GIF'd video animations of the COVID-19 trends in cases/deaths for NYC, Chicago, and Seattle up to 15 JUNE 2020.	  
-
 .. _gif_animations:
+  
+* GIF'd video animations of the COVID-19 trends in cases/deaths for NYC, Chicago, and Seattle up to 15 JUNE 2020.	  
 	   
   ============== ================== ==================
   |anim_gif_nyc| |anim_gif_chicago| |anim_gif_seattle|               
@@ -106,7 +106,7 @@ Here is some output from using this COVID-19 tracker.
   Continental United States
   ===========================  ==    
 
-The remainder of this README has two sections: `GETTING STARTED <getting_started_>`_ and `USING THE CLI <using_cli_>`_.
+The remainder of this README has two sections: `GETTING STARTED <getting_started_>`_ and `USING THE CLI <using_the_cli_>`_.
 
 .. _getting_started:
 
@@ -198,7 +198,7 @@ Just run this from the main directory,
 
 in order to get the latest COVID-19 data.
 
-.. _using_cli:
+.. _using_the_cli:
 
 USING THE CLI
 ---------------
