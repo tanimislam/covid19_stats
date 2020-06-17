@@ -126,17 +126,19 @@ Here is some output from using this COVID-19 tracker.
    :width: 100%
    :align: middle
 
-==============  =================- =================
-|cds_bayarea|   |cds_dc|           |cds_richmond|
-SF Bay Area     Washington, DC     Richmond, VA
-|cds_nyc|       |cds_losangeles|   |cds_losangeles|
-NYC Metro       Los Angeles        New Orleans
-==============  ================== =================
+  ==============  =================- =================
+  ==============  =================- =================
+  |cds_bayarea|   |cds_dc|           |cds_richmond|
+  SF Bay Area     Washington, DC     Richmond, VA
+  |cds_nyc|       |cds_losangeles|   |cds_losangeles|
+  NYC Metro       Los Angeles        New Orleans
+  ==============  ================== =================
 
 * GIF'd video animations of the COVID-19 trends in cases/deaths for NYC, Chicago, and Seattle up to 15 JUNE 2020.	  
 
 .. _gif_animations:
 	   
+  ============== ================== ==================
   ============== ================== ==================
   |anim_gif_nyc| |anim_gif_chicago| |anim_gif_seattle|               
   NYC Metro      Chicago            Seattle
@@ -144,6 +146,7 @@ NYC Metro       Los Angeles        New Orleans
 
   And here is the animation for the continental United States, up to 15 JUNE 2020.
 
+  =========================== ==
   =========================== ==
   |anim_gif_conus|            
   Continental United States   
