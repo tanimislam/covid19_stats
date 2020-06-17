@@ -126,13 +126,13 @@ Here is some output from using this COVID-19 tracker.
    :width: 100%
    :align: middle
 
-  ==============  =================- =================
-  ==============  =================- =================
+  ==============  =================  =================
+  ==============  =================  =================
   |cds_bayarea|   |cds_dc|           |cds_richmond|
   SF Bay Area     Washington, DC     Richmond, VA
   |cds_nyc|       |cds_losangeles|   |cds_losangeles|
   NYC Metro       Los Angeles        New Orleans
-  ==============  ================== =================
+  ==============  =================  =================
 
 * GIF'd video animations of the COVID-19 trends in cases/deaths for NYC, Chicago, and Seattle up to 15 JUNE 2020.	  
 
