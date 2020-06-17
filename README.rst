@@ -109,8 +109,8 @@ Here is some output from using this COVID-19 tracker.
 The remainder of this README has two sections: `GETTING STARTED <getting_started_>`_ and `USING THE CLI <using_cli_>`_.
 
 .. _getting_started:
-   
- GETTING STARTED
+
+GETTING STARTED
 -------------------
 
 First clone this repo using the command,
@@ -187,7 +187,7 @@ However, `Basemap <https://matplotlib.org/basemap/>`__ can be a bugbear to insta
 
 If you’re lucky, running ``from mpl_toolkits.basemap import Basemap`` will work without further issues.
 
- Updating the COVID-19 Database
+Updating the COVID-19 Database
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Just run this from the main directory,
@@ -200,7 +200,7 @@ in order to get the latest COVID-19 data.
 
 .. _using_cli:
 
- USING THE CLI
+USING THE CLI
 ---------------
 
 ``covid19_create_movie_or_summary`` is the only top-level CLI currently in the repository. It has three modes of operation. Its help output, while running ``covid19_create_movie_or_summary -h``, produces the following,
