@@ -106,7 +106,7 @@ Here is some output from using this COVID-19 tracker.
   Continental United States
   ===========================  ==    
 
-  The remainder of this README has two sections: `GETTING STARTED <getting_started_>`_ and `USING THE CLI <using_cli_>`_.
+The remainder of this README has two sections: `GETTING STARTED <getting_started_>`_ and `USING THE CLI <using_cli_>`_.
 
 .. _getting_started:
    
