@@ -150,7 +150,7 @@ Here is some output from using this COVID-19 tracker.
   ===========================  ==
   Continental United States
   ===========================  ==
-  |anim_gif_conus|               
+  |anim_gif_seattle|               
   ===========================  ==    
 
   The remainder of this README has two sections: `GETTING STARTED <getting_started_>`_ and `USING THE CLI <using_cli_>`_.
