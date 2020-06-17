@@ -106,7 +106,7 @@ Here is some output from using this COVID-19 tracker.
 ..   :align: middle
 .. 
 	   
-..
+.. GIF ANIMATIONS MSA
 	   
 .. |anim_gif_nyc| image:: figures/covid19_nyc_15062020.gif
    :width: 100%
@@ -120,11 +120,12 @@ Here is some output from using this COVID-19 tracker.
    :width: 100%
    :align: middle
 
-..
+.. GIF ANIMATIONS CONUS
 
 .. |anim_gif_conus| image:: figures/covid19_conus_15062020.gif
    :width: 100%
    :align: middle
+
 
   ==============  =================  =================
   ==============  =================  =================
@@ -146,11 +147,11 @@ Here is some output from using this COVID-19 tracker.
 
   And here is the animation for the continental United States, up to 15 JUNE 2020.
 
-  =========================== ==
-  =========================== ==
-  |anim_gif_conus|            
-  Continental United States   
-  =========================== ==    
+  ===========================  ==
+  Continental United States
+  ===========================  ==
+  |anim_gif_conus|               
+  ===========================  ==    
 
   The remainder of this README has two sections: `GETTING STARTED <getting_started_>`_ and `USING THE CLI <using_cli_>`_.
 
