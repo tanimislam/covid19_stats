@@ -122,7 +122,7 @@ Here is some output from using this COVID-19 tracker.
 
 .. GIF ANIMATIONS CONUS
 
-.. |anim_gif_conus| image:: figures/covid19_conus_15062020.gif
+.. |anim_gif_conus| image:: figures/covid19_seattle_15062020.gif
    :width: 100%
    :align: middle
 
