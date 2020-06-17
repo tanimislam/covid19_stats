@@ -280,29 +280,29 @@ USING THE CLI
 			     summarize COVID-19 data.
 
   I have typically not specified a list of metros.
-			     
-* ``covid19_create_movie_or_summary s`` (SHOW flag) summarizes the latest COVID-19 statistics for a specified MSA. The help output, while running ``covid19_create_movie_or_summary s -h``, is shown below,
 
 .. _show_mode:
   
-   .. code-block:: console
+* ``covid19_create_movie_or_summary s`` (SHOW flag) summarizes the latest COVID-19 statistics for a specified MSA. The help output, while running ``covid19_create_movie_or_summary s -h``, is shown below,
+  
+  .. code-block:: console
 
-      usage: covid19_create_movie_or_summary s [-h] [-n NAME] [-M MAXNUM] [--conus]
-					       [-y]
+     usage: covid19_create_movie_or_summary s [-h] [-n NAME] [-M MAXNUM] [--conus]
+					      [-y]
 
-      optional arguments:
-	-h, --help            show this help message and exit
-	-n NAME, --name NAME  Create a summary plot and incident data file of this
-			      metropolitan area. Default is "bayarea".
-	-M MAXNUM, --maxnum MAXNUM
-			      The limit of cases/deaths to visualize. Default is a
-			      plausible amount for the chosen MSA or CONUS. You
-			      should use a limit larger (by at least 2, no more than
-			      10) than the maximum number of cases recorded for a
-			      county in that MSA or CONUS.
-	--conus               If chosen, then make a movie of the COVID-19 cases and
-			      deaths trends for the Continental US (CONUS).
-	-y, --yes             If chosen, then do not confirm --maxnum.
+     optional arguments:
+       -h, --help            show this help message and exit
+       -n NAME, --name NAME  Create a summary plot and incident data file of this
+			     metropolitan area. Default is "bayarea".
+       -M MAXNUM, --maxnum MAXNUM
+			     The limit of cases/deaths to visualize. Default is a
+			     plausible amount for the chosen MSA or CONUS. You
+			     should use a limit larger (by at least 2, no more than
+			     10) than the maximum number of cases recorded for a
+			     county in that MSA or CONUS.
+       --conus               If chosen, then make a movie of the COVID-19 cases and
+			     deaths trends for the Continental US (CONUS).
+       -y, --yes             If chosen, then do not confirm --maxnum.
 
   The required ``-n`` or ``--name`` flag specifies the MSA. The ``-M`` or ``--maxnum`` sets the color limits of cases and deaths to this number (the default is a number that is comfortable above the maximum number of cases in a county in the MSA); and the ``-y`` or ``--yes`` flag suppresses the intermediate prompt that asks the user whether the specified or default maximum number is sufficient. For example, for the NYC metro area,
 
