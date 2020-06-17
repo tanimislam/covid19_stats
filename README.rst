@@ -279,6 +279,8 @@ USING THE CLI
        --metros METROS       If chosen, list of selected metros for which to
 			     summarize COVID-19 data.
 
+  I have typically not specified a list of metros.
+			     
 * ``covid19_create_movie_or_summary s`` (SHOW flag) summarizes the latest COVID-19 statistics for a specified MSA. The help output, while running ``covid19_create_movie_or_summary s -h``, is shown below,
 
 .. _show_mode:
