@@ -79,59 +79,14 @@ Here is some output from using this COVID-19 tracker.
   ======  ================  ======================================  ============  ================  ==========  ===========  ============  =================  ====================================
   
 * The COVID-19 trends in cases and deaths for these 6 metropolitan areas through 15 JUNE 2020: SF Bay Area; Washington, DC; Richmond, VA; NYC; Los Angeles; and New Orleans.
-
-.. |cds_bayarea| image:: figures/covid19_bayarea_cds_15062020.png
-   :width: 100%
-   :align: middle
-
-.. |cds_dc| image:: figures/covid19_dc_cds_15062020.png
-   :width: 100%
-   :align: middle
-
-.. |cds_richmond| image:: figures/covid19_richmond_cds_15062020.png
-   :width: 100%
-   :align: middle
-
-.. |cds_nyc| image:: figures/covid19_nyc_cds_15062020.png
-   :width: 100%
-   :align: middle
-
-.. |cds_losangeles| image:: figures/covid19_losangeles_cds_15062020.png
-   :width: 100%
-   :align: middle
-
-..
-..     .. |cds_neworleans| image:: figures/covid19_neworleans_cds_15062020.png
-..   :width: 100%
-..   :align: middle
-.. 
 	   
-.. GIF ANIMATIONS MSA
-	   
-.. |anim_gif_nyc| image:: figures/covid19_nyc_15062020.gif
-   :width: 100%
-   :align: middle
-
-.. |anim_gif_chicago| image:: figures/covid19_chicago_15062020.gif
-   :width: 100%
-   :align: middle
-
-.. |anim_gif_seattle| image:: figures/covid19_seattle_15062020.gif
-   :width: 100%
-   :align: middle
-
-.. GIF ANIMATIONS CONUS
-
-.. |anim_gif_conus| image:: figures/covid19_seattle_15062020.gif
-   :width: 100%
-   :align: middle
-
-
-  ==============  =================  =================
   ==============  =================  =================
   |cds_bayarea|   |cds_dc|           |cds_richmond|
   SF Bay Area     Washington, DC     Richmond, VA
-  |cds_nyc|       |cds_losangeles|   |cds_losangeles|
+  ==============  =================  =================
+
+  ==============  =================  =================
+  |cds_nyc|       |cds_losangeles|   |cds_neworleans|
   NYC Metro       Los Angeles        New Orleans
   ==============  =================  =================
 
@@ -140,7 +95,6 @@ Here is some output from using this COVID-19 tracker.
 .. _gif_animations:
 	   
   ============== ================== ==================
-  ============== ================== ==================
   |anim_gif_nyc| |anim_gif_chicago| |anim_gif_seattle|               
   NYC Metro      Chicago            Seattle
   ============== ================== ==================
@@ -148,9 +102,8 @@ Here is some output from using this COVID-19 tracker.
   And here is the animation for the continental United States, up to 15 JUNE 2020.
 
   ===========================  ==
+  |anim_gif_conus|               
   Continental United States
-  ===========================  ==
-  |anim_gif_seattle|               
   ===========================  ==    
 
   The remainder of this README has two sections: `GETTING STARTED <getting_started_>`_ and `USING THE CLI <using_cli_>`_.
@@ -406,3 +359,50 @@ in order to get the latest COVID-19 data.
 .. _reStructuredText: https://docutils.sourceforge.io/rst.html
 .. _`Pandas DataFrame`: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.htm
 .. _MP4: https://en.wikipedia.org/wiki/MPEG-4_Part_14
+
+
+.. STATIC IMAGES
+
+.. |cds_bayarea| image:: figures/covid19_bayarea_cds_15062020.png
+   :width: 100%
+   :align: middle
+
+.. |cds_dc| image:: figures/covid19_dc_cds_15062020.png
+   :width: 100%
+   :align: middle
+
+.. |cds_richmond| image:: figures/covid19_richmond_cds_15062020.png
+   :width: 100%
+   :align: middle
+
+.. |cds_nyc| image:: figures/covid19_nyc_cds_15062020.png
+   :width: 100%
+   :align: middle
+
+.. |cds_losangeles| image:: figures/covid19_losangeles_cds_15062020.png
+   :width: 100%
+   :align: middle
+
+.. |cds_neworleans| image:: figures/covid19_neworleans_cds_15062020.png
+   :width: 100%
+   :align: middle
+	   
+.. GIF ANIMATIONS MSA
+
+.. |anim_gif_nyc| image:: figures/covid19_nyc_15062020.gif
+   :width: 100%
+   :align: middle
+
+.. |anim_gif_chicago| image:: figures/covid19_chicago_15062020.gif
+   :width: 100%
+   :align: middle
+
+.. |anim_gif_seattle| image:: figures/covid19_seattle_15062020.gif
+   :width: 100%
+   :align: middle
+
+.. GIF ANIMATIONS CONUS
+
+.. |anim_gif_conus| image:: figures/covid19_conus_15062020.gif
+   :width: 100%
+   :align: middle
