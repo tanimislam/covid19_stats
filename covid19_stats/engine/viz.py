@@ -507,8 +507,9 @@ def create_plots_daysfrombeginning( inc_data, regionName, prefix, days_from_begi
 
 def create_summary_cases_or_deaths_movie_frombeginning(
     data = core.get_msa_data( 'bayarea' ), maxnum_colorbar = 5000.0,
-    type_disp = 'cases' ):
+    type_disp = 'cases', dirname = os.getcwd( ) ):
     assert( type_disp in ( 'cases', 'deaths' ) )
+    assert( os.path.isdir( dirname ) )
     #
     ## barf out if cannot find ffmpeg
     ffmpeg_exec = find_executable( 'ffmpeg' )
@@ -516,7 +517,7 @@ def create_summary_cases_or_deaths_movie_frombeginning(
         raise ValueError("Error, ffmpeg could not be found." )
     #
     ## create directory
-    dirname = tempfile.mkdtemp( suffix = 'covid19' )
+    tmp_dirname = tempfile.mkdtemp( suffix = 'covid19' )
     #
     prefix = data[ 'prefix' ]
     regionName = data[ 'region name' ]
@@ -544,7 +545,7 @@ def create_summary_cases_or_deaths_movie_frombeginning(
                 inc_data, regionName, ax, type_disp = type_disp, days_from_beginning = day,
                 resolution = resolution, doSmarter = doSmarter, plot_artists = plot_artists )
             canvas = FigureCanvasAgg( fig )
-            fname = os.path.join( dirname, 'covid19_%s_%s_%s.%04d.png' % (
+            fname = os.path.join( tmp_dirname, 'covid19_%s_%s_%s.%04d.png' % (
                 prefix, type_disp, last_date.strftime('%d%m%Y'), day ) )
             canvas.print_figure( fname, bbox_inches = 'tight' )
             autocrop_image.autocrop_image( fname, fixEven = True )
@@ -571,8 +572,8 @@ def create_summary_cases_or_deaths_movie_frombeginning(
         lambda fname: '.'.join(os.path.basename( fname ).split('.')[:-2]), allfiles))
     assert( len( allfiles_prefixes ) == 1 )
     movie_prefix = max( allfiles_prefixes )
-    movie_name = '%s.mp4' % movie_prefix # movie goes into directory where exec launched
-    allfile_name = os.path.join( dirname, '%s.%%04d.png' % movie_prefix )
+    movie_name = os.path.abspath( os.path.join( dirname, '%s.mp4' % movie_prefix ) )
+    allfile_name = os.path.join( tmp_dirname, '%s.%%04d.png' % movie_prefix )
     #
     ## thank instructions from https://hamelot.io/visualization/using-ffmpeg-to-convert-a-set-of-images-into-a-video/
     ## make MP4 movie, 5 fps, quality = 25
@@ -584,13 +585,15 @@ def create_summary_cases_or_deaths_movie_frombeginning(
     #
     ## now later remove those images and then remove the directory
     list(map(lambda fname: os.remove( fname ), allfiles ) )
-    shutil.rmtree( dirname )
-    return movie_name
-        
+    shutil.rmtree( tmp_dirname )
+    return os.path.basename( movie_name ) # for now return basename        
 
 def create_summary_movie_frombeginning(
     data = core.get_msa_data( 'bayarea' ),
-    maxnum_colorbar = 5000.0 ):
+    maxnum_colorbar = 5000.0, dirname = os.getcwd( ) ):
+    #
+    ## make sure dirname is a directory
+    assert( os.path.isdir( dirname ) )
     #
     ## barf out if cannot find ffmpeg
     ffmpeg_exec = find_executable( 'ffmpeg' )
@@ -598,7 +601,7 @@ def create_summary_movie_frombeginning(
         raise ValueError("Error, ffmpeg could not be found." )
     #
     ## create directory
-    dirname = tempfile.mkdtemp( suffix = 'covid19' )
+    tmp_dirname = tempfile.mkdtemp( suffix = 'covid19' )
     #
     prefix = data[ 'prefix' ]
     regionName = data[ 'region name' ]
@@ -609,7 +612,7 @@ def create_summary_movie_frombeginning(
     def myfunc( input_tuple ):
         days_collection, time00 = input_tuple
         fnames = create_plots_daysfrombeginning(
-            inc_data, regionName, dirname = dirname,
+            inc_data, regionName, dirname = tmp_dirname,
             days_from_beginning = days_collection, prefix = prefix,
             maxnum_colorbar = maxnum_colorbar )
         logging.info( 'took %0.3f seconds to process %d of %d days.' % (
@@ -636,8 +639,8 @@ def create_summary_movie_frombeginning(
         lambda fname: '.'.join(os.path.basename( fname ).split('.')[:-2]), allfiles))
     assert( len( allfiles_prefixes ) == 1 )
     movie_prefix = max( allfiles_prefixes )
-    movie_name = '%s.mp4' % movie_prefix # movie goes into directory where exec launched
-    allfile_name = os.path.join( dirname, '%s.%%04d.png' % movie_prefix )
+    movie_name = os.path.abspath( os.path.join( dirname, '%s.mp4' % movie_prefix ) )
+    allfile_name = os.path.join( tmp_dirname, '%s.%%04d.png' % movie_prefix )
     #
     ## thank instructions from https://hamelot.io/visualization/using-ffmpeg-to-convert-a-set-of-images-into-a-video/
     ## make MP4 movie, 5 fps, quality = 25
@@ -649,10 +652,14 @@ def create_summary_movie_frombeginning(
     #
     ## now later remove those images and then remove the directory
     list(map(lambda fname: os.remove( fname ), allfiles ) )
-    shutil.rmtree( dirname )
-    return movie_name
+    shutil.rmtree( tmp_dirname )
+    return os.path.basename( movie_name )
 
-def get_summary_demo_data( data = core.get_msa_data( 'bayarea' ), maxnum_colorbar = 5000.0 ):
+def get_summary_demo_data( data = core.get_msa_data( 'bayarea' ), maxnum_colorbar = 5000.0,
+                          dirname = os.getcwd( ) ):
+    #
+    ## now is dirname a directory
+    assert( os.path.isdir( dirname ) )
     doSmarter = False
     if data[ 'prefix' ] == 'conus': doSmarter = True
     prefix = data[ 'prefix' ]
@@ -667,7 +674,7 @@ def get_summary_demo_data( data = core.get_msa_data( 'bayarea' ), maxnum_colorba
     ## pickle this pandas data
     last_date_str = last_date.strftime('%d%m%Y' )
     df_cases_deaths_region.to_pickle(
-        'covid19_%s_%s.pkl.gz' % ( prefix, last_date_str ) )
+        os.path.join( dirname, 'covid19_%s_%s.pkl.gz' % ( prefix, last_date_str ) ) )
     #
     ## now make a plot, logarithmic
     fig = Figure( )
@@ -712,9 +719,11 @@ def get_summary_demo_data( data = core.get_msa_data( 'bayarea' ), maxnum_colorba
     ## save figures
     canvas = FigureCanvasAgg( fig )
     file_prefix = 'covid19_%s_cds_%s' % ( prefix, last_date_str )
-    canvas.print_figure( '%s.pdf' % file_prefix, bbox_inches = 'tight' )
-    canvas.print_figure( '%s.png' % file_prefix, bbox_inches = 'tight' )
-    autocrop_image.autocrop_image( '%s.png' % file_prefix )
+    pngfile = os.path.abspath( os.path.join( dirname, '%s.png' % file_prefix ) )
+    pdffile = os.path.abspath( os.path.join( dirname, '%s.pdf' % file_prefix ) )
+    canvas.print_figure( pngfile, bbox_inches = 'tight' )
+    canvas.print_figure( pdffile, bbox_inches = 'tight' )
+    autocrop_image.autocrop_image( pngfile )
     try: autocrop_image.autocrop_image_pdf( '%s.pdf' % file_prefix )
     except: pass
     #
@@ -728,10 +737,12 @@ def get_summary_demo_data( data = core.get_msa_data( 'bayarea' ), maxnum_colorba
         maxnum_colorbar = maxnum_colorbar, doTitle = True, doSmarter = doSmarter )
     canvas = FigureCanvasAgg( fig1 )
     file_prefix = 'covid19_%s_cases_%s' % ( prefix, last_date_str )
-    canvas.print_figure( '%s.pdf' % file_prefix, bbox_inches = 'tight' )
-    canvas.print_figure( '%s.png' % file_prefix, bbox_inches = 'tight' )
-    autocrop_image.autocrop_image( '%s.png' % file_prefix )
-    try: autocrop_image.autocrop_image_pdf( '%s.pdf' % file_prefix )
+    pngfile = os.path.abspath( os.path.join( dirname, '%s.png' % file_prefix ) )
+    pdffile = os.path.abspath( os.path.join( dirname, '%s.pdf' % file_prefix ) )
+    canvas.print_figure( pngfile, bbox_inches = 'tight' )
+    canvas.print_figure( pdffile, bbox_inches = 'tight' )
+    autocrop_image.autocrop_image( pngfile )
+    try: autocrop_image.autocrop_image_pdf( pdffile )
     except: pass
     #
     ## now create figures DEATHS
@@ -744,8 +755,10 @@ def get_summary_demo_data( data = core.get_msa_data( 'bayarea' ), maxnum_colorba
         maxnum_colorbar = maxnum_colorbar, doTitle = True, doSmarter = doSmarter )
     canvas = FigureCanvasAgg( fig2 )
     file_prefix = 'covid19_%s_death_%s' % ( prefix, last_date_str )
-    canvas.print_figure( '%s.pdf' % file_prefix, bbox_inches = 'tight' )
-    canvas.print_figure( '%s.png' % file_prefix, bbox_inches = 'tight' )
-    autocrop_image.autocrop_image( '%s.png' % file_prefix )
-    try: autocrop_image.autocrop_image_pdf( '%s.pdf' % file_prefix )
+    pngfile = os.path.abspath( os.path.join( dirname, '%s.png' % file_prefix ) )
+    pdffile = os.path.abspath( os.path.join( dirname, '%s.pdf' % file_prefix ) )
+    canvas.print_figure( pngfile, bbox_inches = 'tight' )
+    canvas.print_figure( pdffile, bbox_inches = 'tight' )
+    autocrop_image.autocrop_image( pngfile )
+    try: autocrop_image.autocrop_image_pdf( pdffile )
     except: pass
