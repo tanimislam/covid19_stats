@@ -44,6 +44,9 @@ def _try_continue( ):
 def main( ):
     parser = ArgumentParser( )
     parser.add_argument(
+        '-d', '--dirname', dest='dirname', type=str, action = 'store', default = os.getcwd( ),
+        help = 'The directory into which to store the resulting files. Default is %s.' % os.getcwd( ) )
+    parser.add_argument(
         '--info', dest='do_info', action='store_true', default = False,
         help = 'If chosen, then print out INFO level logging statements.' )
     #
@@ -162,7 +165,8 @@ def main( ):
         else: status = _try_continue( )
         if status:
             movie_name = viz.create_summary_movie_frombeginning(
-                data = data, maxnum_colorbar = maxnum )
+                data = data, maxnum_colorbar = maxnum,
+                dirname = args.dirname )
             return
         
     elif args.choose_option == 's':
@@ -188,7 +192,7 @@ def main( ):
         if args.do_yes_summmetro: status = args.do_yes_summmetro
         else: status = _try_continue( )
         if status:
-            viz.get_summary_demo_data( data, maxnum_colorbar = maxnum )
+            viz.get_summary_demo_data( data, maxnum_colorbar = maxnum, dirname = args.dirname )
             return
     elif args.choose_option == 'mcd':
         #
@@ -215,5 +219,5 @@ def main( ):
         if status:
             viz.create_summary_cases_or_deaths_movie_frombeginning(
                 data = data, maxnum_colorbar = args.movcasedeath_maxnum,
-                type_disp = args.movcasedeath_display )
+                type_disp = args.movcasedeath_display, dirname = args.dirname )
             return
