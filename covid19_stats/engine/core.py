@@ -165,8 +165,10 @@ data_conus = {
     'region name' : 'CONUS',
     'prefix' : 'conus',
     'fips' : list(filter(lambda fips: fips_countystate_dict[ fips ][ 'state' ] in 
-                         _conus_states, fips_countystate_dict)),
-    'population' : int( 320e6) }
+                         _conus_states, fips_countystate_dict)) }
+data_conus['population'] = sum(list(map(
+    lambda fips: fips_popdict_2019[fips],
+    set( fips_popdict_2019 ) & set( data_conus['fips'] ) ) ) )
 #
 ## now do data for all states
 data_states = { '_'.join( state.lower( ).split()) : {
@@ -176,6 +178,34 @@ data_states = { '_'.join( state.lower( ).split()) : {
     'fips' : list(filter(lambda fips: fips_countystate_dict[ fips ][ 'state' ] == state,
                          fips_countystate_dict)) } for
                state in _conus_states }
+for prefix in sorted(data_states):
+    data_states[ prefix ][ 'population' ] = sum(list(map(
+        lambda fips: fips_popdict_2019[ fips ],
+        set( fips_popdict_2019 ) & set( data_states[ prefix ][ 'fips' ] ) ) ) )
+mapping_state_rname_conus = dict(map(lambda rname: (
+    data_states[ rname ][ 'region name' ], rname ), data_states ) )
+    
+#
+## data for non-CONUS states and territories
+data_nonconus_states_territories = {
+    '_'.join( state.lower( ).split()) : {
+        'RNAME' : state,
+        'region name' : state,
+        'prefix' : '_'.join( state.lower().split()),
+        'fips' : list(filter(lambda fips: fips_countystate_dict[ fips ][ 'state' ] == state,
+                            fips_countystate_dict)) } for
+    state in ( 'Alaska', 'Hawaii', 'Puerto Rico' ) }
+for prefix in sorted(data_nonconus_states_territories):
+    data_nonconus_states_territories[
+        prefix ][ 'population' ] = sum(
+            list(map(lambda fips: fips_popdict_2019[ fips ],
+                     set( fips_popdict_2019 ) &
+                     set( data_nonconus_states_territories[ prefix ][ 'fips' ] ) ) ) )
+mapping_state_rname_nonconus = dict(
+    map(lambda rname: ( data_nonconus_states_territories[ rname ][ 'region name' ], rname ),
+        data_nonconus_states_territories ) )
+                                        
+                                    
 
 #
 ## now stuff associated with the fips : county/state mapping

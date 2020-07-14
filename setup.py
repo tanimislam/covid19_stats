@@ -50,6 +50,7 @@ setup(
     entry_points = {
         'console_scripts' : [
             'covid19_create_movie_or_summary = covid19_stats.cli.covid19_create_movie_or_summary:main',
+            'covid19_state_summary = covid19_stats.cli.covid19_state_summary:main',
             'covid19_update_database = covid19_stats.cli.covid19_update_database:main',
         ]
     },
