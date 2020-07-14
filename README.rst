@@ -1,20 +1,22 @@
 README
 ======
 
-Hello world! This is my COVID-19 tracker. There is a git submodule, the `NY Times COVID-19 repository`_, that needs to be frequently updated to get the latest data. The easiest way to update is to run this command in the checked out repo,
-
-.. code-block:: console
-
-   git -C covid19_stats/covid-19-data pull origin master
-
-This is not nearly as sophisticated as what’s in `ncov2019.live`_, and described in `this New Yorker article`_.
+Hello world! This is my COVID-19 tracker. This is not nearly as sophisticated as what’s in `ncov2019.live`_, and described in `this New Yorker article`_.
 
 I have made major changes in the functionality and implementation from the original commits, since commit `#78917`_ for instance.
 
 * The API code has been refactored into the ``covid19_stats.engine`` subdirectory, and is divided into three main submodules: ``covid19_stats.engine.core`` provides the higher level API calls for processing the COVID-19 data; ``covid19_stats.engine.gis`` provides the lower-level APIs to write out, read in, and process the raw GIS data provided mainly by the US Census Bureau; and ``covid19_stats.engine.viz`` does the visualization part.
 
-* There is a single command line interface (CLI), ``covid19_create_movie_or_summary``, that can do the following: summarizes US metropolitan statistical areas (MSA) and gives their latest COVID-19 statistics; makes movie animations of the COVID-19 cases and deaths, from first case to latest incident date, for a given MSA; and prints out summary plots, and incident data, of COVID-19 cases and deaths for the latest incident day.
+* The main command line interface (CLI), ``covid19_create_movie_or_summary``, that can do the following: summarizes US metropolitan statistical areas (MSA) and gives their latest COVID-19 statistics; makes movie animations of the COVID-19 cases and deaths, from first case to latest incident date, for a given MSA; and prints out summary plots, and incident data, of COVID-19 cases and deaths for the latest incident day.
 
+* The second CLI, ``covid19_update_database``, that updates the git submodule, the `NY Times COVID-19 repository`_, with the *latest* data. Previously, one updated the database by running,
+
+  .. code-block:: console
+
+     git -C covid19_stats/covid-19-data pull origin master
+
+  from the main repository's directory.
+  
 * The ``testing`` subdirectory contains `Jupyter Notebooks`_ that illuminate bits and pieces of this COVID-19 tracker’s functionality.
 
 * Some video output of the CLI is located in the ``movies`` subdirectory.
