@@ -124,6 +124,9 @@ def main( ):
             'You should use a limit larger (by at least 2, no more than 10) than',
             'the maximum number of cases recorded for a county in that MSA or CONUS.' ]) )
     parser_movcasedeath.add_argument(
+        '-s', '--saveimages', dest='movcasedeath_saveimages', action='store_true', default=False,
+        help = 'If chosen, then save the images used to create the movie into a ZIP archive.' )
+    parser_movcasedeath.add_argument(
         '--conus', dest='do_conus_movcasedeath', action='store_true', default = False,
         help = 'If chosen, then make a movie of the COVID-19 cases and deaths trends for the Continental US (CONUS).' )
     parser_movcasedeath.add_argument(
@@ -219,5 +222,6 @@ def main( ):
         if status:
             viz.create_summary_cases_or_deaths_movie_frombeginning(
                 data = data, maxnum_colorbar = args.movcasedeath_maxnum,
-                type_disp = args.movcasedeath_display, dirname = args.dirname )
+                type_disp = args.movcasedeath_display, dirname = args.dirname,
+                save_imgfiles = args.movcasedeath_saveimages )
             return

@@ -1,4 +1,4 @@
-import os, sys, numpy, titlecase, time, pandas
+import os, sys, numpy, titlecase, time, pandas, zipfile
 import subprocess, tempfile, shutil, datetime, logging
 import pathos.multiprocessing as multiprocessing
 from itertools import chain
@@ -510,7 +510,7 @@ def create_plots_daysfrombeginning(
 
 def create_summary_cases_or_deaths_movie_frombeginning(
     data = core.get_msa_data( 'bayarea' ), maxnum_colorbar = 5000.0,
-    type_disp = 'cases', dirname = os.getcwd( ) ):
+    type_disp = 'cases', dirname = os.getcwd( ), save_imgfiles = False ):
     assert( type_disp in ( 'cases', 'deaths' ) )
     assert( os.path.isdir( dirname ) )
     #
@@ -585,6 +585,13 @@ def create_summary_cases_or_deaths_movie_frombeginning(
         '-vcodec', 'libx264', '-crf', '25', '-pix_fmt', 'yuv420p',
         movie_name ], stdout = subprocess.PIPE, stderr = subprocess.STDOUT )
     stdout_val, stderr_val = proc.communicate( )
+    #
+    ## if saving the image files
+    if save_imgfiles:
+        with zipfile.ZipFile( os.path.join( dirname, '%s_imagefiles.zip' % movie_prefix ), mode = 'w',
+                             compression = zipfile.ZIP_DEFLATED, compresslevel = 9 ) as zf:
+            for fname in allfiles: zf.write( fname, arcname = os.path.join(
+                '%s_imagefiles' % movie_prefix, os.path.basename( fname ) ) )    
     #
     ## now later remove those images and then remove the directory
     list(map(lambda fname: os.remove( fname ), allfiles ) )
