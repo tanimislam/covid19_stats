@@ -497,7 +497,7 @@ def create_plots_daysfrombeginning(
             regionName,
             'First COVID-19 CASE: %s' % first_date.strftime( '%d-%m-%Y' ),
             'Latest COVID-19 CASE: %s' % last_date.strftime( '%d-%m-%Y' ),
-            'Most County Cases: %d' % cases_max,
+            'Most County Cases: %s' % get_string_commas_num( cases_max ),
             '%s, %s' % ( cs['county'], cs['state'] ),
             'Showing Day %d / %d' % ( day, inc_data[ 'last day' ] ) ]) )
         canvas = FigureCanvasAgg( fig )
