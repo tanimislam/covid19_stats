@@ -15,7 +15,13 @@ I have made major changes in the functionality and implementation from the origi
 
      git -C covid19_stats/covid-19-data pull origin master
 
-  from the main repository's directory.
+  from the main repository's directory. *However*, if you see that ``covid19_stats/covid-19-data`` is not cooperatively behaving, you can force the submodule update by running,
+
+  .. code-block:: console
+
+     git submodule update --init --force --remote
+
+  I got this working suggestion from `this StackOverflow article`_.
   
 * The ``testing`` subdirectory contains `Jupyter Notebooks`_ that illuminate bits and pieces of this COVID-19 tracker’s functionality.
 
@@ -364,6 +370,7 @@ USING THE CLI
 .. _`Pandas DataFrame`: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.htm
 .. _MP4: https://en.wikipedia.org/wiki/MPEG-4_Part_14
 
+.. _`this StackOverflow article`: https://stackoverflow.com/a/40718820
 
 .. STATIC IMAGES
 
