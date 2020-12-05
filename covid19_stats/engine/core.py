@@ -9,32 +9,34 @@ from covid19_stats import resourceDir, covid19ResDir
 from covid19_stats.engine import gis
 
 def _get_stat_line( line ):
-    line_split = list(map(lambda tok: tok.strip(), line.split(',')))
-    dstring = line_split[0]
-    county_name = line_split[1].strip( )
-    state_name = line_split[2].strip( )
-    fips = line_split[-3].strip( )
-    #
-    ## NYC IS SPECIAL!!!
-    if county_name == 'New York City': fips = '00001'
-    if fips == '': return None
-    cases_cumulative = int( line_split[-2] )
-    death_cumulative = int( line_split[-1] )
-    return {
-        'date' : datetime.datetime.strptime(
-        dstring, '%Y-%m-%d' ).date( ),
-        'county' : county_name,
-        'state' : state_name,
-        'fips' : fips,
-        'cumulative cases' : cases_cumulative,
-        'cumulative death' : death_cumulative }
+  line_split = list(map(lambda tok: tok.strip(), line.split(',')))
+  dstring = line_split[0]
+  county_name = line_split[1].strip( )
+  state_name = line_split[2].strip( )
+  fips = line_split[-3].strip( )
+  #
+  ## NYC IS SPECIAL!!!
+  if county_name == 'New York City': fips = '00001'
+  if fips == '': return None
+  try: cases_cumulative = int( line_split[-2] )
+  except: cases_cumulative = 0
+  try: death_cumulative = int( line_split[-1] )
+  except: death_cumulative = 0
+  return {
+    'date' : datetime.datetime.strptime(
+      dstring, '%Y-%m-%d' ).date( ),
+    'county' : county_name,
+    'state' : state_name,
+    'fips' : fips,
+    'cumulative cases' : cases_cumulative,
+    'cumulative death' : death_cumulative }
 
-all_counties_nytimes_covid19_data = list(filter(None,
-    map(_get_stat_line,
-        list( map(lambda line: line.strip(), filter(
-            lambda line: len( line.strip( ) ) != 0,
-    open( os.path.join( covid19ResDir, "us-counties.csv" ), "r" ).readlines())))[1:])))
-
+all_counties_nytimes_covid19_data = list(
+  filter(None,
+         map(_get_stat_line,
+             list( map(lambda line: line.strip(), filter(
+               lambda line: len( line.strip( ) ) != 0,
+               open( os.path.join( covid19ResDir, "us-counties.csv" ), "r" ).readlines())))[1:])))
 
 #
 ## FIPS data for county shapes 2018
@@ -399,24 +401,24 @@ def display_tabulated_metros( form = 'simple', selected_metros = None, into_docu
 #
 ## from a collection of FIPS, find the clusterings -- which set are adjacent to each other, which aren't
 def get_clustering_fips( collection_of_fips, adj = fips_adj_2018 ):
-    fips_rem = set( collection_of_fips )
-    #
-    ## our adjacency matrix from this
-    subset = set(filter(lambda tup: all(map(lambda tok: tok in fips_rem, tup)), adj )) | \
-      set(map(lambda fips: ( fips, fips ), fips_rem ))
-    G = networkx.Graph( sorted( subset ) )
-    #
-    ## now greedy clustering algo
-    fips_clusters = [ ]
-    while len( fips_rem ) > 0:
-        first_fips = min( fips_rem )
-        fips_excl = fips_rem - set([ first_fips, ])
-        fips_clust = [ first_fips ]
-        for fips in fips_excl:
-            try:
-                dist = networkx.shortest_path_length( G, first_fips, fips )
-                fips_clust.append( fips )
-            except: pass
-        fips_clusters.append( set( fips_clust ) )
-        fips_rem = fips_rem - set( fips_clust )
-    return fips_clusters
+  fips_rem = set( collection_of_fips )
+  #
+  ## our adjacency matrix from this
+  subset = set(filter(lambda tup: all(map(lambda tok: tok in fips_rem, tup)), adj )) | \
+    set(map(lambda fips: ( fips, fips ), fips_rem ))
+  G = networkx.Graph( sorted( subset ) )
+  #
+  ## now greedy clustering algo
+  fips_clusters = [ ]
+  while len( fips_rem ) > 0:
+    first_fips = min( fips_rem )
+    fips_excl = fips_rem - set([ first_fips, ])
+    fips_clust = [ first_fips ]
+    for fips in fips_excl:
+      try:
+        dist = networkx.shortest_path_length( G, first_fips, fips )
+        fips_clust.append( fips )
+      except: pass
+    fips_clusters.append( set( fips_clust ) )
+    fips_rem = fips_rem - set( fips_clust )
+  return fips_clusters
