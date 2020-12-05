@@ -318,7 +318,7 @@ def get_maximum_cases( inc_data ):
                        key = lambda tup: tup[1] )
     return max_case_tup
 
-def display_tabulated_metros( form = 'simple', selected_metros = None ):
+def display_tabulated_metros( form = 'simple', selected_metros = None, into_documented_form = False ):
     assert( form in ( 'simple', 'github', 'rst' ) )
     all_metros = sorted(
         data_msas_2019.values( ),
@@ -377,12 +377,25 @@ def display_tabulated_metros( form = 'simple', selected_metros = None ):
         _get_row, enumerate(all_metros)))
     print( 'HERE ARE THE %d METRO AREAS, ORDERED BY POPULATION' % len( all_metros ) )
     print( 'DATA AS OF %s.' % date_last.strftime( '%d %B %Y' ) )
-    print( '%s\n' % tabulate.tabulate(
+    if not into_documented_form:
+      print( '%s\n' % tabulate.tabulate(
         data_tabulated, headers = [
-            'RANK', 'IDENTIFIER', 'NAME', 'POPULATION', 'FIRST INC.',
-            'NUM DAYS', 'NUM CASES', 'NUM DEATHS', 'MAX CASE COUNTY', 'MAX CASE COUNTY NAME'  ],
-      tablefmt = form, stralign = 'left' ) )
-
+          'RANK', 'IDENTIFIER', 'NAME', 'POPULATION', 'FIRST INC.',
+          'NUM DAYS', 'NUM CASES', 'NUM DEATHS', 'MAX CASE COUNTY', 'MAX CASE COUNTY NAME'  ],
+        tablefmt = form, stralign = 'left' ) )
+    else:
+      print( '.. list-table::' )
+      print( '   :widths: auto' )
+      print( '' )
+      print( '   * - RANK' )
+      for column in ( 'IDENTIFIER', 'NAME', 'POPULATION', 'FIRST INC.', 'NUM DAYS',
+                      'NUM CASES', 'NUM DEATHS', 'MAX CASE COUNTY', 'MAX CASE COUNTY NAME' ):
+        print( '     - %s' % column )
+      for row in data_tabulated:
+        print( '   * - %s' % row[ 0 ] )
+        for entry in row[1:]:
+          print( '     - %s' % entry )
+      
 #
 ## from a collection of FIPS, find the clusterings -- which set are adjacent to each other, which aren't
 def get_clustering_fips( collection_of_fips, adj = fips_adj_2018 ):

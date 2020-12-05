@@ -65,6 +65,8 @@ def main( ):
                                    type=str, action='store', choices = [ 'simple', 'github', 'rst' ], default = 'simple' )
     parser_showmetros.add_argument( '--metros', help = 'If chosen, list of selected metros for which to summarize COVID-19 data.',
                                    type=str, action='store' )
+    parser_showmetros.add_argument( '--docform', help = 'If chosen, then print out the tabulated data into a reStructuredText table form.',
+                                    action = 'store_true', default = False )
     #
     ## make summary movie (m)
     parser_moviemetro = subparsers.add_parser( 'm', help = 'Make a movie of the COVID-19 cases and deaths trend for the specific Metropolitan Statistical Area (MSA).' )
@@ -142,8 +144,8 @@ def main( ):
     if args.choose_option == 'M':
         metros = None
         if args.metros is not None:
-            metros = set(list(map(lambda tok: tok.strip( ), args.metros.split(','))))
-        core.display_tabulated_metros( form = args.format, selected_metros = metros )
+          metros = set(list(map(lambda tok: tok.strip( ), args.metros.split(','))))
+        core.display_tabulated_metros( form = args.format, selected_metros = metros,  into_documented_form = args.docform )
         return
     elif args.choose_option == 'm':
         #
