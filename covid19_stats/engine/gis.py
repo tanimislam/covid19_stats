@@ -22,11 +22,17 @@ def _get_record_shapefile_astup( rec, shape ):
     return ( fips_code, data )
 
 def create_and_store_fips_2018( ):
+    if os.path.isfile( os.path.join( 
+        resourceDir, 'fips_2018_adj.pkl.gz' ) ):
+        return pickle.load( gzip.open( os.path.join(
+            resourceDir, 'fips_2018_data.pkl.gz' ), 'rb' ) )
+    #
     sf = shapefile.Reader( os.path.join( resourceDir, 'cb_2018_us_county_500k.shp' ) )
     fips_2018_data = dict(map(lambda rec_shape: _get_record_shapefile_astup(
         rec_shape[0], rec_shape[1] ), zip( sf.records(), sf.shapes())))
     pickle.dump( fips_2018_data, gzip.open( os.path.join(
         resourceDir, 'fips_2018_data.pkl.gz' ), 'wb'))
+    return fips_2018_data
 
 def do_bbox_intersect( bbox1, bbox2 ):
     lng1_min, lat1_min, lng1_max, lat1_max = bbox1
@@ -54,27 +60,27 @@ def get_fips_adjacency( fips, fips_data ):
 
 def construct_adjacency( fips_data, filename = os.path.join(
             resourceDir, 'fips_2018_adj.pkl.gz' ) ):
+    if os.path.isfile( filename ):
+        set_of_adjacents = pickle.load( gzip.open( filename, 'rb' ) )
+        return set_of_adjacents
     with multiprocessing.Pool( processes = multiprocessing.cpu_count( ) ) as pool:
         all_adj = dict(map(lambda fips: ( fips, get_fips_adjacency( fips, fips_data ) ), fips_data ) )
         set_of_adjacents = set(chain.from_iterable(
             map(lambda fips: map(lambda fips2: tuple(sorted([ fips, fips2 ])), all_adj[fips]), all_adj)))
         if filename is not None:
             pickle.dump( set_of_adjacents, gzip.open( filename, 'wb' ) )
-        else: return set_of_adjacents
-
-def load_fips_adj( ):
-    assert( os.path.exists( os.path.join( 
-        resourceDir, 'fips_2018_adj.pkl.gz' ) ) )
-    return pickle.load( gzip.open( os.path.join(
-        resourceDir, 'fips_2018_adj.pkl.gz' ) ) )
-
-def load_fips_data( ):
-    assert( os.path.exists( os.path.join(
-        resourceDir, 'fips_2018_data.pkl.gz' ) ) )
-    return pickle.load( gzip.open( os.path.join(
-        resourceDir, 'fips_2018_data.pkl.gz' ) ) )
+        return set_of_adjacents
 
 def create_and_store_fips_counties_2019( ):
+    if all(map(lambda fname: os.path.isfile(
+        os.path.join( resourceDir, fname ) ),
+               ( 'all_2019_fips_cs_dict.pkl.gz', 'all_2019_cs_fips_dict.pkl.gz' ) ) ):
+        fips_countystate_dict = pickle.load( gzip.open( os.path.join(
+            resourceDir, 'all_2019_fips_cs_dict.pkl.gz' ), 'rb' ) )
+        cs_fips_dict = pickle.load( gzip.open( os.path.join(
+            resourceDir, 'all_2019_cs_fips_dict.pkl.gz' ), 'rb' ) )
+        return fips_countystate_dict, cs_fips_dict
+    
     df = pandas.read_table( os.path.join(
         resourceDir, 'msa_2019.csv' ), encoding='latin-1', sep=',')
     df.pop('MDIV')
@@ -149,20 +155,13 @@ def create_and_store_fips_counties_2019( ):
                 gzip.open( os.path.join( resourceDir, 'all_2019_fips_cs_dict.pkl.gz' ), 'wb' ) )
     pickle.dump( cs_fips_dict,
                 gzip.open( os.path.join( resourceDir, 'all_2019_cs_fips_dict.pkl.gz' ), 'wb' ) )
-                                                     
-
-def load_fips_counties_data( ):
-    assert(all(map(lambda fname: os.path.isfile(
-        os.path.join( resourceDir, fname ) ),
-                   ( 'all_2019_fips_cs_dict.pkl.gz', 'all_2019_cs_fips_dict.pkl.gz' ) ) ) )
-    fips_countystate_dict = pickle.load( gzip.open( os.path.join(
-        resourceDir, 'all_2019_fips_cs_dict.pkl.gz' ), 'rb' ) )
-    cs_fips_dict = pickle.load( gzip.open( os.path.join(
-        resourceDir, 'all_2019_cs_fips_dict.pkl.gz' ), 'rb' ) )
-    #
-    return fips_countystate_dict, cs_fips_dict
+    return fips_countstate_dict, cs_fips_dict
 
 def create_fips_popmap_2019( ):
+    if os.path.isfile( os.path.join(
+        resourceDir, 'fips_2019_popdict.pkl.gz' ) ):
+        return pickle.load( gzip.open( os.path.join(
+            resourceDir, 'fips_2019_popdict.pkl.gz' ), 'rb' ) )
     df = pandas.read_table( os.path.join(
         resourceDir, 'msa_2019.csv' ), encoding='latin-1', sep=',')
     df.pop('MDIV')
@@ -173,12 +172,11 @@ def create_fips_popmap_2019( ):
     fips_pop_dict = dict(zip( df_fips_pops.STCOU, df_fips_pops.POPESTIMATE2019 ) )
     pickle.dump( fips_pop_dict, gzip.open( os.path.join(
         resourceDir, 'fips_2019_popdict.pkl.gz' ), 'wb' ) )
-
-def load_fips_popmap_2019( ):
-    return pickle.load( gzip.open( os.path.join(
-        resourceDir, 'fips_2019_popdict.pkl.gz' ), 'rb' ) )
     
 def create_msa_2019( ):
+    if os.path.isfile( os.path.join(
+        resourceDir, 'msa_2019.pkl.gz' ) ):
+        return pickle.load( gzip.open( os.path.join( resourceDir,  'msa_2019.pkl.gz' ), 'rb' ) )
     df = pandas.read_table( os.path.join(
         resourceDir, 'msa_2019.csv' ), encoding='latin-1', sep=',')
     df.pop('MDIV')
@@ -246,7 +244,10 @@ def create_msa_2019( ):
             data_msa[ 'prefix' ] = '_'.join( data_msa[ 'RNAME' ].split()).lower( )
             all_data_msas_post.append( data_msa )
 
-    return sorted(all_data_msas_post, key = lambda entry: entry[ 'pop est 2019' ] )
+    all_data_msas = sorted(all_data_msas_post, key = lambda entry: entry[ 'pop est 2019' ] )
+    pickle.dump( all_data_msas, gzip.open( os.path.join(
+        resourceDir, 'msa_2019.pkl.gz' ), 'wb' ) )
+    return all_data_msas
 
 def merge_msas( regionName, prefix, msaids, all_data_msas ):
     all_msaids = set( map(lambda entry: entry['msa'],
@@ -277,28 +278,35 @@ def merge_msas( regionName, prefix, msaids, all_data_msas ):
     return sorted( all_data_msas_post, key = lambda entry: entry[ 'pop est 2019' ] )
 
 def create_and_store_msas_and_fips_2019( ):
+    if os.path.isfile( os.path.join(
+        resourceDir, 'msa_2019_dict.pkl.gz' ) ):
+        return pickle.load( gzip.open( os.path.join(
+            resourceDir, 'msa_2019_dict.pkl.gz' ), 'rb' ) )
+    #
     from engine.core import get_county_state
     all_data_msas = create_msa_2019( )
-    print( 'NYC fips: %s (%d).' % ( sorted( all_data_msas[-1]['fips'] ), len( all_data_msas[-1]['fips'] ) ) )
-    #
-    ## SF, San Jose, Napa MSAs -> Bay Area
-    all_data_msas_post = merge_msas( 'Bay Area', 'bayarea', { 41860, 41940, 34900 }, all_data_msas )
-    #
-    ## New York to NYC
-    all_data_msas_post = merge_msas( 'NYC Metro Area', 'nyc', { 35620 }, all_data_msas_post )
-    #
-    ## Washington to DC
-    all_data_msas_post = merge_msas( 'DC Metro Area', 'dc', { 47900 }, all_data_msas_post )
-    #
-    ## Los Angeles, Riverside, Oxnard -> Los Angeles
-    ## from wikipedia entry: https://en.wikipedia.org/wiki/Greater_Los_Angeles
-    all_data_msas_post = merge_msas( 'LA Metro Area', 'losangeles', { 31080, 40140, 37100 }, all_data_msas_post )
-    #
-    ## now dump out
-    pickle.dump( all_data_msas, gzip.open( os.path.join(
-        resourceDir, 'msa_2019.pkl.gz' ), 'wb' ) )
-    pickle.dump( all_data_msas_post, gzip.open( os.path.join(
-        resourceDir, 'msa_2019_post.pkl.gz' ), 'wb' ) )
+    logging.info( 'NYC fips: %s (%d).' % ( sorted( all_data_msas[-1]['fips'] ), len( all_data_msas[-1]['fips'] ) ) )
+    if os.path.isfile( os.path.join( resourceDir, 'msa_2019_post.pkl.gz' ) ):
+        all_data_msas_post = pickle.load( gzip.open( os.path.join(
+            resourceDir, 'msa_2019_post.pkl.gz' ), 'rb' ) )
+    else:
+        #
+        ## SF, San Jose, Napa MSAs -> Bay Area
+        all_data_msas_post = merge_msas( 'Bay Area', 'bayarea', { 41860, 41940, 34900 }, all_data_msas )
+        #
+        ## New York to NYC
+        all_data_msas_post = merge_msas( 'NYC Metro Area', 'nyc', { 35620 }, all_data_msas_post )
+        #
+        ## Washington to DC
+        all_data_msas_post = merge_msas( 'DC Metro Area', 'dc', { 47900 }, all_data_msas_post )
+        #
+        ## Los Angeles, Riverside, Oxnard -> Los Angeles
+        ## from wikipedia entry: https://en.wikipedia.org/wiki/Greater_Los_Angeles
+        all_data_msas_post = merge_msas( 'LA Metro Area', 'losangeles', { 31080, 40140, 37100 }, all_data_msas_post )
+        #
+        ## now dump out
+        pickle.dump( all_data_msas_post, gzip.open( os.path.join(
+            resourceDir, 'msa_2019_post.pkl.gz' ), 'wb' ) )
     #
     ## now create a data structure of dictionaries with prefixes
     msas_dict = { }
@@ -313,10 +321,7 @@ def create_and_store_msas_and_fips_2019( ):
             'prefix' : prefix, 'region name' : regionName,
             'fips' : fips,
             'population' : population }
-    print( 'NYC fips: %s (%d).' % ( sorted( msas_dict['nyc']['fips'] ), len( msas_dict['nyc']['fips'] ) ) )
+    logging.info( 'NYC fips: %s (%d).' % ( sorted( msas_dict['nyc']['fips'] ), len( msas_dict['nyc']['fips'] ) ) )
     pickle.dump( msas_dict, gzip.open( os.path.join(
         resourceDir, 'msa_2019_dict.pkl.gz' ), 'wb' ) )
-    
-def load_msas_data( ):
-    return pickle.load( gzip.open( os.path.join(
-        resourceDir, 'msa_2019_dict.pkl.gz' ), 'rb' ) )
+    return msas_dict

@@ -32,15 +32,15 @@ def _get_stat_line( line ):
     'cumulative death' : death_cumulative }
 
 all_counties_nytimes_covid19_data = list(
-  filter(None,
-         map(_get_stat_line,
-             list( map(lambda line: line.strip(), filter(
-               lambda line: len( line.strip( ) ) != 0,
-               open( os.path.join( covid19ResDir, "us-counties.csv" ), "r" ).readlines())))[1:])))
+    filter(None,
+           map(_get_stat_line,
+               list( map(lambda line: line.strip(), filter(
+                   lambda line: len( line.strip( ) ) != 0,
+                   open( os.path.join( covid19ResDir, "us-counties.csv" ), "r" ).readlines())))[1:])))
 
 #
 ## FIPS data for county shapes 2018
-fips_data_2018 = gis.load_fips_data( )
+fips_data_2018 = gis.create_and_store_fips_2018( )
 
 def get_boundary_dict( fips_collection ):
     boundary_dict = dict(map(lambda fips: (
@@ -64,7 +64,7 @@ def calculate_total_bbox( shapes ):
 
 #
 ## now population data for fips found from MSAs
-fips_popdict_2019 = gis.load_fips_popmap_2019( )
+fips_popdict_2019 = gis.create_fips_popmap_2019( )
 
 #
 ## create a custom FIPS dataset for NYC alone, FIPS #00001
@@ -103,13 +103,13 @@ def create_nyc_custom_fips( bdict ):
 
 #
 ## FIPS data for county adjacency 2018
-fips_adj_2018 = gis.load_fips_adj( )
+fips_adj_2018 = gis.construct_adjacency( fips_data_2018 )
 
 #
 ## CENSUS dictionary of FIPS to COUNTY/STATE
-fips_countystate_dict, cs_fips_dict = gis.load_fips_counties_data( )
+fips_countystate_dict, cs_fips_dict = gis.create_and_store_fips_counties_2019( )
 #
-data_msas_2019 = gis.load_msas_data( )
+data_msas_2019 = gis.create_and_store_msas_and_fips_2019( )
 fips_msas_2019 = dict(chain.from_iterable(
     map(lambda entry: map(lambda fips: ( fips, entry['prefix'] ), entry['fips']), 
         data_msas_2019.values( ) ) ) )
@@ -228,19 +228,19 @@ def get_msa_data( msaname ):
     return data_msas_2019[ msaname ].copy( )
 
 def get_data_fips( fips ):
-  data_by_date = sorted(filter(lambda entry: entry['fips'] == fips,
-                               all_counties_nytimes_covid19_data ),
-                        key = lambda entry: entry['date'] )
-  return data_by_date
+    data_by_date = sorted(filter(lambda entry: entry['fips'] == fips,
+                                all_counties_nytimes_covid19_data ),
+                          key = lambda entry: entry['date'] )
+    return data_by_date
 
 def get_max_cases_county( inc_data ):
-  df = inc_data['df']
-  fips_max, case_max = max(map(lambda key: ( key.split('_')[-1].strip( ), df[key].max( ) ),
-                               filter(lambda key: key.startswith('cases_'), df)),
-                           key = lambda tup: tup[-1] )
-  cs_max = get_county_state( fips_max )
-  return { 'fips' : fips_max, 'cases' : case_max, 'county' : cs_max[ 'county'],
-           'state' : cs_max[ 'state' ] }
+    df = inc_data['df']
+    fips_max, case_max = max(map(lambda key: ( key.split('_')[-1].strip( ), df[key].max( ) ),
+                                 filter(lambda key: key.startswith('cases_'), df)),
+                             key = lambda tup: tup[-1] )
+    cs_max = get_county_state( fips_max )
+    return { 'fips' : fips_max, 'cases' : case_max, 'county' : cs_max[ 'county'],
+            'state' : cs_max[ 'state' ] }
 
 def get_incident_data( data = data_msas_2019['bayarea'] ):
     prefix = data[ 'prefix' ]
@@ -329,12 +329,12 @@ def display_tabulated_metros( form = 'simple', selected_metros = None, into_docu
     ## now if selected metros is not None
     ## only display selected metros by population max to min
     if selected_metros is not None:
-      selected_metros_act = set( selected_metros ) & set(map(lambda entry: entry['prefix'], all_metros ) )
-      if len( selected_metros_act ) == 0:
-        raise ValueError( "Error, no metros chosen" )
-      all_metros = sorted(
-        filter(lambda entry: entry['prefix'] in selected_metros_act, all_metros ),
-        key = lambda entry: entry['population'])[::-1]
+        selected_metros_act = set( selected_metros ) & set(map(lambda entry: entry['prefix'], all_metros ) )
+        if len( selected_metros_act ) == 0:
+            raise ValueError( "Error, no metros chosen" )
+        all_metros = sorted(
+            filter(lambda entry: entry['prefix'] in selected_metros_act, all_metros ),
+            key = lambda entry: entry['population'])[::-1]
 
     #
     ## now get incident data for each metro

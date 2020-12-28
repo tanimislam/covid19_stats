@@ -65,6 +65,8 @@ def main( ):
                                    type=str, action='store', choices = [ 'simple', 'github', 'rst' ], default = 'simple' )
     parser_showmetros.add_argument( '--metros', help = 'If chosen, list of selected metros for which to summarize COVID-19 data.',
                                    type=str, action='store' )
+    parser_showmetros.add_argument( '--topN', dest='topN', type=int, action='store',
+                                   help = 'If defined, will be the top N (N must be an integer greater than 0) population metros to get data on.' )
     parser_showmetros.add_argument( '--docform', help = 'If chosen, then print out the tabulated data into a reStructuredText table form.',
                                     action = 'store_true', default = False )
     #
@@ -144,8 +146,14 @@ def main( ):
     if args.choose_option == 'M':
         metros = None
         if args.metros is not None:
-          metros = set(list(map(lambda tok: tok.strip( ), args.metros.split(','))))
-        core.display_tabulated_metros( form = args.format, selected_metros = metros,  into_documented_form = args.docform )
+            metros = set(list(map(lambda tok: tok.strip( ), args.metros.split(','))))
+        if args.topN is not None:
+            assert( args.topN >= 1 )
+            metros = sorted(
+                core.data_msas_2019.values( ),
+                key = lambda entry: entry['population'])[::-1][::args.topN]
+        core.display_tabulated_metros(
+            form = args.format, selected_metros = metros,  into_documented_form = args.docform )
         return
     elif args.choose_option == 'm':
         #

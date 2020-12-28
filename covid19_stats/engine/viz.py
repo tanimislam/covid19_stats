@@ -1,5 +1,5 @@
 import os, sys, numpy, titlecase, time, pandas, zipfile
-import subprocess, tempfile, shutil, datetime, logging
+import subprocess, tempfile, shutil, datetime, logging, mutagen.mp4
 import pathos.multiprocessing as multiprocessing
 from itertools import chain
 from multiprocessing import Value, Manager
@@ -18,7 +18,10 @@ from covid19_stats.engine import gis, core, get_string_commas_num
 
 def my_colorbar( mappable, ax, **kwargs ):
     """
-    secret saucing (explanation is incomprehensible) from https://joseph-long.com/writing/colorbars/
+    secret saucing (explanation is incomprehensible) from https://joseph-long.com/writing/colorbars.
+
+    :param mappable: Matplotlib object that has type ``mappable``.
+    :param ax: the 
     """
     fig = ax.figure
     divider = make_axes_locatable(ax)
@@ -60,6 +63,9 @@ def create_and_draw_basemap_smarter(
     ax, boundary_dict, resolution = 'i', scaling = 1.3,
     river_linewidth = 5, river_alpha = 0.3 ,
     coast_linewidth = 2, coast_alpha = 0.4):
+    """
+    *Smarter* method to create an appropriate :py:class:`Basemap <mpl_toolkits.basemap.Basemap>`
+    """
     #
     ## smarter than create_and_draw_basemap, because here we solve for the basemap with the lat/lng deltas
     ## that encompass ALL the boundary points of FIPS counties
@@ -472,8 +478,8 @@ def create_plots_daysfrombeginning(
                 fontsize = 24, fontweight = 'bold', transform = ax_leg.transAxes,
                 horizontalalignment = 'left', verticalalignment = 'top' )
     canvas = FigureCanvasAgg( fig )
-    fname = os.path.join( dirname, 'covid19_%s_%s.%04d.png' % (
-        prefix, last_date.strftime('%d%m%Y'), first_day ) )
+    fname = os.path.join( dirname, 'covid19_%s_LATEST.%04d.png' % (
+        prefix, first_day ) ) # last_date.strftime('%d%m%Y')
     canvas.print_figure( fname, bbox_inches = 'tight' )
     autocrop_image.autocrop_image( fname, fixEven = True )
     fnames.append( fname )
@@ -501,8 +507,8 @@ def create_plots_daysfrombeginning(
             '%s, %s' % ( cs['county'], cs['state'] ),
             'Showing Day %d / %d' % ( day, inc_data[ 'last day' ] ) ]) )
         canvas = FigureCanvasAgg( fig )
-        fname = os.path.join( dirname, 'covid19_%s_%s.%04d.png' % (
-            prefix, last_date.strftime('%d%m%Y'), day ) )
+        fname = os.path.join( dirname, 'covid19_%s_LATEST.%04d.png' % (
+            prefix, day ) ) # last_date.strftime('%d%m%Y')
         canvas.print_figure( fname, bbox_inches = 'tight' )
         autocrop_image.autocrop_image( fname, fixEven = True )
         fnames.append( fname )
@@ -548,8 +554,8 @@ def create_summary_cases_or_deaths_movie_frombeginning(
                 inc_data, regionName, ax, type_disp = type_disp, days_from_beginning = day,
                 resolution = resolution, doSmarter = doSmarter, plot_artists = plot_artists )
             canvas = FigureCanvasAgg( fig )
-            fname = os.path.join( tmp_dirname, 'covid19_%s_%s_%s.%04d.png' % (
-                prefix, type_disp, last_date.strftime('%d%m%Y'), day ) )
+            fname = os.path.join( tmp_dirname, 'covid19_%s_%s_LATEST.%04d.png' % (
+                prefix, type_disp, day ) ) # last_date.strftime('%d%m%Y')
             canvas.print_figure( fname, bbox_inches = 'tight' )
             autocrop_image.autocrop_image( fname, fixEven = True )
             fnames.append( fname )
@@ -596,6 +602,17 @@ def create_summary_cases_or_deaths_movie_frombeginning(
     ## now later remove those images and then remove the directory
     list(map(lambda fname: os.remove( fname ), allfiles ) )
     shutil.rmtree( tmp_dirname )
+    #
+    ## now store the data into the MP4 file
+    mp4tags = mutagen.mp4.MP4( movie_name )
+    mp4tags[ '\xa9nam' ] = [ '%s, %s, %s' % ( prefix, type_disp, last_date.strftime( '%d%m%Y' ) ) ]
+    if prefix != 'conus':
+        mp4tags[ '\xa9alb' ] = [ 'metropolitan statistical areas' ]
+    else: mp4tags[ '\xa9alb' ] = [ 'conus' ]
+    mp4tags[ '\xa9ART' ] = [ 'Tanim Islam' ]
+    mp4tags[ '\xa9day' ] = [ '%s' % last_date.strftime( '%Y-%m-%d' ) ]
+    mp4tags.save( )
+    os.chmod( movie_name, 0o644 )
     return os.path.basename( movie_name ) # for now return basename        
 
 def create_summary_movie_frombeginning(
@@ -617,6 +634,7 @@ def create_summary_movie_frombeginning(
     regionName = data[ 'region name' ]
     counties_and_states = list( map( core.get_county_state, data[ 'fips' ] ) )
     inc_data = core.get_incident_data( data )
+    last_date = max( inc_data['df'].date )
     #
     all_days_from_begin = list(range(inc_data['last day'] + 1 ) )
     def myfunc( input_tuple ):
@@ -647,6 +665,7 @@ def create_summary_movie_frombeginning(
     ## now make the movie
     allfiles_prefixes = set(map(
         lambda fname: '.'.join(os.path.basename( fname ).split('.')[:-2]), allfiles))
+    logging.info( 'ALLFILES NAMES = %s.' % allfiles_prefixes )
     assert( len( allfiles_prefixes ) == 1 )
     movie_prefix = max( allfiles_prefixes )
     movie_name = os.path.abspath( os.path.join( dirname, '%s.mp4' % movie_prefix ) )
@@ -663,6 +682,17 @@ def create_summary_movie_frombeginning(
     ## now later remove those images and then remove the directory
     list(map(lambda fname: os.remove( fname ), allfiles ) )
     shutil.rmtree( tmp_dirname )
+    #
+    ## now store the data into the MP4 file
+    mp4tags = mutagen.mp4.MP4( movie_name )
+    mp4tags[ '\xa9nam' ] = [ '%s, ALL, %s' % ( prefix, last_date.strftime( '%d%m%Y' ) ) ]
+    if prefix != 'conus':
+        mp4tags[ '\xa9alb' ] = [ 'metropolitan statistical areas' ]
+    else: mp4tags[ '\xa9alb' ] = [ 'conus' ]
+    mp4tags[ '\xa9ART' ] = [ 'Tanim Islam' ]
+    mp4tags[ '\xa9day' ] = [ '%s' % last_date.strftime( '%Y-%m-%d' ) ]
+    mp4tags.save( )
+    os.chmod( movie_name, 0o644 )
     return os.path.basename( movie_name )
 
 def get_summary_demo_data(
