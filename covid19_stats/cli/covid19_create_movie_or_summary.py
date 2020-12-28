@@ -62,9 +62,11 @@ def main( ):
     ## list of metros (M)
     parser_showmetros = subparsers.add_parser( 'M', help = 'If chosen, then list all the metropolitan areas through which we can look.' )
     parser_showmetros.add_argument( '-f', '--format', help = 'Format of the table that displays MSA summary. Default is "simple".',
-                                   type=str, action='store', choices = [ 'simple', 'github', 'rst' ], default = 'simple' )
+                                   type=str, action='store', choices = [ 'simple', 'github', 'rst', 'rst-simple' ], default = 'simple' )
     parser_showmetros.add_argument( '--metros', help = 'If chosen, list of selected metros for which to summarize COVID-19 data.',
                                    type=str, action='store' )
+    parser_showmetros.add_argument( '--topN', dest='topN', type=int, action='store',
+                                   help = 'If defined, will be the top N (N must be an integer greater than 0) population metros to get data on.' )
     #
     ## make summary movie (m)
     parser_moviemetro = subparsers.add_parser( 'm', help = 'Make a movie of the COVID-19 cases and deaths trend for the specific Metropolitan Statistical Area (MSA).' )
@@ -143,7 +145,14 @@ def main( ):
         metros = None
         if args.metros is not None:
             metros = set(list(map(lambda tok: tok.strip( ), args.metros.split(','))))
-        core.display_tabulated_metros( form = args.format, selected_metros = metros )
+        if args.topN is not None:
+            assert( args.topN >= 1 )
+            metros = list(map(lambda entry: entry['prefix'], sorted(
+                core.data_msas_2019.values( ),
+                key = lambda entry: entry['population'])[::-1][:args.topN]))
+            # logging.info('top %d metros: %s.' % ( args.topN, metros ) )
+        core.display_tabulated_metros(
+            form = args.format, selected_metros = metros )
         return
     elif args.choose_option == 'm':
         #
