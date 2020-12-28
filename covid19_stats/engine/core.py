@@ -38,31 +38,16 @@ all_counties_nytimes_covid19_data = list(filter(None,
 
 #
 ## FIPS data for county shapes 2018
-fips_data_2018 = gis.load_fips_data( )
+fips_data_2018 = gis.create_and_store_fips_2018( )
 
 def get_boundary_dict( fips_collection ):
     boundary_dict = dict(map(lambda fips: (
         fips, fips_data_2018[ fips ][ 'points' ] ), fips_collection ) )
     return boundary_dict
 
-
-def calculate_total_bbox( shapes ):
-    def _get_bbox( shp ):
-        lng_min = shp[:,0].min( )
-        lng_max = shp[:,0].max( )
-        lat_min = shp[:,1].min( )
-        lat_max = shp[:,1].max( )
-        return lng_min, lat_min, lng_max, lat_max
-    bbox_shapes = numpy.array(list(map(_get_bbox, shapes)))
-    lng_min = bbox_shapes[:,0].min( )
-    lat_min = bbox_shapes[:,1].min( )
-    lng_max = bbox_shapes[:,2].max( )
-    lat_max = bbox_shapes[:,3].max( )
-    return lng_min, lat_min, lng_max, lat_max
-
 #
 ## now population data for fips found from MSAs
-fips_popdict_2019 = gis.load_fips_popmap_2019( )
+fips_popdict_2019 = gis.create_fips_popmap_2019( )
 
 #
 ## create a custom FIPS dataset for NYC alone, FIPS #00001
@@ -95,19 +80,19 @@ def create_nyc_custom_fips( bdict ):
     #
     ## fifth (and finally), return this new FIPS data structure: { 'bbox' : bbox, 'points' : list-of-shapes }
     ## FIPS # is 00001
-    bbox = calculate_total_bbox( newshapes ) # bbox
+    bbox = gis.calculate_total_bbox( newshapes ) # bbox
     geom_nyc = { 'bbox' : bbox, 'points' : newshapes }
     return geom_nyc
 
 #
 ## FIPS data for county adjacency 2018
-fips_adj_2018 = gis.load_fips_adj( )
+fips_adj_2018 = gis.construct_adjacency( fips_data_2018 )
 
 #
 ## CENSUS dictionary of FIPS to COUNTY/STATE
-fips_countystate_dict, cs_fips_dict = gis.load_fips_counties_data( )
+fips_countystate_dict, cs_fips_dict = gis.create_and_store_fips_counties_2019( )
 #
-data_msas_2019 = gis.load_msas_data( )
+data_msas_2019 = gis.create_and_store_msas_and_fips_2019( )
 fips_msas_2019 = dict(chain.from_iterable(
     map(lambda entry: map(lambda fips: ( fips, entry['prefix'] ), entry['fips']), 
         data_msas_2019.values( ) ) ) )
@@ -204,9 +189,6 @@ for prefix in sorted(data_nonconus_states_territories):
 mapping_state_rname_nonconus = dict(
     map(lambda rname: ( data_nonconus_states_territories[ rname ][ 'region name' ], rname ),
         data_nonconus_states_territories ) )
-                                        
-                                    
-
 #
 ## now stuff associated with the fips : county/state mapping
 def get_county_state( fips ):
@@ -303,7 +285,7 @@ def get_incident_data( data = data_msas_2019['bayarea'] ):
     #
     ## now calculate the bounding box of this collection of fips data
     boundary_dict = get_boundary_dict( fips_collection )
-    total_bbox = calculate_total_bbox( chain.from_iterable(
+    total_bbox = gis.calculate_total_bbox( chain.from_iterable(
         boundary_dict.values( ) ) )
     incident_data = {
         'df' : df_cases_deaths_region, 'bbox' : total_bbox, 'boundaries' : boundary_dict,
