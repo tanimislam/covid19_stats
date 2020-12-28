@@ -19,7 +19,8 @@ def _get_stat_line( line ):
     if county_name == 'New York City': fips = '00001'
     if fips == '': return None
     cases_cumulative = int( line_split[-2] )
-    death_cumulative = int( line_split[-1] )
+    try: death_cumulative = int( line_split[-1] )
+    except: death_cumulative = 0
     return {
         'date' : datetime.datetime.strptime(
         dstring, '%Y-%m-%d' ).date( ),
@@ -301,7 +302,9 @@ def get_maximum_cases( inc_data ):
     return max_case_tup
 
 def display_tabulated_metros( form = 'simple', selected_metros = None ):
-    assert( form in ( 'simple', 'github', 'rst' ) )
+    assert( form in ( 'simple', 'github', 'rst', 'rst-simple' ) )
+    print_table = True
+    if form == 'rst-simple': print_table = False
     all_metros = sorted(
         data_msas_2019.values( ),
         key = lambda entry: entry['population'])[::-1]
@@ -309,12 +312,12 @@ def display_tabulated_metros( form = 'simple', selected_metros = None ):
     ## now if selected metros is not None
     ## only display selected metros by population max to min
     if selected_metros is not None:
-      selected_metros_act = set( selected_metros ) & set(map(lambda entry: entry['prefix'], all_metros ) )
-      if len( selected_metros_act ) == 0:
-        raise ValueError( "Error, no metros chosen" )
-      all_metros = sorted(
-        filter(lambda entry: entry['prefix'] in selected_metros_act, all_metros ),
-        key = lambda entry: entry['population'])[::-1]
+        selected_metros_act = set( selected_metros ) & set(map(lambda entry: entry['prefix'], all_metros ) )
+        if len( selected_metros_act ) == 0:
+            raise ValueError( "Error, no metros chosen" )
+        all_metros = sorted(
+            filter(lambda entry: entry['prefix'] in selected_metros_act, all_metros ),
+            key = lambda entry: entry['population'])[::-1]
 
     #
     ## now get incident data for each metro
@@ -357,13 +360,27 @@ def display_tabulated_metros( form = 'simple', selected_metros = None ):
     
     data_tabulated = list(map(
         _get_row, enumerate(all_metros)))
-    print( 'HERE ARE THE %d METRO AREAS, ORDERED BY POPULATION' % len( all_metros ) )
-    print( 'DATA AS OF %s.' % date_last.strftime( '%d %B %Y' ) )
-    print( '%s\n' % tabulate.tabulate(
-        data_tabulated, headers = [
-            'RANK', 'IDENTIFIER', 'NAME', 'POPULATION', 'FIRST INC.',
-            'NUM DAYS', 'NUM CASES', 'NUM DEATHS', 'MAX CASE COUNTY', 'MAX CASE COUNTY NAME'  ],
-      tablefmt = form, stralign = 'left' ) )
+    if print_table:
+        print( 'HERE ARE THE %d METRO AREAS, ORDERED BY POPULATION' % len( all_metros ) )
+        print( 'DATA AS OF %s.' % date_last.strftime( '%d %B %Y' ) )
+        print( '%s\n' % tabulate.tabulate(
+            data_tabulated, headers = [
+                'RANK', 'IDENTIFIER', 'NAME', 'POPULATION', 'FIRST INC.',
+                'NUM DAYS', 'NUM CASES', 'NUM DEATHS', 'MAX CASE COUNTY', 'MAX CASE COUNTY NAME'  ],
+            tablefmt = form, stralign = 'left' ) )
+    else:
+        print( '.. list-table:: COVID-19 STATS FOR %d METROS TO %s.' % (
+            len( all_metros ), date_last.strftime( '%d %B %Y' ) ) )
+        print( '   :widths: auto' )
+        print( )
+        print( '   * - RANK' )
+        for column in (  'IDENTIFIER', 'NAME', 'POPULATION', 'FIRST INC.',
+                       'NUM DAYS', 'NUM CASES', 'NUM DEATHS', 'MAX CASE COUNTY', 'MAX CASE COUNTY NAME' ):
+            print( '     - %s' % column )
+        for row in data_tabulated:
+            print( '   * - %d' % row[0] )
+            for entry in row[1:]:
+                print( '     - %s' % entry )
 
 #
 ## from a collection of FIPS, find the clusterings -- which set are adjacent to each other, which aren't
