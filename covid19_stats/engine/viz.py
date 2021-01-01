@@ -683,8 +683,8 @@ def get_summary_demo_data(
     last_date = max( df_cases_deaths_region.date )
     #
     ## pickle this pandas data
+    last_date_str = last_date.strftime('%d%m%Y' )
     if store_data:
-        last_date_str = last_date.strftime('%d%m%Y' )
         df_cases_deaths_region.to_pickle(
             os.path.join( dirname, 'covid19_%s_LATEST.pkl.gz' % ( prefix ) ) )
     #
@@ -730,7 +730,8 @@ def get_summary_demo_data(
     #
     ## save figures
     canvas = FigureCanvasAgg( fig )
-    file_prefix = 'covid19_%s_cds_%s' % ( prefix, last_date_str )
+    #file_prefix = 'covid19_%s_cds_%s' % ( prefix, last_date_str )
+    file_prefix = 'covid19_%s_cds_LATEST' % ( prefix )
     pngfile = os.path.abspath( os.path.join( dirname, '%s.png' % file_prefix ) )
     pdffile = os.path.abspath( os.path.join( dirname, '%s.pdf' % file_prefix ) )
     canvas.print_figure( pngfile, bbox_inches = 'tight' )
@@ -748,7 +749,8 @@ def get_summary_demo_data(
         days_from_beginning = inc_data[ 'last day' ],
         maxnum_colorbar = maxnum_colorbar, doTitle = True, doSmarter = doSmarter )
     canvas = FigureCanvasAgg( fig1 )
-    file_prefix = 'covid19_%s_cases_%s' % ( prefix, last_date_str )
+    #file_prefix = 'covid19_%s_cases_%s' % ( prefix, last_date_str )
+    file_prefix = 'covid19_%s_cases_LATEST' % ( prefix )
     pngfile = os.path.abspath( os.path.join( dirname, '%s.png' % file_prefix ) )
     pdffile = os.path.abspath( os.path.join( dirname, '%s.pdf' % file_prefix ) )
     canvas.print_figure( pngfile, bbox_inches = 'tight' )
@@ -766,7 +768,8 @@ def get_summary_demo_data(
         days_from_beginning = inc_data[ 'last day' ],
         maxnum_colorbar = maxnum_colorbar, doTitle = True, doSmarter = doSmarter )
     canvas = FigureCanvasAgg( fig2 )
-    file_prefix = 'covid19_%s_death_%s' % ( prefix, last_date_str )
+    #file_prefix = 'covid19_%s_death_%s' % ( prefix, last_date_str )
+    file_prefix = 'covid19_%s_death_LATEST' % ( prefix )
     pngfile = os.path.abspath( os.path.join( dirname, '%s.png' % file_prefix ) )
     pdffile = os.path.abspath( os.path.join( dirname, '%s.pdf' % file_prefix ) )
     canvas.print_figure( pngfile, bbox_inches = 'tight' )
