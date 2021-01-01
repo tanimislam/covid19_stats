@@ -667,7 +667,7 @@ def create_summary_movie_frombeginning(
 
 def get_summary_demo_data(
     data = core.get_msa_data( 'bayarea' ), maxnum_colorbar = 5000.0,
-    dirname = os.getcwd( ) ):
+    dirname = os.getcwd( ), store_data = True ):
     #
     ## now is dirname a directory
     assert( os.path.isdir( dirname ) )
@@ -683,9 +683,10 @@ def get_summary_demo_data(
     last_date = max( df_cases_deaths_region.date )
     #
     ## pickle this pandas data
-    last_date_str = last_date.strftime('%d%m%Y' )
-    df_cases_deaths_region.to_pickle(
-        os.path.join( dirname, 'covid19_%s_%s.pkl.gz' % ( prefix, last_date_str ) ) )
+    if store_data:
+        last_date_str = last_date.strftime('%d%m%Y' )
+        df_cases_deaths_region.to_pickle(
+            os.path.join( dirname, 'covid19_%s_LATEST.pkl.gz' % ( prefix ) ) )
     #
     ## now make a plot, logarithmic
     fig = Figure( )
