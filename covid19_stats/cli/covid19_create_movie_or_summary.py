@@ -41,6 +41,11 @@ def _try_continue( ):
         return False
     return val_map[ val ]
 
+def _get_default_maxnum( maxnum ):
+    max_cases = core.get_max_cases_county( core.get_incident_data( data ) )[ 'cases' ]
+    maxnum = find_plausible_maxnum( max_cases )
+    return maxnum
+
 def main( ):
     parser = ArgumentParser( )
     parser.add_argument(
@@ -166,9 +171,7 @@ def main( ):
             data = core.data_msas_2019[ msaname ]
         else: data = core.data_conus
         maxnum = args.maxnum
-        if maxnum is None:
-            max_cases = core.get_max_cases_county( core.get_incident_data( data ) )[ 'cases' ]
-            maxnum = find_plausible_maxnum( max_cases )
+        if maxnum is None: maxnum = _get_default_maxnum( data )
         if maxnum < 1:
             print( 'Error, maximum number for visualization %d < 1.' % maxnum )
             return
@@ -193,9 +196,7 @@ def main( ):
             data = core.data_msas_2019[ msaname ]
         else: data = core.data_conus
         maxnum = args.summmetro_maxnum
-        if maxnum is None:
-            max_cases = core.get_max_cases_county( core.get_incident_data( data ) )[ 'cases' ]
-            maxnum = find_plausible_maxnum( max_cases )
+        if maxnum is None: maxnum = _get_default_maxnum( data )
         if maxnum < 1:
             print( 'Error, maximum number for visualization %d < 1.' % maxnum )
             return
@@ -218,9 +219,7 @@ def main( ):
             data = core.data_msas_2019[ msaname ]
         else: data = core.data_conus
         maxnum = args.movcasedeath_maxnum
-        if maxnum is None:
-            max_cases = core.get_max_cases_county( core.get_incident_data( data ) )[ 'cases' ]
-            maxnum = find_plausible_maxnum( max_cases )
+        if maxnum is None: maxnum = _get_default_maxnum( data )
         if maxnum < 1:
             print( 'Error, maximum number for visualization %d < 1.' % maxnum )
             return

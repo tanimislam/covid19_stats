@@ -472,8 +472,8 @@ def create_plots_daysfrombeginning(
                 fontsize = 24, fontweight = 'bold', transform = ax_leg.transAxes,
                 horizontalalignment = 'left', verticalalignment = 'top' )
     canvas = FigureCanvasAgg( fig )
-    fname = os.path.join( dirname, 'covid19_%s_%s.%04d.png' % (
-        prefix, last_date.strftime('%d%m%Y'), first_day ) )
+    fname = os.path.join( dirname, 'covid19_%s_LATEST.%04d.png' % (
+        prefix, first_day ) ) # last_date.strftime('%d%m%Y')
     canvas.print_figure( fname, bbox_inches = 'tight' )
     autocrop_image.autocrop_image( fname, fixEven = True )
     fnames.append( fname )
@@ -501,8 +501,8 @@ def create_plots_daysfrombeginning(
             '%s, %s' % ( cs['county'], cs['state'] ),
             'Showing Day %d / %d' % ( day, inc_data[ 'last day' ] ) ]) )
         canvas = FigureCanvasAgg( fig )
-        fname = os.path.join( dirname, 'covid19_%s_%s.%04d.png' % (
-            prefix, last_date.strftime('%d%m%Y'), day ) )
+        fname = os.path.join( dirname, 'covid19_%s_LATEST.%04d.png' % (
+            prefix, day ) ) # last_date.strftime('%d%m%Y')
         canvas.print_figure( fname, bbox_inches = 'tight' )
         autocrop_image.autocrop_image( fname, fixEven = True )
         fnames.append( fname )
@@ -548,8 +548,8 @@ def create_summary_cases_or_deaths_movie_frombeginning(
                 inc_data, regionName, ax, type_disp = type_disp, days_from_beginning = day,
                 resolution = resolution, doSmarter = doSmarter, plot_artists = plot_artists )
             canvas = FigureCanvasAgg( fig )
-            fname = os.path.join( tmp_dirname, 'covid19_%s_%s_%s.%04d.png' % (
-                prefix, type_disp, last_date.strftime('%d%m%Y'), day ) )
+            fname = os.path.join( tmp_dirname, 'covid19_%s_%s_LATEST.%04d.png' % (
+                prefix, type_disp, day ) ) # last_date.strftime( '%d%m%Y' )
             canvas.print_figure( fname, bbox_inches = 'tight' )
             autocrop_image.autocrop_image( fname, fixEven = True )
             fnames.append( fname )
