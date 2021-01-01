@@ -112,7 +112,7 @@ def main( ):
     parser_movcasedeath = subparsers.add_parser( 'mcd', help = 'Make a large-sized movie of either "CASES" or "DEATHS" for given MSA or CONUS.' )
     parser_movcasedeath.add_argument(
         '-n', '--name', dest='movcasedeath_name', type=str, action='store', default = 'bayarea', metavar = 'NAME',
-        help = ' '.join([
+==         help = ' '.join([
             'Create a summary plot and incident data file of this metropolitan area.',
             'Default is "bayarea".' ]))
     parser_movcasedeath.add_argument(
