@@ -626,6 +626,7 @@ def create_summary_movie_frombeginning(
     regionName = data[ 'region name' ]
     counties_and_states = list( map( core.get_county_state, data[ 'fips' ] ) )
     inc_data = core.get_incident_data( data )
+    last_date = max( inc_data['df'].date )
     #
     all_days_from_begin = list(range(inc_data['last day'] + 1 ) )
     def myfunc( input_tuple ):
