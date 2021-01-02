@@ -1,4 +1,6 @@
 basemap
+mpi4py
+mutagen
 networkx
 numpy
 pandas
@@ -9,4 +11,4 @@ scipy
 shapely
 tabulate
 titlecase
-git+https://github.com/tanimislam/nprstuff.git#egg=nprstuff
+nprstuff @ git+https://github.com/tanimislam/nprstuff.git@master
