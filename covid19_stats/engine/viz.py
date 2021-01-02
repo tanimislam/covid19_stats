@@ -1,4 +1,4 @@
-import os, sys, numpy, titlecase, time, pandas, zipfile
+import os, sys, numpy, titlecase, time, pandas, zipfile, mutagen.mp4
 import subprocess, tempfile, shutil, datetime, logging
 import pathos.multiprocessing as multiprocessing
 from itertools import chain
