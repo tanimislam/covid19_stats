@@ -596,6 +596,15 @@ def create_summary_cases_or_deaths_movie_frombeginning(
     ## now later remove those images and then remove the directory
     list(map(lambda fname: os.remove( fname ), allfiles ) )
     shutil.rmtree( tmp_dirname )
+    #
+    ## store metadata
+    mp4tags = mutagen.mp4.MP4( movie_name )
+    mp4tags['\xa9nam'] = [ '%s, %s, %s' % ( prefix, type_disp.upper( ), last_date.strftime('%d-%m-%Y') ) ]
+    mp4tags['\xa9ALB'] = [ 'METROPOLITAN STATISTICAL AREA' ]
+    mp4tags['\xa9ART'] = [ 'Tanim Islam' ]
+    mp4tags['\xa9day'] = [ last_date.strftime('%d-%m-%Y') ]
+    mp4tags.save( )
+    os.chmod( movie_name, 0o644 )
     return os.path.basename( movie_name ) # for now return basename        
 
 def create_summary_movie_frombeginning(
@@ -663,6 +672,15 @@ def create_summary_movie_frombeginning(
     ## now later remove those images and then remove the directory
     list(map(lambda fname: os.remove( fname ), allfiles ) )
     shutil.rmtree( tmp_dirname )
+     #
+    ## store metadata
+    mp4tags = mutagen.mp4.MP4( movie_name )
+    mp4tags['\xa9nam'] = [ '%s, ALL, %s' % ( prefix, last_date.strftime('%d-%m-%Y') ) ]
+    mp4tags['\xa9ALB'] = [ 'METROPOLITAN STATISTICAL AREA' ]
+    mp4tags['\xa9ART'] = [ 'Tanim Islam' ]
+    mp4tags['\xa9day'] = [ last_date.strftime('%d-%m-%Y') ]
+    mp4tags.save( )
+    os.chmod( movie_name, 0o644 )
     return os.path.basename( movie_name )
 
 def get_summary_demo_data(
