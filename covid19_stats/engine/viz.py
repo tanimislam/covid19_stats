@@ -600,7 +600,10 @@ def create_summary_cases_or_deaths_movie_frombeginning(
     ## store metadata
     mp4tags = mutagen.mp4.MP4( movie_name )
     mp4tags['\xa9nam'] = [ '%s, %s, %s' % ( prefix, type_disp.upper( ), last_date.strftime('%d-%m-%Y') ) ]
-    mp4tags['\xa9ALB'] = [ 'METROPOLITAN STATISTICAL AREA' ]
+    if data[ 'prefix' ].lower( ) == 'conus':
+        mp4tags['\xa9alb'] = [ 'CONUS' ]
+    else:
+        mp4tags['\xa9alb'] = [ 'METROPOLITAN STATISTICAL AREA' ]
     mp4tags['\xa9ART'] = [ 'Tanim Islam' ]
     mp4tags['\xa9day'] = [ last_date.strftime('%d-%m-%Y') ]
     mp4tags.save( )
@@ -677,7 +680,10 @@ def create_summary_movie_frombeginning(
     ## store metadata
     mp4tags = mutagen.mp4.MP4( movie_name )
     mp4tags['\xa9nam'] = [ '%s, ALL, %s' % ( prefix, last_date.strftime('%d-%m-%Y') ) ]
-    mp4tags['\xa9ALB'] = [ 'METROPOLITAN STATISTICAL AREA' ]
+    if data[ 'prefix' ].lower( ) == 'conus':
+        mp4tags['\xa9alb'] = [ 'CONUS' ]
+    else:
+        mp4tags['\xa9alb'] = [ 'METROPOLITAN STATISTICAL AREA' ]
     mp4tags['\xa9ART'] = [ 'Tanim Islam' ]
     mp4tags['\xa9day'] = [ last_date.strftime('%d-%m-%Y') ]
     mp4tags.save( )
