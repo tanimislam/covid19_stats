@@ -120,6 +120,9 @@ def main( ):
     logger = logging.getLogger( )
     if args.do_info: logger.setLevel( logging.INFO )
     #
+    ## if rank == 0, write out the topN COVID-19 summary data
+    if rank == 0: _draw_out_topN( args.dirname, args.topN )
+    #
     ## now do the thing...
     tuples_to_process = list(product(range(4), msas_or_conus))[rank::nprocs]
     for thing_to_do, msa_or_conus in tuples_to_process:
