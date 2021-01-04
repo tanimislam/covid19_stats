@@ -4,6 +4,7 @@ def signal_handler( signal, frame ):
     sys.exit( 0 )
 signal.signal( signal.SIGINT, signal_handler )
 import os, numpy, tempfile, warnings, tabulate, logging, json
+from covid19_stats import COVID19Database
 from covid19_stats.engine import ( core, viz, get_string_commas_num,
                                   find_plausible_maxnum )
 from argparse import ArgumentParser
@@ -153,7 +154,7 @@ def main( ):
         if args.topN is not None:
             assert( args.topN >= 1 )
             metros = list(map(lambda entry: entry['prefix'], sorted(
-                core.data_msas_2019.values( ),
+                COVID19Database.data_msas_2019( ).values( ),
                 key = lambda entry: entry['population'])[::-1][:args.topN]))
             # logging.info('top %d metros: %s.' % ( args.topN, metros ) )
         if args.format != 'json':
@@ -174,7 +175,7 @@ def main( ):
                     msaname, len( data.engine_msas_2019 ) ) )
                 return
             data = core.data_msas_2019[ msaname ]
-        else: data = core.data_conus
+        else: data = COVID19Database.data_conus( )
         maxnum = args.maxnum
         if maxnum is None: maxnum = _get_default_maxnum( data )
         if maxnum < 1:
