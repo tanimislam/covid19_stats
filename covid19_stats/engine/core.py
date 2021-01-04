@@ -198,13 +198,12 @@ def display_tabulated_metros( form = 'simple', selected_metros = None ):
                 'MAX CASE COUNTY NAME' : '%s, %s' % ( max_case_co_county, max_case_co_state )
                 }
         return (
-          rank, prefix, regionName, population_s,
-          date_first_s, last_day,
-            
-          _get_string_commas_num(num_cases),
-          _get_string_commas_num(num_death),
-          _get_string_commas_num(max_case_co),
-          '%s, %s' % ( max_case_co_county, max_case_co_state ) )
+            rank, prefix, regionName, population_s,
+            date_first_s, last_day,
+            _get_string_commas_num(num_cases),
+            _get_string_commas_num(num_death),
+            _get_string_commas_num(max_case_co),
+            '%s, %s' % ( max_case_co_county, max_case_co_state ) )
     
     data_tabulated = list(map(
         _get_row, enumerate(zip(all_metros, len(all_metros) * [ to_json ] ) ) ) )

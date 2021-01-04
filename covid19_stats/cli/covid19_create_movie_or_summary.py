@@ -170,11 +170,12 @@ def main( ):
         ## now create the following stuff...
         if not args.do_conus:
             msaname = args.name.strip( )
-            if msaname not in core.data_msas_2019:
+            data_msas_2019 = COVID19Database.data_msas_2019( )
+            if msaname not in data_msas_2019:
                 print( 'Error, the chosen MSA name %s not one of the %d defined.' % (
-                    msaname, len( data.engine_msas_2019 ) ) )
+                    msaname, len( data_msas_2019 ) ) )
                 return
-            data = core.data_msas_2019[ msaname ]
+            data = data_msas_2019[ msaname ]
         else: data = COVID19Database.data_conus( )
         maxnum = args.maxnum
         if maxnum is None: maxnum = _get_default_maxnum( data )
@@ -195,12 +196,13 @@ def main( ):
         ## now create the following stuff...
         if not args.do_conus_summmetro:
             msaname = args.summmetro_name.strip( )
-            if msaname not in core.data_msas_2019:
+            data_msas_2019 = COVID19Database.data_msas_2019( )
+            if msaname not in data_msas_2019:
                 print( 'Error, the chosen MSA name %s not one of the %d defined.' % (
-                    msaname, len( core.data_msas_2019 ) ) )
+                    msaname, len( data_msas_2019 ) ) )
                 return
-            data = core.data_msas_2019[ msaname ]
-        else: data = core.data_conus
+            data = data_msas_2019[ msaname ]
+        else: data = COVID19Database.data_conus( )
         maxnum = args.summmetro_maxnum
         if maxnum is None: maxnum = _get_default_maxnum( data )
         if maxnum < 1:
@@ -218,12 +220,13 @@ def main( ):
         ## now create the following stuff...
         if not args.do_conus_movcasedeath:
             msaname = args.movcasedeath_name.strip( )
-            if msaname not in core.data_msas_2019:
+            data_msas_2019 = COVID19Database.data_msas_2019( )
+            if msaname not in data_msas_2019:
                 print( 'Error, the chosen MSA name %s not one of the %d defined.' % (
-                    msaname, len( core.data_msas_2019 ) ) )
+                    msaname, len( data_msas_2019 ) ) )
                 return
-            data = core.data_msas_2019[ msaname ]
-        else: data = core.data_conus
+            data = data_msas_2019[ msaname ]
+        else: data = COVID19Database.data_conus( )
         maxnum = args.movcasedeath_maxnum
         if maxnum is None: maxnum = _get_default_maxnum( data )
         if maxnum < 1:

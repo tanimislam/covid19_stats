@@ -1,9 +1,11 @@
 import os, sys, numpy, logging, time, warnings, json
-from covid19_stats.engine import core, viz, find_plausible_maxnum
 from pathos.multiprocessing import Pool, ThreadPool, cpu_count
 from mpi4py import MPI
 from itertools import product
 from argparse import ArgumentParser
+#
+from covid19_stats.engine import core, viz, find_plausible_maxnum
+from covid19_stats import COVID19Database
 
 warnings.filterwarnings("ignore") # suppress all warnings
 
@@ -15,12 +17,14 @@ Just lift functionality of the separate parts from the PYTHON file, ``covid19_cr
 
 def _get_data( msa_or_conus_name ):
     if msa_or_conus_name.lower( ) == 'conus':
-        return core.data_conus, _get_maxnum( core.data_conus )
-    if msa_or_conus_name.lower( ) in core.data_msas_2019:
-        return core.data_msas_2019[ msa_or_conus_name.lower( ) ], _get_maxnum(
-            core.data_msas_2019[ msa_or_conus_name.lower( ) ] )
+        data_conus = COVID19Database.data_conus( )
+        return data_conus, _get_maxnum( data_conus )
+    if msa_or_conus_name.lower( ) in COVID19Database.data_msas_2019( ):
+        data_msas_2019 = COVID19Database.data_msas_2019( )
+        return data_msas_2019[ msa_or_conus_name.lower( ) ], _get_maxnum(
+            data_msas_2019[ msa_or_conus_name.lower( ) ] )
     raise ValueError("Error, the chosen MSA name %s not one of the %d defined." % (
-        msa_or_conus_name.lower( ), len( core.data_msas_2019 ) ) )
+        msa_or_conus_name.lower( ), len( COVID19Database.data_msas_2019( ) ) ) )
 
 def _get_maxnum( data ):
     max_cases = core.get_max_cases_county( core.get_incident_data( data ) )[ 'cases' ]
@@ -86,8 +90,9 @@ def _get_min_time0( ):
 
 def _draw_out_topN( dirname, topN ):
     assert( topN > 0 )
+    data_msas_2019 = COVID19Database.data_msas_2019( )
     metros = list(map(lambda entry: entry['prefix'], sorted(
-        core.data_msas_2019.values( ),
+        data_msas_2019.values( ),
         key = lambda entry: entry['population'])[::-1][:topN]))
     json_data = core.display_tabulated_metros(
         form = 'json', selected_metros = metros )
