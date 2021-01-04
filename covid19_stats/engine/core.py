@@ -1,202 +1,30 @@
 import os, sys, numpy, glob, tabulate, logging
 import datetime, pandas, titlecase, networkx
-import pathos.multiprocessing as multiprocessing
+from pathos.multiprocessing import Pool, cpu_count
 from itertools import chain
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 #
-from covid19_stats import resourceDir, covid19ResDir
+from covid19_stats import COVID19Database
 from covid19_stats.engine import gis
 
-def _get_stat_line( line ):
-    line_split = list(map(lambda tok: tok.strip(), line.split(',')))
-    dstring = line_split[0]
-    county_name = line_split[1].strip( )
-    state_name = line_split[2].strip( )
-    fips = line_split[-3].strip( )
-    #
-    ## NYC IS SPECIAL!!!
-    if county_name == 'New York City': fips = '00001'
-    if fips == '': return None
-    cases_cumulative = int( line_split[-2] )
-    try: death_cumulative = int( line_split[-1] )
-    except: death_cumulative = 0
-    return {
-        'date' : datetime.datetime.strptime(
-        dstring, '%Y-%m-%d' ).date( ),
-        'county' : county_name,
-        'state' : state_name,
-        'fips' : fips,
-        'cumulative cases' : cases_cumulative,
-        'cumulative death' : death_cumulative }
-
-all_counties_nytimes_covid19_data = list(filter(None,
-    map(_get_stat_line,
-        list( map(lambda line: line.strip(), filter(
-            lambda line: len( line.strip( ) ) != 0,
-    open( os.path.join( covid19ResDir, "us-counties.csv" ), "r" ).readlines())))[1:])))
-
-
-#
-## FIPS data for county shapes 2018
-fips_data_2018 = gis.create_and_store_fips_2018( )
-
 def get_boundary_dict( fips_collection ):
+    fips_data_2018 = COVID19Database.fips_data_2018( )
     boundary_dict = dict(map(lambda fips: (
         fips, fips_data_2018[ fips ][ 'points' ] ), fips_collection ) )
     return boundary_dict
 
 #
-## now population data for fips found from MSAs
-fips_popdict_2019 = gis.create_fips_popmap_2019( )
-
-#
-## create a custom FIPS dataset for NYC alone, FIPS #00001
-def create_nyc_custom_fips( bdict ):
-    from shapely.geometry import Polygon, MultiPolygon
-    from shapely.ops import unary_union
-    def _create_poly( shape ):
-        lngs = shape[:,0]
-        lats = shape[:,1]
-        p = Polygon( list(zip( lngs, lats ) ) )
-        return p
-    
-    #
-    ## these are the FIPS for the FIVE NYC BOROUGHS
-    #fips_five_boroughs = fips_missing_2019 & data_nyc['fips']
-    #
-    ## first get a boundary dict: fips -> points
-    #bdict = get_boundary_dict( fips_five_boroughs )
-    #
-    ## second, construct a list of all the Polygons corresponding to these boroughs
-    all_polys = list(map(_create_poly, chain.from_iterable( bdict.values( ) ) ) )
-    #
-    ## third, make a collection of MultiPolygon from the unary_union of these Polygons
-    newpolys = unary_union( MultiPolygon( all_polys ) )
-    #
-    ## fourth, get the new shapes, ordered by area from smallest to largest
-    newshapes = list(map(lambda poly: numpy.array( poly.exterior.coords.xy ).T, # take a Polygon, convert it into shape format we understand
-        sorted( newpolys.geoms, key = lambda poly: poly.area )[::-1] # sort by maximum to minimum area
-        ) )
-    #
-    ## fifth (and finally), return this new FIPS data structure: { 'bbox' : bbox, 'points' : list-of-shapes }
-    ## FIPS # is 00001
-    bbox = gis.calculate_total_bbox( newshapes ) # bbox
-    geom_nyc = { 'bbox' : bbox, 'points' : newshapes }
-    return geom_nyc
-
-#
-## FIPS data for county adjacency 2018
-fips_adj_2018 = gis.construct_adjacency( fips_data_2018 )
-
-#
-## CENSUS dictionary of FIPS to COUNTY/STATE
-fips_countystate_dict, cs_fips_dict = gis.create_and_store_fips_counties_2019( )
-#
-data_msas_2019 = gis.create_and_store_msas_and_fips_2019( )
-fips_msas_2019 = dict(chain.from_iterable(
-    map(lambda entry: map(lambda fips: ( fips, entry['prefix'] ), entry['fips']), 
-        data_msas_2019.values( ) ) ) )
-#
-## these are the FIPS missing, highlighting NYC
-## include FIPS = 00001 EXCEPT for fips_adj_2018
-## SHOULD WE ALSO DELETE THE FIVE BOROUGHS FIPS??
-_fips_missing_2019 = set( fips_msas_2019 ) - set(
-    map(lambda entry: entry['fips'], all_counties_nytimes_covid19_data ) )
-_fips_five_boroughs = _fips_missing_2019 & data_msas_2019['nyc']['fips']
-#
-nyc_fips = '00001'
-fips_data_2018[ nyc_fips ] = create_nyc_custom_fips(
-    get_boundary_dict( _fips_five_boroughs ) )
-## DELETE
-for fips in _fips_five_boroughs: fips_data_2018.pop( fips )
-#
-fips_countystate_dict[ nyc_fips ] = { 'county' : 'New York City', 'state' : 'New York' }
-#
-cs_fips_dict[ ( 'New York City', 'New York' ) ] = nyc_fips
-## DELETE FIRST THEN SECOND
-for cs_found in map(lambda fips: fips_countystate_dict[ fips ], _fips_five_boroughs ):
-    tup = ( cs_found[ 'county' ], cs_found[ 'state' ] )
-    cs_fips_dict.pop( tup )
-for fips in _fips_five_boroughs: fips_countystate_dict.pop( fips )
-#
-## AND DELETE??
-oldfips = data_msas_2019[ 'nyc' ][ 'fips' ].copy( )
-data_msas_2019[ 'nyc' ][ 'fips' ] = set(list( oldfips ) + [ nyc_fips ] ) - _fips_five_boroughs
-#
-fips_msas_2019[ nyc_fips ] = 'nyc'
-## DELETE
-for fips in _fips_five_boroughs: fips_msas_2019.pop( fips )
-
-#
-## now do the same thing for the five boroughs
-## remove data for 5 boroughs, replace with fake NYC FIPS
-_fips_popdict_remove = set( _fips_five_boroughs ) & set( fips_popdict_2019 )
-logging.debug( 'REMOVING THESE FIPS: %s.' % _fips_popdict_remove )
-_pop_five_boroughs = sum(map(lambda fips: fips_popdict_2019[ fips ],
-                             _fips_popdict_remove ) )
-for fips in _fips_popdict_remove:
-    if fips in fips_popdict_2019: fips_popdict_2019.pop( fips )
-fips_popdict_2019[ nyc_fips ] = _pop_five_boroughs
-
-#
-## now data by states and by CONUS (continental US)
-## will refactor so that later on it will live in engine.gis
-## however, because right now because of NYC definition,
-## and violence done to LOTS of GIS data, move it here AFTER violence
-_conus_states = set( map(lambda elem: elem['state'], fips_countystate_dict.values( ) ) ) - set([
-    'Alaska', 'Hawaii', 'Puerto Rico' ] )
-data_conus = {
-    'RNAME' : 'CONUS',
-    'region name' : 'CONUS',
-    'prefix' : 'conus',
-    'fips' : list(filter(lambda fips: fips_countystate_dict[ fips ][ 'state' ] in 
-                         _conus_states, fips_countystate_dict)) }
-data_conus['population'] = sum(list(map(
-    lambda fips: fips_popdict_2019[fips],
-    set( fips_popdict_2019 ) & set( data_conus['fips'] ) ) ) )
-#
-## now do data for all states
-data_states = { '_'.join( state.lower( ).split()) : {
-    'RNAME' : state,
-    'region name' : state,
-    'prefix' : '_'.join( state.lower().split()),
-    'fips' : list(filter(lambda fips: fips_countystate_dict[ fips ][ 'state' ] == state,
-                         fips_countystate_dict)) } for
-               state in _conus_states }
-for prefix in sorted(data_states):
-    data_states[ prefix ][ 'population' ] = sum(list(map(
-        lambda fips: fips_popdict_2019[ fips ],
-        set( fips_popdict_2019 ) & set( data_states[ prefix ][ 'fips' ] ) ) ) )
-mapping_state_rname_conus = dict(map(lambda rname: (
-    data_states[ rname ][ 'region name' ], rname ), data_states ) )
-    
-#
-## data for non-CONUS states and territories
-data_nonconus_states_territories = {
-    '_'.join( state.lower( ).split()) : {
-        'RNAME' : state,
-        'region name' : state,
-        'prefix' : '_'.join( state.lower().split()),
-        'fips' : list(filter(lambda fips: fips_countystate_dict[ fips ][ 'state' ] == state,
-                            fips_countystate_dict)) } for
-    state in ( 'Alaska', 'Hawaii', 'Puerto Rico' ) }
-for prefix in sorted(data_nonconus_states_territories):
-    data_nonconus_states_territories[
-        prefix ][ 'population' ] = sum(
-            list(map(lambda fips: fips_popdict_2019[ fips ],
-                     set( fips_popdict_2019 ) &
-                     set( data_nonconus_states_territories[ prefix ][ 'fips' ] ) ) ) )
-mapping_state_rname_nonconus = dict(
-    map(lambda rname: ( data_nonconus_states_territories[ rname ][ 'region name' ], rname ),
-        data_nonconus_states_territories ) )
-#
 ## now stuff associated with the fips : county/state mapping
 def get_county_state( fips ):
+    fips_countystate_dict = COVID19Database.fips_countystate_dict( )
     if fips not in fips_countystate_dict: return None
     return fips_countystate_dict[ fips ]
 
 def get_fips_msa( county, state ):
+    fips_msas_2019 = COVID19Database.fips_msas_2019( )
+    data_msas_2019 = COVID19Database.data_msas_2019( )
+    #
     tup = ( county, state )
     assert( tup in cs_fips_dict )
     fips = cs_fips_dict[ tup ]
@@ -205,25 +33,28 @@ def get_fips_msa( county, state ):
     return ( fips, data_msa )
 
 def get_msa_data( msaname ):
+    data_msas_2019 = COVID19Database.data_msas_2019( )
     assert( msaname in data_msas_2019 )
     return data_msas_2019[ msaname ].copy( )
 
 def get_data_fips( fips ):
-  data_by_date = sorted(filter(lambda entry: entry['fips'] == fips,
-                               all_counties_nytimes_covid19_data ),
-                        key = lambda entry: entry['date'] )
-  return data_by_date
+    all_counties_nytimes_covid19_data = COVID19Database.all_counties_nytimes_covid19_data( )
+    data_by_date = sorted(filter(lambda entry: entry['fips'] == fips,
+                                 all_counties_nytimes_covid19_data ),
+                          key = lambda entry: entry['date'] )
+    return data_by_date
 
 def get_max_cases_county( inc_data ):
-  df = inc_data['df']
-  fips_max, case_max = max(map(lambda key: ( key.split('_')[-1].strip( ), df[key].max( ) ),
-                               filter(lambda key: key.startswith('cases_'), df)),
-                           key = lambda tup: tup[-1] )
-  cs_max = get_county_state( fips_max )
-  return { 'fips' : fips_max, 'cases' : case_max, 'county' : cs_max[ 'county'],
-           'state' : cs_max[ 'state' ] }
+    df = inc_data['df']
+    fips_max, case_max = max(map(lambda key: ( key.split('_')[-1].strip( ), df[key].max( ) ),
+                                 filter(lambda key: key.startswith('cases_'), df)),
+                             key = lambda tup: tup[-1] )
+    cs_max = get_county_state( fips_max )
+    return { 'fips' : fips_max, 'cases' : case_max, 'county' : cs_max[ 'county'],
+            'state' : cs_max[ 'state' ] }
 
-def get_incident_data( data = data_msas_2019['bayarea'] ):
+def get_incident_data( data = None ):
+    if data is None: data = get_msa_data( 'bayarea' )
     prefix = data[ 'prefix' ]
     regionName = data[ 'region name' ]
     fips_collection = set( data['fips'] )
@@ -302,6 +133,7 @@ def get_maximum_cases( inc_data ):
     return max_case_tup
 
 def display_tabulated_metros( form = 'simple', selected_metros = None ):
+    data_msas_2019 = COVID19Database.data_msas_2019( )
     assert( form in ( 'simple', 'github', 'rst', 'rst-simple', 'json' ) )
     print_table = True
     to_json = False
@@ -324,7 +156,7 @@ def display_tabulated_metros( form = 'simple', selected_metros = None ):
     #
     ## now get incident data for each metro
     incident_data_dict = { }
-    with multiprocessing.Pool( processes = multiprocessing.cpu_count( ) ) as pool:
+    with Pool( processes = cpu_count( ) ) as pool:
         incident_data_dict = dict(pool.map(
             lambda prefix: ( prefix, get_incident_data( data_msas_2019[ prefix ] ) ),
             data_msas_2019 ) )
@@ -402,7 +234,8 @@ def display_tabulated_metros( form = 'simple', selected_metros = None ):
 
 #
 ## from a collection of FIPS, find the clusterings -- which set are adjacent to each other, which aren't
-def get_clustering_fips( collection_of_fips, adj = fips_adj_2018 ):
+def get_clustering_fips( collection_of_fips, adj = None ):
+    if adj is None: adj = COVID19Database.fips_adj_2018( )
     fips_rem = set( collection_of_fips )
     #
     ## our adjacency matrix from this

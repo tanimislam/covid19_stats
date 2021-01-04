@@ -84,12 +84,6 @@ def construct_adjacency( fips_data, filename = os.path.join(
             pickle.dump( set_of_adjacents, gzip.open( filename, 'wb' ) )
         return set_of_adjacents
 
-def load_fips_adj( ):
-    assert( os.path.exists( os.path.join( 
-        resourceDir, 'fips_2018_adj.pkl.gz' ) ) )
-    return pickle.load( gzip.open( os.path.join(
-        resourceDir, 'fips_2018_adj.pkl.gz' ) ) )
-
 def create_and_store_fips_counties_2019( ):
     if all(map(lambda fname: os.path.isfile(
         os.path.join( resourceDir, fname ) ),
@@ -176,17 +170,6 @@ def create_and_store_fips_counties_2019( ):
                 gzip.open( os.path.join( resourceDir, 'all_2019_cs_fips_dict.pkl.gz' ), 'wb' ) )
     return fips_countystate_dict, cs_fips_dict
 
-def load_fips_counties_data( ):
-    assert(all(map(lambda fname: os.path.isfile(
-        os.path.join( resourceDir, fname ) ),
-                   ( 'all_2019_fips_cs_dict.pkl.gz', 'all_2019_cs_fips_dict.pkl.gz' ) ) ) )
-    fips_countystate_dict = pickle.load( gzip.open( os.path.join(
-        resourceDir, 'all_2019_fips_cs_dict.pkl.gz' ), 'rb' ) )
-    cs_fips_dict = pickle.load( gzip.open( os.path.join(
-        resourceDir, 'all_2019_cs_fips_dict.pkl.gz' ), 'rb' ) )
-    #
-    return fips_countystate_dict, cs_fips_dict
-
 def create_fips_popmap_2019( ):
     if os.path.isfile( os.path.join(
         resourceDir, 'fips_2019_popdict.pkl.gz' ) ):
@@ -204,10 +187,6 @@ def create_fips_popmap_2019( ):
     pickle.dump( fips_pop_dict, gzip.open( os.path.join(
         resourceDir, 'fips_2019_popdict.pkl.gz' ), 'wb' ) )
     return fips_pop_dict
-
-def load_fips_popmap_2019( ):
-    return pickle.load( gzip.open( os.path.join(
-        resourceDir, 'fips_2019_popdict.pkl.gz' ), 'rb' ) )
     
 def create_msa_2019( ):
     if os.path.isfile( os.path.join(
@@ -227,7 +206,7 @@ def create_msa_2019( ):
     fips_countystate_dict = dict(map(lambda f_c_s: ( f_c_s[0], { 'county' : f_c_s[1], 'state' : f_c_s[2] } ),
                                      zip(fips,counties,states)))
     cs_fips_dict = dict(map(lambda f_c_s: ( ( f_c_s[1], f_c_s[2] ), f_c_s[0] ),
-                            zip(fips,counties,states)))
+                            zip(fips,counties, states)))
     #
     ## now get the CBSA's which are actual MSIDs
     def _is_actual_msa( cbsa ):
@@ -359,8 +338,4 @@ def create_and_store_msas_and_fips_2019( ):
     logging.info( 'NYC fips: %s (%d).' % ( sorted( msas_dict['nyc']['fips'] ), len( msas_dict['nyc']['fips'] ) ) )
     pickle.dump( msas_dict, gzip.open( os.path.join(
         resourceDir, 'msa_2019_dict.pkl.gz' ), 'wb' ) )
-    return msas_dict            
-    
-def load_msas_data( ):
-    return pickle.load( gzip.open( os.path.join(
-        resourceDir, 'msa_2019_dict.pkl.gz' ), 'rb' ) )
+    return msas_dict
