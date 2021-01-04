@@ -1,4 +1,4 @@
-import os, sys, numpy, logging, time, warnings
+import os, sys, numpy, logging, time, warnings, json
 from covid19_stats.engine import core, viz, find_plausible_maxnum
 from pathos.multiprocessing import Pool, ThreadPool, cpu_count
 from mpi4py import MPI
@@ -83,6 +83,16 @@ def _get_min_time0( ):
     time0_min = time0_arr.copy( )
     MPI.COMM_WORLD.Allreduce( time0_arr, time0_min, MPI.MIN )
     return time0_min[ 0 ]
+
+def _draw_out_topN( dirname, topN ):
+    assert( topN > 0 )
+    metros = list(map(lambda entry: entry['prefix'], sorted(
+        core.data_msas_2019.values( ),
+        key = lambda entry: entry['population'])[::-1][:topN]))
+    json_data = core.display_tabulated_metros(
+        form = 'json', selected_metros = metros )
+    json.dump( json_data, open( os.path.join( dirname, 'covid19_topN_LATEST.json' ), 'w' ),
+              indent = 1 )
     
 def main( ):
     rank = MPI.COMM_WORLD.Get_rank( )
@@ -92,10 +102,13 @@ def main( ):
                         help = 'regions to choose to create summary plots, big movies, or smaller movies.' )
     parser.add_argument( '--dirname', dest='dirname', type=str, action='store', default = os.getcwd( ),
                         help = 'The name of the directory to which to put all this stuff. Default is %s.' % os.getcwd( ) )
+    parser.add_argument( '--topN', dest='topN', type=int, action='store', default = 50,
+                        help = 'Print out JSON formatted COVID-19 summary data for the topN US MSAs. Default is 50.' )
     parser.add_argument( '--info', dest='do_info', action='store_true', default = False,
                         help = 'If chosen, then turn on INFO logging.' )
     args = parser.parse_args( )
     assert( os.path.isdir( args.dirname ) )
+    assert( args.topN > 0 )
     #
     ## the msas or conus
     msas_or_conus = sorted(set(map(lambda msa_or_conus: msa_or_conus.strip( ).lower( ), args.region ) ) )
