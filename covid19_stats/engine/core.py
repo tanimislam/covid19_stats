@@ -302,9 +302,11 @@ def get_maximum_cases( inc_data ):
     return max_case_tup
 
 def display_tabulated_metros( form = 'simple', selected_metros = None ):
-    assert( form in ( 'simple', 'github', 'rst', 'rst-simple' ) )
+    assert( form in ( 'simple', 'github', 'rst', 'rst-simple', 'json' ) )
     print_table = True
+    to_json = False
     if form == 'rst-simple': print_table = False
+    if form == 'json': to_json = True
     all_metros = sorted(
         data_msas_2019.values( ),
         key = lambda entry: entry['population'])[::-1]
@@ -334,7 +336,7 @@ def display_tabulated_metros( form = 'simple', selected_metros = None ):
         return "%s" % f"{num:,d}"
 
     def _get_row( tup ):
-        idx, data_msa = tup
+        idx, (data_msa, to_json) = tup
         rank = idx + 1
         prefix = data_msa[ 'prefix' ]
         regionName = data_msa[ 'region name' ]
@@ -350,16 +352,32 @@ def display_tabulated_metros( form = 'simple', selected_metros = None ):
         max_case_co  = max_case_data[ 'cases' ]
         max_case_co_county = max_case_data[ 'county' ]
         max_case_co_state  = max_case_data[ 'state'  ]
+        if to_json:
+            return {
+                'RANK' : rank,
+                'PREFIX' : prefix,
+                'NAME' : regionName,
+                'POPULATION' : data_msa[ 'population' ],
+                'FIRST INC.' : date_first_s,
+                'NUM DAYS' : int( inc_data[ 'last day' ] ),
+                'NUM CASES' : int( df.cases.max( ) ),
+                'NUM DEATHS': int( df.death.max( ) ),
+                'MAX CASE COUNTY' : int( max_case_data[ 'cases' ] ),
+                'MAX CASE COUNTY NAME' : '%s, %s' % ( max_case_co_county, max_case_co_state )
+                }
         return (
           rank, prefix, regionName, population_s,
           date_first_s, last_day,
+            
           _get_string_commas_num(num_cases),
           _get_string_commas_num(num_death),
           _get_string_commas_num(max_case_co),
           '%s, %s' % ( max_case_co_county, max_case_co_state ) )
     
     data_tabulated = list(map(
-        _get_row, enumerate(all_metros)))
+        _get_row, enumerate(zip(all_metros, len(all_metros) * [ to_json ] ) ) ) )
+    if to_json:
+        return data_tabulated
     if print_table:
         print( 'HERE ARE THE %d METRO AREAS, ORDERED BY POPULATION' % len( all_metros ) )
         print( 'DATA AS OF %s.' % date_last.strftime( '%d %B %Y' ) )
@@ -369,7 +387,7 @@ def display_tabulated_metros( form = 'simple', selected_metros = None ):
                 'NUM DAYS', 'NUM CASES', 'NUM DEATHS', 'MAX CASE COUNTY', 'MAX CASE COUNTY NAME'  ],
             tablefmt = form, stralign = 'left' ) )
     else:
-        print( '.. list-table:: COVID-19 STATS FOR %d METROS TO %s.' % (
+        print( '.. list-table:: COVID-19 STATS FOR %d METROS AS OF %s.' % (
             len( all_metros ), date_last.strftime( '%d %B %Y' ) ) )
         print( '   :widths: auto' )
         print( )

@@ -3,7 +3,7 @@ def signal_handler( signal, frame ):
     print( "You pressed Ctrl+C. Exiting...")
     sys.exit( 0 )
 signal.signal( signal.SIGINT, signal_handler )
-import os, numpy, tempfile, warnings, tabulate, logging
+import os, numpy, tempfile, warnings, tabulate, logging, json
 from covid19_stats.engine import ( core, viz, get_string_commas_num,
                                   find_plausible_maxnum )
 from argparse import ArgumentParser
@@ -41,7 +41,7 @@ def _try_continue( ):
         return False
     return val_map[ val ]
 
-def _get_default_maxnum( maxnum ):
+def _get_default_maxnum( data ):
     max_cases = core.get_max_cases_county( core.get_incident_data( data ) )[ 'cases' ]
     maxnum = find_plausible_maxnum( max_cases )
     return maxnum
@@ -67,7 +67,7 @@ def main( ):
     ## list of metros (M)
     parser_showmetros = subparsers.add_parser( 'M', help = 'If chosen, then list all the metropolitan areas through which we can look.' )
     parser_showmetros.add_argument( '-f', '--format', help = 'Format of the table that displays MSA summary. Default is "simple".',
-                                   type=str, action='store', choices = [ 'simple', 'github', 'rst', 'rst-simple' ], default = 'simple' )
+                                   type=str, action='store', choices = [ 'simple', 'github', 'rst', 'rst-simple', 'json' ], default = 'simple' )
     parser_showmetros.add_argument( '--metros', help = 'If chosen, list of selected metros for which to summarize COVID-19 data.',
                                    type=str, action='store' )
     parser_showmetros.add_argument( '--topN', dest='topN', type=int, action='store',
@@ -117,7 +117,7 @@ def main( ):
     parser_movcasedeath = subparsers.add_parser( 'mcd', help = 'Make a large-sized movie of either "CASES" or "DEATHS" for given MSA or CONUS.' )
     parser_movcasedeath.add_argument(
         '-n', '--name', dest='movcasedeath_name', type=str, action='store', default = 'bayarea', metavar = 'NAME',
-==         help = ' '.join([
+        help = ' '.join([
             'Create a summary plot and incident data file of this metropolitan area.',
             'Default is "bayarea".' ]))
     parser_movcasedeath.add_argument(
@@ -156,8 +156,13 @@ def main( ):
                 core.data_msas_2019.values( ),
                 key = lambda entry: entry['population'])[::-1][:args.topN]))
             # logging.info('top %d metros: %s.' % ( args.topN, metros ) )
-        core.display_tabulated_metros(
-            form = args.format, selected_metros = metros )
+        if args.format != 'json':
+            core.display_tabulated_metros(
+                form = args.format, selected_metros = metros )
+        else:
+            json_data = core.display_tabulated_metros(
+                form = args.format, selected_metros = metros )
+            print( '%s' % json.dumps( json_data, indent = 1 ) )
         return
     elif args.choose_option == 'm':
         #
