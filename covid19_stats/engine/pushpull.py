@@ -1,4 +1,4 @@
-import os, sys, numpy, mutagen.mp4, datetime, json, requests
+import os, sys, numpy, mutagen.mp4, datetime, json, requests, mimetypes
 from itertools import chain
 from covid19_stats.engine import core
 
@@ -71,8 +71,10 @@ def _get_dictionary_init( init_mp4_files ):
             data_dict[ region_type ].setdefault( region, { } )
         display_type = entry[ 'display type' ]
         if display_type not in data_dict[ region_type ][ region ]:
+            assert( mimetypes.guess_type( fname )[ 0] is not None )
             data_dict[ region_type ][ region ][ display_type ] = { 'mp4' : os.path.basename( fname ) }
-            data_dict[ 'filemap' ][ os.path.basename( fname ) ] = fname
+            data_dict[ 'filemap' ][ os.path.basename( fname ) ] = (
+                fname, mimetypes.guess_type( fname )[ 0 ] )
     return data_dict
 
 def _add_dictionary_pngs( data_dict, init_png_files ):
@@ -92,8 +94,10 @@ def _add_dictionary_pngs( data_dict, init_png_files ):
         #
         ## PNG display type MUST be in original (MP4-populated) data_dict
         assert( display_type in data_dict_new[ region_type ][ region ] )
+        assert( mimetypes.guess_type( fname )[ 0 ] is not None )
         data_dict_new[ region_type ][ region ][ display_type ][ 'png' ] = os.path.basename( fname )
-        data_dict_new[ 'filemap' ][ os.path.basename( fname ) ] = fname
+        data_dict_new[ 'filemap' ][ os.path.basename( fname ) ] = (
+            fname, mimetypes.guess_type( fname )[ 0 ] )
     return data_dict_new
 
 def _add_dictionary_summary_json( data_dict, summary_json_file ):
