@@ -1,5 +1,7 @@
 import os, sys, numpy, mutagen.mp4, datetime, json, requests, mimetypes
 from itertools import chain
+from urllib.parse import urljoin
+from fabric import Connection
 
 def _find_valid_png_files( init_png_files, prefixes = [ 'cds', 'cases', 'death' ] ):
     assert(all(map(os.path.isfile, init_png_files)))
@@ -114,21 +116,103 @@ def create_pushing_dictionary( init_mp4_files, init_png_files, summary_json_file
     data_dict = _add_dictionary_summary_json( data_dict, summary_json_file )
     return data_dict
 
-def post_to_server( covid19_process_endpoint, covid19_verify_endpoint, data_dict,
-                   user_email, password, verify = True ):
+def _post_to_server_verify(
+    covid19_server_prefix,
+    covid19_verify_endpoint,
+    data_dict,
+    user_email,
+    password,
+    verify = True,
+    ssh_connection_info = { } ):
     #
-    ## now check with server, endpoint must consume POST request, 
-    response = requests.post(
-        covid19_verify_endpoint, auth = ( user_email, password ), verify = verify,
-        json = data_dict )
-    if response.status_code == 401:
-        return { 'message' : "ERROR, passing useremail=%s, password=XXXXX to %s with VERIFY=%s DID NOT WORK." % (
-            user_email, covid19_restful_endpoint, verify ) }
-    if response.status_code != 200: # failure mode
-        error_message = response.content
-        return { 'message' : "ERROR, data_dict failed for this reason: %s." % ( error_message ) }
+    def _verify_login_ssh( ):
+        #
+        ## now actually login
+        username = ssh_connection_info[ 'username' ]
+        ssh_password = ssh_connection_info[ 'password' ]
+        server = ssh_connection_info[ 'server' ]
+        with Connection(
+            server, user = username, connect_kwargs = { 'password' : ssh_password } ) as conn:
+            _ = conn.run( 'echo' )
+            return conn.is_connected
+    
+    def _verify_data_https( ):
+        #
+        ## now check with server, endpoint must consume POST request,
+        final_verify_endpoint = urljoin( covid19_server_prefix, covid19_verify_endpoint )
+        response = requests.post(
+            final_verify_endpoint, auth = ( user_email, password ), verify = verify,
+            json = data_dict )
+        if response.status_code == 401:
+            return { 'message' : "ERROR, passing useremail=%s, password=XXXXX to %s with VERIFY=%s DID NOT WORK." % (
+                user_email, covid19_verify_endpoint, verify ) }
+        if response.status_code != 200: # failure mode
+            error_message = response.content
+            return { 'message' : "ERROR, data_dict failed for this reason: %s." % ( error_message ),
+                    'status code' : response.status_code }
+        return { 'message' : 'SUCCESS' }
+
+    def _verify_data_ssh_https( ):
+        username = ssh_connection_info[ 'username' ]
+        ssh_password = ssh_connection_info[ 'password' ]
+        server = ssh_connection_info[ 'server' ]
+        with Connection( server, user = username, connect_kwargs = { 'password' : ssh_password } ) as conn:
+            _ = conn.run( 'echo' )
+            with conn.forward_local( local_port = 31999, remote_port = 443 ):
+                final_verify_endpoint = urljoin( 'https://localhost:31999', covid19_verify_endpoint )
+                response = requests.post(
+                    final_verify_endpoint, auth = ( username, ssh_password ), verify = False,
+                    json = data_dict )
+                if response.status_code == 401:
+                    return { 'message' : "ERROR, passing useremail=%s, password=XXXXX to %s DID NOT WORK." % (
+                        username, covid19_verify_endpoint ) }
+                if response.status_code != 200: # failure mode
+                    error_message = response.content
+                    return { 'message' : "ERROR, data_dict failed for this reason: %s." % ( error_message ),
+                            'status code' : response.status_code }
+                return { 'message' : 'SUCCESS' }
     #
-    ## now if it works, POST the content
+    ## check our data has a good format, life is hard, because checking for SSH tunneling connectivity
+    do_ssh = False
+    if len(set([ 'username', 'password', 'server']) - set( ssh_connection_info ) ) == 0: do_ssh = True
+
+    if not do_ssh: return _verify_data_ssh_https( )
+    #    
+    if not _verify_login_ssh( ):
+        return { 'message' : "ERROR, could not connect to SSH server=%s, username=%s." % (
+            ssh_connection_info[ 'server' ], ssh_connection_info[ 'username' ] ) }
+    return _verify_data_ssh_https( )
+
+def _post_to_server_process(
+    covid19_server_prefix,
+    covid19_process_endpoint,
+    data_dict,
+    user_email,
+    password,
+    verify = True,
+    ssh_connection_info = { } ):
+    #
+    def _verify_login_ssh( ):
+        #
+        ## now actually login
+        username = ssh_connection_info[ 'username' ]
+        ssh_password = ssh_connection_info[ 'password' ]
+        server = ssh_connection_info[ 'server' ]
+        with Connection(
+            server, user = username, connect_kwargs = { 'password' : ssh_password } ) as conn:
+            _ = conn.run( 'echo' )
+            return conn.is_connected
+
+    #
+    ## check whether to do SSH
+    do_ssh = False
+    if len(set([ 'username', 'password', 'server']) - set( ssh_connection_info ) ) == 0: do_ssh = True
+    if do_ssh and not _verify_login_ssh( ):
+        return { 'message' : "ERROR, could not connect to SSH server=%s, username=%s." % (
+            ssh_connection_info[ 'server' ], ssh_connection_info[ 'username' ] ) }
+        
+    #
+    ## now do the processing
     def _get_post_file_entry( num, filename ):
         assert( filename in data_dict[ 'filemap' ] )
         file_type = 'video'
@@ -141,12 +225,49 @@ def post_to_server( covid19_process_endpoint, covid19_verify_endpoint, data_dict
                                    enumerate( sorted( data_dict[ 'filemap' ] ) ) ) )
     file_list_processed.append(
         ( 'json', ( 'data_dict.json', json.dumps( data_dict ), 'application/json' ) ) )
-    big_ass_response = requests.post(
-        covid19_process_endpoint, auth = ( user_email, password ), verify = verify,
-        files = file_list_processed )
-    try:
-        return big_ass_response.json( )
-    except: return { 'message' : big_ass_response.content, 'status code' : big_ass_response.status_code }
+    #
+    def _process_and_respond( final_process_endpoint, user, passwd, verif ):
+        big_ass_response = requests.post(
+            final_process_endpoint, auth = ( username, ssh_password ), verify = verif,
+            files = file_list_processed )
+        try: return big_ass_response.json( )
+        except:
+            return { 'message' : big_ass_response.content, 'status code' : big_ass_response.status_code }
+
+    #
+    ## if ssh
+    if do_ssh:
+        username = ssh_connection_info[ 'username' ]
+        ssh_password = ssh_connection_info[ 'password' ]
+        server = ssh_connection_info[ 'server' ]
+        with Connection( server, user = username, connect_kwargs = { 'password' : ssh_password } ) as conn:
+            _ = conn.run( 'echo' )
+            with conn.forward_local( local_port = 31999, remote_port = 443 ):
+                final_process_endpoint = urljoin( 'https://localhost:31999', covid19_process_endpoint )
+                return _process_and_respond( final_process_endpoint, username, ssh_password, False )
+            
+    final_process_endpoint = urljoin( covid19_server_prefix, covid19_process_endpoint )
+    return _process_and_respond( final_process_endpoint, user_email, password, verify )
+
+def post_to_server(
+    covid19_server_prefix,
+    covid19_process_endpoint,
+    covid19_verify_endpoint,
+    data_dict,
+    user_email,
+    password,
+    verify = True,
+    ssh_connection_info = { } ):
+    
+    message_here = _post_to_server_verify(
+        covid19_server_prefix, covid19_verify_endpoint, data_dict,
+        user_email, password, verify = verify, ssh_connection_info = ssh_connection_info )
+    if message_here[ 'message' ] != 'SUCCESS':
+        return message_here
+
+    return _post_to_server_process(
+        covid19_server_prefix, covid19_process_endpoint, data_dict,
+        user_email, password, verify = verify, ssh_connection_info = ssh_connection_info )
 
 def verify_summary_data( summary_data ):
     assert( isinstance( summary_data, list ) )
