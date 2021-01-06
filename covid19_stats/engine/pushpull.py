@@ -145,7 +145,7 @@ def _post_to_server_verify(
             json = data_dict )
         if response.status_code == 401:
             return { 'message' : "ERROR, passing useremail=%s, password=XXXXX to %s with VERIFY=%s DID NOT WORK." % (
-                user_email, covid19_verify_endpoint, verify ) }
+                user_email, final_verify_endpoint, verify ) }
         if response.status_code != 200: # failure mode
             error_message = response.content
             return { 'message' : "ERROR, data_dict failed for this reason: %s." % ( error_message ),
@@ -167,7 +167,7 @@ def _post_to_server_verify(
                     json = data_dict )
                 if response.status_code == 401:
                     return { 'message' : "ERROR, passing useremail=%s, password=XXXXX to %s DID NOT WORK." % (
-                        user_email, covid19_verify_endpoint ) }
+                        user_email, final_verify_endpoint ) }
                 if response.status_code != 200: # failure mode
                     error_message = response.content
                     return { 'message' : "ERROR, data_dict failed for this reason: %s." % ( error_message ),
