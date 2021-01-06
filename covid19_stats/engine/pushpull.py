@@ -1,6 +1,5 @@
 import os, sys, numpy, mutagen.mp4, datetime, json, requests, mimetypes
 from itertools import chain
-from covid19_stats.engine import core
 
 def _find_valid_png_files( init_png_files, prefixes = [ 'cds', 'cases', 'death' ] ):
     assert(all(map(os.path.isfile, init_png_files)))
@@ -35,7 +34,7 @@ def _get_status_mp4_file( mp4_file ):
     date_pub = datetime.datetime.strptime( mp4tags[ '\xa9day' ][ 0 ], '%d-%m-%Y' ).date( )
     assert( date_pub == date_p )
     return { 'region' : region, 'display type' : display_type, 'region type' : region_type,
-            'date published' : date_p }
+            'date published' : date_p.strftime('%d %B %Y') }
 
 def _get_status_png_file( png_file ):
     bname = os.path.basename( png_file )
@@ -115,18 +114,57 @@ def create_pushing_dictionary( init_mp4_files, init_png_files, summary_json_file
     data_dict = _add_dictionary_summary_json( data_dict, summary_json_file )
     return data_dict
 
-def post_to_server( covid19_restful_endpoint, data_dict, user_email, password, verify = True ):
-    json_data_here = data_dict.copy( )
-    filename_list = sorted( data_dict[ 'filemap' ].items( ), key = lambda tup: tup[0] )
-    json_data_here.pop( 'filemap' )
+def post_to_server( covid19_process_endpoint, covid19_verify_endpoint, data_dict,
+                   user_email, password, verify = True ):
     #
-    ## now check with server, endpoint must accept GET verb
-    response = requests.get( covid19_restful_endpoint, auth = ( user_email, password ), verify = verify )
+    ## now check with server, endpoint must consume POST request, 
+    response = requests.post(
+        covid19_verify_endpoint, auth = ( user_email, password ), verify = verify,
+        json = data_dict )
+    if response.status_code == 401:
+        return { 'message' : "ERROR, passing useremail=%s, password=XXXXX to %s with VERIFY=%s DID NOT WORK." % (
+            user_email, covid19_restful_endpoint, verify ) }
     if response.status_code != 200: # failure mode
-        return "ERROR, passing useremail=%s, password=XXXXX to %s with VERIFY=%s DID NOT WORK." % (
-            user_email, covid19_restful_endpoint, verify )
+        error_message = response.json( )
+        return { 'message' : "ERROR, data_dict failed for this reason: %s." % ( error_message[ 'message' ] ) }
     #
     ## now if it works, POST the content
+    def _get_post_file_entry( num, filename ):
+        assert( filename in data_dict[ 'filemap' ] )
+        file_type = 'video'
+        if filename.endswith('png'):
+            file_type = 'image'
+        file_type = '%s_%02d' % ( file_type, num )
+        fullpath, mimetype = data_dict[ 'filemap' ][ filename ]
+        return ( file_type, ( filename, open( fullpath, 'rb' ).read( ), mimetype ) )
+    file_list_processed = list(map(lambda tup: _get_post_file_entry( tup[0], tup[1] ),
+                                   enumerate( sorted( data_dict[ 'filemap' ] ) ) ) )
+    file_list_processed.append(
+        ( 'json', ( 'data_dict.json', json.dumps( data_dict ), 'application/json' ) ) )
     big_ass_response = requests.post(
-        covid19_restful_endpoint, auth = ( user_email, password ), verify = verify,
-        '???' ) # FIXME
+        covid19_process_endpoint, auth = ( user_email, password ), verify = verify,
+        files = file_list_processed )
+    return big_ass_response.json( )
+
+def verify_summary_data( summary_data ):
+    assert( isinstance( summary_data, list ) )
+    keys_must_be_here = {'FIRST INC.',
+                         'MAX CASE COUNTY',
+                         'MAX CASE COUNTY NAME',
+                         'NAME',
+                         'NUM CASES',
+                         'NUM DAYS',
+                         'NUM DEATHS',
+                         'POPULATION',
+                         'PREFIX',
+                         'RANK'}
+    assert(all(map(lambda entry: len( keys_must_be_here - set(entry) ) == 0, summary_data ) ) )
+    #
+    ## now get ranks
+    ranks = list(map(lambda entry: entry['RANK'], summary_data ) )
+    assert(all(map(lambda rank: isinstance(rank, int), ranks)))
+    assert( len( ranks ) == len( set( ranks ) ) )
+    assert( set( ranks ) == set(range(1, len(ranks)+1)))
+    #
+    ## dont do further checks here
+    return True
