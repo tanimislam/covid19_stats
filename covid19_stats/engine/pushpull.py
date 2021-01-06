@@ -144,7 +144,9 @@ def post_to_server( covid19_process_endpoint, covid19_verify_endpoint, data_dict
     big_ass_response = requests.post(
         covid19_process_endpoint, auth = ( user_email, password ), verify = verify,
         files = file_list_processed )
-    return big_ass_response.json( )
+    try:
+        return big_ass_response.json( )
+    except: return { 'message' : big_ass_response.content, 'status code' : big_ass_response.status_code }
 
 def verify_summary_data( summary_data ):
     assert( isinstance( summary_data, list ) )
