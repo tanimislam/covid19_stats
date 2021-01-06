@@ -117,9 +117,9 @@ def create_pushing_dictionary( init_mp4_files, init_png_files, summary_json_file
     return data_dict
 
 def verify_login_ssh( ssh_connection_info ):
-     username = ssh_connection_info[ 'username' ]
-     ssh_password = ssh_connection_info[ 'password' ]
-     server = ssh_connection_info[ 'server' ]
+    username = ssh_connection_info[ 'username' ]
+    ssh_password = ssh_connection_info[ 'password' ]
+    server = ssh_connection_info[ 'server' ]
     with Connection(
         server, user = username, connect_kwargs = { 'password' : ssh_password } ) as conn:
         if 'key_filename' in conn.connect_kwargs:
