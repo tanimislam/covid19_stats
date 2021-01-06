@@ -1,7 +1,9 @@
-import os, sys, numpy, mutagen.mp4, datetime, json, requests, mimetypes
+import os, sys, numpy, mutagen.mp4, datetime, getpass, time
+import json, requests, mimetypes, logging, subprocess
 from itertools import chain
 from urllib.parse import urljoin
 from fabric import Connection
+from distutils.spawn import find_executable
 
 def _find_valid_png_files( init_png_files, prefixes = [ 'cds', 'cases', 'death' ] ):
     assert(all(map(os.path.isfile, init_png_files)))
@@ -178,7 +180,7 @@ def _post_to_server_verify(
     do_ssh = False
     if len(set([ 'username', 'password', 'server']) - set( ssh_connection_info ) ) == 0: do_ssh = True
 
-    if not do_ssh: return _verify_data_ssh_https( )
+    if not do_ssh: return _verify_data_https( )
     #    
     if not verify_login_ssh( ssh_connection_info ):
         return { 'message' : "ERROR, could not connect to SSH server=%s, username=%s." % (
@@ -218,7 +220,7 @@ def _post_to_server_process(
     #
     def _process_and_respond( final_process_endpoint, user, passwd, verif ):
         big_ass_response = requests.post(
-            final_process_endpoint, auth = ( username, ssh_password ), verify = verif,
+            final_process_endpoint, auth = ( user, passwd ), verify = verif,
             files = file_list_processed )
         try: return big_ass_response.json( )
         except:
@@ -250,16 +252,70 @@ def post_to_server(
     password,
     verify = True,
     ssh_connection_info = { } ):
-    
+
+    do_ssh = False
+    try:
+        status = verify_login_ssh( ssh_connection_info )
+        do_ssh = status
+    except: pass
+
+    def _get_message( pid ):
+        try:
+            lines = list(filter(lambda line: len(line.strip()) != 0 and line.strip().startswith('%d' % pid ),
+                                subprocess.check_output([ 'ps', '%d' % pid ]).decode('utf8').split('\n')))
+            if len( lines ) == 0: return ''
+            return lines[-1].strip( )
+        except:
+            return ''
+        
+    def _setup_ssh_tunnel( ssh_connection_info ):
+        sshpass_exec = find_executable( 'sshpass' )
+        ssh_exec = find_executable( 'ssh' )
+        if not all(map(lambda exc: exc is not None, ( sshpass_exec, ssh_exec ) ) ):
+            return 'Error, could not find sshpass AND ssh executables.', None
+        username = ssh_connection_info[ 'username' ]
+        password = ssh_connection_info[ 'password' ]
+        server = ssh_connection_info[ 'server' ]
+        #
+        ## set up the tunnel
+        proc = subprocess.Popen([ sshpass_exec, '-p', password, ssh_exec, '-fnN', '-L', '31999:localhost:443',
+                                 '%s@%s' % ( username, server ) ], stdout = subprocess.PIPE, stderr = subprocess.STDOUT )
+        #stdout_val, stderr_val = proc.communicate( )
+        time.sleep( 0.1 ) # because maybe noncooperation?
+        all_output_lines = list(filter(lambda line: len( line.strip( ) ) != 0,
+                                       subprocess.check_output(['ps', '-fu', getpass.getuser( ) ] ).decode('utf8').split('\n') ) )
+        valid_pids = sorted(map(lambda line: int(line.split()[1]),
+                                filter(lambda line: '31999:localhost:443' in line and '%s@%s' % ( username, server ) in line,
+                                    all_output_lines ) ) )
+        if len( valid_pids ) == 0:
+            return "ERROR: Tunneling SSH connection to %s with username=%s could not be established." % (
+                server, username ), None
+        return 'SUCCESS', min( valid_pids )
+
+    act_cov19_server_prefix = covid19_server_prefix
+    do_verify = verify
+    if do_ssh:
+        status, pid_ssh_tunnel = _setup_ssh_tunnel( ssh_connection_info )
+        if status != 'SUCCESS':
+            return { 'message' : status }
+        act_cov19_server_prefix = 'https://localhost:31999/'
+        do_verify = False
+                
     message_here = _post_to_server_verify(
-        covid19_server_prefix, covid19_verify_endpoint, data_dict,
-        user_email, password, verify = verify, ssh_connection_info = ssh_connection_info )
+        act_cov19_server_prefix, covid19_verify_endpoint, data_dict,
+        user_email, password, verify = do_verify, ssh_connection_info = { } )
     if message_here[ 'message' ] != 'SUCCESS':
         return message_here
 
-    return _post_to_server_process(
-        covid19_server_prefix, covid19_process_endpoint, data_dict,
-        user_email, password, verify = verify, ssh_connection_info = ssh_connection_info )
+    message_here = _post_to_server_process(
+        act_cov19_server_prefix, covid19_process_endpoint, data_dict,
+        user_email, password, verify = do_verify, ssh_connection_info = { } )
+
+    if do_ssh:
+        final_statement = subprocess.check_output([ 'kill', '-9', '%d' % pid_ssh_tunnel ])
+        process_msg = _get_message( pid_ssh_tunnel )
+
+    return message_here
 
 def verify_summary_data( summary_data ):
     assert( isinstance( summary_data, list ) )
