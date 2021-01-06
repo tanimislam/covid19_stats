@@ -163,11 +163,11 @@ def _post_to_server_verify(
             with conn.forward_local( local_port = 31999, remote_port = 443 ):
                 final_verify_endpoint = urljoin( 'https://localhost:31999', covid19_verify_endpoint )
                 response = requests.post(
-                    final_verify_endpoint, auth = ( username, ssh_password ), verify = False,
+                    final_verify_endpoint, auth = ( user_email, password ), verify = False,
                     json = data_dict )
                 if response.status_code == 401:
                     return { 'message' : "ERROR, passing useremail=%s, password=XXXXX to %s DID NOT WORK." % (
-                        username, covid19_verify_endpoint ) }
+                        user_email, covid19_verify_endpoint ) }
                 if response.status_code != 200: # failure mode
                     error_message = response.content
                     return { 'message' : "ERROR, data_dict failed for this reason: %s." % ( error_message ),
@@ -236,7 +236,7 @@ def _post_to_server_process(
             _ = conn.run( 'echo' )
             with conn.forward_local( local_port = 31999, remote_port = 443 ):
                 final_process_endpoint = urljoin( 'https://localhost:31999', covid19_process_endpoint )
-                return _process_and_respond( final_process_endpoint, username, ssh_password, False )
+                return _process_and_respond( final_process_endpoint, user_email, password, False )
             
     final_process_endpoint = urljoin( covid19_server_prefix, covid19_process_endpoint )
     return _process_and_respond( final_process_endpoint, user_email, password, verify )
