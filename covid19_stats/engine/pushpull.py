@@ -116,6 +116,17 @@ def create_pushing_dictionary( init_mp4_files, init_png_files, summary_json_file
     data_dict = _add_dictionary_summary_json( data_dict, summary_json_file )
     return data_dict
 
+def verify_login_ssh( ssh_connection_info ):
+     username = ssh_connection_info[ 'username' ]
+     ssh_password = ssh_connection_info[ 'password' ]
+     server = ssh_connection_info[ 'server' ]
+    with Connection(
+        server, user = username, connect_kwargs = { 'password' : ssh_password } ) as conn:
+        if 'key_filename' in conn.connect_kwargs:
+            conn.connect_kwargs.pop( 'key_filename' )
+        _ = conn.run( 'echo' )
+        return conn.is_connected
+
 def _post_to_server_verify(
     covid19_server_prefix,
     covid19_verify_endpoint,
@@ -124,17 +135,6 @@ def _post_to_server_verify(
     password,
     verify = True,
     ssh_connection_info = { } ):
-    #
-    def _verify_login_ssh( ):
-        #
-        ## now actually login
-        username = ssh_connection_info[ 'username' ]
-        ssh_password = ssh_connection_info[ 'password' ]
-        server = ssh_connection_info[ 'server' ]
-        with Connection(
-            server, user = username, connect_kwargs = { 'password' : ssh_password } ) as conn:
-            _ = conn.run( 'echo' )
-            return conn.is_connected
     
     def _verify_data_https( ):
         #
@@ -157,6 +157,8 @@ def _post_to_server_verify(
         ssh_password = ssh_connection_info[ 'password' ]
         server = ssh_connection_info[ 'server' ]
         with Connection( server, user = username, connect_kwargs = { 'password' : ssh_password } ) as conn:
+            if 'key_filename' in conn.connect_kwargs:
+                conn.connect_kwargs.pop( 'key_filename' )
             _ = conn.run( 'echo' )
             with conn.forward_local( local_port = 31999, remote_port = 443 ):
                 final_verify_endpoint = urljoin( 'https://localhost:31999', covid19_verify_endpoint )
@@ -178,7 +180,7 @@ def _post_to_server_verify(
 
     if not do_ssh: return _verify_data_ssh_https( )
     #    
-    if not _verify_login_ssh( ):
+    if not verify_login_ssh( ssh_connection_info ):
         return { 'message' : "ERROR, could not connect to SSH server=%s, username=%s." % (
             ssh_connection_info[ 'server' ], ssh_connection_info[ 'username' ] ) }
     return _verify_data_ssh_https( )
@@ -192,22 +194,10 @@ def _post_to_server_process(
     verify = True,
     ssh_connection_info = { } ):
     #
-    def _verify_login_ssh( ):
-        #
-        ## now actually login
-        username = ssh_connection_info[ 'username' ]
-        ssh_password = ssh_connection_info[ 'password' ]
-        server = ssh_connection_info[ 'server' ]
-        with Connection(
-            server, user = username, connect_kwargs = { 'password' : ssh_password } ) as conn:
-            _ = conn.run( 'echo' )
-            return conn.is_connected
-
-    #
     ## check whether to do SSH
     do_ssh = False
     if len(set([ 'username', 'password', 'server']) - set( ssh_connection_info ) ) == 0: do_ssh = True
-    if do_ssh and not _verify_login_ssh( ):
+    if do_ssh and not verify_login_ssh( ssh_connection_info ):
         return { 'message' : "ERROR, could not connect to SSH server=%s, username=%s." % (
             ssh_connection_info[ 'server' ], ssh_connection_info[ 'username' ] ) }
         
@@ -241,6 +231,8 @@ def _post_to_server_process(
         ssh_password = ssh_connection_info[ 'password' ]
         server = ssh_connection_info[ 'server' ]
         with Connection( server, user = username, connect_kwargs = { 'password' : ssh_password } ) as conn:
+            if 'key_filename' in conn.connect_kwargs:
+                conn.connect_kwargs.pop( 'key_filename' )
             _ = conn.run( 'echo' )
             with conn.forward_local( local_port = 31999, remote_port = 443 ):
                 final_process_endpoint = urljoin( 'https://localhost:31999', covid19_process_endpoint )
