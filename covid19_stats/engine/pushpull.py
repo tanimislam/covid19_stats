@@ -126,7 +126,7 @@ def post_to_server( covid19_process_endpoint, covid19_verify_endpoint, data_dict
             user_email, covid19_restful_endpoint, verify ) }
     if response.status_code != 200: # failure mode
         error_message = response.content
-        return { 'message' : "ERROR, data_dict failed for this reason: %s." % ( error_message[ 'message' ] ) }
+        return { 'message' : "ERROR, data_dict failed for this reason: %s." % ( error_message ) }
     #
     ## now if it works, POST the content
     def _get_post_file_entry( num, filename ):
