@@ -539,18 +539,25 @@ Here is some output from using this COVID-19 tracker.
        - 37,331
        - Monroe County, New York
 
-  
+.. _png_figures:
+	 
 * The COVID-19 trends in cases and deaths for these 6 metropolitan areas through 15 JUNE 2020: SF Bay Area; Washington, DC; Richmond, VA; NYC; Los Angeles; and New Orleans.
-	   
-  ==============  =================  =================
-  |cds_bayarea|   |cds_dc|           |cds_richmond|
-  SF Bay Area     Washington, DC     Richmond, VA
-  ==============  =================  =================
 
-  ==============  =================  =================
-  |cds_nyc|       |cds_losangeles|   |cds_neworleans|
-  NYC Metro       Los Angeles        New Orleans
-  ==============  =================  =================
+  .. list-table::
+     :widths: auto
+
+     * - |cds_bayarea|
+       - |cds_dc|
+       - |cds_richmond|
+     * - SF Bay Area
+       - Washington, DC
+       - Richmond, VA
+     * - |cds_nyc|
+       - |cds_losangeles|
+       - |cds_neworleans|
+     * - NYC Metro
+       - Los Angeles
+       - New Orleans
 
 .. _gif_animations:
   
