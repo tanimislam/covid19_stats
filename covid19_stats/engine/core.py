@@ -2,6 +2,7 @@ import os, sys, numpy, glob, tabulate, logging
 import datetime, pandas, titlecase, networkx
 from pathos.multiprocessing import Pool, cpu_count
 from itertools import chain
+from dateutil.relativedelta import relativedelta
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 #
@@ -131,6 +132,44 @@ def get_maximum_cases( inc_data ):
         df[key].max( ) ), filter(lambda key: key.startswith('cases_'), df ) ),
                        key = lambda tup: tup[1] )
     return max_case_tup
+
+def display_tabulated_metros_fromjson( summary_data_json ):
+    def _get_string_commas_num( num ):
+        return "%s" % f"{num:,d}"
+    
+    def _get_row( entry ):
+        return (
+            entry[ 'RANK' ],
+            entry[ 'PREFIX' ],
+            entry[ 'NAME' ],
+            _get_string_commas_num( entry[ 'POPULATION' ] ),
+            entry[ 'FIRST INC.' ],
+            entry[ 'NUM DAYS' ],
+            _get_string_commas_num( entry[ 'NUM CASES' ] ),
+            _get_string_commas_num( entry[ 'NUM DEATHS' ] ),
+            _get_string_commas_num( entry[ 'MAX CASE COUNTY' ] ),
+            entry[ 'MAX CASE COUNTY NAME' ] )
+
+    first_entry = summary_data_json[ 0 ]
+    first_inc_date = datetime.datetime.strptime( first_entry[ 'FIRST INC.' ], '%d %B %Y' ).date( )
+    date_last = first_inc_date + relativedelta( days = first_entry[ 'NUM DAYS' ] )    
+    data_tabulated = list(map(_get_row, sorted( summary_data_json, key = lambda entry: entry['RANK'] ) ) )
+    #
+    lines = [ '.. list-table:: COVID-19 STATS FOR %d METROS AS OF %s.' % (
+            len( summary_data_json ), date_last.strftime( '%d %B %Y' ) ), ]
+    lines.append( '   :widths: auto' )
+    lines.append( '' )
+    lines.append( '   * - RANK' )
+    for column in (
+        'IDENTIFIER', 'NAME', 'POPULATION', 'FIRST INC.',
+        'NUM DAYS', 'NUM CASES', 'NUM DEATHS', 'MAX CASE COUNTY', 'MAX CASE COUNTY NAME' ):
+        lines.append( '     - %s' % column )
+    for row in data_tabulated:
+        lines.append( '   * - %d' % row[0] )
+        for entry in row[1:]:
+            lines.append( '     - %s' % entry )
+
+    return '\n'.join( lines )
 
 def display_tabulated_metros( form = 'simple', selected_metros = None ):
     data_msas_2019 = COVID19Database.data_msas_2019( )
