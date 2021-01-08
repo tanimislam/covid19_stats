@@ -555,11 +555,22 @@ Here is some output from using this COVID-19 tracker.
 .. _gif_animations:
   
 * GIF'd video animations of the COVID-19 trends in cases/deaths for NYC, Chicago, and Seattle up to 15 JUNE 2020.	  
-	   
-  ============== ================== ==================
-  |anim_gif_nyc| |anim_gif_chicago| |anim_gif_seattle|               
-  NYC Metro      Chicago            Seattle
-  ============== ================== ==================
+
+  .. list-table::
+     :widths: auto
+
+     * - |anim_gif_nyc|
+       - |anim_gif_chicago|
+       - |anim_gif_seattle|
+     * - NYC Metro
+       - Chicago
+       - Seattle
+     * - |anim_gif_bayarea|
+       - |anim_gif_dc|
+       - |anim_gif_richmond|
+     * - SF Bay Area
+       - Washington, DC
+       - Richnmond, VA
 
   And here is the animation for the continental United States, up to 15 JUNE 2020.
 
@@ -864,6 +875,19 @@ USING THE CLI
 .. |anim_gif_seattle| image:: figures/covid19_seattle_LATEST.gif
    :width: 100%
    :align: middle
+
+.. |anim_gif_bayarea| image:: figures/covid19_bayarea_LATEST.gif
+   :width: 100%
+   :align: middle
+
+.. |anim_gif_dc| image:: figures/covid19_dc_LATEST.gif
+   :width: 100%
+   :align: middle
+
+.. |anim_gif_richmond| image:: figures/covid19_richmond_LATEST.gif
+   :width: 100%
+   :align: middle
+	   
 
 .. GIF ANIMATIONS CONUS
 
