@@ -800,13 +800,13 @@ USING THE CLI
 
   This mode of operation, for example for NYC will output the following seven files:
 
-  - ``covid19_nyc_15062020.pkl.gz`` is the `Pandas DataFrame`_  of the COVID-19 cases and deaths, total and per county, from the date of first incident to the latest incident.
+  - ``covid19_nyc_LATEST.pkl.gz`` is the `Pandas DataFrame`_  of the COVID-19 cases and deaths, total and per county, from the date of first incident to the latest incident.
 
-  - ``covid19_nyc_cds_15062020.pdf`` and ``covid19_nyc_cds_15062020.png`` are the PDF and PNG showing the trend of COVID-19 cases and deaths in the NYC metro area.
+  - ``covid19_nyc_cds_LATEST.pdf`` and ``covid19_nyc_cds_LATEST.png`` are the PDF and PNG showing the trend of COVID-19 cases and deaths in the NYC metro area.
 
-  - ``covid19_nyc_cases_15062020.pdf`` and ``covid19_nyc_cases_15062020.png`` are the PDF and PNG showing the county map, colored by number of COVID-19 cases, on the LAST incident day.
+  - ``covid19_nyc_cases_LATEST.pdf`` and ``covid19_nyc_cases_LATEST.png`` are the PDF and PNG showing the county map, colored by number of COVID-19 cases, on the LAST incident day.
 
-  - ``covid19_nyc_death_15062020.pdf`` and ``covid19_nyc_death_15062020.png`` are the PDF and PNG showing the county map, colored by number of COVID-19 deaths, on the LAST incident day.
+  - ``covid19_nyc_death_LATEST.pdf`` and ``covid19_nyc_death_LATEST.png`` are the PDF and PNG showing the county map, colored by number of COVID-19 deaths, on the LAST incident day.
 
 * ``covid19_create_movie_or_summary m`` (MOVIE flag) creates an MP4_ movie of COVID-19 cases and deaths for the MSA you specify (see the `high quality GIF animations <gif_animations_>`_ of these MP4 movies). The help output, while running ``covid19_create_movie_or_summary m -h``, is shown below,
 
