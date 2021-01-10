@@ -561,7 +561,7 @@ Here is some output from using this COVID-19 tracker.
 
 .. _gif_animations:
   
-* GIF'd video animations of the COVID-19 trends in cases/deaths for NYC, Chicago, and Seattle up to 15 JUNE 2020.	  
+* GIF'd video animations of the COVID-19 trends in cases/deaths for NYC, Chicago, and Seattle up to 6 JANUARY 2021.	  
 
   .. list-table::
      :widths: auto
