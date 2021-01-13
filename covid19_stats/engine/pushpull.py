@@ -43,9 +43,10 @@ def _get_status_mp4_file( mp4_file ):
 def _get_status_png_file( png_file ):
     bname = os.path.basename( png_file )
     bname_strip = bname.replace('.png', '' ).strip( )
-    region = bname_strip.split('_')[1].strip( )
+    region = '_'.join( bname_strip.split('_')[1:] )
+    region = '_'.join( region.split('_')[:-2] )
     display_dict = { 'cases' : 'CASES', 'death' : 'DEATHS', 'cds' : 'ALL' }
-    display_key = bname_strip.split('_')[2].strip( ).lower( )
+    display_key = bname_strip.split('_')[-2].strip( ).lower( )
     assert( display_key in display_dict )
     return { 'region' : region, 'display type' : display_dict[ display_key ] }
 
@@ -257,7 +258,7 @@ def post_to_server(
     try:
         status = verify_login_ssh( ssh_connection_info )
         do_ssh = status
-        logging.debug('WAS ABLE TO PROPERLY SET UP SSH CONNECTION: %s.' % ssh_connection_info )
+        if do_ssh: logging.debug('WAS ABLE TO PROPERLY SET UP SSH CONNECTION: %s.' % ssh_connection_info )
     except: pass
 
     def _get_message( pid ):
@@ -266,8 +267,9 @@ def post_to_server(
                                 subprocess.check_output([ 'ps', '%d' % pid ]).decode('utf8').split('\n')))
             if len( lines ) == 0: return ''
             return lines[-1].strip( )
-        except:
-            logging.debug( 'WAS UNABLE TO FIND THE SSH TUNNEL THAT ALLOWS US TO SEND THE DATA TO THE REST ENDPOINT.' )
+        except Exception as e:
+            logging.info( 'WAS UNABLE TO FIND THE SSH TUNNEL THAT ALLOWS US TO SEND THE DATA TO THE REST ENDPOINT. ERROR MESSAGE: %s' % (
+                str( e ) ) )
             return ''
         
     def _setup_ssh_tunnel( ssh_connection_info ):
@@ -314,8 +316,14 @@ def post_to_server(
         user_email, password, verify = do_verify, ssh_connection_info = { } )
 
     if do_ssh:
-        final_statement = subprocess.check_output([ 'kill', '-9', '%d' % pid_ssh_tunnel ])
-        process_msg = _get_message( pid_ssh_tunnel )
+        try:
+            final_statement = subprocess.check_output([ 'kill', '-9', '%d' % pid_ssh_tunnel ])
+            process_msg = _get_message( pid_ssh_tunnel )
+        except Exception as e:
+            failing_message = "ERROR, could not kill SSH connection located in process=%d. Exception: %s." % (
+                pid_ssh_tunnel, str( e ) )
+            logging.error( failing_message )
+            message_here['messages'].append( failing_message )
 
     return message_here
 
