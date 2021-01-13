@@ -15,6 +15,15 @@ def get_boundary_dict( fips_collection ):
         fips, fips_data_2018[ fips ][ 'points' ] ), fips_collection ) )
     return boundary_dict
 
+def get_mp4_album_name( data ):
+    data_states_territories_names = set( COVID19Database.data_states( ) ) | set(
+        COVID19Database.data_nonconus_states_territories())
+    if data['prefix'] in data_states_territories_names:
+        return 'STATE'
+    if data['prefix'].lower( ) == 'conus':
+        return 'CONUS'
+    return 'METROPOLITAN STATISTICAL AREA'
+
 #
 ## now stuff associated with the fips : county/state mapping
 def get_county_state( fips ):

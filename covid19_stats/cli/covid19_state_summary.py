@@ -5,6 +5,7 @@ def signal_handler( signal, frame ):
 signal.signal( signal.SIGINT, signal_handler )
 import os, numpy, tempfile, warnings, tabulate, logging
 from itertools import chain
+from covid19_stats import COVID19Database
 from covid19_stats.engine import ( core, viz, get_string_commas_num,
                                   find_plausible_maxnum )
 from argparse import ArgumentParser
@@ -45,8 +46,8 @@ def _try_continue( ):
 def main( ):
     all_state_territory_choices = sorted(chain.from_iterable(
         map(lambda arr: arr.keys( ), (
-            core.mapping_state_rname_conus,
-            core.mapping_state_rname_nonconus ) ) ) )
+            COVID19Database.mapping_state_rname_conus( ),
+            COVID19Database.mapping_state_rname_nonconus( ) ) ) ) )
     
     parser = ArgumentParser( )
     parser.add_argument(
@@ -101,12 +102,16 @@ def main( ):
     logger = logging.getLogger( )
     if args.do_info: logger.setLevel( logging.INFO )
     statename = args.name.strip( )
-    if statename in core.mapping_state_rname_conus:
-        data_state = core.data_states[
-            core.mapping_state_rname_conus[ statename ] ]
+    mapping_state_rname_conus = COVID19Database.mapping_state_rname_conus( )
+    mapping_state_rname_nonconus = COVID19Database.mapping_state_rname_nonconus( )
+    data_states = COVID19Database.data_states( )
+    data_nonconus_states_territories = COVID19Database.data_nonconus_states_territories( )
+    if statename in mapping_state_rname_conus:
+        data_state = data_states[
+            mapping_state_rname_conus[ statename ] ]
     else:
-        data_state = core.data_nonconus_states_territories[
-            core.mapping_state_rname_nonconus[ statename ] ]
+        data_state = data_nonconus_states_territories[
+            mapping_state_rname_nonconus[ statename ] ]
         
     maxnum = args.maxnum
     if maxnum is None:

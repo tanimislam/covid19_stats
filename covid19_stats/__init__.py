@@ -257,4 +257,24 @@ class COVID19Database( object ):
     def data_conus( cls ):
         inst = COVID19Database._getInstance( )
         return inst.data_conus
+
+    @classmethod
+    def mapping_state_rname_conus( cls ):
+        inst = COVID19Database._getInstance( )
+        return inst.mapping_state_rname_conus
+
+    @classmethod
+    def mapping_state_rname_nonconus( cls ):
+        inst = COVID19Database._getInstance( )
+        return inst.mapping_state_rname_nonconus
+
+    @classmethod
+    def data_states( cls ):
+        inst = COVID19Database._getInstance( )
+        return inst.data_states
         
+    @classmethod
+    def data_nonconus_states_territories( cls ):
+        inst = COVID19Database._getInstance( )        
+        return inst.data_nonconus_states_territories
+    
