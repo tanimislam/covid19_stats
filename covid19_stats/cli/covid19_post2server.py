@@ -1,15 +1,23 @@
-import os, sys, json, logging, time, signal
+import sys, signal
 def signal_handler( signal, frame ):
     print( "You pressed Ctrl+C. Exiting...")
     sys.exit( 0 )
 signal.signal( signal.SIGINT, signal_handler )
+import os, json, logging, time, glob, warnings
 from covid19_stats.engine import pushpull
 from argparse import ArgumentParser
 
+warnings.simplefilter('ignore')
+
 def _get_data_dict( dirname ):
-    assert( os.path.isdir( dirname ) )
-    summary_json_file = os.path.join( dirname, 'covid19_topN_LATEST.json' )
-    assert( os.path.isfile( summary_json_file ) )
+    try:
+        assert( os.path.isdir( dirname ) )
+        summary_json_file = os.path.join( dirname, 'covid19_topN_LATEST.json' )
+        assert( os.path.isfile( summary_json_file ) )
+    except Exception as e:
+        logging.error("ERROR, could not load in JSON file, covid19_topN_LATEST.json, in directory = %s. Error is %s." % (
+            os.path.abspath( dirname ), str( e ) ) )
+        return None
     init_mp4_files = set(filter(os.path.isfile, glob.glob( os.path.join( dirname, '*.mp4' ) ) ) )
     init_png_files = set(filter(os.path.isfile, glob.glob( os.path.join( dirname, '*.png' ) ) ) )
     #
@@ -25,6 +33,7 @@ def _get_data_dict( dirname ):
     try:
         data_dict = pushpull.create_pushing_dictionary(
             init_mp4_files, init_png_files, summary_json_file )
+        return data_dict
     except Exception as e:
         logging.error("ERROR, could not create the necessary collection of data to send to the server endpoint. Error message: %s." % ( str( e ) ) )
         return None
@@ -41,7 +50,7 @@ def main( ):
             'The URL of the HTTPS server that contains the RESTful COVID-19 processing endpoints.',
             'For SSH tunneling, we do not need to define this.' ]) )
     parser.add_argument(
-        '--pe', dest='processing_endpoint', action='store', type=str, default = '/api/covid19/processresults',
+        '--pe', dest='process_endpoint', action='store', type=str, default = '/api/covid19/processresults',
         help = 'The name of the PROCESSING RESTful endpoint on the remote HTTP server. Default is /api/covid19/processresults.' )
     parser.add_argument(
         '--ve', dest='verify_endpoint', action='store', type=str, default = '/api/covid19/verifyprocessedresults',
@@ -52,6 +61,9 @@ def main( ):
     parser.add_argument(
         '-p', '--password', dest='password', type=str, action='store', required = True,
         help = 'This server needs to require a PASSWORD to authenticate for pulling in COVID-19 summary data.' )
+    parser.add_argument(
+        '--noverify', dest='do_verify', action='store_false', default = True,
+        help = 'If chosen, then do not verify SSL connections.' )
     parser.add_argument(
         '--info', dest='do_info', action='store_true', default = False,
         help = 'If chosen, then print out INFO level logging statements.' )
@@ -67,8 +79,30 @@ def main( ):
                             help = "The SSH server username." )
     parser_ssh.add_argument( '-P', '--password', dest='ssh_password', type=str, action='store', required = True,
                             help = "The SSH server password associated with the username." )
+    parser_ssh.add_argument( '-S', '--server', dest='ssh_server', type=str, action='store', required = True,
+                            help = "The SSH server into which to tunnel." )
     #
     ##
     args = parser.parse_args( )
     logger = logging.getLogger( )
     if args.do_info: logger.setLevel( logging.INFO )
+    #
+    ## now get the data_dict
+    data_dict = _get_data_dict( args.dirname )
+    if data_dict is None: return None
+    #
+    ## now if choosing the ssh connection
+    ssh_connection_info = { }
+    if args.choose_option == 'ssh':
+        ssh_connection_info[ 'username' ] = args.ssh_username
+        ssh_connection_info[ 'password' ] = args.ssh_password
+        ssh_connection_info[ 'server'   ] = args.ssh_server
+    #
+    ## now do everything here
+    messages_here_final = pushpull.post_to_server(
+        args.server, args.process_endpoint,  args.verify_endpoint,
+        data_dict, args.email, args.password, verify = args.do_verify,
+        ssh_connection_info = ssh_connection_info )
+    if 'messages' in messages_here_final:
+        logging.info('\n'.join( messages_here_final[ 'messages' ] ) )
+    else: logging.info( 'message block: %s.' % messages_here_final )

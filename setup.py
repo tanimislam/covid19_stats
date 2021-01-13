@@ -53,6 +53,7 @@ setup(
             'covid19_state_summary = covid19_stats.cli.covid19_state_summary:main',
             'covid19_update_database = covid19_stats.cli.covid19_update_database:main',
             'covid19_movie_updates = covid19_stats.cli.covid19_movie_updates:main',
+            'covid19_post2server = covid19_stats.cli.covid19_post2server:main',
         ]
     },
     #
