@@ -15,6 +15,49 @@ This constructs a lot of different *MOVIES* that construct the following movies 
 Just lift functionality of the separate parts from the PYTHON file, ``covid19_create_movie_or_summary.py``
 """
 
+def _get_data_state_or_territory( statename ):
+    mapping_state_rname_conus = COVID19Database.mapping_state_rname_conus( )
+    mapping_state_rname_nonconus = COVID19Database.mapping_state_rname_nonconus( )
+    data_states = COVID19Database.data_states( )
+    data_nonconus_states_territories = COVID19Database.data_nonconus_states_territories( )
+    if statename in mapping_state_rname_conus:
+        data_state = data_states[
+            mapping_state_rname_conus[ statename ] ]
+        return data_state, _get_maxnum( data_state )
+    if statename in mapping_state_rname_nonconus:
+        data_state = data_nonconus_states_territories[
+            mapping_state_rname_nonconus[ statename ] ]
+        return data_state, _get_maxnum( data_state )
+    raise ValueError("Error, the chosen state or territory, %s, not in one of the %d defined." % (
+        statename, len( mapping_state_rname_conus ) + len( mapping_state_rname_nonconu ) ) )
+
+def _summarize_state_or_territory( statename, dirname, time0 ):
+    assert( os.path.isdir( dirname ) )
+    data, maxnum = _get_data_state_or_territory( statename )
+    viz.get_summary_demo_data( data, maxnum_colorbar = maxnum, dirname = dirname, store_data = False )
+    logging.info( 'at %0.3f seconds to create summary of %s.' % (
+        time.time( ) - time0, statename ) )
+
+def _movie_state_or_territory( statename, dirname, time0 ):
+    assert( os.path.isdir( dirname ) )
+    data, maxnum = _get_data_state_or_territory( statename )
+    movie_name = viz.create_summary_movie_frombeginning(
+        data = data, maxnum_colorbar = maxnum,
+        dirname = dirname )
+    logging.info( 'at %0.3f seconds to create movie of %s.' % (
+        time.time( ) - time0, statename ) )
+
+def _movie_casedeaths_state_or_territory( statename, dirname, time0, type_disp = 'cases' ):
+    assert( os.path.isdir( dirname ) )
+    assert( type_disp.lower( ) in ( 'cases', 'deaths' ) )
+    data, maxnum = _get_data_state_or_territory( statename )
+    viz.create_summary_cases_or_deaths_movie_frombeginning(
+        data = data, maxnum_colorbar = maxnum,
+        type_disp = type_disp.lower( ), dirname = dirname,
+        save_imgfiles = False )
+    logging.info( 'at %0.3f seconds to create %s movie of %s.' % (
+        time.time( ) - time0, type_disp.upper( ), statename ) )
+
 def _get_data( msa_or_conus_name ):
     if msa_or_conus_name.lower( ) == 'conus':
         data_conus = COVID19Database.data_conus( )
@@ -104,7 +147,9 @@ def main( ):
     time0 = _get_min_time0( )
     parser = ArgumentParser( )
     parser.add_argument( '--region', metavar='region', type=str, nargs='*',
-                        help = 'regions to choose to create summary plots, big movies, or smaller movies.' )
+                        help = 'regions to choose to create summary plots, big movies, and smaller movies.' )
+    parser.add_argument( '--state', metavar='state', type=str, nargs='*',
+                        help = 'states to choose to create summary plots, big movies, and smaller movies.' )
     parser.add_argument( '--dirname', dest='dirname', type=str, action='store', default = os.getcwd( ),
                         help = 'The name of the directory to which to put all this stuff. Default is %s.' % os.getcwd( ) )
     parser.add_argument( '--topN', dest='topN', type=int, action='store', default = 50,
@@ -115,9 +160,10 @@ def main( ):
     assert( os.path.isdir( args.dirname ) )
     assert( args.topN > 0 )
     #
-    ## the msas or conus
+    ## the msas or conus, and states or territories
     msas_or_conus = sorted(set(map(lambda msa_or_conus: msa_or_conus.strip( ).lower( ), args.region ) ) )
-    ntasks = 4 * len( msas_or_conus )
+    states_or_territories = sorted(set(args.state))
+    ntasks = 4 * ( len( msas_or_conus ) + len( states_or_territories ) )
     nprocs = min( MPI.COMM_WORLD.Get_size( ), ntasks )
     if rank >= ntasks: return
     #
@@ -129,19 +175,33 @@ def main( ):
     if rank == 0: _draw_out_topN( args.dirname, args.topN )
     #
     ## now do the thing...
-    tuples_to_process = list(product(range(4), msas_or_conus))[rank::nprocs]
-    for thing_to_do, msa_or_conus in tuples_to_process:
-        if thing_to_do == 0:
-            _summarize_metro_or_conus( msa_or_conus, args.dirname, time0 )
-        elif thing_to_do == 1:
-            _movie_metro_or_conus( msa_or_conus, args.dirname, time0 )
-        elif thing_to_do == 2:
-            _movie_casedeaths_metro_or_conus( msa_or_conus, args.dirname, time0, type_disp = 'cases' )
-        elif thing_to_do == 3:
-            _movie_casedeaths_metro_or_conus( msa_or_conus, args.dirname, time0, type_disp = 'deaths' )
+    all_tuples_to_process = list(product(range(4), [ 0, ], msas_or_conus)) + list(
+        product(range(4), [ 1, ], states_or_territories ) )
+    tuples_to_process = all_tuples_to_process[rank::nprocs]
+    for thing_to_do, region_type, region in tuples_to_process:
+        if region_type == 0: # do msas or conus
+            msa_or_conus = region
+            if thing_to_do == 0:
+                _summarize_metro_or_conus( msa_or_conus, args.dirname, time0 )
+            elif thing_to_do == 1:
+                _movie_metro_or_conus( msa_or_conus, args.dirname, time0 )
+            elif thing_to_do == 2:
+                _movie_casedeaths_metro_or_conus( msa_or_conus, args.dirname, time0, type_disp = 'cases' )
+            elif thing_to_do == 3:
+                _movie_casedeaths_metro_or_conus( msa_or_conus, args.dirname, time0, type_disp = 'deaths' )
+        else: # do states
+            state = region
+            if thing_to_do == 0:
+                _summarize_state_or_territory( state, args.dirname, time0 )
+            elif thing_to_do == 1:
+                _movie_state_or_territory( state, args.dirname, time0 )
+            elif thing_to_do == 2:
+                _movie_casedeaths_state_or_territory( state, args.dirname, time0, type_disp = 'cases' )
+            elif thing_to_do == 3:
+                _movie_casedeaths_state_or_territory( state, args.dirname, time0, type_disp = 'deaths' )
 
     MPI.COMM_WORLD.Barrier( )
 
     if rank != 0: return
-    logging.info( 'processed all FOUR operations on %d regions in %0.3f seconds.' % (
-        len( msas_or_conus ), time.time( ) - time0 ) )
+    logging.info( 'processed all FOUR operations on %d regions or states in %0.3f seconds.' % (
+        len( msas_or_conus ) + len( states_or_territories ), time.time( ) - time0 ) )

@@ -1,6 +1,7 @@
 import os, sys, numpy, titlecase, time, pandas, zipfile, mutagen.mp4
 import subprocess, tempfile, shutil, datetime, logging
 import pathos.multiprocessing as multiprocessing
+from concurrent.futures import ProcessPoolExecutor
 from itertools import chain
 from multiprocessing import Value, Manager
 from matplotlib.patches import Polygon
@@ -497,7 +498,7 @@ def create_plots_daysfrombeginning(
             regionName,
             'First COVID-19 CASE: %s' % first_date.strftime( '%d-%m-%Y' ),
             'Latest COVID-19 CASE: %s' % last_date.strftime( '%d-%m-%Y' ),
-            'Most County Cases: %d' % cases_max,
+            'Most County Cases: %s' % get_string_commas_num( cases_max ),
             '%s, %s' % ( cs['county'], cs['state'] ),
             'Showing Day %d / %d' % ( day, inc_data[ 'last day' ] ) ]) )
         canvas = FigureCanvasAgg( fig )
@@ -600,10 +601,7 @@ def create_summary_cases_or_deaths_movie_frombeginning(
     ## store metadata
     mp4tags = mutagen.mp4.MP4( movie_name )
     mp4tags['\xa9nam'] = [ '%s, %s, %s' % ( prefix, type_disp.upper( ), last_date.strftime('%d-%m-%Y') ) ]
-    if data[ 'prefix' ].lower( ) == 'conus':
-        mp4tags['\xa9alb'] = [ 'CONUS' ]
-    else:
-        mp4tags['\xa9alb'] = [ 'METROPOLITAN STATISTICAL AREA' ]
+    mp4tags['\xa9alb'] = [ core.get_mp4_album_name( data ), ]
     mp4tags['\xa9ART'] = [ 'Tanim Islam' ]
     mp4tags['\xa9day'] = [ last_date.strftime('%d-%m-%Y') ]
     mp4tags.save( )
@@ -653,7 +651,7 @@ def create_summary_movie_frombeginning(
             days_collection, _ = tup
             if any(filter(lambda day: day < 0, days_collection ) ):
                 logging.info( 'error days collection: %s.' % days_collection )
-        allfiles = sorted(chain.from_iterable( pool.map( myfunc, input_tuples ) ) )
+        allfiles = sorted(chain.from_iterable( pool.map( myfunc, input_tuples ) ) ) # change to pool.map
     logging.info( 'took %0.3f seconds to process all %d days.' % (
         time.time( ) - time0, len( all_days_from_begin ) ) )
     #
@@ -680,10 +678,7 @@ def create_summary_movie_frombeginning(
     ## store metadata
     mp4tags = mutagen.mp4.MP4( movie_name )
     mp4tags['\xa9nam'] = [ '%s, ALL, %s' % ( prefix, last_date.strftime('%d-%m-%Y') ) ]
-    if data[ 'prefix' ].lower( ) == 'conus':
-        mp4tags['\xa9alb'] = [ 'CONUS' ]
-    else:
-        mp4tags['\xa9alb'] = [ 'METROPOLITAN STATISTICAL AREA' ]
+    mp4tags['\xa9alb'] = [ core.get_mp4_album_name( data ), ]
     mp4tags['\xa9ART'] = [ 'Tanim Islam' ]
     mp4tags['\xa9day'] = [ last_date.strftime('%d-%m-%Y') ]
     mp4tags.save( )
@@ -712,93 +707,88 @@ def get_summary_demo_data(
     if store_data:
         df_cases_deaths_region.to_pickle(
             os.path.join( dirname, 'covid19_%s_LATEST.pkl.gz' % ( prefix ) ) )
+
+    def create_plot_cds( ):
+        #
+        ## now make a plot, logarithmic
+        fig = Figure( )
+        ax = fig.add_subplot(111)
+        fig.set_size_inches([ 12.0, 9.6 ])
+        num_cases = df_cases_deaths_region.cases.max( )
+        num_death = df_cases_deaths_region.death.max( )
+        df_cases_deaths_region.plot(
+          'days_from_beginning', 'cases', linewidth = 4.5,
+          ax = ax, logy = True, grid = True )
+        df_cases_deaths_region.plot(
+            'days_from_beginning', 'death', linewidth = 4.5,
+            ax = ax, logy = True, grid = True )
+        ax.lines[0].set_label( 'cases: %s' % get_string_commas_num( num_cases ) )
+        ax.lines[1].set_label( 'death: %s' % get_string_commas_num( num_death ) )
+        ax.set_ylim( 1.0, 1.05 * df_cases_deaths_region.cases.max( ) )
+        ax.set_xlim( 0, df_cases_deaths_region.days_from_beginning.max( ) )
+        ax.set_xlabel(
+            'Days from First COVID-19 CASE (%s)' %
+            first_date.strftime( '%d-%m-%Y' ),
+            fontsize = 24, fontweight = 'bold' )
+        ax.set_ylabel( 'Cumulative Number of Cases/Deaths', fontsize = 24, fontweight = 'bold' )
+        ax.set_title( '\n'.join(
+            [
+             '%s Trend in COVID-19' % titlecase.titlecase( regionName ),
+             'from %s through %s' % (
+            first_date.strftime( '%d-%m-%Y' ),
+            last_date.strftime( '%d-%m-%Y' ) ) ]),
+                     fontsize = 24, fontweight = 'bold' )
+        #
+        ## tick labels size 20, bold
+        for tick in ax.xaxis.get_major_ticks( ) + ax.yaxis.get_major_ticks( ):
+            tick.label.set_fontsize( 20 )
+            tick.label.set_fontweight( 'bold' )
+        #
+        ## legend size 24, bold
+        leg = ax.legend( )
+        for txt in leg.texts:
+            txt.set_fontsize( 24 )
+            txt.set_fontweight( 'bold' )
+        #
+        ## save figures
+        canvas = FigureCanvasAgg( fig )
+        #file_prefix = 'covid19_%s_cds_%s' % ( prefix, last_date_str )
+        file_prefix = 'covid19_%s_cds_LATEST' % ( prefix )
+        pngfile = os.path.abspath( os.path.join( dirname, '%s.png' % file_prefix ) )
+        pdffile = os.path.abspath( os.path.join( dirname, '%s.pdf' % file_prefix ) )
+        canvas.print_figure( pngfile, bbox_inches = 'tight' )
+        canvas.print_figure( pdffile, bbox_inches = 'tight' )
+        autocrop_image.autocrop_image( pngfile )
+        try: autocrop_image.autocrop_image_pdf( '%s.pdf' % file_prefix )
+        except: pass
+
     #
-    ## now make a plot, logarithmic
-    fig = Figure( )
-    ax = fig.add_subplot(111)
-    fig.set_size_inches([ 12.0, 9.6 ])
-    num_cases = df_cases_deaths_region.cases.max( )
-    num_death = df_cases_deaths_region.death.max( )
-    df_cases_deaths_region.plot(
-      'days_from_beginning', 'cases', linewidth = 4.5,
-      ax = ax, logy = True, grid = True )
-    df_cases_deaths_region.plot(
-        'days_from_beginning', 'death', linewidth = 4.5,
-        ax = ax, logy = True, grid = True )
-    ax.lines[0].set_label( 'cases: %s' % get_string_commas_num( num_cases ) )
-    ax.lines[1].set_label( 'death: %s' % get_string_commas_num( num_death ) )
-    ax.set_ylim( 1.0, 1.05 * df_cases_deaths_region.cases.max( ) )
-    ax.set_xlim( 0, df_cases_deaths_region.days_from_beginning.max( ) )
-    ax.set_xlabel(
-        'Days from First COVID-19 CASE (%s)' %
-        first_date.strftime( '%d-%m-%Y' ),
-        fontsize = 24, fontweight = 'bold' )
-    ax.set_ylabel( 'Cumulative Number of Cases/Deaths', fontsize = 24, fontweight = 'bold' )
-    ax.set_title( '\n'.join(
-        [
-         '%s Trend in COVID-19' % titlecase.titlecase( regionName ),
-         'from %s through %s' % (
-        first_date.strftime( '%d-%m-%Y' ),
-        last_date.strftime( '%d-%m-%Y' ) ) ]),
-                 fontsize = 24, fontweight = 'bold' )
+    ## now create figures CASES and DEATHS
+    def make_plot_and_save( case ):
+        assert( case in ( 'cases', 'deaths' ) )
+        prefix_dict = { 'cases' : 'cases', 'deaths' : 'death' }
+        file_prefix = 'covid19_%s_%s_LATEST' % ( prefix, prefix_dict[ case ] )
+        fig_mine = Figure( )
+        ax_mine = fig_mine.add_subplot(111)
+        fig_mine.set_size_inches([ 12.0, 12.0 ])
+        plot_cases_or_deaths_bycounty(
+            inc_data, regionName, ax_mine, type_disp = case,
+            days_from_beginning = inc_data[ 'last day' ],
+            maxnum_colorbar = maxnum_colorbar, doTitle = True, doSmarter = doSmarter )
+        canvas_mine = FigureCanvasAgg( fig_mine )
+        pngfile = os.path.abspath( os.path.join( dirname, '%s.png' % file_prefix ) )
+        pdffile = os.path.abspath( os.path.join( dirname, '%s.pdf' % file_prefix ) )
+        canvas_mine.print_figure( pngfile, bbox_inches = 'tight' )
+        canvas_mine.print_figure( pdffile, bbox_inches = 'tight' )
+        autocrop_image.autocrop_image( pngfile )
+        try: autocrop_image.autocrop_image_pdf( pdffile )
+        except: pass
+
     #
-    ## tick labels size 20, bold
-    for tick in ax.xaxis.get_major_ticks( ) + ax.yaxis.get_major_ticks( ):
-        tick.label.set_fontsize( 20 )
-        tick.label.set_fontweight( 'bold' )
-    #
-    ## legend size 24, bold
-    leg = ax.legend( )
-    for txt in leg.texts:
-        txt.set_fontsize( 24 )
-        txt.set_fontweight( 'bold' )
-    #
-    ## save figures
-    canvas = FigureCanvasAgg( fig )
-    #file_prefix = 'covid19_%s_cds_%s' % ( prefix, last_date_str )
-    file_prefix = 'covid19_%s_cds_LATEST' % ( prefix )
-    pngfile = os.path.abspath( os.path.join( dirname, '%s.png' % file_prefix ) )
-    pdffile = os.path.abspath( os.path.join( dirname, '%s.pdf' % file_prefix ) )
-    canvas.print_figure( pngfile, bbox_inches = 'tight' )
-    canvas.print_figure( pdffile, bbox_inches = 'tight' )
-    autocrop_image.autocrop_image( pngfile )
-    try: autocrop_image.autocrop_image_pdf( '%s.pdf' % file_prefix )
-    except: pass
-    #
-    ## now create figures CASES
-    fig1 = Figure( )
-    ax1 = fig1.add_subplot(111)
-    fig1.set_size_inches([ 12.0, 12.0 ])
-    plot_cases_or_deaths_bycounty(
-        inc_data, regionName, ax1, type_disp = 'cases',
-        days_from_beginning = inc_data[ 'last day' ],
-        maxnum_colorbar = maxnum_colorbar, doTitle = True, doSmarter = doSmarter )
-    canvas = FigureCanvasAgg( fig1 )
-    #file_prefix = 'covid19_%s_cases_%s' % ( prefix, last_date_str )
-    file_prefix = 'covid19_%s_cases_LATEST' % ( prefix )
-    pngfile = os.path.abspath( os.path.join( dirname, '%s.png' % file_prefix ) )
-    pdffile = os.path.abspath( os.path.join( dirname, '%s.pdf' % file_prefix ) )
-    canvas.print_figure( pngfile, bbox_inches = 'tight' )
-    canvas.print_figure( pdffile, bbox_inches = 'tight' )
-    autocrop_image.autocrop_image( pngfile )
-    try: autocrop_image.autocrop_image_pdf( pdffile )
-    except: pass
-    #
-    ## now create figures DEATHS
-    fig2 = Figure( )
-    ax2 = fig2.add_subplot(111)
-    fig2.set_size_inches([ 12.0, 12.0 ])
-    plot_cases_or_deaths_bycounty(
-        inc_data, regionName, ax2, type_disp = 'deaths',
-        days_from_beginning = inc_data[ 'last day' ],
-        maxnum_colorbar = maxnum_colorbar, doTitle = True, doSmarter = doSmarter )
-    canvas = FigureCanvasAgg( fig2 )
-    #file_prefix = 'covid19_%s_death_%s' % ( prefix, last_date_str )
-    file_prefix = 'covid19_%s_death_LATEST' % ( prefix )
-    pngfile = os.path.abspath( os.path.join( dirname, '%s.png' % file_prefix ) )
-    pdffile = os.path.abspath( os.path.join( dirname, '%s.pdf' % file_prefix ) )
-    canvas.print_figure( pngfile, bbox_inches = 'tight' )
-    canvas.print_figure( pdffile, bbox_inches = 'tight' )
-    autocrop_image.autocrop_image( pngfile )
-    try: autocrop_image.autocrop_image_pdf( pdffile )
-    except: pass
+    ## do three plots in parallel!
+    with multiprocessing.Pool( processes = 3 ) as pool:
+        jobs = [
+            pool.apply_async( create_plot_cds, ( ) ),
+            pool.apply_async( make_plot_and_save, ( 'cases', ) ),
+            pool.apply_async( make_plot_and_save, ( 'deaths', ) ) ]
+        _ = list(map(lambda job: job.get( ), jobs ) )

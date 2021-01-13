@@ -257,6 +257,7 @@ def post_to_server(
     try:
         status = verify_login_ssh( ssh_connection_info )
         do_ssh = status
+        logging.debug('WAS ABLE TO PROPERLY SET UP SSH CONNECTION: %s.' % ssh_connection_info )
     except: pass
 
     def _get_message( pid ):
@@ -266,6 +267,7 @@ def post_to_server(
             if len( lines ) == 0: return ''
             return lines[-1].strip( )
         except:
+            logging.debug( 'WAS UNABLE TO FIND THE SSH TUNNEL THAT ALLOWS US TO SEND THE DATA TO THE REST ENDPOINT.' )
             return ''
         
     def _setup_ssh_tunnel( ssh_connection_info ):
