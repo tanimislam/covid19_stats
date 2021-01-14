@@ -41,14 +41,14 @@ def _get_data_dict( dirname ):
 def main( ):
     time0 = time.time( )
     parser = ArgumentParser( )
+    #
+    ## common stuff on whether SSH tunneling or not
     parser.add_argument(
         '-d', '--dirname', dest='dirname', action='store', type=str, default = os.getcwd( ),
-        help = 'Name of the directory that contains the COVID-19 movies and figures to send off to the external RESTful endpoint. Def' )
+        help = 'Name of the directory that contains the COVID-19 movies and figures to send off to the external RESTful endpoint. Default is %s.' % os.path.abspath( os.getcwd( ) ) )
     parser.add_argument(
-        '-s', '--server', dest='server', action='store', type=str, default = '',
-        help = '\n'.join([
-            'The URL of the HTTPS server that contains the RESTful COVID-19 processing endpoints.',
-            'For SSH tunneling, we do not need to define this.' ]) )
+        '-D', '--remote', dest='remote_dirname', action='store', type=str, required = True,
+        help = 'Name of the REMOTE (on server) directory into which to store the COVID-19 movies and figures.' )
     parser.add_argument(
         '--pe', dest='process_endpoint', action='store', type=str, default = '/api/covid19/processresults',
         help = 'The name of the PROCESSING RESTful endpoint on the remote HTTP server. Default is /api/covid19/processresults.' )
@@ -56,31 +56,40 @@ def main( ):
         '--ve', dest='verify_endpoint', action='store', type=str, default = '/api/covid19/verifyprocessedresults',
         help = 'The name of the PROCESSING RESTful endpoint on the remote HTTP server. Default is /api/covid19/verifyprocessedresults.' )
     parser.add_argument(
-        '-e', '--email', dest='email', type=str, action='store', required = True,
-        help = 'This server needs to require an email address to authenticate for pulling in COVID-19 summary data.' )
-    parser.add_argument(
-        '-p', '--password', dest='password', type=str, action='store', required = True,
-        help = 'This server needs to require a PASSWORD to authenticate for pulling in COVID-19 summary data.' )
-    parser.add_argument(
-        '--noverify', dest='do_verify', action='store_false', default = True,
-        help = 'If chosen, then do not verify SSL connections.' )
-    parser.add_argument(
         '--info', dest='do_info', action='store_true', default = False,
         help = 'If chosen, then print out INFO level logging statements.' )
     #
-    ## now the SSH stuff
+    ## now the SSH or HTTP(S) stuff
     subparsers = parser.add_subparsers(
-        help = 'Here, we can OPTIONALLY put in SSH tunneling. This is the "ssh" keyword.',
+        help = '\n'.join([
+            'Here, we choose the form of the connection.',
+            'ssh: perform an SSH tunnel to the RESTful server.',
+            'http: direct HTTP(S) connection to the RESTful server.' ]),
         dest = 'choose_option' )
     #
     ## using the SSH connection.
-    parser_ssh = subparsers.add_parser( 'ssh', help = 'Use SSH tunneling. If done, then provide SSH username and password.' )
+    parser_ssh = subparsers.add_parser( 'ssh', help = 'Use SSH tunneling to RESTful server.' )
     parser_ssh.add_argument( '-u', '--username', dest='ssh_username', type=str, action='store', required = True,
                             help = "The SSH server username." )
-    parser_ssh.add_argument( '-P', '--password', dest='ssh_password', type=str, action='store', required = True,
+    parser_ssh.add_argument( '-p', '--password', dest='ssh_password', type=str, action='store', required = True,
                             help = "The SSH server password associated with the username." )
-    parser_ssh.add_argument( '-S', '--server', dest='ssh_server', type=str, action='store', required = True,
+    parser_ssh.add_argument( '-s', '--server', dest='ssh_server', type=str, action='store', required = True,
                             help = "The SSH server into which to tunnel." )
+    #
+    ## using the HTTP connection
+    parser_http = subparsers.add_parser( 'http', help = 'Direct HTTP or HTTPS connection to RESTful server.' )
+    parser_http.add_argument(
+         '-e', '--email', dest='http_email', type=str, action='store', required = True,
+        help = 'This RESTful server email address to authenticate for pulling in COVID-19 summary data.' )
+    parser_http.add_argument(
+        '-p', '--password', dest='http_password', type=str, action='store', required = True,
+        help = 'This RESTful server PASSWORD to authenticate for pulling in COVID-19 summary data.' )
+    parser_http.add_argument(
+        '-s', '--server', dest='http_server', action='store', type=str, required = True,
+        help = 'The URL of the HTTPS server that contains the RESTful COVID-19 processing endpoints.' )
+    parser_http.add_argument(
+        '--noverify', dest='http_do_verify', action='store_false', default = True,
+        help = 'If chosen, then do not verify SSL connections.' )
     #
     ##
     args = parser.parse_args( )
@@ -92,17 +101,26 @@ def main( ):
     if data_dict is None: return None
     #
     ## now if choosing the ssh connection
-    ssh_connection_info = { }
+    assert( args.choose_option in ( 'ssh', 'http' ) )
+    connection_info = { }
     if args.choose_option == 'ssh':
-        ssh_connection_info[ 'username' ] = args.ssh_username
-        ssh_connection_info[ 'password' ] = args.ssh_password
-        ssh_connection_info[ 'server'   ] = args.ssh_server
+        connection_info[ 'type'     ] = 'ssh'
+        connection_info[ 'username' ] = args.ssh_username
+        connection_info[ 'password' ] = args.ssh_password
+        connection_info[ 'server'   ] = args.ssh_server
+    elif args.choose_option == 'http':
+        connection_info[ 'type'       ] = 'http'
+        connection_info[ 'user email' ] = args.http_email
+        connection_info[ 'password'   ] = args.http_password
+        connection_info[ 'server'     ] = args.http_server
+        connection_info[ 'verify'     ] = args.http_do_verify
     #
     ## now do everything here
     messages_here_final = pushpull.post_to_server(
-        args.server, args.process_endpoint,  args.verify_endpoint,
-        data_dict, args.email, args.password, verify = args.do_verify,
-        ssh_connection_info = ssh_connection_info )
+        args.process_endpoint, args.verify_endpoint,
+        data_dict, args.remote_dirname,
+        connection_info = connection_info )
+    print( messages_here_final )
     if 'messages' in messages_here_final:
         logging.info('\n'.join( messages_here_final[ 'messages' ] ) )
     else: logging.info( 'message block: %s.' % messages_here_final )
