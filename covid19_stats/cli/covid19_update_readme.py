@@ -33,5 +33,5 @@ def main( ):
     ## now run the thing
     create_readme_from_template(
         mainURL = args.mainurl, 
-        dirname_for_readme_location = args.dirname,
+        dirname_for_readme_location = os.path.expanduser( args.dirname ),
         verify = args.do_verify )
