@@ -5,7 +5,7 @@ def signal_handler( signal, frame ):
 signal.signal( signal.SIGINT, signal_handler )
 import os, numpy, tempfile, warnings, tabulate, logging, json
 from covid19_stats import COVID19Database
-from covid19_stats.engine import create_readme_from_template
+from covid19_stats.engine.core import create_readme_from_template
 from argparse import ArgumentParser
 
 _default_covid19_url = 'https://tanimislam.github.io/covid19movies'
@@ -17,8 +17,8 @@ def main( ):
         default = _default_covid19_url,
         help = 'Name of the URL where the COVID-19 summary data lives. Default is %s.' % _default_covid19_url )
     parser.add_argument(
-        '-d', '--dirname', dest='dirname', type=str, action='store', required = True,
-        help = 'Directory in which the README.rst lives, for the covid19_stats repository.' )
+        '-d', '--dirname', dest='dirname', type=str, action='store', default = os.getcwd( ),
+        help = 'Directory in which the README.rst lives, for the covid19_stats repository. Default is %s.' % os.getcwd( ) )
     parser.add_argument(
         '--noverify', dest='do_verify', action = 'store_false', default = True,
         help = 'If chosen, then do not verify necessary SSL connections.' )
