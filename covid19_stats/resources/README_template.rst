@@ -73,15 +73,15 @@ Here is some output from using this COVID-19 tracker. The data lives underneath 
      * - |anim_gif_nyc|
        - |anim_gif_chicago|
        - |anim_gif_seattle|
-     * - NYC Metro
-       - Chicago
-       - Seattle
+     * - `NYC Metro <https://tanimislam.github.io/covid19movies/covid19_nyc_LATEST.mp4>`_
+       - `Chicago <https://tanimislam.github.io/covid19movies/covid19_chicago_LATEST.mp4>`_
+       - `Seattle <https://tanimislam.github.io/covid19movies/covid19_seattle_LATEST.mp4>`_
      * - |anim_gif_bayarea|
        - |anim_gif_dc|
        - |anim_gif_richmond|
-     * - SF Bay Area
-       - Washington, DC
-       - Richnmond, VA
+     * - `SF Bay Area <https://tanimislam.github.io/covid19movies/covid19_bayarea_LATEST.mp4>`_
+       - `Washington, DC <https://tanimislam.github.io/covid19movies/covid19_dc_LATEST.mp4>`_
+       - `Richmond, VA <https://tanimislam.github.io/covid19movies/covid19_richmond_LATEST.mp4>`_
 
   And here is the animation for the continental United States as of {{ covid19_stats_data.latest_date_formatted }}
 
@@ -89,7 +89,7 @@ Here is some output from using this COVID-19 tracker. The data lives underneath 
      :widths: auto
 
      * - |anim_gif_conus|
-     * - Continental United States
+     * - `Continental United States <https://tanimislam.github.io/covid19movies/covid19_conus_LATEST.mp4>`_
 
 The comprehensive documentation lives in HTML created with Sphinx_, and now in the `COVID-19 Stats GitHub Page`_ for this project. To generate the documentation,
 
