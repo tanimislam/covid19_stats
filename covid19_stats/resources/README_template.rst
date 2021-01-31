@@ -83,12 +83,13 @@ Here is some output from using this COVID-19 tracker. The data lives underneath 
        - Washington, DC
        - Richnmond, VA
 
-  And here is the animation for the continental United States, up to 15 JUNE 2020.
+  And here is the animation for the continental United States as of {{ covid19_stats_data.latest_date_formatted }}
 
-  ===========================  ==
-  |anim_gif_conus|               
-  Continental United States
-  ===========================  ==    
+  .. list-table::
+     :widths: auto
+
+     * - |anim_gif_conus|
+     * - Continental United States
 
 The comprehensive documentation lives in HTML created with Sphinx_, and now in the `COVID-19 Stats GitHub Page`_ for this project. To generate the documentation,
 
