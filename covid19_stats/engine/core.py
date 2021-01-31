@@ -163,7 +163,7 @@ def create_readme_from_template(
         raise ValueError("Error, could not access the JSON data for the top-N MSA COVID-19 summary data." %
                          topNjson_url )
     #
-    ## now process this
+    ## now load JSON into data
     msa_summary = sorted(json.loads( response.content ), key = lambda entry: entry[ 'RANK' ] )
     assert( len( msa_summary ) > 0 )
     #
@@ -174,24 +174,31 @@ def create_readme_from_template(
     latest_date = first_inc_date + num_days_after
     latest_date_formatted = latest_date.strftime( '%d %B %Y' ).upper( )
     #
-    ## now fill out the entries
+    ## now fill out the entries in the table
     def _return_entry_formatted( entry ):
         return {
-            'RANK' : entr[ 'RANK' ],
+            'RANK' : entry[ 'RANK' ],
             'PREFIX' : entry[ 'PREFIX' ],
             'NAME' : entry[ 'NAME' ],
             'POP_FORMATTED' : _get_string_commas_num( entry[ 'POPULATION' ] ),
             'FIRST_INCIDENT': entry[ 'FIRST INC.' ],
-            'NUM_DAYS' : entry[ 'NUM_DAYS' ],
+            'NUM_DAYS' : entry[ 'NUM DAYS' ],
             'NUM_CASES_FORMATTED' : _get_string_commas_num( entry[ 'NUM CASES' ] ),
             'NUM_DEATHS_FORMATTED': _get_string_commas_num( entry[ 'NUM DEATHS' ] ),
-            'MAX_CASE_COUNTRY_FORMATTED' : _get_string_commas_num( entry[ 'MAX CASE COUNTY' ] ),
-            'MAX_CASE_COUNTY_NAME' : entry[ 'NMAX CASE COUNTY NAME' ] }
+            'MAX_CASE_COUNTY_FORMATTED' : _get_string_commas_num( entry[ 'MAX CASE COUNTY' ] ),
+            'MAX_CASE_COUNTY_NAME' : entry[ 'MAX CASE COUNTY NAME' ] }
     covid19_stats_data = {
         'latest_date_formatted' : latest_date_formatted,
-        'msa_summary' : list(map(_return_entry_formatted, msa_summary ) ) }
+        'msa_summary' : list(map(_return_entry_formatted, msa_summary ) ),
+        'msa_summary_num' : len( msa_summary ),
+    }
     #
     ## now jinja-fy it!
+    env = Environment( loader = FileSystemLoader( resourceDir ) )
+    template = env.get_template( 'README_template.rst' )
+    with open( os.path.join( dirname_for_readme_location, 'README.rst' ), 'w' ) as openfile:
+        openfile.write( '%s\n' % template.render( covid19_stats_data = covid19_stats_data ) )
+    
 
 def display_tabulated_metros_fromjson( summary_data_json ):
     def _get_string_commas_num( num ):
