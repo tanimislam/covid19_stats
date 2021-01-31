@@ -1,12 +1,15 @@
-import os, sys, numpy, glob, tabulate, logging
+import os, sys, numpy, glob, tabulate, logging, requests, json
 import datetime, pandas, titlecase, networkx
 from pathos.multiprocessing import Pool, cpu_count
 from itertools import chain
 from dateutil.relativedelta import relativedelta
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_agg import FigureCanvasAgg
+from jinja2 import Environment, FileSystemLoader, Template
+from urllib.parse import urljoin
+from dateutil.relativedelta import relativedelta
 #
-from covid19_stats import COVID19Database
+from covid19_stats import COVID19Database, resourceDir
 from covid19_stats.engine import gis
 
 def get_boundary_dict( fips_collection ):
@@ -141,6 +144,54 @@ def get_maximum_cases( inc_data ):
         df[key].max( ) ), filter(lambda key: key.startswith('cases_'), df ) ),
                        key = lambda tup: tup[1] )
     return max_case_tup
+
+def create_readme_from_template(
+    mainURL = 'https://tanimislam.github.io/covid19movies',
+    dirname_for_readme_location = os.getcwd( ), verify = True ):
+    def _get_string_commas_num( num ):
+        return "%s" % f"{num:,d}"
+    
+    assert( os.path.isdir( dirname_for_readme_location ) )
+    response = requests.get( mainURL, verify = verify )
+    if response.status_code != 200:
+        raise ValueError("Error, could not access %s." % mainURL )
+    #
+    ## now see if I can find this entry
+    topNjson_url = os.path.join( mainURL, 'covid19_topN_LATEST.json' )
+    response = requests.get( topNjson_url, verify = verify )
+    if response.status_code != 200:
+        raise ValueError("Error, could not access the JSON data for the top-N MSA COVID-19 summary data." %
+                         topNjson_url )
+    #
+    ## now process this
+    msa_summary = sorted(json.loads( response.content ), key = lambda entry: entry[ 'RANK' ] )
+    assert( len( msa_summary ) > 0 )
+    #
+    ## now figure out the date, formatted properly
+    first_inc_date = datetime.datetime.strptime( msa_summary[ 0 ][ 'FIRST INC.' ], '%d %B %Y' ).date( )
+    days_after_first = int( msa_summary[ 0 ][ 'NUM DAYS' ] )
+    num_days_after = relativedelta( days = days_after_first )
+    latest_date = first_inc_date + num_days_after
+    latest_date_formatted = latest_date.strftime( '%d %B %Y' ).upper( )
+    #
+    ## now fill out the entries
+    def _return_entry_formatted( entry ):
+        return {
+            'RANK' : entr[ 'RANK' ],
+            'PREFIX' : entry[ 'PREFIX' ],
+            'NAME' : entry[ 'NAME' ],
+            'POP_FORMATTED' : _get_string_commas_num( entry[ 'POPULATION' ] ),
+            'FIRST_INCIDENT': entry[ 'FIRST INC.' ],
+            'NUM_DAYS' : entry[ 'NUM_DAYS' ],
+            'NUM_CASES_FORMATTED' : _get_string_commas_num( entry[ 'NUM CASES' ] ),
+            'NUM_DEATHS_FORMATTED': _get_string_commas_num( entry[ 'NUM DEATHS' ] ),
+            'MAX_CASE_COUNTRY_FORMATTED' : _get_string_commas_num( entry[ 'MAX CASE COUNTY' ] ),
+            'MAX_CASE_COUNTY_NAME' : entry[ 'NMAX CASE COUNTY NAME' ] }
+    covid19_stats_data = {
+        'latest_date_formatted' : latest_date_formatted,
+        'msa_summary' : list(map(_return_entry_formatted, msa_summary ) ) }
+    #
+    ## now jinja-fy it!
 
 def display_tabulated_metros_fromjson( summary_data_json ):
     def _get_string_commas_num( num ):
