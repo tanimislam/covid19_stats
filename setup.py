@@ -54,6 +54,7 @@ setup(
             'covid19_update_database = covid19_stats.cli.covid19_update_database:main',
             'covid19_movie_updates = covid19_stats.cli.covid19_movie_updates:main',
             'covid19_post2server = covid19_stats.cli.covid19_post2server:main',
+            'covid19_update_readme = covid19_stats.cli.covid19_update_readme:main',
         ]
     },
     #
