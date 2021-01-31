@@ -7,25 +7,19 @@ I have made major changes in the functionality and implementation from the origi
 
 * The API code has been refactored into the ``covid19_stats.engine`` subdirectory, and is divided into three main submodules: ``covid19_stats.engine.core`` provides the higher level API calls for processing the COVID-19 data; ``covid19_stats.engine.gis`` provides the lower-level APIs to write out, read in, and process the raw GIS data provided mainly by the US Census Bureau; and ``covid19_stats.engine.viz`` does the visualization part.
 
-* The main command line interface (CLI), ``covid19_create_movie_or_summary``, that can do the following: summarizes US metropolitan statistical areas (MSA) and gives their latest COVID-19 statistics; makes movie animations of the COVID-19 cases and deaths, from first case to latest incident date, for a given MSA; and prints out summary plots, and incident data, of COVID-19 cases and deaths for the latest incident day.
-
-* The second CLI, ``covid19_update_database``, that updates the git submodule, the `NY Times COVID-19 repository`_, with the *latest* data. Previously, one updated the database by running,
+* The command line interfaces (CLI) back-ends live in ``covid19_stats.cli``. One of the command line interfaces, ``covid19_update_database``, updates the git submodule (the `NY Times COVID-19 repository`_) with the *latest* data. Previously, one updated the database by manually running, from the repository's top level directory,
 
   .. code-block:: console
 
      git -C covid19_stats/covid-19-data pull origin master
-
-  from the main repository's directory.
   
 * The ``testing`` subdirectory contains `Jupyter Notebooks`_ that illuminate bits and pieces of this COVID-19 tracker’s functionality.
 
-* Some video output of the CLI is located in the ``movies`` subdirectory.
-
-Here is some output from using this COVID-19 tracker.
+Here is some output from using this COVID-19 tracker. The data lives underneath `https://tanimislam.github.com/covid19movies <https://tanimislam.github.com/covid19movies>`_
 
 * The summary of COVID-19 statistics for the top 50 MSAs by estimated 2019 population.
-
-  .. list-table:: COVID-19 STATS FOR 50 METROS AS OF 06 January 2021.
+  
+  .. list-table:: COVID-19 STATS FOR 50 METROS AS OF 29 JANUARY 2021
      :widths: auto
 
      * - RANK
@@ -43,505 +37,505 @@ Here is some output from using this COVID-19 tracker.
        - NYC Metro Area
        - 19,216,182
        - 01 March 2020
-       - 311
-       - 1,194,647
-       - 48,411
-       - 460,988
+       - 334
+       - 1,519,866
+       - 52,164
+       - 597,312
        - New York City, New York
      * - 2
        - losangeles
        - LA Metro Area
        - 18,711,436
        - 25 January 2020
-       - 347
-       - 1,502,861
-       - 17,181
-       - 852,510
+       - 370
+       - 1,961,213
+       - 24,794
+       - 1,104,843
        - Los Angeles County, California
      * - 3
        - chicago
        - Chicago Metro Area
        - 9,458,539
        - 24 January 2020
-       - 348
-       - 730,641
-       - 13,481
-       - 406,674
+       - 371
+       - 815,143
+       - 14,913
+       - 451,581
        - Cook County, Illinois
      * - 4
        - dallas
        - Dallas Metro Area
        - 7,573,136
        - 09 March 2020
-       - 303
-       - 529,213
-       - 5,228
-       - 206,802
+       - 326
+       - 676,423
+       - 7,117
+       - 255,493
        - Dallas County, Texas
      * - 5
        - houston
        - Houston Metro Area
        - 7,066,141
        - 04 March 2020
-       - 308
-       - 375,577
-       - 4,788
-       - 250,854
+       - 331
+       - 473,081
+       - 5,852
+       - 311,665
        - Harris County, Texas
      * - 6
        - bayarea
        - Bay Area
        - 6,860,207
        - 31 January 2020
-       - 341
-       - 250,246
-       - 2,496
-       - 77,366
+       - 364
+       - 322,940
+       - 3,834
+       - 100,997
        - Santa Clara County, California
      * - 7
        - dc
        - DC Metro Area
        - 6,280,487
        - 05 March 2020
-       - 307
-       - 291,311
-       - 5,124
-       - 57,320
+       - 330
+       - 358,930
+       - 5,802
+       - 67,290
        - Prince George's County, Maryland
      * - 8
        - miami
        - Miami Metro Area
        - 6,166,488
        - 06 March 2020
-       - 306
-       - 547,012
-       - 8,073
-       - 314,741
+       - 329
+       - 644,383
+       - 9,054
+       - 368,136
        - Miami-Dade County, Florida
      * - 9
        - philadelphia
        - Philadelphia Metro Area
        - 6,102,434
        - 06 March 2020
-       - 306
-       - 338,540
-       - 8,786
-       - 97,099
+       - 329
+       - 406,489
+       - 10,121
+       - 109,231
        - Philadelphia County, Pennsylvania
      * - 10
        - atlanta
        - Atlanta Metro Area
        - 6,020,364
        - 02 March 2020
-       - 310
-       - 359,923
-       - 4,520
-       - 61,621
+       - 333
+       - 468,340
+       - 5,737
+       - 82,429
        - Gwinnett County, Georgia
      * - 11
        - phoenix
        - Phoenix Metro Area
        - 4,948,203
        - 26 January 2020
-       - 346
-       - 389,225
-       - 5,828
-       - 358,496
+       - 369
+       - 510,142
+       - 8,009
+       - 468,090
        - Maricopa County, Arizona
      * - 12
        - boston
        - Boston Metro Area
        - 4,873,019
        - 01 February 2020
-       - 340
-       - 272,839
-       - 8,511
-       - 80,812
+       - 363
+       - 344,581
+       - 9,459
+       - 100,774
        - Middlesex County, Massachusetts
      * - 13
        - detroit
        - Detroit Metro Area
        - 4,319,629
        - 10 March 2020
-       - 302
-       - 223,550
-       - 7,421
-       - 88,055
+       - 325
+       - 245,769
+       - 8,162
+       - 96,472
        - Wayne County, Michigan
      * - 14
        - seattle
        - Seattle Metro Area
        - 3,979,845
        - 21 January 2020
-       - 351
-       - 120,078
-       - 1,880
-       - 66,288
+       - 374
+       - 140,877
+       - 2,199
+       - 77,693
        - King County, Washington
      * - 15
        - minneapolis
        - Minneapolis Metro Area
        - 3,640,043
        - 06 March 2020
-       - 306
-       - 265,898
-       - 3,414
-       - 88,832
+       - 329
+       - 286,200
+       - 3,796
+       - 95,383
        - Hennepin County, Minnesota
      * - 16
        - sandiego
        - San Diego Metro Area
        - 3,338,330
        - 10 February 2020
-       - 331
-       - 176,725
-       - 1,691
-       - 176,725
+       - 354
+       - 234,703
+       - 2,571
+       - 234,703
        - San Diego County, California
      * - 17
        - tampa
        - Tampa Metro Area
        - 3,194,831
        - 01 March 2020
-       - 311
-       - 162,064
-       - 2,893
-       - 82,257
+       - 334
+       - 197,003
+       - 3,461
+       - 99,421
        - Hillsborough County, Florida
      * - 18
        - denver
        - Denver Metro Area
        - 2,967,239
        - 05 March 2020
-       - 307
-       - 184,591
-       - 2,755
-       - 49,991
+       - 330
+       - 206,343
+       - 2,993
+       - 55,907
        - Denver County, Colorado
      * - 19
        - stlouis
        - St. Louis Metro Area
        - 2,803,228
        - 07 March 2020
-       - 305
-       - 210,416
-       - 3,444
-       - 71,901
+       - 328
+       - 241,809
+       - 4,063
+       - 83,094
        - St. Louis County, Missouri
      * - 20
        - baltimore
        - Baltimore Metro Area
        - 2,800,053
        - 08 March 2020
-       - 304
-       - 127,954
-       - 2,639
-       - 40,458
+       - 327
+       - 151,880
+       - 3,051
+       - 46,876
        - Baltimore County, Maryland
      * - 21
        - charlotte
        - Charlotte Metro Area
        - 2,636,883
        - 11 March 2020
-       - 301
-       - 162,983
-       - 1,776
-       - 67,623
+       - 324
+       - 209,165
+       - 2,292
+       - 85,109
        - Mecklenburg County, North Carolina
      * - 22
        - orlando
        - Orlando Metro Area
        - 2,608,147
        - 12 March 2020
-       - 300
-       - 145,703
-       - 1,720
-       - 82,154
+       - 323
+       - 180,500
+       - 2,102
+       - 101,954
        - Orange County, Florida
      * - 23
        - sanantonio
        - San Antonio Metro Area
        - 2,550,960
        - 12 February 2020
-       - 329
-       - 151,914
-       - 2,276
-       - 126,909
+       - 352
+       - 200,807
+       - 2,989
+       - 167,579
        - Bexar County, Texas
      * - 24
        - portland
        - Portland Metro Area
        - 2,492,412
        - 28 February 2020
-       - 313
-       - 72,234
-       - 886
-       - 26,285
+       - 336
+       - 84,014
+       - 1,084
+       - 29,799
        - Multnomah County, Oregon
      * - 25
        - sacramento
        - Sacramento Metro Area
        - 2,363,730
        - 21 February 2020
-       - 320
-       - 100,941
-       - 1,225
-       - 70,676
+       - 343
+       - 123,794
+       - 1,661
+       - 85,697
        - Sacramento County, California
      * - 26
        - pittsburgh
        - Pittsburgh Metro Area
        - 2,317,600
        - 13 March 2020
-       - 299
-       - 119,218
-       - 2,389
-       - 57,708
+       - 322
+       - 143,552
+       - 3,297
+       - 68,809
        - Allegheny County, Pennsylvania
      * - 27
        - lasvegas
        - Las Vegas Metro Area
        - 2,266,715
        - 05 March 2020
-       - 307
-       - 180,524
-       - 2,496
-       - 180,524
+       - 330
+       - 212,575
+       - 3,234
+       - 212,575
        - Clark County, Nevada
      * - 28
        - austin
        - Austin Metro Area
        - 2,227,083
        - 13 March 2020
-       - 299
-       - 98,901
-       - 1,017
-       - 53,935
+       - 322
+       - 128,107
+       - 1,346
+       - 68,020
        - Travis County, Texas
      * - 29
        - cincinnati
        - Cincinnati Metro Area
        - 2,221,208
        - 14 March 2020
-       - 298
-       - 147,412
-       - 1,128
-       - 54,992
+       - 321
+       - 181,318
+       - 1,310
+       - 66,481
        - Hamilton County, Ohio
      * - 30
        - kansascity
        - Kansas City Metro Area
        - 2,157,990
        - 07 March 2020
-       - 305
-       - 111,959
-       - 1,317
-       - 41,357
+       - 328
+       - 130,785
+       - 1,549
+       - 49,641
        - Johnson County, Kansas
      * - 31
        - columbus
        - Columbus Metro Area
        - 2,122,271
        - 14 March 2020
-       - 298
-       - 141,374
-       - 1,107
-       - 88,447
+       - 321
+       - 168,343
+       - 1,178
+       - 104,034
        - Franklin County, Ohio
      * - 32
        - indianapolis
        - Indianapolis Metro Area
        - 2,074,537
        - 06 March 2020
-       - 306
-       - 157,878
-       - 2,677
-       - 74,627
+       - 329
+       - 185,151
+       - 3,046
+       - 86,093
        - Marion County, Indiana
      * - 33
        - cleveland
        - Cleveland Metro Area
        - 2,048,449
        - 09 March 2020
-       - 303
-       - 118,014
-       - 1,413
-       - 74,199
+       - 326
+       - 142,231
+       - 1,796
+       - 88,344
        - Cuyahoga County, Ohio
      * - 34
        - nashville
        - Nashville Metro Area
        - 1,934,317
        - 05 March 2020
-       - 307
-       - 185,069
-       - 1,711
-       - 72,330
+       - 330
+       - 214,033
+       - 2,113
+       - 83,943
        - Davidson County, Tennessee
      * - 35
        - virginiabeach
        - Virginia Beach Metro Area
        - 1,768,901
        - 09 March 2020
-       - 303
-       - 69,427
-       - 860
-       - 18,392
+       - 326
+       - 98,137
+       - 1,073
+       - 25,762
        - Virginia Beach city, Virginia
      * - 36
        - providence
        - Providence Metro Area
        - 1,624,578
        - 14 March 2020
-       - 298
-       - 122,227
-       - 2,973
-       - 62,846
+       - 321
+       - 151,587
+       - 3,406
+       - 74,238
        - Providence County, Rhode Island
      * - 37
        - milwaukee
        - Milwaukee Metro Area
        - 1,575,179
        - 11 March 2020
-       - 301
-       - 153,752
-       - 1,570
-       - 94,284
+       - 324
+       - 168,627
+       - 1,852
+       - 102,816
        - Milwaukee County, Wisconsin
      * - 38
        - jacksonville
        - Jacksonville Metro Area
        - 1,559,514
        - 10 March 2020
-       - 302
-       - 101,296
-       - 1,176
-       - 66,647
+       - 325
+       - 123,717
+       - 1,441
+       - 80,580
        - Duval County, Florida
      * - 39
        - oklahomacity
        - Oklahoma City Metro Area
        - 1,408,950
        - 13 March 2020
-       - 299
-       - 106,609
-       - 786
-       - 61,336
+       - 322
+       - 130,563
+       - 1,015
+       - 74,315
        - Oklahoma County, Oklahoma
      * - 40
        - raleigh
        - Raleigh Metro Area
        - 1,390,785
        - 03 March 2020
-       - 309
-       - 64,760
-       - 516
-       - 48,580
+       - 332
+       - 87,078
+       - 628
+       - 66,925
        - Wake County, North Carolina
      * - 41
        - memphis
        - Memphis Metro Area
        - 1,346,045
        - 08 March 2020
-       - 304
-       - 107,513
-       - 1,451
-       - 71,728
+       - 327
+       - 124,158
+       - 1,832
+       - 82,428
        - Shelby County, Tennessee
      * - 42
        - richmond
        - Richmond Metro Area
        - 1,291,900
        - 12 March 2020
-       - 300
-       - 52,182
-       - 801
-       - 13,953
+       - 323
+       - 70,851
+       - 952
+       - 18,802
        - Chesterfield County, Virginia
      * - 43
        - neworleans
        - New Orleans Metro Area
        - 1,270,530
        - 09 March 2020
-       - 303
-       - 84,686
-       - 2,025
-       - 33,629
+       - 326
+       - 103,445
+       - 2,266
+       - 40,755
        - Jefferson Parish, Louisiana
      * - 44
        - louisville
        - Louisville/Jefferson County Metro Area
        - 1,265,108
        - 08 March 2020
-       - 304
-       - 87,924
-       - 1,095
-       - 55,135
+       - 327
+       - 108,104
+       - 1,285
+       - 66,657
        - Jefferson County, Kentucky
      * - 45
        - saltlakecity
        - Salt Lake City Metro Area
        - 1,232,696
        - 25 February 2020
-       - 316
-       - 117,396
-       - 584
-       - 112,552
+       - 339
+       - 134,983
+       - 698
+       - 129,114
        - Salt Lake County, Utah
      * - 46
        - hartford
        - Hartford Metro Area
        - 1,204,877
        - 14 March 2020
-       - 298
-       - 62,681
-       - 2,284
-       - 50,223
+       - 321
+       - 79,254
+       - 2,561
+       - 63,211
        - Hartford County, Connecticut
      * - 47
        - buffalo
        - Buffalo Metro Area
        - 1,127,983
        - 15 March 2020
-       - 297
-       - 54,297
-       - 1,454
-       - 44,616
+       - 320
+       - 70,058
+       - 1,722
+       - 56,576
        - Erie County, New York
      * - 48
        - birmingham
        - Birmingham Metro Area
        - 1,090,435
        - 13 March 2020
-       - 299
-       - 89,746
-       - 1,085
-       - 56,031
+       - 322
+       - 105,897
+       - 1,639
+       - 66,323
        - Jefferson County, Alabama
      * - 49
        - grandrapids
        - Grand Rapids Metro Area
        - 1,077,370
        - 12 March 2020
-       - 300
-       - 72,602
-       - 982
-       - 45,031
+       - 323
+       - 81,875
+       - 1,135
+       - 49,145
        - Kent County, Michigan
      * - 50
        - rochester
        - Rochester Metro Area
        - 1,069,644
        - 11 March 2020
-       - 301
-       - 48,334
-       - 848
-       - 37,331
+       - 324
+       - 62,696
+       - 1,151
+       - 47,465
        - Monroe County, New York
 
 .. _png_figures:
 	 
-* The COVID-19 trends in cases and deaths for these 6 metropolitan areas through 6 JANUARY 2021: SF Bay Area; Washington, DC; Richmond, VA; NYC; Los Angeles; and New Orleans.
+* The COVID-19 trends in cases and deaths for these 6 metropolitan areas as of 29 JANUARY 2021: SF Bay Area; Washington, DC; Richmond, VA; NYC; Los Angeles; and New Orleans.
 
   .. list-table::
      :widths: auto
@@ -561,7 +555,7 @@ Here is some output from using this COVID-19 tracker.
 
 .. _gif_animations:
   
-* GIF'd video animations of the COVID-19 trends in cases/deaths for NYC, Chicago, and Seattle up to 6 JANUARY 2021.	  
+* GIF'd video animations of the COVID-19 trends in cases/deaths for NYC, Chicago, and Seattle as of 29 JANUARY 2021.	  
 
   .. list-table::
      :widths: auto
@@ -586,251 +580,12 @@ Here is some output from using this COVID-19 tracker.
   Continental United States
   ===========================  ==    
 
-The remainder of this README has two sections: `GETTING STARTED <getting_started_>`_ and `USING THE CLI <using_the_cli_>`_.
+The comprehensive documentation lives in HTML created with Sphinx_, and now in the `COVID-19 Stats GitHub Page`_ for this project. To generate the documentation,
 
-.. _getting_started:
-
-GETTING STARTED
--------------------
-
-First clone this repo using the command,
-
-.. code-block:: console
-
-   git clone https://github.com/tanimislam/covid19_stats.git
-
-You will get the main directory structure, but you will notice that the ``covid19_stats/covid-19-data`` submodule is empty. To populate it, run
-
-.. code-block:: console
-
-   git submodule update --init --recursive
-
-The requirements are in the ``requirements.txt``. You should be able to install these Python packages into your *user* Python library (typically at ``~/.local/lib/python3.X/site-packages``) by running,
-
-.. code-block:: console
-
-   pip install -r requirements.txt
-   pip install --user -e .
-
-Of course, if you feel adventurous, you can install all-in-one-go by doing this,
-
-.. code-block:: console
-
-   pip install --user git+https://github.com/tanimislam/covid19_stats.git#egginfo=covid19_stats
-   
-However, `Basemap <https://matplotlib.org/basemap/>`__ can be a bugbear to install. Here is what worked for me when installing on the Linux machine.
-
-1. First, although Basemap_ will install, your Python shell (and hence your CLI) won’t be able to find it. This is almost certainly a bug in Basemap. Running ``from mpl_toolkits.basemap import Basemap`` won’t work. First, look for where ``basemap`` is installed. In my case, it was located at ``~/.local/lib/python3.7/site-packages/basemap-1.2.1-py3.7-linux-x86_64.egg/``. The directory structure right below it looks like this,
-
-   .. code-block:: console
-
-      EGG-INFO
-      _geoslib.cpython-37m-x86_64-linux-gnu.so
-      _geoslib.py
-      mpl_toolkits
-      __pycache__
-
-2. ``cd`` into ``mpl_toolkits``. You should see a ``basemap`` subdirectory when you look in it.
-
-   .. code-block:: console
-
-      basemap
-      __init__.py
-      __pycache__
-
-3. You should also have an ``mpl_toolkits`` library module installed locally. In my case it was ``~/.local/lib/python3.7/site-packages/mpl_toolkits/``. Inside it looks like,
-
-   .. code-block:: console
-
-      axes_grid
-      axes_grid1
-      axisartist
-      mplot3d
-      tests
-
-4. In the real ``mpl_toolkits`` directory, make a symbolic link to the ``basemap`` directory underneath, e.g., ``~/.local/lib/python3.7/site-packages/basemap-1.2.1-py3.7-linux-x86_64.egg/``. Thus in the correct ``mpl_toolkits`` subdirectory, run, e.g.,
-
-   .. code-block:: console
-
-      ln -sf ~/.local/lib/python3.7/site-packages/basemap-1.2.1-py3.7-linux-x86_64.egg/mpl_toolkits/basemap basemap
-
-   If you have done everything correctly, its data structure will look like what is shown below, with a valid symbolic link to ``basemap``.
-
-   .. code-block:: console
-
-      axes_grid
-      axes_grid1
-      axisartist
-      basemap -> ~/.local/lib/python3.7/site-packages/basemap-1.2.1-py3.7-linux-x86_64.egg/
-      mplot3d
-      tests
-
-If you’re lucky, running ``from mpl_toolkits.basemap import Basemap`` will work without further issues.
-
-Updating the COVID-19 Database
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Just run this from the main directory,
-
-.. code-block:: console
-
-   git -C covid19_stats/covid-19-data pull origin master
-
-in order to get the latest COVID-19 data.
-
-.. _using_the_cli:
-
-USING THE CLI
----------------
-
-``covid19_create_movie_or_summary`` is the only top-level CLI currently in the repository. It has three modes of operation. Its help output, while running ``covid19_create_movie_or_summary -h``, produces the following,
-
-.. code:: bash
-
-   usage: covid19_create_movie_or_summary [-h] {M,m,s} ...
-
-   positional arguments:
-     {M,m,s}     Choose either showing list of metros, or make a movie of a metro
-                 region
-       M         If chosen, then list all the metropolitan areas through which we
-                 can look.
-       m         Make a movie of the COVID-19 cases and deaths trend for the
-                 specific Metropolitan Statistical Area (MSA).
-       s         Make a summary plot, and incident data file, of COVID-19 cases
-                 and deaths trend, for the specific Metropolitan Statistical Area
-                 (MSA).
-
-   optional arguments:
-     -h, --help  show this help message and exit
-
-* ``covid19_create_movie_or_summary M`` (METRO flag) lists the COVID-19 stats for all, or user-selected, metropolitan statistical areas (MSAs) by population. For example, here are the statistics for the top 30 MSAs.
-
-  .. code-block:: console
-
-       covid19_create_movie_or_summary M
-
-       HERE ARE THE 380 METRO AREAS, ORDERED BY POPULATION
-       DATA AS OF 15 June 2020.
-       RANK  IDENTIFIER        NAME                                    POPULATION    FIRST INC.          NUM DAYS  NUM CASES    NUM DEATHS    MAX CASE COUNTY    MAX CASE COUNTY NAME
-     ------  ----------------  --------------------------------------  ------------  ----------------  ----------  -----------  ------------  -----------------  ------------------------------------
-	  1  nyc               NYC Metro Area                          19,216,182    01 March 2020            106  483,453      39,029        215,011            New York City, New York
-	  2  losangeles        LA Metro Area                           18,711,436    25 January 2020          142  102,983      3,801         73,791             Los Angeles County, California
-	  3  chicago           Chicago Metro Area                      9,458,539     24 January 2020          143  125,857      6,001         85,184             Cook County, Illinois
-	  4  dallas            Dallas Metro Area                       7,573,136     09 March 2020             98  27,201       606           14,537             Dallas County, Texas
-	  5  houston           Houston Metro Area                      7,066,141     04 March 2020            103  23,848       427           17,282             Harris County, Texas
-	  6  bayarea           Bay Area                                6,860,207     31 January 2020          136  16,178       474           4,394              Alameda County, California
-	  7  dc                DC Metro Area                           6,280,487     05 March 2020            102  78,449       2,933         17,920             Prince George's County, Maryland
-	  8  miami             Miami Metro Area                        6,166,488     06 March 2020            101  40,295       1,613         22,196             Miami-Dade County, Florida
-	  9  philadelphia      Philadelphia Metro Area                 6,102,434     06 March 2020            101  68,012       5,026         24,475             Philadelphia County, Pennsylvania
-	 10  atlanta           Atlanta Metro Area                      6,020,364     02 March 2020            105  28,075       1,255         5,308              Gwinnett County, Georgia
-	 11  phoenix           Phoenix Metro Area                      4,948,203     26 January 2020          141  20,940       601           19,372             Maricopa County, Arizona
-	 12  boston            Boston Metro Area                       4,873,019     01 February 2020         135  77,267       5,373         23,227             Middlesex County, Massachusetts
-	 13  detroit           Detroit Metro Area                      4,319,629     10 March 2020             97  42,039       4,746         21,816             Wayne County, Michigan
-	 14  seattle           Seattle Metro Area                      3,979,845     21 January 2020          146  14,829       838           8,799              King County, Washington
-	 15  minneapolis       Minneapolis Metro Area                  3,640,043     06 March 2020            101  20,392       1,124         10,281             Hennepin County, Minnesota
-	 16  sandiego          San Diego Metro Area                    3,338,330     10 February 2020         126  9,673        320           9,673              San Diego County, California
-	 17  tampa             Tampa Metro Area                        3,194,831     01 March 2020            106  6,899        221           3,826              Hillsborough County, Florida
-	 18  denver            Denver Metro Area                       2,967,239     05 March 2020            102  18,591       1,121         6,376              Denver County, Colorado
-	 19  stlouis           St. Louis Metro Area                    2,803,228     07 March 2020            100  12,264       975           5,604              St. Louis County, Missouri
-	 20  baltimore         Baltimore Metro Area                    2,800,053     08 March 2020             99  23,162       1,169         7,220              Baltimore County, Maryland
-	 21  charlotte         Charlotte Metro Area                    2,636,883     11 March 2020             96  11,902       248           7,321              Mecklenburg County, North Carolina
-	 22  orlando           Orlando Metro Area                      2,608,147     12 March 2020             95  5,401        95            3,281              Orange County, Florida
-	 23  sanantonio        San Antonio Metro Area                  2,550,960     12 February 2020         124  5,169        105           4,449              Bexar County, Texas
-	 24  portland          Portland Metro Area                     2,492,412     28 February 2020         108  3,707        142           1,559              Multnomah County, Oregon
-	 25  sacramento        Sacramento Metro Area                   2,363,730     21 February 2020         115  2,555        96            1,793              Sacramento County, California
-	 26  pittsburgh        Pittsburgh Metro Area                   2,317,600     13 March 2020             94  3,765        316           2,086              Allegheny County, Pennsylvania
-	 27  lasvegas          Las Vegas Metro Area                    2,266,715     05 March 2020            102  8,815        379           8,815              Clark County, Nevada
-	 28  austin            Austin Metro Area                       2,227,083     13 March 2020             94  7,004        145           4,664              Travis County, Texas
-	 29  cincinnati        Cincinnati Metro Area                   2,221,208     14 March 2020             93  7,070        353           3,250              Hamilton County, Ohio
-	 30  kansascity        Kansas City Metro Area                  2,157,990     07 March 2020            100  5,518        197           1,750              Wyandotte County, Kansas
-
-* One can also select MSAs with the ``--metros`` flag. The ``-f`` or ``--format`` flag prints out a table of MSAs formatted in one of three ways: ``simple``, the default, is the tabular format shown above; ``github`` is `Github flavored Markdown`_; and ``rst`` is reStructuredText_. This is described in the help output, produced by ``covid19_create_movie_or_summary M -h``,
-
-  .. code-block:: console
-
-     usage: covid19_create_movie_or_summary M [-h] [-f {simple,github,rst}]
-					   [--metros METROS]
-
-     optional arguments:
-       -h, --help            show this help message and exit
-       -f {simple,github,rst}, --format {simple,github,rst}
-			     Format of the table that displays MSA summary. Default
-			     is "simple".
-       --metros METROS       If chosen, list of selected metros for which to
-			     summarize COVID-19 data.
-
-  I have typically not specified a list of metros.
-
-.. _show_mode:
+* Go to the ``docs`` subdirectory.
+* In that directory, run ``make html``.
+* Load ``docs/build/html/index.html`` into a browser to see the documentation.
   
-* ``covid19_create_movie_or_summary s`` (SHOW flag) summarizes the latest COVID-19 statistics for a specified MSA. The help output, while running ``covid19_create_movie_or_summary s -h``, is shown below,
-  
-  .. code-block:: console
-
-     usage: covid19_create_movie_or_summary s [-h] [-n NAME] [-M MAXNUM] [--conus]
-					      [-y]
-
-     optional arguments:
-       -h, --help            show this help message and exit
-       -n NAME, --name NAME  Create a summary plot and incident data file of this
-			     metropolitan area. Default is "bayarea".
-       -M MAXNUM, --maxnum MAXNUM
-			     The limit of cases/deaths to visualize. Default is a
-			     plausible amount for the chosen MSA or CONUS. You
-			     should use a limit larger (by at least 2, no more than
-			     10) than the maximum number of cases recorded for a
-			     county in that MSA or CONUS.
-       --conus               If chosen, then make a movie of the COVID-19 cases and
-			     deaths trends for the Continental US (CONUS).
-       -y, --yes             If chosen, then do not confirm --maxnum.
-
-  The required ``-n`` or ``--name`` flag specifies the MSA. The ``-M`` or ``--maxnum`` sets the color limits of cases and deaths to this number (the default is a number that is comfortable above the maximum number of cases in a county in the MSA); and the ``-y`` or ``--yes`` flag suppresses the intermediate prompt that asks the user whether the specified or default maximum number is sufficient. For example, for the NYC metro area,
-
-  .. code-block:: console
-
-     bash$ covid19_create_movie_or_summary s -n nyc
-  
-     HERE ARE DETAILS FOR NYC Metro Area.
-     2019 EST. POP = 19,216,182.
-     FIRST CASE:  01 March 2020.
-     LATEST CASE: 15 June 2020 (106 days after first case)
-     MAXIMUM NUMBER OF CASES: 215,011 (in New York City, New York)
-     MAXIMUM NUMBER OF CASES FOR VISUALIZATION: 320,000.
-     CONTINUE (must choose one) [y/n]:
-
-  This mode of operation, for example for NYC will output the following seven files:
-
-  - ``covid19_nyc_LATEST.pkl.gz`` is the `Pandas DataFrame`_  of the COVID-19 cases and deaths, total and per county, from the date of first incident to the latest incident.
-
-  - ``covid19_nyc_cds_LATEST.pdf`` and ``covid19_nyc_cds_LATEST.png`` are the PDF and PNG showing the trend of COVID-19 cases and deaths in the NYC metro area.
-
-  - ``covid19_nyc_cases_LATEST.pdf`` and ``covid19_nyc_cases_LATEST.png`` are the PDF and PNG showing the county map, colored by number of COVID-19 cases, on the LAST incident day.
-
-  - ``covid19_nyc_death_LATEST.pdf`` and ``covid19_nyc_death_LATEST.png`` are the PDF and PNG showing the county map, colored by number of COVID-19 deaths, on the LAST incident day.
-
-* ``covid19_create_movie_or_summary m`` (MOVIE flag) creates an MP4_ movie of COVID-19 cases and deaths for the MSA you specify (see the `high quality GIF animations <gif_animations_>`_ of these MP4 movies). The help output, while running ``covid19_create_movie_or_summary m -h``, is shown below,
-
-  .. code-block:: console
-
-     usage: covid19_create_movie_or_summary m [-h] [-n NAME] [-M MAXNUM] [--conus]
-					      [-y]
-
-     optional arguments:
-       -h, --help            show this help message and exit
-       -n NAME, --name NAME  Make a movie of this metropolitan area. Default is
-			     "bayarea"
-       -M MAXNUM, --maxnum MAXNUM
-			     The limit of cases/deaths to visualize. Default is a
-			     plausible amount for the chosen MSA or CONUS. You
-			     should use a limit larger (by at least 2, no more than
-			     10) than the maximum number of cases recorded for a
-			     county in that MSA or CONUS.
-       --conus               If chosen, then make a movie of the COVID-19 cases and
-			     deaths trends for the Continental US (CONUS).
-       -y, --yes             If chosen, then do not confirm --maxnum.
-
-  The meaning of the ``-M`` and ``-y`` flags are the same as in `SHOW mode <show_mode_>`_.
-
 .. _`NY Times COVID-19 repository`: https://github.com/nytimes/covid-19-data
 .. _`ncov2019.live`: https://ncov2019.live
 .. _`this New Yorker article`: https://www.newyorker.com/magazine/2020/03/30/the-high-schooler-who-became-a-covid-19-watchdog
@@ -841,63 +596,64 @@ USING THE CLI
 .. _reStructuredText: https://docutils.sourceforge.io/rst.html
 .. _`Pandas DataFrame`: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.htm
 .. _MP4: https://en.wikipedia.org/wiki/MPEG-4_Part_14
+.. _Sphinx: https://www.sphinx-doc.org/en/master
+.. _`COVID-19 Stats GitHub Page`: https://tanimislam.github.io/covid19_stats
 
 
 .. STATIC IMAGES
 
-.. |cds_bayarea| image:: figures/covid19_bayarea_cds_LATEST.png
+.. |cds_bayarea| image:: https://tanimislam.github.io/covid19movies/covid19_bayarea_cds_LATEST.png
    :width: 100%
    :align: middle
 
-.. |cds_dc| image:: figures/covid19_dc_cds_LATEST.png
+.. |cds_dc| image:: https://tanimislam.github.io/covid19movies/covid19_dc_cds_LATEST.png
    :width: 100%
    :align: middle
 
-.. |cds_richmond| image:: figures/covid19_richmond_cds_LATEST.png
+.. |cds_richmond| image:: https://tanimislam.github.io/covid19movies/covid19_richmond_cds_LATEST.png
    :width: 100%
    :align: middle
 
-.. |cds_nyc| image:: figures/covid19_nyc_cds_LATEST.png
+.. |cds_nyc| image:: https://tanimislam.github.io/covid19movies/covid19_nyc_cds_LATEST.png
    :width: 100%
    :align: middle
 
-.. |cds_losangeles| image:: figures/covid19_losangeles_cds_LATEST.png
+.. |cds_losangeles| image:: https://tanimislam.github.io/covid19movies/covid19_losangeles_cds_LATEST.png
    :width: 100%
    :align: middle
 
-.. |cds_neworleans| image:: figures/covid19_neworleans_cds_LATEST.png
+.. |cds_neworleans| image:: https://tanimislam.github.io/covid19movies/covid19_neworleans_cds_LATEST.png
    :width: 100%
    :align: middle
 	   
 .. GIF ANIMATIONS MSA
 
-.. |anim_gif_nyc| image:: figures/covid19_nyc_LATEST.gif
+.. |anim_gif_nyc| image:: https://tanimislam.github.io/covid19movies/covid19_nyc_LATEST.gif
    :width: 100%
    :align: middle
 
-.. |anim_gif_chicago| image:: figures/covid19_chicago_LATEST.gif
+.. |anim_gif_chicago| image:: https://tanimislam.github.io/covid19movies/covid19_chicago_LATEST.gif
    :width: 100%
    :align: middle
 
-.. |anim_gif_seattle| image:: figures/covid19_seattle_LATEST.gif
+.. |anim_gif_seattle| image:: https://tanimislam.github.io/covid19movies/covid19_seattle_LATEST.gif
    :width: 100%
    :align: middle
 
-.. |anim_gif_bayarea| image:: figures/covid19_bayarea_LATEST.gif
+.. |anim_gif_bayarea| image:: https://tanimislam.github.io/covid19movies/covid19_bayarea_LATEST.gif
    :width: 100%
    :align: middle
 
-.. |anim_gif_dc| image:: figures/covid19_dc_LATEST.gif
+.. |anim_gif_dc| image:: https://tanimislam.github.io/covid19movies/covid19_dc_LATEST.gif
    :width: 100%
    :align: middle
 
-.. |anim_gif_richmond| image:: figures/covid19_richmond_LATEST.gif
+.. |anim_gif_richmond| image:: https://tanimislam.github.io/covid19movies/covid19_richmond_LATEST.gif
    :width: 100%
-   :align: middle
-	   
+   :align: middle	   
 
 .. GIF ANIMATIONS CONUS
 
-.. |anim_gif_conus| image:: figures/covid19_conus_LATEST.gif
+.. |anim_gif_conus| image:: https://tanimislam.github.io/covid19movies/covid19_conus_LATEST.gif
    :width: 100%
    :align: middle
