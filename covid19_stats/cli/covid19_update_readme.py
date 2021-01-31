@@ -8,6 +8,10 @@ from covid19_stats import COVID19Database
 from covid19_stats.engine.core import create_readme_from_template
 from argparse import ArgumentParser
 
+#
+## suppress warnings
+warnings.simplefilter( 'ignore' )
+
 _default_covid19_url = 'https://tanimislam.github.io/covid19movies'
 
 def main( ):
