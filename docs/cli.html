@@ -86,10 +86,10 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">1. USING THE CLI</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#covid19-create-movie-or-summary">1.1. covid19_create_movie_or_summary</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#summarize-msas">1.2. summarize MSAs</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#show-mode">1.2.1. show mode</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#movie-mode">1.2.2. movie mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#covid19-create-movie-or-summary">1.1. covid19_create_movie_or_summary</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#summarize-msas">1.1.1. summarize MSAs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#show-mode">1.1.2. show mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#movie-mode">1.1.3. movie mode</a></li>
 </ul>
 </li>
 </ul>
@@ -185,9 +185,8 @@
 <span class="go">  -h, --help  show this help message and exit</span>
 </pre></div>
 </div>
-</div>
 <div class="section" id="summarize-msas">
-<span id="metro-mode"></span><h2><span class="section-number">1.2. </span>summarize MSAs<a class="headerlink" href="#summarize-msas" title="Permalink to this headline">¶</a></h2>
+<span id="metro-mode"></span><h3><span class="section-number">1.1.1. </span>summarize MSAs<a class="headerlink" href="#summarize-msas" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">M</span></code> (METRO flag) lists the COVID-19 stats for all, or user-selected, MSAs by population. For example, here are the statistics for the top 30 MSAs.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">  covid19_create_movie_or_summary M</span>
 
@@ -241,8 +240,9 @@
 </pre></div>
 </div>
 <p>I have typically not specified a list of metros.</p>
+</div>
 <div class="section" id="show-mode">
-<span id="id2"></span><h3><span class="section-number">1.2.1. </span>show mode<a class="headerlink" href="#show-mode" title="Permalink to this headline">¶</a></h3>
+<span id="id2"></span><h3><span class="section-number">1.1.2. </span>show mode<a class="headerlink" href="#show-mode" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">s</span></code> (SHOW flag) summarizes the latest COVID-19 statistics for a specified MSA. The help output, while running <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">s</span> <span class="pre">-h</span></code>, is shown below,</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: covid19_create_movie_or_summary s [-h] [-n NAME] [-M MAXNUM] [--conus]</span>
 <span class="go">                                         [-y]</span>
@@ -302,7 +302,7 @@
 </ul>
 </div>
 <div class="section" id="movie-mode">
-<span id="id3"></span><h3><span class="section-number">1.2.2. </span>movie mode<a class="headerlink" href="#movie-mode" title="Permalink to this headline">¶</a></h3>
+<span id="id3"></span><h3><span class="section-number">1.1.3. </span>movie mode<a class="headerlink" href="#movie-mode" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">m</span></code> (MOVIE flag) creates an <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> movie of COVID-19 cases and deaths for the MSA you specify (see the <a href="#id9"><span class="problematic" id="id10">`high quality GIF animations &lt;gif_animations_&gt;`_</span></a> of these MP4 movies). The help output, while running <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">m</span> <span class="pre">-h</span></code>, is shown below,</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: covid19_create_movie_or_summary m [-h] [-n NAME] [-M MAXNUM] [--conus]</span>
 <span class="go">                                         [-y]</span>
