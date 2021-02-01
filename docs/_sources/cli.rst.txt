@@ -218,8 +218,50 @@ will output a quad structured movie of the cumulative COVID-19 cases and deaths 
 
    The four-quadrant movie, that ``covid19_create_movie_or_summary m`` creates, of the cumulative COVID-19 cases and deaths in the NYC metropolitan area. Upper left quad is the summary information for the MSA. Lower left quad is the running tally of cumulative cases and deaths, by day from first incident. Upper right is *logarithmic* coloration of cumulative deaths, by day from first incident. Lower right is *logarithmic* coloration of cumulative cases, by day from first incident.
 
+Note also that the created MP4_ files have metadata associated with them. You can either inspect them using mp4info_ or using code in the :py:mod:`mutagen.mp4.MP4`. Here is what ``mp4info covid19_nyc_LATEST.mp4`` returns,
+
+.. code-block:: console
+
+   mp4info version -r
+   covid19_nyc_LATEST.mp4:
+   Track   Type    Info
+   1       video   H264 High@4, 67.200 secs, 160 kbps, 1590x1172 @ 5.000000 fps
+    Name: nyc, ALL, 30-01-2021
+    Artist: Tanim Islam
+    Encoded with: Lavf57.56.101
+    Release Date: 30-01-2021
+    Album: METROPOLITAN STATISTICAL AREA
+
+For MSAs,
+
+* *Album* is ``METROPOLITAN STATISTICAL AREA``.
+* *Artist* is `Tanim Islam`_ (duh).
+* *Name* is MSA name, ``ALL`` if showing cases and deaths as quads in one movie (this is what `covid19_nyc_LATEST.mp4`_ shows), and the *last date* of COVID-19 cases and deaths that are reported.
+* *Release Date* is also the *last date* of COVID-19 cases and deaths that are reported.
+
+For the CONUS_, such as `covid19_conus_LATEST.mp4`_, here is the output when running mp4info_,
+
+.. code-block:: console
+
+   mp4info version -r
+   covid19_conus_LATEST.mp4:
+   Track   Type    Info
+   1       video   H264 High@5, 75.200 secs, 277 kbps, 1908x1166 @ 5.000000 fps
+    Name: conus, ALL, 30-01-2021
+    Artist: Tanim Islam
+    Encoded with: Lavf57.56.101
+    Release Date: 30-01-2021
+    Album: CONUS
+
+And here is its metadata,
+
+* *Album* is ``CONUS``.
+* *Name* is ``CONUS``, ``ALL`` if showing cases and deaths as quads in one movie (this is what `covid19_conus_LATEST.mp4`_ shows), and the *last date* of COVID-19 cases and deaths that are reported.
+
 .. _movie_cases_deaths_mode:
 
+movie cases deaths mode
+^^^^^^^^^^^^^^^^^^^^^^^^
 This is similar to :ref:`movie_mode`, except now we can visualize movies of cases or deaths, and optionally *save*, the collection of PNG_ images used to create the movie, into a zip file. The help output, while running ``covid19_create_movie_or_summary mcd -h``, is shown below,
 
 .. code-block:: console
@@ -239,10 +281,52 @@ This is similar to :ref:`movie_mode`, except now we can visualize movies of case
      -y, --yes             If chosen, then do not confirm --maxnum.
 
 The usage of four flags -- ``-n``, ``-M`` or ``--maxnum``, ``--conus``, and ``-y`` or ``--yes`` -- are the same as described in :numref:`show_mode` and :numref:`movie_mode`.
-   
-movie cases deaths mode
-^^^^^^^^^^^^^^^^^^^^^^^^
-   
+
+* ``-d`` or ``-disp`` lets you choose whether to create a movie of the ``cases`` or ``deaths`` within the CONUS or a specific MSA.
+
+* ``-s`` or ``--saveimages`` optionally lets you choose to save the PNG_ images into a zip archive.
+
+:numref:`fig_covid19_nyc_cases_LATEST` and :numref:`fig_covid19_nyc_death_LATEST` demonstrates this operation to create COVID-19 ``cases`` and ``deaths`` summary movies for the NYC metropolitan area. The command line syntax to generate these two movies is shown in each of their captions.
+
+.. _fig_covid19_nyc_cases_LATEST:
+
+.. figure:: https://tanimislam.github.io/covid19movies/covid19_nyc_cases_LATEST.gif
+   :width: 100%
+   :align: left
+
+   The trend of latest COVID-19 cumulative cases (lower right quadrant in :numref:`fig_covid19_nyc_LATEST`) in the NYC metropolitan area. The underlying MP4 file is `covid19_nyc_cases_LATEST.mp4`_. The syntax used to create this movie is,
+
+   .. code-block:: console
+
+      covid19_create_movie_or_summary mcd -n nyc -d cases -y
+
+.. _fig_covid19_nyc_death_LATEST:
+
+.. figure:: https://tanimislam.github.io/covid19movies/covid19_nyc_deaths_LATEST.gif
+   :width: 100%
+   :align: left
+
+   The trend of latest COVID-19 cumulative deaths (upper right quadrant in :numref:`fig_covid19_nyc_LATEST`) in the NYC metropolitan area. The underlying MP4 file is `covid19_nyc_deaths_LATEST.mp4`_. The syntax used to create this movie is,
+
+   .. code-block:: console
+
+      covid19_create_movie_or_summary mcd -n nyc -d death -y
+      
+Finally, :numref:`fig_covid19_conus_cases_LATEST` demonstrates the latest trend of COVID-19 cases in the CONUS_. I generate it by running,
+
+.. code-block:: console
+
+   covid19_create_movie_or_summary mcd --conus -d cases -y
+
+.. _fig_covid19_conus_cases_LATEST:
+
+.. figure:: https://tanimislam.github.io/covid19movies/covid19_conus_cases_LATEST.gif
+   :width: 100%
+   :align: left
+
+   The trend of latest COVID-19 cumulative cases for the CONUS_. The underlying MP4 file is `covid19_conus_cases_LATEST.mp4`_. The limits of the cases in each county is deliberate.
+
+
 .. _`NY Times COVID-19 repository`: https://github.com/nytimes/covid-19-data
 .. _`ncov2019.live`: https://ncov2019.live
 .. _`this New Yorker article`: https://www.newyorker.com/magazine/2020/03/30/the-high-schooler-who-became-a-covid-19-watchdog
@@ -255,3 +339,10 @@ movie cases deaths mode
 .. _MP4: https://en.wikipedia.org/wiki/MPEG-4_Part_14
 .. _CONUS: https://en.wikipedia.org/wiki/Contiguous_United_States
 .. _`covid19_nyc_LATEST.mp4`: https://tanimislam.github.io/covid19movies/covid19_nyc_LATEST.mp4
+.. _`covid19_conus_LATEST.mp4`: https://tanimislam.github.io/covid19movies/covid19_conus_LATEST.mp4
+.. _PNG: https://en.wikipedia.org/wiki/Portable_Network_Graphics
+.. _`covid19_nyc_cases_LATEST.mp4`: https://tanimislam.github.io/covid19movies/covid19_nyc_cases_LATEST.mp4
+.. _`covid19_nyc_deaths_LATEST.mp4`: https://tanimislam.github.io/covid19movies/covid19_nyc_deaths_LATEST.mp4
+.. _`covid19_conus_cases_LATEST.mp4`: https://tanimislam.github.io/covid19movies/covid19_conus_cases_LATEST.mp4
+.. _mp4info: https://www.bento4.com/documentation/mp4info
+.. _`Tanim Islam`: https://tanimislam.github.io

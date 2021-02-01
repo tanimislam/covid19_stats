@@ -63,6 +63,7 @@ intersphinx_mapping = {
     'PyPDF2' : ( 'https://pythonhosted.org/PyPDF2', None ),
     'Pillow' : ( 'https://pillow.readthedocs.io/en/stable', None ),
     'docutils' : ( 'https://docutils.readthedocs.io/en/sphinx-docs', None ),
+    'mutagen'  : ( 'https://mutagen.readthedocs.io/en/latest', None ),
 }
 
 numfig = True
