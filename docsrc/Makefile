@@ -21,3 +21,8 @@ help:
 deploy: html
 	cp -rf build/html/* ../docs/
 	touch ../docs/.nojekyll
+
+git-deploy: deploy
+	git stage ../*
+	git commit -a -m "doc fix."
+	git push

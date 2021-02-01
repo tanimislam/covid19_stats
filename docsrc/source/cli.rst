@@ -181,7 +181,7 @@ This mode of operation, for example for NYC will output the following seven file
   
 movie mode
 ^^^^^^^^^^^
-``covid19_create_movie_or_summary m`` (MOVIE flag) creates an MP4_ movie of COVID-19 cases and deaths for the MSA you specify (see the `high quality GIF animations <gif_animations_>`_ of these MP4 movies). The help output, while running ``covid19_create_movie_or_summary m -h``, is shown below,
+``covid19_create_movie_or_summary m`` (MOVIE flag) creates an MP4_ movie of COVID-19 cases and deaths for the MSA you specify (see the :ref:`high quality GIF animations <gif_animations>` of these MP4 movies). The help output, while running ``covid19_create_movie_or_summary m -h``, is shown below,
 
 .. code-block:: console
 
@@ -218,6 +218,11 @@ will output a quad structured movie of the cumulative COVID-19 cases and deaths 
 
    The four-quadrant movie, that ``covid19_create_movie_or_summary m`` creates, of the cumulative COVID-19 cases and deaths in the NYC metropolitan area. Upper left quad is the summary information for the MSA. Lower left quad is the running tally of cumulative cases and deaths, by day from first incident. Upper right is *logarithmic* coloration of cumulative deaths, by day from first incident. Lower right is *logarithmic* coloration of cumulative cases, by day from first incident.
 
+.. _movie_cases_deaths_mode:
+   
+movie cases deaths mode
+^^^^^^^^^^^^^^^^^^^^^^^^
+   
 .. _`NY Times COVID-19 repository`: https://github.com/nytimes/covid-19-data
 .. _`ncov2019.live`: https://ncov2019.live
 .. _`this New Yorker article`: https://www.newyorker.com/magazine/2020/03/30/the-high-schooler-who-became-a-covid-19-watchdog
