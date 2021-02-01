@@ -85,7 +85,15 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">1. USING THE CLI</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">1. USING THE CLI</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#covid19-create-movie-or-summary">1.1. covid19_create_movie_or_summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#summarize-msas">1.2. summarize MSAs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#show-mode">1.2.1. show mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#movie-mode">1.2.2. movie mode</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 
             
@@ -155,26 +163,32 @@
             
   <div class="section" id="using-the-cli">
 <span id="id1"></span><h1><span class="section-number">1. </span>USING THE CLI<a class="headerlink" href="#using-the-cli" title="Permalink to this headline">¶</a></h1>
-<p><code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span></code> is the only top-level CLI currently in the repository. It has three modes of operation. Its help output, while running <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">-h</span></code>, produces the following,</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>usage: covid19_create_movie_or_summary <span class="o">[</span>-h<span class="o">]</span> <span class="o">{</span>M,m,s<span class="o">}</span> ...
+<p>There are <em>six</em> command line interfaces that have been defined here.</p>
+<div class="section" id="covid19-create-movie-or-summary">
+<h2><span class="section-number">1.1. </span>covid19_create_movie_or_summary<a class="headerlink" href="#covid19-create-movie-or-summary" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span></code> is the <em>main</em> top-level CLI currently in the repository. Its purpose is to <em>individually</em> create COVID-19 summary movies and figures, of cumulative cases and deaths, in the <a class="reference external" href="https://en.wikipedia.org/wiki/Contiguous_United_States">Contiguous United States (CONUS)</a> or one of the 380 defined metropolitan statistical areas (MSA).</p>
+<p>It has three modes of operation. Its help output, while running <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">-h</span></code>, produces the following,</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: covid19_create_movie_or_summary [-h] {M,m,s} ...</span>
 
-positional arguments:
-  <span class="o">{</span>M,m,s<span class="o">}</span>     Choose either showing list of metros, or make a movie of a metro
-              region
-    M         If chosen, <span class="k">then</span> list all the metropolitan areas through which we
-              can look.
-    m         Make a movie of the COVID-19 cases and deaths trend <span class="k">for</span> the
-              specific Metropolitan Statistical Area <span class="o">(</span>MSA<span class="o">)</span>.
-    s         Make a summary plot, and incident data file, of COVID-19 cases
-              and deaths trend, <span class="k">for</span> the specific Metropolitan Statistical Area
-              <span class="o">(</span>MSA<span class="o">)</span>.
+<span class="go">positional arguments:</span>
+<span class="go">  {M,m,s}     Choose either showing list of metros, or make a movie of a metro</span>
+<span class="go">              region</span>
+<span class="go">    M         If chosen, then list all the metropolitan areas through which we</span>
+<span class="go">              can look.</span>
+<span class="go">    m         Make a movie of the COVID-19 cases and deaths trend for the</span>
+<span class="go">              specific Metropolitan Statistical Area (MSA).</span>
+<span class="go">    s         Make a summary plot, and incident data file, of COVID-19 cases</span>
+<span class="go">              and deaths trend, for the specific Metropolitan Statistical Area</span>
+<span class="go">              (MSA).</span>
 
-optional arguments:
-  -h, --help  show this <span class="nb">help</span> message and <span class="nb">exit</span>
+<span class="go">optional arguments:</span>
+<span class="go">  -h, --help  show this help message and exit</span>
 </pre></div>
 </div>
-<ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">M</span></code> (METRO flag) lists the COVID-19 stats for all, or user-selected, metropolitan statistical areas (MSAs) by population. For example, here are the statistics for the top 30 MSAs.</p>
+</div>
+<div class="section" id="summarize-msas">
+<span id="metro-mode"></span><h2><span class="section-number">1.2. </span>summarize MSAs<a class="headerlink" href="#summarize-msas" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">M</span></code> (METRO flag) lists the COVID-19 stats for all, or user-selected, MSAs by population. For example, here are the statistics for the top 30 MSAs.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">  covid19_create_movie_or_summary M</span>
 
 <span class="go">  HERE ARE THE 380 METRO AREAS, ORDERED BY POPULATION</span>
@@ -213,8 +227,7 @@ optional arguments:
 <span class="go">    30  kansascity        Kansas City Metro Area                  2,157,990     07 March 2020            100  5,518        197           1,750              Wyandotte County, Kansas</span>
 </pre></div>
 </div>
-</li>
-<li><p>One can also select MSAs with the <code class="docutils literal notranslate"><span class="pre">--metros</span></code> flag. The <code class="docutils literal notranslate"><span class="pre">-f</span></code> or <code class="docutils literal notranslate"><span class="pre">--format</span></code> flag prints out a table of MSAs formatted in one of three ways: <code class="docutils literal notranslate"><span class="pre">simple</span></code>, the default, is the tabular format shown above; <code class="docutils literal notranslate"><span class="pre">github</span></code> is <a class="reference external" href="https://github.github.com/gfm">Github flavored Markdown</a>; and <code class="docutils literal notranslate"><span class="pre">rst</span></code> is <a class="reference external" href="https://docutils.sourceforge.io/rst.html">reStructuredText</a>. This is described in the help output, produced by <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">M</span> <span class="pre">-h</span></code>,</p>
+<p>One can also select MSAs with the <code class="docutils literal notranslate"><span class="pre">--metros</span></code> flag. The <code class="docutils literal notranslate"><span class="pre">-f</span></code> or <code class="docutils literal notranslate"><span class="pre">--format</span></code> flag prints out a table of MSAs formatted in one of three ways: <code class="docutils literal notranslate"><span class="pre">simple</span></code>, the default, is the tabular format shown above; <code class="docutils literal notranslate"><span class="pre">github</span></code> is <a class="reference external" href="https://github.github.com/gfm">Github flavored Markdown</a>; and <code class="docutils literal notranslate"><span class="pre">rst</span></code> is <a class="reference external" href="https://docutils.sourceforge.io/rst.html">reStructuredText</a>. This is described in the help output, produced by <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">M</span> <span class="pre">-h</span></code>,</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: covid19_create_movie_or_summary M [-h] [-f {simple,github,rst}]</span>
 <span class="go">                                      [--metros METROS]</span>
 
@@ -228,10 +241,9 @@ optional arguments:
 </pre></div>
 </div>
 <p>I have typically not specified a list of metros.</p>
-</li>
-</ul>
-<ul id="show-mode">
-<li><p><code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">s</span></code> (SHOW flag) summarizes the latest COVID-19 statistics for a specified MSA. The help output, while running <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">s</span> <span class="pre">-h</span></code>, is shown below,</p>
+<div class="section" id="show-mode">
+<span id="id2"></span><h3><span class="section-number">1.2.1. </span>show mode<a class="headerlink" href="#show-mode" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">s</span></code> (SHOW flag) summarizes the latest COVID-19 statistics for a specified MSA. The help output, while running <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">s</span> <span class="pre">-h</span></code>, is shown below,</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: covid19_create_movie_or_summary s [-h] [-n NAME] [-M MAXNUM] [--conus]</span>
 <span class="go">                                         [-y]</span>
 
@@ -256,21 +268,42 @@ optional arguments:
 <span class="go">HERE ARE DETAILS FOR NYC Metro Area.</span>
 <span class="go">2019 EST. POP = 19,216,182.</span>
 <span class="go">FIRST CASE:  01 March 2020.</span>
-<span class="go">LATEST CASE: 15 June 2020 (106 days after first case)</span>
-<span class="go">MAXIMUM NUMBER OF CASES: 215,011 (in New York City, New York)</span>
-<span class="go">MAXIMUM NUMBER OF CASES FOR VISUALIZATION: 320,000.</span>
+<span class="go">LATEST CASE: 30 January 2021 (335 days after first case)</span>
+<span class="go">MAXIMUM NUMBER OF CASES: 603,428 (in New York City, New York)</span>
+<span class="go">MAXIMUM NUMBER OF CASES FOR VISUALIZATION: 1,000,000.</span>
 <span class="go">CONTINUE (must choose one) [y/n]:</span>
 </pre></div>
 </div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The command line output shown above for the operation of <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">s</span> <span class="pre">-n</span> <span class="pre">nyc</span></code> is for 31 JANUARY 2021. Example images shown below are for this or <em>later</em> dates.</p>
+</div>
 <p>This mode of operation, for example for NYC will output the following seven files:</p>
-<ul class="simple">
+<ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">covid19_nyc_LATEST.pkl.gz</span></code> is the <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.htm">Pandas DataFrame</a>  of the COVID-19 cases and deaths, total and per county, from the date of first incident to the latest incident.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">covid19_nyc_cds_LATEST.pdf</span></code> and <code class="docutils literal notranslate"><span class="pre">covid19_nyc_cds_LATEST.png</span></code> are the PDF and PNG showing the trend of COVID-19 cases and deaths in the NYC metro area.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">covid19_nyc_cases_LATEST.pdf</span></code> and <code class="docutils literal notranslate"><span class="pre">covid19_nyc_cases_LATEST.png</span></code> are the PDF and PNG showing the county map, colored by number of COVID-19 cases, on the LAST incident day.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">covid19_nyc_death_LATEST.pdf</span></code> and <code class="docutils literal notranslate"><span class="pre">covid19_nyc_death_LATEST.png</span></code> are the PDF and PNG showing the county map, colored by number of COVID-19 deaths, on the LAST incident day.</p></li>
-</ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">covid19_nyc_cds_LATEST.pdf</span></code> and <code class="docutils literal notranslate"><span class="pre">covid19_nyc_cds_LATEST.png</span></code> are the PDF and PNG showing the trend of COVID-19 cases and deaths in the NYC metro area.</p>
+<div class="figure align-left" id="id5">
+<a class="reference internal image-reference" href="https://tanimislam.github.io/covid19movies/covid19_nyc_cds_LATEST.png"><img alt="https://tanimislam.github.io/covid19movies/covid19_nyc_cds_LATEST.png" src="https://tanimislam.github.io/covid19movies/covid19_nyc_cds_LATEST.png" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-text">The <em>latest</em> quad image of cumulative cases and deaths, including trend lines of cumulative cases and deaths, in the NYC metropolitan area.</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</div>
 </li>
-<li><p><code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">m</span></code> (MOVIE flag) creates an <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> movie of COVID-19 cases and deaths for the MSA you specify (see the <a href="#id4"><span class="problematic" id="id5">`high quality GIF animations &lt;gif_animations_&gt;`_</span></a> of these MP4 movies). The help output, while running <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">m</span> <span class="pre">-h</span></code>, is shown below,</p>
+<li><p><code class="docutils literal notranslate"><span class="pre">covid19_nyc_cases_LATEST.pdf</span></code> and <code class="docutils literal notranslate"><span class="pre">covid19_nyc_cases_LATEST.png</span></code> are the PDF and PNG showing the county map, colored by number of COVID-19 cases, on the <em>LAST</em> incident day.</p>
+<div class="figure align-left" id="id6">
+<a class="reference internal image-reference" href="https://tanimislam.github.io/covid19movies/covid19_nyc_cases_LATEST.png"><img alt="https://tanimislam.github.io/covid19movies/covid19_nyc_cases_LATEST.png" src="https://tanimislam.github.io/covid19movies/covid19_nyc_cases_LATEST.png" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-text">The <em>latest</em> image of cumulative cases in the NYC metropolitan area.</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">covid19_nyc_death_LATEST.pdf</span></code> and <code class="docutils literal notranslate"><span class="pre">covid19_nyc_death_LATEST.png</span></code> are the PDF and PNG showing the county map, colored by number of COVID-19 deaths, on the <em>LAST</em> incident day.</p>
+<div class="figure align-left" id="id7">
+<a class="reference internal image-reference" href="https://tanimislam.github.io/covid19movies/covid19_nyc_death_LATEST.png"><img alt="https://tanimislam.github.io/covid19movies/covid19_nyc_death_LATEST.png" src="https://tanimislam.github.io/covid19movies/covid19_nyc_death_LATEST.png" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-text">The <em>latest</em> image of cumulative deaths in the NYC metropolitan area.</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="movie-mode">
+<span id="id3"></span><h3><span class="section-number">1.2.2. </span>movie mode<a class="headerlink" href="#movie-mode" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">m</span></code> (MOVIE flag) creates an <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> movie of COVID-19 cases and deaths for the MSA you specify (see the <a href="#id9"><span class="problematic" id="id10">`high quality GIF animations &lt;gif_animations_&gt;`_</span></a> of these MP4 movies). The help output, while running <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">m</span> <span class="pre">-h</span></code>, is shown below,</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: covid19_create_movie_or_summary m [-h] [-n NAME] [-M MAXNUM] [--conus]</span>
 <span class="go">                                         [-y]</span>
 
@@ -289,9 +322,9 @@ optional arguments:
 <span class="go">  -y, --yes             If chosen, then do not confirm --maxnum.</span>
 </pre></div>
 </div>
-<p>The meaning of the <code class="docutils literal notranslate"><span class="pre">-M</span></code> and <code class="docutils literal notranslate"><span class="pre">-y</span></code> flags are the same as in <a class="reference internal" href="#show-mode">SHOW mode</a>.</p>
-</li>
-</ul>
+<p>The meaning of the <code class="docutils literal notranslate"><span class="pre">-M</span></code> and <code class="docutils literal notranslate"><span class="pre">-y</span></code> flags are the same as in <a class="reference internal" href="#show-mode"><span class="std std-ref">SHOW mode</span></a>.</p>
+</div>
+</div>
 </div>
 
 
