@@ -41,7 +41,7 @@ It has four modes of operation. Its help output, while running ``covid19_create_
 The default flags in the top level operation are,
 
 * ``-h`` shows this help screen.
-* ``-d`` or ``--dirname`` specifies the output directory.
+* ``-d`` or ``--dirname`` specifies the output directory. Default is the current working directory.
 * ``--info`` says to show ``INFO`` logging output.
      
 .. _metro_mode:
@@ -212,7 +212,7 @@ will output a quad structured movie of the cumulative COVID-19 cases and deaths 
 
 .. _fig_covid19_nyc_LATEST:
 
-.. figure:: https://tanimislam.github.io/covid19movies/covid19_nyc_LATEST.mp4
+.. figure:: https://tanimislam.github.io/covid19movies/covid19_nyc_LATEST.gif
    :width: 100%
    :align: left
 
