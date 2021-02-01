@@ -3,7 +3,7 @@
 
 # You can set these variables from the command line.
 SPHINXOPTS    =
-SPHINXBUILD   = python3 -m sphinx
+SPHINXBUILD   = python3-3.8.2 -m sphinx
 SOURCEDIR     = source
 BUILDDIR      = build
 
@@ -17,3 +17,7 @@ help:
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
 %: Makefile
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+
+deploy: html
+	cp -rf build/html/* ../docs/
+	touch ../docs/.nojekyll

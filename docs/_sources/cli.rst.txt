@@ -1,8 +1,7 @@
 .. _using_the_cli:
 
 USING THE CLI
----------------
-
+==================
 ``covid19_create_movie_or_summary`` is the only top-level CLI currently in the repository. It has three modes of operation. Its help output, while running ``covid19_create_movie_or_summary -h``, produces the following,
 
 .. code:: bash

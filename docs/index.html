@@ -1,38 +1,876 @@
 
-<!DOCTYPE html>
 
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Welcome to COVID19_STATS’s documentation! &#8212; COVID19_STATS 1.0 documentation</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/doctools.js"></script>
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Welcome to the COVID19_STATS repository &mdash; COVID19_STATS 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="1. USING THE CLI" href="cli.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
    
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
-
-  </head><body>
-  
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
           
 
-          <div class="body" role="main">
+          
+            <a href="#" class="icon icon-home"> COVID19_STATS
+          
+
+          
+          </a>
+
+          
             
-  <div class="section" id="welcome-to-covid19-stats-s-documentation">
-<h1>Welcome to COVID19_STATS’s documentation!<a class="headerlink" href="#welcome-to-covid19-stats-s-documentation" title="Permalink to this headline">¶</a></h1>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">1. USING THE CLI</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">COVID19_STATS</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Welcome to the COVID19_STATS repository</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="welcome-to-the-covid19-stats-repository">
+<h1>Welcome to the COVID19_STATS repository<a class="headerlink" href="#welcome-to-the-covid19-stats-repository" title="Permalink to this headline">¶</a></h1>
+</div>
+<div class="section" id="readme">
+<h1>README<a class="headerlink" href="#readme" title="Permalink to this headline">¶</a></h1>
+<p>Hello world! This is my COVID-19 tracker. This is not nearly as sophisticated as what’s in <a class="reference external" href="https://ncov2019.live">ncov2019.live</a>, and described in <a class="reference external" href="https://www.newyorker.com/magazine/2020/03/30/the-high-schooler-who-became-a-covid-19-watchdog">this New Yorker article</a>.</p>
+<p>I have made major changes in the functionality and implementation from the original commits, since commit <a class="reference external" href="https://github.com/tanimislam/covid19_stats/commit/78917dd20c43bd65320cf51958fa481febef4338">#78917</a> for instance.</p>
+<ul>
+<li><p>The API code has been refactored into the <code class="docutils literal notranslate"><span class="pre">covid19_stats.engine</span></code> subdirectory, and is divided into three main submodules: <code class="docutils literal notranslate"><span class="pre">covid19_stats.engine.core</span></code> provides the higher level API calls for processing the COVID-19 data; <code class="docutils literal notranslate"><span class="pre">covid19_stats.engine.gis</span></code> provides the lower-level APIs to write out, read in, and process the raw GIS data provided mainly by the US Census Bureau; and <code class="docutils literal notranslate"><span class="pre">covid19_stats.engine.viz</span></code> does the visualization part.</p></li>
+<li><p>The command line interfaces (CLI) back-ends live in <code class="docutils literal notranslate"><span class="pre">covid19_stats.cli</span></code>. One of the command line interfaces, <code class="docutils literal notranslate"><span class="pre">covid19_update_database</span></code>, updates the git submodule (the <a class="reference external" href="https://github.com/nytimes/covid-19-data">NY Times COVID-19 repository</a>) with the <em>latest</em> data. Previously, one updated the database by manually running, from the repository’s top level directory,</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git -C covid19_stats/covid-19-data pull origin master</span>
+</pre></div>
+</div>
+</li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">testing</span></code> subdirectory contains <a class="reference external" href="https://jupyter.org">Jupyter Notebooks</a> that illuminate bits and pieces of this COVID-19 tracker’s functionality.</p></li>
+</ul>
+<p>Here is some output from using this COVID-19 tracker. The data lives underneath <a class="reference external" href="https://tanimislam.github.com/covid19movies">https://tanimislam.github.com/covid19movies</a></p>
+<ul>
+<li><p>The summary of COVID-19 statistics for the top 50 MSAs by estimated 2019 population.</p>
+<table class="colwidths-auto docutils align-default" id="id3">
+<caption><span class="caption-text">COVID-19 STATS FOR 50 METROS AS OF 30 JANUARY 2021</span><a class="headerlink" href="#id3" title="Permalink to this table">¶</a></caption>
+<tbody>
+<tr class="row-odd"><td><p>RANK</p></td>
+<td><p>IDENTIFIER</p></td>
+<td><p>NAME</p></td>
+<td><p>POPULATION</p></td>
+<td><p>FIRST INC.</p></td>
+<td><p>NUM DAYS</p></td>
+<td><p>NUM CASES</p></td>
+<td><p>NUM DEATHS</p></td>
+<td><p>MAX CASE COUNTY</p></td>
+<td><p>MAX CASE COUNTY NAME</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>nyc</p></td>
+<td><p>NYC Metro Area</p></td>
+<td><p>19,216,182</p></td>
+<td><p>01 March 2020</p></td>
+<td><p>335</p></td>
+<td><p>1,533,434</p></td>
+<td><p>52,324</p></td>
+<td><p>603,428</p></td>
+<td><p>New York City, New York</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>losangeles</p></td>
+<td><p>LA Metro Area</p></td>
+<td><p>18,711,436</p></td>
+<td><p>25 January 2020</p></td>
+<td><p>371</p></td>
+<td><p>1,971,046</p></td>
+<td><p>25,175</p></td>
+<td><p>1,111,543</p></td>
+<td><p>Los Angeles County, California</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>chicago</p></td>
+<td><p>Chicago Metro Area</p></td>
+<td><p>9,458,539</p></td>
+<td><p>24 January 2020</p></td>
+<td><p>372</p></td>
+<td><p>817,478</p></td>
+<td><p>14,916</p></td>
+<td><p>452,742</p></td>
+<td><p>Cook County, Illinois</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>dallas</p></td>
+<td><p>Dallas Metro Area</p></td>
+<td><p>7,573,136</p></td>
+<td><p>09 March 2020</p></td>
+<td><p>327</p></td>
+<td><p>679,197</p></td>
+<td><p>7,182</p></td>
+<td><p>256,900</p></td>
+<td><p>Dallas County, Texas</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>houston</p></td>
+<td><p>Houston Metro Area</p></td>
+<td><p>7,066,141</p></td>
+<td><p>04 March 2020</p></td>
+<td><p>332</p></td>
+<td><p>476,812</p></td>
+<td><p>5,915</p></td>
+<td><p>314,697</p></td>
+<td><p>Harris County, Texas</p></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p>bayarea</p></td>
+<td><p>Bay Area</p></td>
+<td><p>6,860,207</p></td>
+<td><p>31 January 2020</p></td>
+<td><p>365</p></td>
+<td><p>324,745</p></td>
+<td><p>3,881</p></td>
+<td><p>101,453</p></td>
+<td><p>Santa Clara County, California</p></td>
+</tr>
+<tr class="row-even"><td><p>7</p></td>
+<td><p>dc</p></td>
+<td><p>DC Metro Area</p></td>
+<td><p>6,280,487</p></td>
+<td><p>05 March 2020</p></td>
+<td><p>331</p></td>
+<td><p>361,566</p></td>
+<td><p>5,825</p></td>
+<td><p>67,611</p></td>
+<td><p>Prince George’s County, Maryland</p></td>
+</tr>
+<tr class="row-odd"><td><p>8</p></td>
+<td><p>miami</p></td>
+<td><p>Miami Metro Area</p></td>
+<td><p>6,166,488</p></td>
+<td><p>06 March 2020</p></td>
+<td><p>330</p></td>
+<td><p>649,412</p></td>
+<td><p>9,093</p></td>
+<td><p>370,641</p></td>
+<td><p>Miami-Dade County, Florida</p></td>
+</tr>
+<tr class="row-even"><td><p>9</p></td>
+<td><p>philadelphia</p></td>
+<td><p>Philadelphia Metro Area</p></td>
+<td><p>6,102,434</p></td>
+<td><p>06 March 2020</p></td>
+<td><p>330</p></td>
+<td><p>408,420</p></td>
+<td><p>10,159</p></td>
+<td><p>109,231</p></td>
+<td><p>Philadelphia County, Pennsylvania</p></td>
+</tr>
+<tr class="row-odd"><td><p>10</p></td>
+<td><p>atlanta</p></td>
+<td><p>Atlanta Metro Area</p></td>
+<td><p>6,020,364</p></td>
+<td><p>02 March 2020</p></td>
+<td><p>334</p></td>
+<td><p>471,985</p></td>
+<td><p>5,846</p></td>
+<td><p>83,160</p></td>
+<td><p>Gwinnett County, Georgia</p></td>
+</tr>
+<tr class="row-even"><td><p>11</p></td>
+<td><p>phoenix</p></td>
+<td><p>Phoenix Metro Area</p></td>
+<td><p>4,948,203</p></td>
+<td><p>26 January 2020</p></td>
+<td><p>370</p></td>
+<td><p>513,970</p></td>
+<td><p>8,068</p></td>
+<td><p>471,686</p></td>
+<td><p>Maricopa County, Arizona</p></td>
+</tr>
+<tr class="row-odd"><td><p>12</p></td>
+<td><p>boston</p></td>
+<td><p>Boston Metro Area</p></td>
+<td><p>4,873,019</p></td>
+<td><p>01 February 2020</p></td>
+<td><p>364</p></td>
+<td><p>347,263</p></td>
+<td><p>9,512</p></td>
+<td><p>101,488</p></td>
+<td><p>Middlesex County, Massachusetts</p></td>
+</tr>
+<tr class="row-even"><td><p>13</p></td>
+<td><p>detroit</p></td>
+<td><p>Detroit Metro Area</p></td>
+<td><p>4,319,629</p></td>
+<td><p>10 March 2020</p></td>
+<td><p>326</p></td>
+<td><p>246,331</p></td>
+<td><p>8,213</p></td>
+<td><p>96,712</p></td>
+<td><p>Wayne County, Michigan</p></td>
+</tr>
+<tr class="row-odd"><td><p>14</p></td>
+<td><p>seattle</p></td>
+<td><p>Seattle Metro Area</p></td>
+<td><p>3,979,845</p></td>
+<td><p>21 January 2020</p></td>
+<td><p>375</p></td>
+<td><p>141,400</p></td>
+<td><p>2,199</p></td>
+<td><p>78,012</p></td>
+<td><p>King County, Washington</p></td>
+</tr>
+<tr class="row-even"><td><p>15</p></td>
+<td><p>minneapolis</p></td>
+<td><p>Minneapolis Metro Area</p></td>
+<td><p>3,640,043</p></td>
+<td><p>06 March 2020</p></td>
+<td><p>330</p></td>
+<td><p>286,843</p></td>
+<td><p>3,809</p></td>
+<td><p>95,579</p></td>
+<td><p>Hennepin County, Minnesota</p></td>
+</tr>
+<tr class="row-odd"><td><p>16</p></td>
+<td><p>sandiego</p></td>
+<td><p>San Diego Metro Area</p></td>
+<td><p>3,338,330</p></td>
+<td><p>10 February 2020</p></td>
+<td><p>355</p></td>
+<td><p>236,831</p></td>
+<td><p>2,603</p></td>
+<td><p>236,831</p></td>
+<td><p>San Diego County, California</p></td>
+</tr>
+<tr class="row-even"><td><p>17</p></td>
+<td><p>tampa</p></td>
+<td><p>Tampa Metro Area</p></td>
+<td><p>3,194,831</p></td>
+<td><p>01 March 2020</p></td>
+<td><p>335</p></td>
+<td><p>198,878</p></td>
+<td><p>3,462</p></td>
+<td><p>100,334</p></td>
+<td><p>Hillsborough County, Florida</p></td>
+</tr>
+<tr class="row-odd"><td><p>18</p></td>
+<td><p>denver</p></td>
+<td><p>Denver Metro Area</p></td>
+<td><p>2,967,239</p></td>
+<td><p>05 March 2020</p></td>
+<td><p>331</p></td>
+<td><p>206,519</p></td>
+<td><p>2,995</p></td>
+<td><p>55,907</p></td>
+<td><p>Denver County, Colorado</p></td>
+</tr>
+<tr class="row-even"><td><p>19</p></td>
+<td><p>stlouis</p></td>
+<td><p>St. Louis Metro Area</p></td>
+<td><p>2,803,228</p></td>
+<td><p>07 March 2020</p></td>
+<td><p>329</p></td>
+<td><p>242,496</p></td>
+<td><p>4,070</p></td>
+<td><p>83,346</p></td>
+<td><p>St. Louis County, Missouri</p></td>
+</tr>
+<tr class="row-odd"><td><p>20</p></td>
+<td><p>baltimore</p></td>
+<td><p>Baltimore Metro Area</p></td>
+<td><p>2,800,053</p></td>
+<td><p>08 March 2020</p></td>
+<td><p>328</p></td>
+<td><p>152,739</p></td>
+<td><p>3,071</p></td>
+<td><p>47,144</p></td>
+<td><p>Baltimore County, Maryland</p></td>
+</tr>
+<tr class="row-even"><td><p>21</p></td>
+<td><p>charlotte</p></td>
+<td><p>Charlotte Metro Area</p></td>
+<td><p>2,636,883</p></td>
+<td><p>11 March 2020</p></td>
+<td><p>325</p></td>
+<td><p>210,056</p></td>
+<td><p>2,329</p></td>
+<td><p>85,735</p></td>
+<td><p>Mecklenburg County, North Carolina</p></td>
+</tr>
+<tr class="row-odd"><td><p>22</p></td>
+<td><p>orlando</p></td>
+<td><p>Orlando Metro Area</p></td>
+<td><p>2,608,147</p></td>
+<td><p>12 March 2020</p></td>
+<td><p>324</p></td>
+<td><p>182,095</p></td>
+<td><p>2,111</p></td>
+<td><p>102,896</p></td>
+<td><p>Orange County, Florida</p></td>
+</tr>
+<tr class="row-even"><td><p>23</p></td>
+<td><p>sanantonio</p></td>
+<td><p>San Antonio Metro Area</p></td>
+<td><p>2,550,960</p></td>
+<td><p>12 February 2020</p></td>
+<td><p>353</p></td>
+<td><p>204,327</p></td>
+<td><p>3,033</p></td>
+<td><p>169,700</p></td>
+<td><p>Bexar County, Texas</p></td>
+</tr>
+<tr class="row-odd"><td><p>24</p></td>
+<td><p>portland</p></td>
+<td><p>Portland Metro Area</p></td>
+<td><p>2,492,412</p></td>
+<td><p>28 February 2020</p></td>
+<td><p>337</p></td>
+<td><p>84,421</p></td>
+<td><p>1,089</p></td>
+<td><p>29,920</p></td>
+<td><p>Multnomah County, Oregon</p></td>
+</tr>
+<tr class="row-even"><td><p>25</p></td>
+<td><p>sacramento</p></td>
+<td><p>Sacramento Metro Area</p></td>
+<td><p>2,363,730</p></td>
+<td><p>21 February 2020</p></td>
+<td><p>344</p></td>
+<td><p>124,561</p></td>
+<td><p>1,666</p></td>
+<td><p>86,319</p></td>
+<td><p>Sacramento County, California</p></td>
+</tr>
+<tr class="row-odd"><td><p>26</p></td>
+<td><p>pittsburgh</p></td>
+<td><p>Pittsburgh Metro Area</p></td>
+<td><p>2,317,600</p></td>
+<td><p>13 March 2020</p></td>
+<td><p>323</p></td>
+<td><p>144,211</p></td>
+<td><p>3,328</p></td>
+<td><p>69,135</p></td>
+<td><p>Allegheny County, Pennsylvania</p></td>
+</tr>
+<tr class="row-even"><td><p>27</p></td>
+<td><p>lasvegas</p></td>
+<td><p>Las Vegas Metro Area</p></td>
+<td><p>2,266,715</p></td>
+<td><p>05 March 2020</p></td>
+<td><p>331</p></td>
+<td><p>213,384</p></td>
+<td><p>3,274</p></td>
+<td><p>213,384</p></td>
+<td><p>Clark County, Nevada</p></td>
+</tr>
+<tr class="row-odd"><td><p>28</p></td>
+<td><p>austin</p></td>
+<td><p>Austin Metro Area</p></td>
+<td><p>2,227,083</p></td>
+<td><p>13 March 2020</p></td>
+<td><p>323</p></td>
+<td><p>128,252</p></td>
+<td><p>1,355</p></td>
+<td><p>68,290</p></td>
+<td><p>Travis County, Texas</p></td>
+</tr>
+<tr class="row-even"><td><p>29</p></td>
+<td><p>cincinnati</p></td>
+<td><p>Cincinnati Metro Area</p></td>
+<td><p>2,221,208</p></td>
+<td><p>14 March 2020</p></td>
+<td><p>322</p></td>
+<td><p>182,524</p></td>
+<td><p>1,325</p></td>
+<td><p>66,862</p></td>
+<td><p>Hamilton County, Ohio</p></td>
+</tr>
+<tr class="row-odd"><td><p>30</p></td>
+<td><p>kansascity</p></td>
+<td><p>Kansas City Metro Area</p></td>
+<td><p>2,157,990</p></td>
+<td><p>07 March 2020</p></td>
+<td><p>329</p></td>
+<td><p>130,955</p></td>
+<td><p>1,554</p></td>
+<td><p>49,641</p></td>
+<td><p>Johnson County, Kansas</p></td>
+</tr>
+<tr class="row-even"><td><p>31</p></td>
+<td><p>columbus</p></td>
+<td><p>Columbus Metro Area</p></td>
+<td><p>2,122,271</p></td>
+<td><p>14 March 2020</p></td>
+<td><p>322</p></td>
+<td><p>169,065</p></td>
+<td><p>1,180</p></td>
+<td><p>104,449</p></td>
+<td><p>Franklin County, Ohio</p></td>
+</tr>
+<tr class="row-odd"><td><p>32</p></td>
+<td><p>indianapolis</p></td>
+<td><p>Indianapolis Metro Area</p></td>
+<td><p>2,074,537</p></td>
+<td><p>06 March 2020</p></td>
+<td><p>330</p></td>
+<td><p>185,885</p></td>
+<td><p>3,066</p></td>
+<td><p>86,414</p></td>
+<td><p>Marion County, Indiana</p></td>
+</tr>
+<tr class="row-even"><td><p>33</p></td>
+<td><p>cleveland</p></td>
+<td><p>Cleveland Metro Area</p></td>
+<td><p>2,048,449</p></td>
+<td><p>09 March 2020</p></td>
+<td><p>327</p></td>
+<td><p>142,919</p></td>
+<td><p>1,801</p></td>
+<td><p>88,752</p></td>
+<td><p>Cuyahoga County, Ohio</p></td>
+</tr>
+<tr class="row-odd"><td><p>34</p></td>
+<td><p>nashville</p></td>
+<td><p>Nashville Metro Area</p></td>
+<td><p>1,934,317</p></td>
+<td><p>05 March 2020</p></td>
+<td><p>331</p></td>
+<td><p>214,445</p></td>
+<td><p>2,126</p></td>
+<td><p>83,943</p></td>
+<td><p>Davidson County, Tennessee</p></td>
+</tr>
+<tr class="row-even"><td><p>35</p></td>
+<td><p>virginiabeach</p></td>
+<td><p>Virginia Beach Metro Area</p></td>
+<td><p>1,768,901</p></td>
+<td><p>09 March 2020</p></td>
+<td><p>327</p></td>
+<td><p>99,097</p></td>
+<td><p>1,090</p></td>
+<td><p>26,066</p></td>
+<td><p>Virginia Beach city, Virginia</p></td>
+</tr>
+<tr class="row-odd"><td><p>36</p></td>
+<td><p>providence</p></td>
+<td><p>Providence Metro Area</p></td>
+<td><p>1,624,578</p></td>
+<td><p>14 March 2020</p></td>
+<td><p>322</p></td>
+<td><p>152,032</p></td>
+<td><p>3,414</p></td>
+<td><p>74,238</p></td>
+<td><p>Providence County, Rhode Island</p></td>
+</tr>
+<tr class="row-even"><td><p>37</p></td>
+<td><p>milwaukee</p></td>
+<td><p>Milwaukee Metro Area</p></td>
+<td><p>1,575,179</p></td>
+<td><p>11 March 2020</p></td>
+<td><p>325</p></td>
+<td><p>169,069</p></td>
+<td><p>1,857</p></td>
+<td><p>103,083</p></td>
+<td><p>Milwaukee County, Wisconsin</p></td>
+</tr>
+<tr class="row-odd"><td><p>38</p></td>
+<td><p>jacksonville</p></td>
+<td><p>Jacksonville Metro Area</p></td>
+<td><p>1,559,514</p></td>
+<td><p>10 March 2020</p></td>
+<td><p>326</p></td>
+<td><p>125,086</p></td>
+<td><p>1,450</p></td>
+<td><p>81,530</p></td>
+<td><p>Duval County, Florida</p></td>
+</tr>
+<tr class="row-even"><td><p>39</p></td>
+<td><p>oklahomacity</p></td>
+<td><p>Oklahoma City Metro Area</p></td>
+<td><p>1,408,950</p></td>
+<td><p>13 March 2020</p></td>
+<td><p>323</p></td>
+<td><p>131,273</p></td>
+<td><p>1,021</p></td>
+<td><p>74,710</p></td>
+<td><p>Oklahoma County, Oklahoma</p></td>
+</tr>
+<tr class="row-odd"><td><p>40</p></td>
+<td><p>raleigh</p></td>
+<td><p>Raleigh Metro Area</p></td>
+<td><p>1,390,785</p></td>
+<td><p>03 March 2020</p></td>
+<td><p>333</p></td>
+<td><p>87,078</p></td>
+<td><p>628</p></td>
+<td><p>66,925</p></td>
+<td><p>Wake County, North Carolina</p></td>
+</tr>
+<tr class="row-even"><td><p>41</p></td>
+<td><p>memphis</p></td>
+<td><p>Memphis Metro Area</p></td>
+<td><p>1,346,045</p></td>
+<td><p>08 March 2020</p></td>
+<td><p>328</p></td>
+<td><p>124,550</p></td>
+<td><p>1,850</p></td>
+<td><p>82,653</p></td>
+<td><p>Shelby County, Tennessee</p></td>
+</tr>
+<tr class="row-odd"><td><p>42</p></td>
+<td><p>richmond</p></td>
+<td><p>Richmond Metro Area</p></td>
+<td><p>1,291,900</p></td>
+<td><p>12 March 2020</p></td>
+<td><p>324</p></td>
+<td><p>71,530</p></td>
+<td><p>958</p></td>
+<td><p>18,969</p></td>
+<td><p>Chesterfield County, Virginia</p></td>
+</tr>
+<tr class="row-even"><td><p>43</p></td>
+<td><p>neworleans</p></td>
+<td><p>New Orleans Metro Area</p></td>
+<td><p>1,270,530</p></td>
+<td><p>09 March 2020</p></td>
+<td><p>327</p></td>
+<td><p>103,445</p></td>
+<td><p>2,266</p></td>
+<td><p>40,755</p></td>
+<td><p>Jefferson Parish, Louisiana</p></td>
+</tr>
+<tr class="row-odd"><td><p>44</p></td>
+<td><p>louisville</p></td>
+<td><p>Louisville/Jefferson County Metro Area</p></td>
+<td><p>1,265,108</p></td>
+<td><p>08 March 2020</p></td>
+<td><p>328</p></td>
+<td><p>108,937</p></td>
+<td><p>1,304</p></td>
+<td><p>67,244</p></td>
+<td><p>Jefferson County, Kentucky</p></td>
+</tr>
+<tr class="row-even"><td><p>45</p></td>
+<td><p>saltlakecity</p></td>
+<td><p>Salt Lake City Metro Area</p></td>
+<td><p>1,232,696</p></td>
+<td><p>25 February 2020</p></td>
+<td><p>340</p></td>
+<td><p>135,511</p></td>
+<td><p>703</p></td>
+<td><p>129,608</p></td>
+<td><p>Salt Lake County, Utah</p></td>
+</tr>
+<tr class="row-odd"><td><p>46</p></td>
+<td><p>hartford</p></td>
+<td><p>Hartford Metro Area</p></td>
+<td><p>1,204,877</p></td>
+<td><p>14 March 2020</p></td>
+<td><p>322</p></td>
+<td><p>79,254</p></td>
+<td><p>2,561</p></td>
+<td><p>63,211</p></td>
+<td><p>Hartford County, Connecticut</p></td>
+</tr>
+<tr class="row-even"><td><p>47</p></td>
+<td><p>buffalo</p></td>
+<td><p>Buffalo Metro Area</p></td>
+<td><p>1,127,983</p></td>
+<td><p>15 March 2020</p></td>
+<td><p>321</p></td>
+<td><p>70,564</p></td>
+<td><p>1,732</p></td>
+<td><p>56,974</p></td>
+<td><p>Erie County, New York</p></td>
+</tr>
+<tr class="row-odd"><td><p>48</p></td>
+<td><p>birmingham</p></td>
+<td><p>Birmingham Metro Area</p></td>
+<td><p>1,090,435</p></td>
+<td><p>13 March 2020</p></td>
+<td><p>323</p></td>
+<td><p>105,897</p></td>
+<td><p>1,639</p></td>
+<td><p>66,323</p></td>
+<td><p>Jefferson County, Alabama</p></td>
+</tr>
+<tr class="row-even"><td><p>49</p></td>
+<td><p>grandrapids</p></td>
+<td><p>Grand Rapids Metro Area</p></td>
+<td><p>1,077,370</p></td>
+<td><p>12 March 2020</p></td>
+<td><p>324</p></td>
+<td><p>82,041</p></td>
+<td><p>1,147</p></td>
+<td><p>49,248</p></td>
+<td><p>Kent County, Michigan</p></td>
+</tr>
+<tr class="row-odd"><td><p>50</p></td>
+<td><p>rochester</p></td>
+<td><p>Rochester Metro Area</p></td>
+<td><p>1,069,644</p></td>
+<td><p>11 March 2020</p></td>
+<td><p>325</p></td>
+<td><p>63,039</p></td>
+<td><p>1,160</p></td>
+<td><p>47,722</p></td>
+<td><p>Monroe County, New York</p></td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<ul id="png-figures">
+<li><p>The COVID-19 trends in cases and deaths for these 6 metropolitan areas as of 30 JANUARY 2021: SF Bay Area; Washington, DC; Richmond, VA; NYC; Los Angeles; and New Orleans.</p>
+<table class="colwidths-auto docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="https://tanimislam.github.io/covid19movies/covid19_bayarea_cds_LATEST.png"><img alt="cds_bayarea" class="align-middle" src="https://tanimislam.github.io/covid19movies/covid19_bayarea_cds_LATEST.png" style="width: 100%;" /></a></p></td>
+<td><p><a class="reference internal" href="https://tanimislam.github.io/covid19movies/covid19_dc_cds_LATEST.png"><img alt="cds_dc" class="align-middle" src="https://tanimislam.github.io/covid19movies/covid19_dc_cds_LATEST.png" style="width: 100%;" /></a></p></td>
+<td><p><a class="reference internal" href="https://tanimislam.github.io/covid19movies/covid19_richmond_cds_LATEST.png"><img alt="cds_richmond" class="align-middle" src="https://tanimislam.github.io/covid19movies/covid19_richmond_cds_LATEST.png" style="width: 100%;" /></a></p></td>
+</tr>
+<tr class="row-even"><td><p>SF Bay Area</p></td>
+<td><p>Washington, DC</p></td>
+<td><p>Richmond, VA</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="https://tanimislam.github.io/covid19movies/covid19_nyc_cds_LATEST.png"><img alt="cds_nyc" class="align-middle" src="https://tanimislam.github.io/covid19movies/covid19_nyc_cds_LATEST.png" style="width: 100%;" /></a></p></td>
+<td><p><a class="reference internal" href="https://tanimislam.github.io/covid19movies/covid19_losangeles_cds_LATEST.png"><img alt="cds_losangeles" class="align-middle" src="https://tanimislam.github.io/covid19movies/covid19_losangeles_cds_LATEST.png" style="width: 100%;" /></a></p></td>
+<td><p><a class="reference internal" href="https://tanimislam.github.io/covid19movies/covid19_neworleans_cds_LATEST.png"><img alt="cds_neworleans" class="align-middle" src="https://tanimislam.github.io/covid19movies/covid19_neworleans_cds_LATEST.png" style="width: 100%;" /></a></p></td>
+</tr>
+<tr class="row-even"><td><p>NYC Metro</p></td>
+<td><p>Los Angeles</p></td>
+<td><p>New Orleans</p></td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<ul id="gif-animations">
+<li><p>GIF’d video animations of the COVID-19 trends in cases/deaths for NYC, Chicago, and Seattle as of 30 JANUARY 2021.</p>
+<table class="colwidths-auto docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="https://tanimislam.github.io/covid19movies/covid19_nyc_LATEST.gif"><img alt="anim_gif_nyc" class="align-middle" src="https://tanimislam.github.io/covid19movies/covid19_nyc_LATEST.gif" style="width: 100%;" /></a></p></td>
+<td><p><a class="reference internal" href="https://tanimislam.github.io/covid19movies/covid19_chicago_LATEST.gif"><img alt="anim_gif_chicago" class="align-middle" src="https://tanimislam.github.io/covid19movies/covid19_chicago_LATEST.gif" style="width: 100%;" /></a></p></td>
+<td><p><a class="reference internal" href="https://tanimislam.github.io/covid19movies/covid19_seattle_LATEST.gif"><img alt="anim_gif_seattle" class="align-middle" src="https://tanimislam.github.io/covid19movies/covid19_seattle_LATEST.gif" style="width: 100%;" /></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://tanimislam.github.io/covid19movies/covid19_nyc_LATEST.mp4">NYC Metro</a></p></td>
+<td><p><a class="reference external" href="https://tanimislam.github.io/covid19movies/covid19_chicago_LATEST.mp4">Chicago</a></p></td>
+<td><p><a class="reference external" href="https://tanimislam.github.io/covid19movies/covid19_seattle_LATEST.mp4">Seattle</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="https://tanimislam.github.io/covid19movies/covid19_bayarea_LATEST.gif"><img alt="anim_gif_bayarea" class="align-middle" src="https://tanimislam.github.io/covid19movies/covid19_bayarea_LATEST.gif" style="width: 100%;" /></a></p></td>
+<td><p><a class="reference internal" href="https://tanimislam.github.io/covid19movies/covid19_dc_LATEST.gif"><img alt="anim_gif_dc" class="align-middle" src="https://tanimislam.github.io/covid19movies/covid19_dc_LATEST.gif" style="width: 100%;" /></a></p></td>
+<td><p><a class="reference internal" href="https://tanimislam.github.io/covid19movies/covid19_richmond_LATEST.gif"><img alt="anim_gif_richmond" class="align-middle" src="https://tanimislam.github.io/covid19movies/covid19_richmond_LATEST.gif" style="width: 100%;" /></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://tanimislam.github.io/covid19movies/covid19_bayarea_LATEST.mp4">SF Bay Area</a></p></td>
+<td><p><a class="reference external" href="https://tanimislam.github.io/covid19movies/covid19_dc_LATEST.mp4">Washington, DC</a></p></td>
+<td><p><a class="reference external" href="https://tanimislam.github.io/covid19movies/covid19_richmond_LATEST.mp4">Richmond, VA</a></p></td>
+</tr>
+</tbody>
+</table>
+<p>And here is the animation for the continental United States as of 30 JANUARY 2021</p>
+<table class="colwidths-auto docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="https://tanimislam.github.io/covid19movies/covid19_conus_LATEST.gif"><img alt="anim_gif_conus" class="align-middle" src="https://tanimislam.github.io/covid19movies/covid19_conus_LATEST.gif" style="width: 100%;" /></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://tanimislam.github.io/covid19movies/covid19_conus_LATEST.mp4">Continental United States</a></p></td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<p>The comprehensive documentation lives in HTML created with <a class="reference external" href="https://www.sphinx-doc.org/en/master">Sphinx</a>, and now in the <a class="reference external" href="https://tanimislam.github.io/covid19_stats">COVID-19 Stats GitHub Page</a> for this project. To generate the documentation,</p>
+<ul class="simple">
+<li><p>Go to the <code class="docutils literal notranslate"><span class="pre">docs</span></code> subdirectory.</p></li>
+<li><p>In that directory, run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">html</span></code>.</p></li>
+<li><p>Load <code class="docutils literal notranslate"><span class="pre">docs/build/html/index.html</span></code> into a browser to see the documentation.</p></li>
+</ul>
+<div class="section" id="getting-started">
+<span id="id2"></span><h2>GETTING STARTED<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<p>First clone this repo using the command,</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git clone https://github.com/tanimislam/covid19_stats.git</span>
+</pre></div>
+</div>
+<p>You will get the main directory structure, but you will notice that the <code class="docutils literal notranslate"><span class="pre">covid19_stats/covid-19-data</span></code> submodule is empty. To populate it, run</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git submodule update --init --recursive</span>
+</pre></div>
+</div>
+<p>The requirements are in the <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code>. You should be able to install these Python packages into your <em>user</em> Python library (typically at <code class="docutils literal notranslate"><span class="pre">~/.local/lib/python3.X/site-packages</span></code>) by running,</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install -r requirements.txt</span>
+<span class="go">pip install --user -e .</span>
+</pre></div>
+</div>
+<p>Of course, if you feel adventurous, you can install all-in-one-go by doing this,</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install --user git+https://github.com/tanimislam/covid19_stats.git#egginfo=covid19_stats</span>
+</pre></div>
+</div>
+<p>However, <a class="reference external" href="https://matplotlib.org/basemap/">Basemap</a> can be a bugbear to install. Here is what worked for me when installing on the Linux machine.</p>
+<ol class="arabic">
+<li><p>First, although <a class="reference external" href="https://matplotlib.org/basemap">Basemap</a> will install, your Python shell (and hence your CLI) won’t be able to find it. This is almost certainly a bug in Basemap. Running <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">mpl_toolkits.basemap</span> <span class="pre">import</span> <span class="pre">Basemap</span></code> won’t work. First, look for where <code class="docutils literal notranslate"><span class="pre">basemap</span></code> is installed. In my case, it was located at <code class="docutils literal notranslate"><span class="pre">~/.local/lib/python3.7/site-packages/basemap-1.2.1-py3.7-linux-x86_64.egg/</span></code>. The directory structure right below it looks like this,</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">EGG-INFO</span>
+<span class="go">_geoslib.cpython-37m-x86_64-linux-gnu.so</span>
+<span class="go">_geoslib.py</span>
+<span class="go">mpl_toolkits</span>
+<span class="go">__pycache__</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cd</span></code> into <code class="docutils literal notranslate"><span class="pre">mpl_toolkits</span></code>. You should see a <code class="docutils literal notranslate"><span class="pre">basemap</span></code> subdirectory when you look in it.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">basemap</span>
+<span class="go">__init__.py</span>
+<span class="go">__pycache__</span>
+</pre></div>
+</div>
+</li>
+<li><p>You should also have an <code class="docutils literal notranslate"><span class="pre">mpl_toolkits</span></code> library module installed locally. In my case it was <code class="docutils literal notranslate"><span class="pre">~/.local/lib/python3.7/site-packages/mpl_toolkits/</span></code>. Inside it looks like,</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">axes_grid</span>
+<span class="go">axes_grid1</span>
+<span class="go">axisartist</span>
+<span class="go">mplot3d</span>
+<span class="go">tests</span>
+</pre></div>
+</div>
+</li>
+<li><p>In the real <code class="docutils literal notranslate"><span class="pre">mpl_toolkits</span></code> directory, make a symbolic link to the <code class="docutils literal notranslate"><span class="pre">basemap</span></code> directory underneath, e.g., <code class="docutils literal notranslate"><span class="pre">~/.local/lib/python3.7/site-packages/basemap-1.2.1-py3.7-linux-x86_64.egg/</span></code>. Thus in the correct <code class="docutils literal notranslate"><span class="pre">mpl_toolkits</span></code> subdirectory, run, e.g.,</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">ln -sf ~/.local/lib/python3.7/site-packages/basemap-1.2.1-py3.7-linux-x86_64.egg/mpl_toolkits/basemap basemap</span>
+</pre></div>
+</div>
+<p>If you have done everything correctly, its data structure will look like what is shown below, with a valid symbolic link to <code class="docutils literal notranslate"><span class="pre">basemap</span></code>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">axes_grid</span>
+<span class="go">axes_grid1</span>
+<span class="go">axisartist</span>
+<span class="go">basemap -&gt; ~/.local/lib/python3.7/site-packages/basemap-1.2.1-py3.7-linux-x86_64.egg/</span>
+<span class="go">mplot3d</span>
+<span class="go">tests</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>If you’re lucky, running <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">mpl_toolkits.basemap</span> <span class="pre">import</span> <span class="pre">Basemap</span></code> will work without further issues.</p>
 <div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">1. USING THE CLI</a></li>
+</ul>
+</div>
 </div>
 </div>
 <div class="section" id="indices-and-tables">
@@ -45,66 +883,50 @@
 </div>
 
 
+           </div>
+           
           </div>
-          
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="cli.html" class="btn btn-neutral float-right" title="1. USING THE CLI" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Tanim Islam.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="#">COVID19_STATS</a></h1>
 
+    </section>
 
+  </div>
+  
 
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
 
-
-
-
-
-<h3>Navigation</h3>
-
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="#">Documentation overview</a><ul>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>$('#searchbox').show(0);</script>
-
-
-
-
-
-
-
-
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2021, Tanim Islam.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
-      
-      |
-      <a href="_sources/index.rst.txt"
-          rel="nofollow">Page source</a>
-    </div>
-
+  
+  
     
+   
 
-    
-  </body>
+</body>
 </html>
