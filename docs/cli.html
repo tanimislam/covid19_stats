@@ -1,0 +1,344 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>1. USING THE CLI &mdash; COVID19_STATS 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to the COVID19_STATS repository" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> COVID19_STATS
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">1. USING THE CLI</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">COVID19_STATS</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li><span class="section-number">1. </span>USING THE CLI</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/cli.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="using-the-cli">
+<span id="id1"></span><h1><span class="section-number">1. </span>USING THE CLI<a class="headerlink" href="#using-the-cli" title="Permalink to this headline">¶</a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span></code> is the only top-level CLI currently in the repository. It has three modes of operation. Its help output, while running <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">-h</span></code>, produces the following,</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>usage: covid19_create_movie_or_summary <span class="o">[</span>-h<span class="o">]</span> <span class="o">{</span>M,m,s<span class="o">}</span> ...
+
+positional arguments:
+  <span class="o">{</span>M,m,s<span class="o">}</span>     Choose either showing list of metros, or make a movie of a metro
+              region
+    M         If chosen, <span class="k">then</span> list all the metropolitan areas through which we
+              can look.
+    m         Make a movie of the COVID-19 cases and deaths trend <span class="k">for</span> the
+              specific Metropolitan Statistical Area <span class="o">(</span>MSA<span class="o">)</span>.
+    s         Make a summary plot, and incident data file, of COVID-19 cases
+              and deaths trend, <span class="k">for</span> the specific Metropolitan Statistical Area
+              <span class="o">(</span>MSA<span class="o">)</span>.
+
+optional arguments:
+  -h, --help  show this <span class="nb">help</span> message and <span class="nb">exit</span>
+</pre></div>
+</div>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">M</span></code> (METRO flag) lists the COVID-19 stats for all, or user-selected, metropolitan statistical areas (MSAs) by population. For example, here are the statistics for the top 30 MSAs.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">  covid19_create_movie_or_summary M</span>
+
+<span class="go">  HERE ARE THE 380 METRO AREAS, ORDERED BY POPULATION</span>
+<span class="go">  DATA AS OF 15 June 2020.</span>
+<span class="go">  RANK  IDENTIFIER        NAME                                    POPULATION    FIRST INC.          NUM DAYS  NUM CASES    NUM DEATHS    MAX CASE COUNTY    MAX CASE COUNTY NAME</span>
+<span class="go">------  ----------------  --------------------------------------  ------------  ----------------  ----------  -----------  ------------  -----------------  ------------------------------------</span>
+<span class="go">     1  nyc               NYC Metro Area                          19,216,182    01 March 2020            106  483,453      39,029        215,011            New York City, New York</span>
+<span class="go">     2  losangeles        LA Metro Area                           18,711,436    25 January 2020          142  102,983      3,801         73,791             Los Angeles County, California</span>
+<span class="go">     3  chicago           Chicago Metro Area                      9,458,539     24 January 2020          143  125,857      6,001         85,184             Cook County, Illinois</span>
+<span class="go">     4  dallas            Dallas Metro Area                       7,573,136     09 March 2020             98  27,201       606           14,537             Dallas County, Texas</span>
+<span class="go">     5  houston           Houston Metro Area                      7,066,141     04 March 2020            103  23,848       427           17,282             Harris County, Texas</span>
+<span class="go">     6  bayarea           Bay Area                                6,860,207     31 January 2020          136  16,178       474           4,394              Alameda County, California</span>
+<span class="go">     7  dc                DC Metro Area                           6,280,487     05 March 2020            102  78,449       2,933         17,920             Prince George&#39;s County, Maryland</span>
+<span class="go">     8  miami             Miami Metro Area                        6,166,488     06 March 2020            101  40,295       1,613         22,196             Miami-Dade County, Florida</span>
+<span class="go">     9  philadelphia      Philadelphia Metro Area                 6,102,434     06 March 2020            101  68,012       5,026         24,475             Philadelphia County, Pennsylvania</span>
+<span class="go">    10  atlanta           Atlanta Metro Area                      6,020,364     02 March 2020            105  28,075       1,255         5,308              Gwinnett County, Georgia</span>
+<span class="go">    11  phoenix           Phoenix Metro Area                      4,948,203     26 January 2020          141  20,940       601           19,372             Maricopa County, Arizona</span>
+<span class="go">    12  boston            Boston Metro Area                       4,873,019     01 February 2020         135  77,267       5,373         23,227             Middlesex County, Massachusetts</span>
+<span class="go">    13  detroit           Detroit Metro Area                      4,319,629     10 March 2020             97  42,039       4,746         21,816             Wayne County, Michigan</span>
+<span class="go">    14  seattle           Seattle Metro Area                      3,979,845     21 January 2020          146  14,829       838           8,799              King County, Washington</span>
+<span class="go">    15  minneapolis       Minneapolis Metro Area                  3,640,043     06 March 2020            101  20,392       1,124         10,281             Hennepin County, Minnesota</span>
+<span class="go">    16  sandiego          San Diego Metro Area                    3,338,330     10 February 2020         126  9,673        320           9,673              San Diego County, California</span>
+<span class="go">    17  tampa             Tampa Metro Area                        3,194,831     01 March 2020            106  6,899        221           3,826              Hillsborough County, Florida</span>
+<span class="go">    18  denver            Denver Metro Area                       2,967,239     05 March 2020            102  18,591       1,121         6,376              Denver County, Colorado</span>
+<span class="go">    19  stlouis           St. Louis Metro Area                    2,803,228     07 March 2020            100  12,264       975           5,604              St. Louis County, Missouri</span>
+<span class="go">    20  baltimore         Baltimore Metro Area                    2,800,053     08 March 2020             99  23,162       1,169         7,220              Baltimore County, Maryland</span>
+<span class="go">    21  charlotte         Charlotte Metro Area                    2,636,883     11 March 2020             96  11,902       248           7,321              Mecklenburg County, North Carolina</span>
+<span class="go">    22  orlando           Orlando Metro Area                      2,608,147     12 March 2020             95  5,401        95            3,281              Orange County, Florida</span>
+<span class="go">    23  sanantonio        San Antonio Metro Area                  2,550,960     12 February 2020         124  5,169        105           4,449              Bexar County, Texas</span>
+<span class="go">    24  portland          Portland Metro Area                     2,492,412     28 February 2020         108  3,707        142           1,559              Multnomah County, Oregon</span>
+<span class="go">    25  sacramento        Sacramento Metro Area                   2,363,730     21 February 2020         115  2,555        96            1,793              Sacramento County, California</span>
+<span class="go">    26  pittsburgh        Pittsburgh Metro Area                   2,317,600     13 March 2020             94  3,765        316           2,086              Allegheny County, Pennsylvania</span>
+<span class="go">    27  lasvegas          Las Vegas Metro Area                    2,266,715     05 March 2020            102  8,815        379           8,815              Clark County, Nevada</span>
+<span class="go">    28  austin            Austin Metro Area                       2,227,083     13 March 2020             94  7,004        145           4,664              Travis County, Texas</span>
+<span class="go">    29  cincinnati        Cincinnati Metro Area                   2,221,208     14 March 2020             93  7,070        353           3,250              Hamilton County, Ohio</span>
+<span class="go">    30  kansascity        Kansas City Metro Area                  2,157,990     07 March 2020            100  5,518        197           1,750              Wyandotte County, Kansas</span>
+</pre></div>
+</div>
+</li>
+<li><p>One can also select MSAs with the <code class="docutils literal notranslate"><span class="pre">--metros</span></code> flag. The <code class="docutils literal notranslate"><span class="pre">-f</span></code> or <code class="docutils literal notranslate"><span class="pre">--format</span></code> flag prints out a table of MSAs formatted in one of three ways: <code class="docutils literal notranslate"><span class="pre">simple</span></code>, the default, is the tabular format shown above; <code class="docutils literal notranslate"><span class="pre">github</span></code> is <a class="reference external" href="https://github.github.com/gfm">Github flavored Markdown</a>; and <code class="docutils literal notranslate"><span class="pre">rst</span></code> is <a class="reference external" href="https://docutils.sourceforge.io/rst.html">reStructuredText</a>. This is described in the help output, produced by <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">M</span> <span class="pre">-h</span></code>,</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: covid19_create_movie_or_summary M [-h] [-f {simple,github,rst}]</span>
+<span class="go">                                      [--metros METROS]</span>
+
+<span class="go">optional arguments:</span>
+<span class="go">  -h, --help            show this help message and exit</span>
+<span class="go">  -f {simple,github,rst}, --format {simple,github,rst}</span>
+<span class="go">                        Format of the table that displays MSA summary. Default</span>
+<span class="go">                        is &quot;simple&quot;.</span>
+<span class="go">  --metros METROS       If chosen, list of selected metros for which to</span>
+<span class="go">                        summarize COVID-19 data.</span>
+</pre></div>
+</div>
+<p>I have typically not specified a list of metros.</p>
+</li>
+</ul>
+<ul id="show-mode">
+<li><p><code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">s</span></code> (SHOW flag) summarizes the latest COVID-19 statistics for a specified MSA. The help output, while running <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">s</span> <span class="pre">-h</span></code>, is shown below,</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: covid19_create_movie_or_summary s [-h] [-n NAME] [-M MAXNUM] [--conus]</span>
+<span class="go">                                         [-y]</span>
+
+<span class="go">optional arguments:</span>
+<span class="go">  -h, --help            show this help message and exit</span>
+<span class="go">  -n NAME, --name NAME  Create a summary plot and incident data file of this</span>
+<span class="go">                        metropolitan area. Default is &quot;bayarea&quot;.</span>
+<span class="go">  -M MAXNUM, --maxnum MAXNUM</span>
+<span class="go">                        The limit of cases/deaths to visualize. Default is a</span>
+<span class="go">                        plausible amount for the chosen MSA or CONUS. You</span>
+<span class="go">                        should use a limit larger (by at least 2, no more than</span>
+<span class="go">                        10) than the maximum number of cases recorded for a</span>
+<span class="go">                        county in that MSA or CONUS.</span>
+<span class="go">  --conus               If chosen, then make a movie of the COVID-19 cases and</span>
+<span class="go">                        deaths trends for the Continental US (CONUS).</span>
+<span class="go">  -y, --yes             If chosen, then do not confirm --maxnum.</span>
+</pre></div>
+</div>
+<p>The required <code class="docutils literal notranslate"><span class="pre">-n</span></code> or <code class="docutils literal notranslate"><span class="pre">--name</span></code> flag specifies the MSA. The <code class="docutils literal notranslate"><span class="pre">-M</span></code> or <code class="docutils literal notranslate"><span class="pre">--maxnum</span></code> sets the color limits of cases and deaths to this number (the default is a number that is comfortable above the maximum number of cases in a county in the MSA); and the <code class="docutils literal notranslate"><span class="pre">-y</span></code> or <code class="docutils literal notranslate"><span class="pre">--yes</span></code> flag suppresses the intermediate prompt that asks the user whether the specified or default maximum number is sufficient. For example, for the NYC metro area,</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">bash$ covid19_create_movie_or_summary s -n nyc</span>
+
+<span class="go">HERE ARE DETAILS FOR NYC Metro Area.</span>
+<span class="go">2019 EST. POP = 19,216,182.</span>
+<span class="go">FIRST CASE:  01 March 2020.</span>
+<span class="go">LATEST CASE: 15 June 2020 (106 days after first case)</span>
+<span class="go">MAXIMUM NUMBER OF CASES: 215,011 (in New York City, New York)</span>
+<span class="go">MAXIMUM NUMBER OF CASES FOR VISUALIZATION: 320,000.</span>
+<span class="go">CONTINUE (must choose one) [y/n]:</span>
+</pre></div>
+</div>
+<p>This mode of operation, for example for NYC will output the following seven files:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">covid19_nyc_LATEST.pkl.gz</span></code> is the <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.htm">Pandas DataFrame</a>  of the COVID-19 cases and deaths, total and per county, from the date of first incident to the latest incident.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">covid19_nyc_cds_LATEST.pdf</span></code> and <code class="docutils literal notranslate"><span class="pre">covid19_nyc_cds_LATEST.png</span></code> are the PDF and PNG showing the trend of COVID-19 cases and deaths in the NYC metro area.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">covid19_nyc_cases_LATEST.pdf</span></code> and <code class="docutils literal notranslate"><span class="pre">covid19_nyc_cases_LATEST.png</span></code> are the PDF and PNG showing the county map, colored by number of COVID-19 cases, on the LAST incident day.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">covid19_nyc_death_LATEST.pdf</span></code> and <code class="docutils literal notranslate"><span class="pre">covid19_nyc_death_LATEST.png</span></code> are the PDF and PNG showing the county map, colored by number of COVID-19 deaths, on the LAST incident day.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">m</span></code> (MOVIE flag) creates an <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> movie of COVID-19 cases and deaths for the MSA you specify (see the <a href="#id4"><span class="problematic" id="id5">`high quality GIF animations &lt;gif_animations_&gt;`_</span></a> of these MP4 movies). The help output, while running <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">m</span> <span class="pre">-h</span></code>, is shown below,</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: covid19_create_movie_or_summary m [-h] [-n NAME] [-M MAXNUM] [--conus]</span>
+<span class="go">                                         [-y]</span>
+
+<span class="go">optional arguments:</span>
+<span class="go">  -h, --help            show this help message and exit</span>
+<span class="go">  -n NAME, --name NAME  Make a movie of this metropolitan area. Default is</span>
+<span class="go">                        &quot;bayarea&quot;</span>
+<span class="go">  -M MAXNUM, --maxnum MAXNUM</span>
+<span class="go">                        The limit of cases/deaths to visualize. Default is a</span>
+<span class="go">                        plausible amount for the chosen MSA or CONUS. You</span>
+<span class="go">                        should use a limit larger (by at least 2, no more than</span>
+<span class="go">                        10) than the maximum number of cases recorded for a</span>
+<span class="go">                        county in that MSA or CONUS.</span>
+<span class="go">  --conus               If chosen, then make a movie of the COVID-19 cases and</span>
+<span class="go">                        deaths trends for the Continental US (CONUS).</span>
+<span class="go">  -y, --yes             If chosen, then do not confirm --maxnum.</span>
+</pre></div>
+</div>
+<p>The meaning of the <code class="docutils literal notranslate"><span class="pre">-M</span></code> and <code class="docutils literal notranslate"><span class="pre">-y</span></code> flags are the same as in <a class="reference internal" href="#show-mode">SHOW mode</a>.</p>
+</li>
+</ul>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to the COVID19_STATS repository" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Tanim Islam.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
