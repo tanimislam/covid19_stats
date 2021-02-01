@@ -4,6 +4,14 @@ USING THE CLI
 ==================
 There are *six* command line interfaces that have been defined here.
 
+covid19_update_database
+------------------------
+This CLI updates the git submodule (the `NY Times COVID-19 repository`_) with the *latest* data. Previously, one updated the database by manually running, from the repository's top level directory,
+
+  .. code-block:: console
+
+     git -C covid19_stats/covid-19-data pull origin master
+
 covid19_create_movie_or_summary
 --------------------------------
 ``covid19_create_movie_or_summary`` is the *main* top-level CLI currently in the repository. Its purpose is to *individually* create COVID-19 summary movies and figures, of cumulative cases and deaths, in the `Contiguous United States (CONUS) <CONUS_>`_ or one of the 380 defined metropolitan statistical areas (MSA).
@@ -143,7 +151,7 @@ This mode of operation, for example for NYC will output the following seven file
      :width: 100%
      :align: left
 
-     The *latest* quad image of cumulative cases and deaths, including trend lines of cumulative cases and deaths, in the NYC metropolitan area.
+     The *latest* trend lines of cumulative cases and deaths in the NYC metropolitan area.
   
 * ``covid19_nyc_cases_LATEST.pdf`` and ``covid19_nyc_cases_LATEST.png`` are the PDF and PNG showing the county map, colored by number of COVID-19 cases, on the *LAST* incident day.
 
