@@ -31,7 +31,7 @@ It has three modes of operation. Its help output, while running ``covid19_create
 .. _metro_mode:
      
 summarize MSAs
----------------
+^^^^^^^^^^^^^^^^
 ``covid19_create_movie_or_summary M`` (METRO flag) lists the COVID-19 stats for all, or user-selected, MSAs by population. For example, here are the statistics for the top 30 MSAs.
 
 .. code-block:: console
