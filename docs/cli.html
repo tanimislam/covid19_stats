@@ -91,7 +91,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#summarize-msas">1.2.1. summarize MSAs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#show-mode">1.2.2. show mode</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#movie-mode">1.2.3. movie mode</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#movie-cases-deaths-mode">1.2.4. movie cases deaths mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">1.2.4. movie cases deaths mode</a></li>
 </ul>
 </li>
 </ul>
@@ -350,9 +350,26 @@
 <span id="fig-covid19-nyc-latest"></span><a class="reference internal image-reference" href="https://tanimislam.github.io/covid19movies/covid19_nyc_LATEST.gif"><img alt="https://tanimislam.github.io/covid19movies/covid19_nyc_LATEST.gif" src="https://tanimislam.github.io/covid19movies/covid19_nyc_LATEST.gif" style="width: 100%;" /></a>
 <p class="caption"><span class="caption-number">Fig. 1.4 </span><span class="caption-text">The four-quadrant movie, that <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">m</span></code> creates, of the cumulative COVID-19 cases and deaths in the NYC metropolitan area. Upper left quad is the summary information for the MSA. Lower left quad is the running tally of cumulative cases and deaths, by day from first incident. Upper right is <em>logarithmic</em> coloration of cumulative deaths, by day from first incident. Lower right is <em>logarithmic</em> coloration of cumulative cases, by day from first incident.</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
 </div>
+<p id="movie-cases-deaths-mode">This is similar to <a class="reference internal" href="#movie-mode"><span class="std std-ref">movie mode</span></a>, except now we can visualize movies of cases or deaths, and optionally <em>save</em>, the collection of <a href="#id10"><span class="problematic" id="id11">PNG_</span></a> images used to create the movie, into a zip file. The help output, while running <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">mcd</span> <span class="pre">-h</span></code>, is shown below,</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: covid19_create_movie_or_summary mcd [-h] [-n NAME] [-d DISP] [-M MAXNUM] [-s] [--conus] [-y]</span>
+
+<span class="go">optional arguments:</span>
+<span class="go">  -h, --help            show this help message and exit</span>
+<span class="go">  -n NAME, --name NAME  Create a summary plot and incident data file of this metropolitan area. Default is &quot;bayarea&quot;.</span>
+<span class="go">  -d DISP, --disp DISP  Whether to display the &quot;cases&quot; or &quot;death&quot; trends of the MSA or CONUS. Default is &quot;cases&quot;.</span>
+<span class="go">  -M MAXNUM, --maxnum MAXNUM</span>
+<span class="go">                        The limit of cases/deaths to visualize. Default is a plausible amount for the chosen MSA or CONUS. You</span>
+<span class="go">                        should use a limit larger (by at least 2, no more than 10) than the maximum number of cases recorded</span>
+<span class="go">                        for a county in that MSA or CONUS.</span>
+<span class="go">  -s, --saveimages      If chosen, then save the images used to create the movie into a ZIP archive.</span>
+<span class="go">  --conus               If chosen, then make a movie of the COVID-19 cases and deaths trends for the Continental US (CONUS).</span>
+<span class="go">  -y, --yes             If chosen, then do not confirm --maxnum.</span>
+</pre></div>
 </div>
-<div class="section" id="movie-cases-deaths-mode">
-<span id="id4"></span><h3><span class="section-number">1.2.4. </span>movie cases deaths mode<a class="headerlink" href="#movie-cases-deaths-mode" title="Permalink to this headline">¶</a></h3>
+<p>The usage of four flags – <code class="docutils literal notranslate"><span class="pre">-n</span></code>, <code class="docutils literal notranslate"><span class="pre">-M</span></code> or <code class="docutils literal notranslate"><span class="pre">--maxnum</span></code>, <code class="docutils literal notranslate"><span class="pre">--conus</span></code>, and <code class="docutils literal notranslate"><span class="pre">-y</span></code> or <code class="docutils literal notranslate"><span class="pre">--yes</span></code> – are the same as described in <a class="reference internal" href="#show-mode"><span class="std std-numref">Section 1.2.2</span></a> and <a class="reference internal" href="#movie-mode"><span class="std std-numref">Section 1.2.3</span></a>.</p>
+</div>
+<div class="section" id="id4">
+<h3><span class="section-number">1.2.4. </span>movie cases deaths mode<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
 </div>
 </div>
 </div>

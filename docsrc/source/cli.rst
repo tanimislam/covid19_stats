@@ -219,6 +219,26 @@ will output a quad structured movie of the cumulative COVID-19 cases and deaths 
    The four-quadrant movie, that ``covid19_create_movie_or_summary m`` creates, of the cumulative COVID-19 cases and deaths in the NYC metropolitan area. Upper left quad is the summary information for the MSA. Lower left quad is the running tally of cumulative cases and deaths, by day from first incident. Upper right is *logarithmic* coloration of cumulative deaths, by day from first incident. Lower right is *logarithmic* coloration of cumulative cases, by day from first incident.
 
 .. _movie_cases_deaths_mode:
+
+This is similar to :ref:`movie_mode`, except now we can visualize movies of cases or deaths, and optionally *save*, the collection of PNG_ images used to create the movie, into a zip file. The help output, while running ``covid19_create_movie_or_summary mcd -h``, is shown below,
+
+.. code-block:: console
+
+   usage: covid19_create_movie_or_summary mcd [-h] [-n NAME] [-d DISP] [-M MAXNUM] [-s] [--conus] [-y]
+
+   optional arguments:
+     -h, --help            show this help message and exit
+     -n NAME, --name NAME  Create a summary plot and incident data file of this metropolitan area. Default is "bayarea".
+     -d DISP, --disp DISP  Whether to display the "cases" or "death" trends of the MSA or CONUS. Default is "cases".
+     -M MAXNUM, --maxnum MAXNUM
+			   The limit of cases/deaths to visualize. Default is a plausible amount for the chosen MSA or CONUS. You
+			   should use a limit larger (by at least 2, no more than 10) than the maximum number of cases recorded
+			   for a county in that MSA or CONUS.
+     -s, --saveimages      If chosen, then save the images used to create the movie into a ZIP archive.
+     --conus               If chosen, then make a movie of the COVID-19 cases and deaths trends for the Continental US (CONUS).
+     -y, --yes             If chosen, then do not confirm --maxnum.
+
+The usage of four flags -- ``-n``, ``-M`` or ``--maxnum``, ``--conus``, and ``-y`` or ``--yes`` -- are the same as described in :numref:`show_mode` and :numref:`movie_mode`.
    
 movie cases deaths mode
 ^^^^^^^^^^^^^^^^^^^^^^^^
