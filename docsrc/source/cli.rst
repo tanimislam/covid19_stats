@@ -212,7 +212,7 @@ will output a quad structured movie of the cumulative COVID-19 cases and deaths 
 
 .. _fig_covid19_nyc_LATEST:
 
-.. figure:: https://https://tanimislam.github.io/covid19movies/covid19_nyc_LATEST.gif
+.. figure:: https://tanimislam.github.io/covid19movies/covid19_nyc_LATEST.mp4
    :width: 100%
    :align: left
 
