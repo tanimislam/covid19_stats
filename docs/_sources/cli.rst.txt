@@ -16,26 +16,34 @@ covid19_create_movie_or_summary
 --------------------------------
 ``covid19_create_movie_or_summary`` is the *main* top-level CLI currently in the repository. Its purpose is to *individually* create COVID-19 summary movies and figures, of cumulative cases and deaths, in the `Contiguous United States (CONUS) <CONUS_>`_ or one of the 380 defined metropolitan statistical areas (MSA).
 
-It has three modes of operation. Its help output, while running ``covid19_create_movie_or_summary -h``, produces the following,
+It has four modes of operation. Its help output, while running ``covid19_create_movie_or_summary -h``, produces the following,
 
 .. code:: console
 
-   usage: covid19_create_movie_or_summary [-h] {M,m,s} ...
+   usage: covid19_create_movie_or_summary [-h] [-d DIRNAME] [--info] {M,m,s,mcd} ...
 
    positional arguments:
-     {M,m,s}     Choose either showing list of metros, or make a movie of a metro
-                 region
-       M         If chosen, then list all the metropolitan areas through which we
-                 can look.
-       m         Make a movie of the COVID-19 cases and deaths trend for the
-                 specific Metropolitan Statistical Area (MSA).
-       s         Make a summary plot, and incident data file, of COVID-19 cases
-                 and deaths trend, for the specific Metropolitan Statistical Area
-                 (MSA).
+     {M,m,s,mcd}           Choose one of three options: (M) summarizes stats from metros; (m) make a movie of a metro region; and
+			   (s) dumps summary plots of last incident date, and cumulative covid-19 stats, of a metro region.
+       M                   If chosen, then list all the metropolitan areas through which we can look.
+       m                   Make a movie of the COVID-19 cases and deaths trend for the specific Metropolitan Statistical Area
+			   (MSA).
+       s                   Make a summary plot, and incident data file, of COVID-19 cases and deaths trend, for the specific
+			   Metropolitan Statistical Area (MSA).
+       mcd                 Make a large-sized movie of either "CASES" or "DEATHS" for given MSA or CONUS.
 
    optional arguments:
-     -h, --help  show this help message and exit
+     -h, --help            show this help message and exit
+     -d DIRNAME, --dirname DIRNAME
+			   The directory into which to store the resulting files. Default is /usr/WS2/islam5/covid19_data/nyc.
+     --info                If chosen, then print out INFO level logging statements.
 
+The default flags in the top level operation are,
+
+* ``-h`` shows this help screen.
+* ``-d`` or ``--dirname`` specifies the output directory.
+* ``--info`` says to show ``INFO`` logging output.
+     
 .. _metro_mode:
      
 summarize MSAs
@@ -194,7 +202,21 @@ movie mode
 			   deaths trends for the Continental US (CONUS).
      -y, --yes             If chosen, then do not confirm --maxnum.
 
-The meaning of the ``-M`` and ``-y`` flags are the same as in :ref:`SHOW mode <show_mode>`.
+The meaning of the ``-M`` and ``-y`` flags are the same as in :ref:`SHOW mode <show_mode>`. This mode of operation, for example for NYC,
+
+.. code-block:: console
+
+   covid19_create_movie_or_summary m -n nyc -y
+
+will output a quad structured movie of the cumulative COVID-19 cases and deaths for the NYC metropolitan area, `covid19_nyc_LATEST.mp4`_. :numref:`fig_covid19_nyc_LATEST` is a GIF animation of that.
+
+.. _fig_covid19_nyc_LATEST:
+
+.. figure:: https://https://tanimislam.github.io/covid19movies/covid19_nyc_LATEST.gif
+   :width: 100%
+   :align: left
+
+   The four-quadrant movie, that ``covid19_create_movie_or_summary m`` creates, of the cumulative COVID-19 cases and deaths in the NYC metropolitan area. Upper left quad is the summary information for the MSA. Lower left quad is the running tally of cumulative cases and deaths, by day from first incident. Upper right is *logarithmic* coloration of cumulative deaths, by day from first incident. Lower right is *logarithmic* coloration of cumulative cases, by day from first incident.
 
 .. _`NY Times COVID-19 repository`: https://github.com/nytimes/covid-19-data
 .. _`ncov2019.live`: https://ncov2019.live
@@ -207,3 +229,4 @@ The meaning of the ``-M`` and ``-y`` flags are the same as in :ref:`SHOW mode <s
 .. _`Pandas DataFrame`: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.htm
 .. _MP4: https://en.wikipedia.org/wiki/MPEG-4_Part_14
 .. _CONUS: https://en.wikipedia.org/wiki/Contiguous_United_States
+.. _`covid19_nyc_LATEST.mp4`: https://tanimislam.github.io/covid19movies/covid19_nyc_LATEST.mp4

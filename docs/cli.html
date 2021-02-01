@@ -177,24 +177,32 @@
 <div class="section" id="covid19-create-movie-or-summary">
 <h2><span class="section-number">1.2. </span>covid19_create_movie_or_summary<a class="headerlink" href="#covid19-create-movie-or-summary" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span></code> is the <em>main</em> top-level CLI currently in the repository. Its purpose is to <em>individually</em> create COVID-19 summary movies and figures, of cumulative cases and deaths, in the <a class="reference external" href="https://en.wikipedia.org/wiki/Contiguous_United_States">Contiguous United States (CONUS)</a> or one of the 380 defined metropolitan statistical areas (MSA).</p>
-<p>It has three modes of operation. Its help output, while running <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">-h</span></code>, produces the following,</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: covid19_create_movie_or_summary [-h] {M,m,s} ...</span>
+<p>It has four modes of operation. Its help output, while running <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">-h</span></code>, produces the following,</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: covid19_create_movie_or_summary [-h] [-d DIRNAME] [--info] {M,m,s,mcd} ...</span>
 
 <span class="go">positional arguments:</span>
-<span class="go">  {M,m,s}     Choose either showing list of metros, or make a movie of a metro</span>
-<span class="go">              region</span>
-<span class="go">    M         If chosen, then list all the metropolitan areas through which we</span>
-<span class="go">              can look.</span>
-<span class="go">    m         Make a movie of the COVID-19 cases and deaths trend for the</span>
-<span class="go">              specific Metropolitan Statistical Area (MSA).</span>
-<span class="go">    s         Make a summary plot, and incident data file, of COVID-19 cases</span>
-<span class="go">              and deaths trend, for the specific Metropolitan Statistical Area</span>
-<span class="go">              (MSA).</span>
+<span class="go">  {M,m,s,mcd}           Choose one of three options: (M) summarizes stats from metros; (m) make a movie of a metro region; and</span>
+<span class="go">                        (s) dumps summary plots of last incident date, and cumulative covid-19 stats, of a metro region.</span>
+<span class="go">    M                   If chosen, then list all the metropolitan areas through which we can look.</span>
+<span class="go">    m                   Make a movie of the COVID-19 cases and deaths trend for the specific Metropolitan Statistical Area</span>
+<span class="go">                        (MSA).</span>
+<span class="go">    s                   Make a summary plot, and incident data file, of COVID-19 cases and deaths trend, for the specific</span>
+<span class="go">                        Metropolitan Statistical Area (MSA).</span>
+<span class="go">    mcd                 Make a large-sized movie of either &quot;CASES&quot; or &quot;DEATHS&quot; for given MSA or CONUS.</span>
 
 <span class="go">optional arguments:</span>
-<span class="go">  -h, --help  show this help message and exit</span>
+<span class="go">  -h, --help            show this help message and exit</span>
+<span class="go">  -d DIRNAME, --dirname DIRNAME</span>
+<span class="go">                        The directory into which to store the resulting files. Default is /usr/WS2/islam5/covid19_data/nyc.</span>
+<span class="go">  --info                If chosen, then print out INFO level logging statements.</span>
 </pre></div>
 </div>
+<p>The default flags in the top level operation are,</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-h</span></code> shows this help screen.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-d</span></code> or <code class="docutils literal notranslate"><span class="pre">--dirname</span></code> specifies the output directory.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--info</span></code> says to show <code class="docutils literal notranslate"><span class="pre">INFO</span></code> logging output.</p></li>
+</ul>
 <div class="section" id="summarize-msas">
 <span id="metro-mode"></span><h3><span class="section-number">1.2.1. </span>summarize MSAs<a class="headerlink" href="#summarize-msas" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">M</span></code> (METRO flag) lists the COVID-19 stats for all, or user-selected, MSAs by population. For example, here are the statistics for the top 30 MSAs.</p>
@@ -294,26 +302,26 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">covid19_nyc_cds_LATEST.pdf</span></code> and <code class="docutils literal notranslate"><span class="pre">covid19_nyc_cds_LATEST.png</span></code> are the PDF and PNG showing the trend of COVID-19 cases and deaths in the NYC metro area.</p>
 <div class="figure align-left" id="id5">
 <a class="reference internal image-reference" href="https://tanimislam.github.io/covid19movies/covid19_nyc_cds_LATEST.png"><img alt="https://tanimislam.github.io/covid19movies/covid19_nyc_cds_LATEST.png" src="https://tanimislam.github.io/covid19movies/covid19_nyc_cds_LATEST.png" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-text">The <em>latest</em> trend lines of cumulative cases and deaths in the NYC metropolitan area.</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 1.1 </span><span class="caption-text">The <em>latest</em> trend lines of cumulative cases and deaths in the NYC metropolitan area.</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
 </div>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">covid19_nyc_cases_LATEST.pdf</span></code> and <code class="docutils literal notranslate"><span class="pre">covid19_nyc_cases_LATEST.png</span></code> are the PDF and PNG showing the county map, colored by number of COVID-19 cases, on the <em>LAST</em> incident day.</p>
 <div class="figure align-left" id="id6">
 <a class="reference internal image-reference" href="https://tanimislam.github.io/covid19movies/covid19_nyc_cases_LATEST.png"><img alt="https://tanimislam.github.io/covid19movies/covid19_nyc_cases_LATEST.png" src="https://tanimislam.github.io/covid19movies/covid19_nyc_cases_LATEST.png" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-text">The <em>latest</em> image of cumulative cases in the NYC metropolitan area.</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 1.2 </span><span class="caption-text">The <em>latest</em> image of cumulative cases in the NYC metropolitan area.</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
 </div>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">covid19_nyc_death_LATEST.pdf</span></code> and <code class="docutils literal notranslate"><span class="pre">covid19_nyc_death_LATEST.png</span></code> are the PDF and PNG showing the county map, colored by number of COVID-19 deaths, on the <em>LAST</em> incident day.</p>
 <div class="figure align-left" id="id7">
 <a class="reference internal image-reference" href="https://tanimislam.github.io/covid19movies/covid19_nyc_death_LATEST.png"><img alt="https://tanimislam.github.io/covid19movies/covid19_nyc_death_LATEST.png" src="https://tanimislam.github.io/covid19movies/covid19_nyc_death_LATEST.png" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-text">The <em>latest</em> image of cumulative deaths in the NYC metropolitan area.</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 1.3 </span><span class="caption-text">The <em>latest</em> image of cumulative deaths in the NYC metropolitan area.</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
 </div>
 </li>
 </ul>
 </div>
 <div class="section" id="movie-mode">
 <span id="id3"></span><h3><span class="section-number">1.2.3. </span>movie mode<a class="headerlink" href="#movie-mode" title="Permalink to this headline">¶</a></h3>
-<p><code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">m</span></code> (MOVIE flag) creates an <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> movie of COVID-19 cases and deaths for the MSA you specify (see the <a href="#id9"><span class="problematic" id="id10">`high quality GIF animations &lt;gif_animations_&gt;`_</span></a> of these MP4 movies). The help output, while running <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">m</span> <span class="pre">-h</span></code>, is shown below,</p>
+<p><code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">m</span></code> (MOVIE flag) creates an <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> movie of COVID-19 cases and deaths for the MSA you specify (see the <a href="#id10"><span class="problematic" id="id11">`high quality GIF animations &lt;gif_animations_&gt;`_</span></a> of these MP4 movies). The help output, while running <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">m</span> <span class="pre">-h</span></code>, is shown below,</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: covid19_create_movie_or_summary m [-h] [-n NAME] [-M MAXNUM] [--conus]</span>
 <span class="go">                                         [-y]</span>
 
@@ -332,7 +340,15 @@
 <span class="go">  -y, --yes             If chosen, then do not confirm --maxnum.</span>
 </pre></div>
 </div>
-<p>The meaning of the <code class="docutils literal notranslate"><span class="pre">-M</span></code> and <code class="docutils literal notranslate"><span class="pre">-y</span></code> flags are the same as in <a class="reference internal" href="#show-mode"><span class="std std-ref">SHOW mode</span></a>.</p>
+<p>The meaning of the <code class="docutils literal notranslate"><span class="pre">-M</span></code> and <code class="docutils literal notranslate"><span class="pre">-y</span></code> flags are the same as in <a class="reference internal" href="#show-mode"><span class="std std-ref">SHOW mode</span></a>. This mode of operation, for example for NYC,</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">covid19_create_movie_or_summary m -n nyc -y</span>
+</pre></div>
+</div>
+<p>will output a quad structured movie of the cumulative COVID-19 cases and deaths for the NYC metropolitan area, <a class="reference external" href="https://tanimislam.github.io/covid19movies/covid19_nyc_LATEST.mp4">covid19_nyc_LATEST.mp4</a>. <a class="reference internal" href="#fig-covid19-nyc-latest"><span class="std std-numref">Fig. 1.4</span></a> is a GIF animation of that.</p>
+<div class="figure align-left" id="id8">
+<span id="fig-covid19-nyc-latest"></span><a class="reference internal image-reference" href="https://https://tanimislam.github.io/covid19movies/covid19_nyc_LATEST.gif"><img alt="https://https://tanimislam.github.io/covid19movies/covid19_nyc_LATEST.gif" src="https://https://tanimislam.github.io/covid19movies/covid19_nyc_LATEST.gif" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 1.4 </span><span class="caption-text">The four-quadrant movie, that <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">m</span></code> creates, of the cumulative COVID-19 cases and deaths in the NYC metropolitan area. Upper left quad is the summary information for the MSA. Lower left quad is the running tally of cumulative cases and deaths, by day from first incident. Upper right is <em>logarithmic</em> coloration of cumulative deaths, by day from first incident. Lower right is <em>logarithmic</em> coloration of cumulative cases, by day from first incident.</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+</div>
 </div>
 </div>
 </div>

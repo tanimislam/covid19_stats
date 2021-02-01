@@ -65,6 +65,7 @@ intersphinx_mapping = {
     'docutils' : ( 'https://docutils.readthedocs.io/en/sphinx-docs', None ),
 }
 
+numfig = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
