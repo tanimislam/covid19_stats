@@ -7,7 +7,6 @@ Welcome to the COVID19_STATS repository
 
 GETTING STARTED
 -------------------
-
 First clone this repo using the command,
 
 .. code-block:: console
