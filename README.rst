@@ -7,7 +7,11 @@ I have made major changes in the functionality and implementation from the origi
 
 * The API code has been refactored into the ``covid19_stats.engine`` subdirectory, and is divided into three main submodules: ``covid19_stats.engine.core`` provides the higher level API calls for processing the COVID-19 data; ``covid19_stats.engine.gis`` provides the lower-level APIs to write out, read in, and process the raw GIS data provided mainly by the US Census Bureau; and ``covid19_stats.engine.viz`` does the visualization part.
 
-* The command line interfaces (CLI) back-ends live in ``covid19_stats.cli``.
+* The command line interfaces (CLI) back-ends live in ``covid19_stats.cli``. One of the command line interfaces, ``covid19_update_database``, updates the git submodule (the `NY Times COVID-19 repository`_) with the *latest* data. Previously, one updated the database by manually running, from the repository's top level directory,
+
+  .. code-block:: console
+
+     git -C covid19_stats/covid-19-data pull origin master
   
 * The ``testing`` subdirectory contains `Jupyter Notebooks`_ that illuminate bits and pieces of this COVID-19 tracker’s functionality.
 
