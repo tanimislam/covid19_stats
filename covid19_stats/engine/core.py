@@ -147,7 +147,8 @@ def get_maximum_cases( inc_data ):
 
 def create_readme_from_template(
     mainURL = 'https://tanimislam.github.io/covid19movies',
-    dirname_for_readme_location = os.getcwd( ), verify = True ):
+    dirname_for_readme_location = os.getcwd( ), verify = True,
+    topN_json = None ):
     def _get_string_commas_num( num ):
         return "%s" % f"{num:,d}"
     
@@ -157,14 +158,19 @@ def create_readme_from_template(
         raise ValueError("Error, could not access %s." % mainURL )
     #
     ## now see if I can find this entry
-    topNjson_url = os.path.join( mainURL, 'covid19_topN_LATEST.json' )
-    response = requests.get( topNjson_url, verify = verify )
-    if response.status_code != 200:
-        raise ValueError("Error, could not access the JSON data for the top-N MSA COVID-19 summary data." %
-                         topNjson_url )
-    #
-    ## now load JSON into data
-    msa_summary = sorted(json.loads( response.content ), key = lambda entry: entry[ 'RANK' ] )
+    if topN_json is None:
+        topNjson_url = os.path.join( mainURL, 'covid19_topN_LATEST.json' )
+        response = requests.get( topNjson_url, verify = verify )
+        if response.status_code != 200:
+            raise ValueError("Error, could not access the JSON data for the top-N MSA COVID-19 summary data." %
+                             topNjson_url )
+        #
+        ## now load JSON into data
+        msa_summary = sorted(json.loads( response.content ), key = lambda entry: entry[ 'RANK' ] )
+    else:
+        assert( os.path.isfile( topN_json ) )
+        assert( os.path.basename( topN_json ).endswith( '.json' ) )
+        msa_summary = sorted( json.load( open( topN_json, 'r' ) ), key = lambda entry: entry[ 'RANK' ] )
     assert( len( msa_summary ) > 0 )
     #
     ## now figure out the date, formatted properly

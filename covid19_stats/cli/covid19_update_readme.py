@@ -24,14 +24,17 @@ def main( ):
         '-d', '--dirname', dest='dirname', type=str, action='store', default = os.getcwd( ),
         help = 'Directory in which the README.rst lives, for the covid19_stats repository. Default is %s.' % os.getcwd( ) )
     parser.add_argument(
+        '-j', '--json', dest='json', type=str, action='store',
+        help = 'Optional argument. If defined give the JSON file that contains the summary COVID-19 cases and deaths information of the top N MSAs.' )
+    parser.add_argument(
         '--noverify', dest='do_verify', action = 'store_false', default = True,
         help = 'If chosen, then do not verify necessary SSL connections.' )
     
     args = parser.parse_args( )
-    assert( os.path.isdir( args.dirname ) )
+    assert( os.path.isdir( os.path.expanduser( args.dirname ) ) )
     #
     ## now run the thing
     create_readme_from_template(
         mainURL = args.mainurl, 
         dirname_for_readme_location = os.path.expanduser( args.dirname ),
-        verify = args.do_verify )
+        verify = args.do_verify, topN_json = args.json )
