@@ -81,12 +81,15 @@ However, `Basemap <https://matplotlib.org/basemap/>`__ can be a bugbear to insta
 
 If you’re lucky, running ``from mpl_toolkits.basemap import Basemap`` will work without further issues.
 
+TABLE OF CONTENTS
+-------------------
+
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
    :numbered:
 
-   cli
+   resources
+   cli/cli
 
 
 Indices and tables

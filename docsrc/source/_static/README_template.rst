@@ -1,0 +1,1 @@
+../../../covid19_stats/resources/README_template.rst
