@@ -23,6 +23,6 @@ deploy: html
 	touch ../docs/.nojekyll
 
 git-deploy: deploy
-	git stage ../*
+	git stage ../docs ../docsrc
 	git commit -a -m "doc fix."
 	git push
