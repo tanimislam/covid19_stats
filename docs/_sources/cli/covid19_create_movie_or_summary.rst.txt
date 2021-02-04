@@ -6,7 +6,7 @@ covid19_create_movie_or_summary
 --------------------------------
 This CLI is the *main* top-level CLI currently in the repository. Its purpose is to *individually* create COVID-19 summary movies and figures, of cumulative cases and deaths, in the `Contiguous United States (CONUS) <CONUS_>`_ or one of the 380 defined MSAs.
 
-It has four modes of operation. Its help output, while running ``covid19_create_movie_or_summary -h``, produces the following,
+It has four modes of operation. Its help output, when running ``covid19_create_movie_or_summary -h``, produces the following,
 
 .. code:: console
 
@@ -110,7 +110,7 @@ If you don't specify the optional arguments, ``--metros`` or ``--topN``, then *a
 
 * ``--metros`` looks for a list of MSAs that you have specified.
 
-* ``--topN`` looks for a positive integer
+* ``--topN`` looks for a positive integer, the top :math:`N \ge 1` US metro areas by population.
 
 .. _show_mode:
 

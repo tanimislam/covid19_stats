@@ -32,6 +32,7 @@
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -170,7 +171,7 @@
   <div class="section" id="covid19-create-movie-or-summary">
 <span id="id2"></span><h1><span class="section-number">2.2. </span>covid19_create_movie_or_summary<a class="headerlink" href="#covid19-create-movie-or-summary" title="Permalink to this headline">¶</a></h1>
 <p>This CLI is the <em>main</em> top-level CLI currently in the repository. Its purpose is to <em>individually</em> create COVID-19 summary movies and figures, of cumulative cases and deaths, in the <a class="reference external" href="https://en.wikipedia.org/wiki/Contiguous_United_States">Contiguous United States (CONUS)</a> or one of the 380 defined MSAs.</p>
-<p>It has four modes of operation. Its help output, while running <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">-h</span></code>, produces the following,</p>
+<p>It has four modes of operation. Its help output, when running <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">-h</span></code>, produces the following,</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: covid19_create_movie_or_summary [-h] [-d DIRNAME] [--info] {M,m,s,mcd} ...</span>
 
 <span class="go">positional arguments:</span>
@@ -259,7 +260,7 @@
 <p>If you don’t specify the optional arguments, <code class="docutils literal notranslate"><span class="pre">--metros</span></code> or <code class="docutils literal notranslate"><span class="pre">--topN</span></code>, then <em>all</em> 380 metros are tabulated.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">--metros</span></code> looks for a list of MSAs that you have specified.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">--topN</span></code> looks for a positive integer</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--topN</span></code> looks for a positive integer, the top <span class="math notranslate nohighlight">\(N \ge 1\)</span> US metro areas by population.</p></li>
 </ul>
 </div>
 <div class="section" id="show-mode">

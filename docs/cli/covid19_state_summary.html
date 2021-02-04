@@ -32,6 +32,7 @@
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -162,6 +163,44 @@
             
   <div class="section" id="covid19-state-summary">
 <span id="id2"></span><h1><span class="section-number">2.3. </span>covid19_state_summary<a class="headerlink" href="#covid19-state-summary" title="Permalink to this headline">¶</a></h1>
+<p>This CLI behaves <em>very</em> similarly to <a class="reference internal" href="covid19_create_movie_or_summary.html#covid19-create-movie-or-summary"><span class="std std-ref">covid19_create_movie_or_summary</span></a>, except it operates on US states or territories instead of the <a class="reference external" href="https://en.wikipedia.org/wiki/Contiguous_United_States">CONUS</a> or US MSAs. It has <em>three</em> modes of operation. Its help output, when running <code class="docutils literal notranslate"><span class="pre">covid19_state_summary</span> <span class="pre">-h</span></code>, produces the following hard-to-read output,</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: covid19_state_summary [-h] [-d DIRNAME] [--info]</span>
+<span class="go">                             [-n {Alabama,Alaska,Arizona,Arkansas,California,Colorado,Connecticut,Delaware,District of Columbia,Florida,Georgia,Hawaii,Idaho,Illinois,Indiana,Iowa,Kansas,Kentuck</span>
+<span class="go">y,Louisiana,Maine,Maryland,Massachusetts,Michigan,Minnesota,Mississippi,Missouri,Montana,Nebraska,Nevada,New Hampshire,New Jersey,New Mexico,New York,North Carolina,North Dakota,Ohio,Oklahoma,O</span>
+<span class="go">regon,Pennsylvania,Puerto Rico,Rhode Island,South Carolina,South Dakota,Tennessee,Texas,Utah,Vermont,Virginia,Washington,West Virginia,Wisconsin,Wyoming}]</span>
+<span class="go">                             [-M MAXNUM] [-y]</span>
+<span class="go">                             {m,s,mcd} ...</span>
+
+<span class="go">positional arguments:</span>
+<span class="go">  {m,s,mcd}             Choose one of three options: (m) make a movie of the COVID-19 cumulative stats for the state; (s) dumps summary plots of last incident date, and cumulative covid-19</span>
+<span class="go">                        stats, of a state; and (mcd) make a movie of either &quot;CASES&quot; or &quot;DEATHS&quot; in the state.</span>
+<span class="go">    m                   Make a movie of the COVID-19 cases and deaths trend for the specific state.</span>
+<span class="go">    s                   Make a summary plot, and incident data file, of COVID-19 cases and deaths trend, for the specific state.</span>
+<span class="go">    mcd                 Make a large-sized movie of either &quot;CASES&quot; or &quot;DEATHS&quot; for given state.</span>
+
+<span class="go">optional arguments:</span>
+<span class="go">  -h, --help            show this help message and exit</span>
+<span class="go">  -d DIRNAME, --dirname DIRNAME</span>
+<span class="go">                        The directory into which to store the resulting files. Default is /g/g12/islam5/.local/src/covid19_stats/docsrc.</span>
+<span class="go">  --info                If chosen, then print out INFO level logging statements.</span>
+<span class="go">  -n {Alabama,Alaska,Arizona,Arkansas,California,Colorado,Connecticut,Delaware,District of Columbia,Florida,Georgia,Hawaii,Idaho,Illinois,Indiana,Iowa,Kansas,Kentucky,Louisiana,Maine,Maryland,M</span>
+<span class="go">assachusetts,Michigan,Minnesota,Mississippi,Missouri,Montana,Nebraska,Nevada,New Hampshire,New Jersey,New Mexico,New York,North Carolina,North Dakota,Ohio,Oklahoma,Oregon,Pennsylvania,Puerto Ri</span>
+<span class="go">co,Rhode Island,South Carolina,South Dakota,Tennessee,Texas,Utah,Vermont,Virginia,Washington,West Virginia,Wisconsin,Wyoming}</span>
+<span class="go">                        Make movies or other summary data for a state. Default is &quot;New York&quot;.</span>
+<span class="go">  -M MAXNUM, --maxnum MAXNUM</span>
+<span class="go">                        The limit of cases/deaths to visualize. Default is a plausible amount for the chosen state. You should use a limit larger (by at least 2, no more than 10) than the</span>
+<span class="go">                        maximum number of cases recorded for a county in that state.</span>
+<span class="go">  -y, --yes             If chosen, then do not confirm --maxnum.</span>
+</pre></div>
+</div>
+<p>Instead of what <a class="reference internal" href="covid19_create_movie_or_summary.html#covid19-create-movie-or-summary"><span class="std std-ref">covid19_create_movie_or_summary</span></a> does, we first specify these common elements,</p>
+<ul class="simple">
+<li><p>the <em>state</em> (with the <code class="docutils literal notranslate"><span class="pre">-n</span></code> flag),</p></li>
+<li><p>the optional legend or color maximum (with <code class="docutils literal notranslate"><span class="pre">-M</span></code> or <code class="docutils literal notranslate"><span class="pre">--maxnum</span></code>),</p></li>
+<li><p>the optional specific output directory (with <code class="docutils literal notranslate"><span class="pre">-d</span></code> or <code class="docutils literal notranslate"><span class="pre">--directory</span></code>),</p></li>
+<li><p>the forcing flag (with the <code class="docutils literal notranslate"><span class="pre">-y</span></code> or <code class="docutils literal notranslate"><span class="pre">--yes</span></code> flag),</p></li>
+</ul>
+<p>before moving</p>
 </div>
 
 
