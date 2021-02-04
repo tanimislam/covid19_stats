@@ -155,7 +155,7 @@ The required ``-n`` or ``--name`` flag specifies the MSA. The ``-M`` or ``--maxn
 
    The command line output shown above for the operation of ``covid19_create_movie_or_summary s -n nyc`` is for 31 JANUARY 2021. Example images shown below are for this or *later* dates.
 
-This mode of operation, for example for NYC will output the following seven files:
+This mode of operation, for example for NYC, will output seven files:
 
 * ``covid19_nyc_LATEST.pkl.gz`` is the `Pandas DataFrame`_  of the COVID-19 cases and deaths, total and per county, from the date of first incident to the latest incident.
 
