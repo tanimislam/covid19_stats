@@ -169,7 +169,7 @@
             
   <div class="section" id="covid19-create-movie-or-summary">
 <span id="id2"></span><h1><span class="section-number">2.2. </span>covid19_create_movie_or_summary<a class="headerlink" href="#covid19-create-movie-or-summary" title="Permalink to this headline">¶</a></h1>
-<p>This CLI is the <em>main</em> top-level CLI currently in the repository. Its purpose is to <em>individually</em> create COVID-19 summary movies and figures, of cumulative cases and deaths, in the <a class="reference external" href="https://en.wikipedia.org/wiki/Contiguous_United_States">Contiguous United States (CONUS)</a> or one of the 380 defined metropolitan statistical areas (MSA).</p>
+<p>This CLI is the <em>main</em> top-level CLI currently in the repository. Its purpose is to <em>individually</em> create COVID-19 summary movies and figures, of cumulative cases and deaths, in the <a class="reference external" href="https://en.wikipedia.org/wiki/Contiguous_United_States">Contiguous United States (CONUS)</a> or one of the 380 defined MSAs.</p>
 <p>It has four modes of operation. Its help output, while running <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">-h</span></code>, produces the following,</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: covid19_create_movie_or_summary [-h] [-d DIRNAME] [--info] {M,m,s,mcd} ...</span>
 
@@ -199,58 +199,68 @@
 <div class="section" id="summarize-msas">
 <span id="metro-mode"></span><h2><span class="section-number">2.2.1. </span>summarize MSAs<a class="headerlink" href="#summarize-msas" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">M</span></code> (METRO flag) lists the COVID-19 stats for all, or user-selected, MSAs by population. For example, here are the statistics for the top 30 MSAs.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">  covid19_create_movie_or_summary M</span>
+<div class="highlight-console notranslate" id="demonstration-simple-format"><div class="highlight"><pre><span></span><span class="go">covid19_create_movie_or_summary M --topN=30</span>
 
-<span class="go">  HERE ARE THE 380 METRO AREAS, ORDERED BY POPULATION</span>
-<span class="go">  DATA AS OF 15 June 2020.</span>
-<span class="go">  RANK  IDENTIFIER        NAME                                    POPULATION    FIRST INC.          NUM DAYS  NUM CASES    NUM DEATHS    MAX CASE COUNTY    MAX CASE COUNTY NAME</span>
-<span class="go">------  ----------------  --------------------------------------  ------------  ----------------  ----------  -----------  ------------  -----------------  ------------------------------------</span>
-<span class="go">     1  nyc               NYC Metro Area                          19,216,182    01 March 2020            106  483,453      39,029        215,011            New York City, New York</span>
-<span class="go">     2  losangeles        LA Metro Area                           18,711,436    25 January 2020          142  102,983      3,801         73,791             Los Angeles County, California</span>
-<span class="go">     3  chicago           Chicago Metro Area                      9,458,539     24 January 2020          143  125,857      6,001         85,184             Cook County, Illinois</span>
-<span class="go">     4  dallas            Dallas Metro Area                       7,573,136     09 March 2020             98  27,201       606           14,537             Dallas County, Texas</span>
-<span class="go">     5  houston           Houston Metro Area                      7,066,141     04 March 2020            103  23,848       427           17,282             Harris County, Texas</span>
-<span class="go">     6  bayarea           Bay Area                                6,860,207     31 January 2020          136  16,178       474           4,394              Alameda County, California</span>
-<span class="go">     7  dc                DC Metro Area                           6,280,487     05 March 2020            102  78,449       2,933         17,920             Prince George&#39;s County, Maryland</span>
-<span class="go">     8  miami             Miami Metro Area                        6,166,488     06 March 2020            101  40,295       1,613         22,196             Miami-Dade County, Florida</span>
-<span class="go">     9  philadelphia      Philadelphia Metro Area                 6,102,434     06 March 2020            101  68,012       5,026         24,475             Philadelphia County, Pennsylvania</span>
-<span class="go">    10  atlanta           Atlanta Metro Area                      6,020,364     02 March 2020            105  28,075       1,255         5,308              Gwinnett County, Georgia</span>
-<span class="go">    11  phoenix           Phoenix Metro Area                      4,948,203     26 January 2020          141  20,940       601           19,372             Maricopa County, Arizona</span>
-<span class="go">    12  boston            Boston Metro Area                       4,873,019     01 February 2020         135  77,267       5,373         23,227             Middlesex County, Massachusetts</span>
-<span class="go">    13  detroit           Detroit Metro Area                      4,319,629     10 March 2020             97  42,039       4,746         21,816             Wayne County, Michigan</span>
-<span class="go">    14  seattle           Seattle Metro Area                      3,979,845     21 January 2020          146  14,829       838           8,799              King County, Washington</span>
-<span class="go">    15  minneapolis       Minneapolis Metro Area                  3,640,043     06 March 2020            101  20,392       1,124         10,281             Hennepin County, Minnesota</span>
-<span class="go">    16  sandiego          San Diego Metro Area                    3,338,330     10 February 2020         126  9,673        320           9,673              San Diego County, California</span>
-<span class="go">    17  tampa             Tampa Metro Area                        3,194,831     01 March 2020            106  6,899        221           3,826              Hillsborough County, Florida</span>
-<span class="go">    18  denver            Denver Metro Area                       2,967,239     05 March 2020            102  18,591       1,121         6,376              Denver County, Colorado</span>
-<span class="go">    19  stlouis           St. Louis Metro Area                    2,803,228     07 March 2020            100  12,264       975           5,604              St. Louis County, Missouri</span>
-<span class="go">    20  baltimore         Baltimore Metro Area                    2,800,053     08 March 2020             99  23,162       1,169         7,220              Baltimore County, Maryland</span>
-<span class="go">    21  charlotte         Charlotte Metro Area                    2,636,883     11 March 2020             96  11,902       248           7,321              Mecklenburg County, North Carolina</span>
-<span class="go">    22  orlando           Orlando Metro Area                      2,608,147     12 March 2020             95  5,401        95            3,281              Orange County, Florida</span>
-<span class="go">    23  sanantonio        San Antonio Metro Area                  2,550,960     12 February 2020         124  5,169        105           4,449              Bexar County, Texas</span>
-<span class="go">    24  portland          Portland Metro Area                     2,492,412     28 February 2020         108  3,707        142           1,559              Multnomah County, Oregon</span>
-<span class="go">    25  sacramento        Sacramento Metro Area                   2,363,730     21 February 2020         115  2,555        96            1,793              Sacramento County, California</span>
-<span class="go">    26  pittsburgh        Pittsburgh Metro Area                   2,317,600     13 March 2020             94  3,765        316           2,086              Allegheny County, Pennsylvania</span>
-<span class="go">    27  lasvegas          Las Vegas Metro Area                    2,266,715     05 March 2020            102  8,815        379           8,815              Clark County, Nevada</span>
-<span class="go">    28  austin            Austin Metro Area                       2,227,083     13 March 2020             94  7,004        145           4,664              Travis County, Texas</span>
-<span class="go">    29  cincinnati        Cincinnati Metro Area                   2,221,208     14 March 2020             93  7,070        353           3,250              Hamilton County, Ohio</span>
-<span class="go">    30  kansascity        Kansas City Metro Area                  2,157,990     07 March 2020            100  5,518        197           1,750              Wyandotte County, Kansas</span>
+<span class="go">HERE ARE THE 30 METRO AREAS, ORDERED BY POPULATION</span>
+<span class="go">DATA AS OF 03 February 2021.</span>
+<span class="go">  RANK  IDENTIFIER    NAME                     POPULATION    FIRST INC.          NUM DAYS  NUM CASES    NUM DEATHS    MAX CASE COUNTY    MAX CASE COUNTY NAME</span>
+<span class="go">------  ------------  -----------------------  ------------  ----------------  ----------  -----------  ------------  -----------------  ----------------------------------</span>
+<span class="go">     1  nyc           NYC Metro Area           19,216,182    01 March 2020            339  1,570,532    52,935        621,218            New York City, New York</span>
+<span class="go">     2  losangeles    LA Metro Area            18,711,436    25 January 2020          375  2,003,708    26,385        1,129,957          Los Angeles County, California</span>
+<span class="go">     3  chicago       Chicago Metro Area       9,458,539     24 January 2020          376  824,383      15,096        456,144            Cook County, Illinois</span>
+<span class="go">     4  dallas        Dallas Metro Area        7,573,136     09 March 2020            331  700,645      7,468         262,738            Dallas County, Texas</span>
+<span class="go">     5  houston       Houston Metro Area       7,066,141     04 March 2020            336  490,925      6,087         323,408            Harris County, Texas</span>
+<span class="go">     6  bayarea       Bay Area                 6,860,207     31 January 2020          369  330,559      4,012         103,236            Santa Clara County, California</span>
+<span class="go">     7  dc            DC Metro Area            6,280,487     05 March 2020            335  367,490      5,913         68,518             Prince George&#39;s County, Maryland</span>
+<span class="go">     8  miami         Miami Metro Area         6,166,488     06 March 2020            334  660,440      9,256         376,551            Miami-Dade County, Florida</span>
+<span class="go">     9  philadelphia  Philadelphia Metro Area  6,102,434     06 March 2020            334  415,562      10,284        111,098            Philadelphia County, Pennsylvania</span>
+<span class="go">    10  atlanta       Atlanta Metro Area       6,020,364     02 March 2020            338  481,514      6,006         84,807             Gwinnett County, Georgia</span>
+<span class="go">    11  phoenix       Phoenix Metro Area       4,948,203     26 January 2020          374  523,129      8,325         479,978            Maricopa County, Arizona</span>
+<span class="go">    12  boston        Boston Metro Area        4,873,019     01 February 2020         368  353,216      9,627         103,162            Middlesex County, Massachusetts</span>
+<span class="go">    13  detroit       Detroit Metro Area       4,319,629     10 March 2020            330  248,467      8,266         97,429             Wayne County, Michigan</span>
+<span class="go">    14  seattle       Seattle Metro Area       3,979,845     21 January 2020          379  143,511      2,236         79,063             King County, Washington</span>
+<span class="go">    15  minneapolis   Minneapolis Metro Area   3,640,043     06 March 2020            334  288,879      3,840         96,262             Hennepin County, Minnesota</span>
+<span class="go">    16  sandiego      San Diego Metro Area     3,338,330     10 February 2020         359  241,081      2,683         241,081            San Diego County, California</span>
+<span class="go">    17  tampa         Tampa Metro Area         3,194,831     01 March 2020            339  202,358      3,552         101,910            Hillsborough County, Florida</span>
+<span class="go">    18  denver        Denver Metro Area        2,967,239     05 March 2020            335  209,203      3,020         56,166             Denver County, Colorado</span>
+<span class="go">    19  stlouis       St. Louis Metro Area     2,803,228     07 March 2020            333  245,406      4,217         84,254             St. Louis County, Missouri</span>
+<span class="go">    20  baltimore     Baltimore Metro Area     2,800,053     08 March 2020            332  154,795      3,111         47,768             Baltimore County, Maryland</span>
+<span class="go">    21  charlotte     Charlotte Metro Area     2,636,883     11 March 2020            329  217,212      2,436         88,055             Mecklenburg County, North Carolina</span>
+<span class="go">    22  orlando       Orlando Metro Area       2,608,147     12 March 2020            328  185,303      2,185         104,620            Orange County, Florida</span>
+<span class="go">    23  sanantonio    San Antonio Metro Area   2,550,960     12 February 2020         357  213,538      3,142         177,814            Bexar County, Texas</span>
+<span class="go">    24  portland      Portland Metro Area      2,492,412     28 February 2020         341  85,605       1,125         30,278             Multnomah County, Oregon</span>
+<span class="go">    25  sacramento    Sacramento Metro Area    2,363,730     21 February 2020         348  126,067      1,725         87,106             Sacramento County, California</span>
+<span class="go">    26  pittsburgh    Pittsburgh Metro Area    2,317,600     13 March 2020            327  146,373      3,414         70,165             Allegheny County, Pennsylvania</span>
+<span class="go">    27  lasvegas      Las Vegas Metro Area     2,266,715     05 March 2020            335  216,121      3,351         216,121            Clark County, Nevada</span>
+<span class="go">    28  austin        Austin Metro Area        2,227,083     13 March 2020            327  137,713      1,414         70,631             Travis County, Texas</span>
+<span class="go">    29  cincinnati    Cincinnati Metro Area    2,221,208     14 March 2020            326  186,056      1,374         68,156             Hamilton County, Ohio</span>
+<span class="go">    30  kansascity    Kansas City Metro Area   2,157,990     07 March 2020            333  132,759      1,600         50,392             Johnson County, Kansas</span>
 </pre></div>
 </div>
 <p>One can also select MSAs with the <code class="docutils literal notranslate"><span class="pre">--metros</span></code> flag. The <code class="docutils literal notranslate"><span class="pre">-f</span></code> or <code class="docutils literal notranslate"><span class="pre">--format</span></code> flag prints out a table of MSAs formatted in one of three ways: <code class="docutils literal notranslate"><span class="pre">simple</span></code>, the default, is the tabular format shown above; <code class="docutils literal notranslate"><span class="pre">github</span></code> is <a class="reference external" href="https://github.github.com/gfm">Github flavored Markdown</a>; and <code class="docutils literal notranslate"><span class="pre">rst</span></code> is <a class="reference external" href="https://docutils.sourceforge.io/rst.html">reStructuredText</a>. This is described in the help output, produced by <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">M</span> <span class="pre">-h</span></code>,</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: covid19_create_movie_or_summary M [-h] [-f {simple,github,rst}]</span>
-<span class="go">                                      [--metros METROS]</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: covid19_create_movie_or_summary M [-h] [-f {simple,github,rst,rst-simple,json}] [--metros METROS] [--topN TOPN]</span>
 
 <span class="go">optional arguments:</span>
 <span class="go">  -h, --help            show this help message and exit</span>
-<span class="go">  -f {simple,github,rst}, --format {simple,github,rst}</span>
-<span class="go">                        Format of the table that displays MSA summary. Default</span>
-<span class="go">                        is &quot;simple&quot;.</span>
-<span class="go">  --metros METROS       If chosen, list of selected metros for which to</span>
-<span class="go">                        summarize COVID-19 data.</span>
+<span class="go">  -f {simple,github,rst,rst-simple,json}, --format {simple,github,rst,rst-simple,json}</span>
+<span class="go">                        Format of the table that displays MSA summary. Default is &quot;simple&quot;.</span>
+<span class="go">  --metros METROS       If chosen, list of selected metros for which to summarize COVID-19 data.</span>
+<span class="go">  --topN TOPN           If defined, will be the top N (N must be an integer greater than 0) population metros to get data on.</span>
 </pre></div>
 </div>
-<p>I have typically not specified a list of metros.</p>
+<p>The standard flag is <code class="docutils literal notranslate"><span class="pre">-f</span></code> or <code class="docutils literal notranslate"><span class="pre">--format</span></code>. It asks which of the five formats to spit out the tabulated data to the console.</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">simple</span></code> is the default, and it means to display the tabular data in standard <a class="reference external" href="https://daringfireball.net/projects/markdown/">Markdown</a> format. <a class="reference internal" href="#demonstration-simple-format">The metro summary table</a> demonstrates this.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">github</span></code> means to display the tabular data in standard <a class="reference external" href="https://github.github.com/gfm">Github flavored Markdown</a> format.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rst</span></code> means to display the tabular data in standard <a class="reference external" href="https://docutils.sourceforge.io/rst.html">reStructuredText</a> format.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rst-simple</span></code> means to display the tabular data using the fancier and <em>better</em> <a class="reference external" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html#list-table">list-table</a> <a class="reference external" href="https://docutils.sourceforge.io/rst.html">reStructuredText</a> format; its representation is <em>much</em> better and clearer than the standard <a class="reference external" href="https://docutils.sourceforge.io/rst.html">reStructuredText</a> to represent tables.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">json</span></code> is the final one, and spits the tabular data out into <a class="reference external" href="https://en.wikipedia.org/wiki/JSON">JSON</a> format.</p></li>
+</ol>
+<p>If you don’t specify the optional arguments, <code class="docutils literal notranslate"><span class="pre">--metros</span></code> or <code class="docutils literal notranslate"><span class="pre">--topN</span></code>, then <em>all</em> 380 metros are tabulated.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--metros</span></code> looks for a list of MSAs that you have specified.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--topN</span></code> looks for a positive integer</p></li>
+</ul>
 </div>
 <div class="section" id="show-mode">
 <span id="id3"></span><h2><span class="section-number">2.2.2. </span>show mode<a class="headerlink" href="#show-mode" title="Permalink to this headline">¶</a></h2>

@@ -4,7 +4,7 @@
 	     
 covid19_create_movie_or_summary
 --------------------------------
-This CLI is the *main* top-level CLI currently in the repository. Its purpose is to *individually* create COVID-19 summary movies and figures, of cumulative cases and deaths, in the `Contiguous United States (CONUS) <CONUS_>`_ or one of the 380 defined metropolitan statistical areas (MSA).
+This CLI is the *main* top-level CLI currently in the repository. Its purpose is to *individually* create COVID-19 summary movies and figures, of cumulative cases and deaths, in the `Contiguous United States (CONUS) <CONUS_>`_ or one of the 380 defined MSAs.
 
 It has four modes of operation. Its help output, while running ``covid19_create_movie_or_summary -h``, produces the following,
 
@@ -40,61 +40,77 @@ summarize MSAs
 ^^^^^^^^^^^^^^^^
 ``covid19_create_movie_or_summary M`` (METRO flag) lists the COVID-19 stats for all, or user-selected, MSAs by population. For example, here are the statistics for the top 30 MSAs.
 
+.. _demonstration_simple_format:
+
 .. code-block:: console
 
-   covid19_create_movie_or_summary M
+   covid19_create_movie_or_summary M --topN=30
 
-   HERE ARE THE 380 METRO AREAS, ORDERED BY POPULATION
-   DATA AS OF 15 June 2020.
-   RANK  IDENTIFIER        NAME                                    POPULATION    FIRST INC.          NUM DAYS  NUM CASES    NUM DEATHS    MAX CASE COUNTY    MAX CASE COUNTY NAME
- ------  ----------------  --------------------------------------  ------------  ----------------  ----------  -----------  ------------  -----------------  ------------------------------------
-      1  nyc               NYC Metro Area                          19,216,182    01 March 2020            106  483,453      39,029        215,011            New York City, New York
-      2  losangeles        LA Metro Area                           18,711,436    25 January 2020          142  102,983      3,801         73,791             Los Angeles County, California
-      3  chicago           Chicago Metro Area                      9,458,539     24 January 2020          143  125,857      6,001         85,184             Cook County, Illinois
-      4  dallas            Dallas Metro Area                       7,573,136     09 March 2020             98  27,201       606           14,537             Dallas County, Texas
-      5  houston           Houston Metro Area                      7,066,141     04 March 2020            103  23,848       427           17,282             Harris County, Texas
-      6  bayarea           Bay Area                                6,860,207     31 January 2020          136  16,178       474           4,394              Alameda County, California
-      7  dc                DC Metro Area                           6,280,487     05 March 2020            102  78,449       2,933         17,920             Prince George's County, Maryland
-      8  miami             Miami Metro Area                        6,166,488     06 March 2020            101  40,295       1,613         22,196             Miami-Dade County, Florida
-      9  philadelphia      Philadelphia Metro Area                 6,102,434     06 March 2020            101  68,012       5,026         24,475             Philadelphia County, Pennsylvania
-     10  atlanta           Atlanta Metro Area                      6,020,364     02 March 2020            105  28,075       1,255         5,308              Gwinnett County, Georgia
-     11  phoenix           Phoenix Metro Area                      4,948,203     26 January 2020          141  20,940       601           19,372             Maricopa County, Arizona
-     12  boston            Boston Metro Area                       4,873,019     01 February 2020         135  77,267       5,373         23,227             Middlesex County, Massachusetts
-     13  detroit           Detroit Metro Area                      4,319,629     10 March 2020             97  42,039       4,746         21,816             Wayne County, Michigan
-     14  seattle           Seattle Metro Area                      3,979,845     21 January 2020          146  14,829       838           8,799              King County, Washington
-     15  minneapolis       Minneapolis Metro Area                  3,640,043     06 March 2020            101  20,392       1,124         10,281             Hennepin County, Minnesota
-     16  sandiego          San Diego Metro Area                    3,338,330     10 February 2020         126  9,673        320           9,673              San Diego County, California
-     17  tampa             Tampa Metro Area                        3,194,831     01 March 2020            106  6,899        221           3,826              Hillsborough County, Florida
-     18  denver            Denver Metro Area                       2,967,239     05 March 2020            102  18,591       1,121         6,376              Denver County, Colorado
-     19  stlouis           St. Louis Metro Area                    2,803,228     07 March 2020            100  12,264       975           5,604              St. Louis County, Missouri
-     20  baltimore         Baltimore Metro Area                    2,800,053     08 March 2020             99  23,162       1,169         7,220              Baltimore County, Maryland
-     21  charlotte         Charlotte Metro Area                    2,636,883     11 March 2020             96  11,902       248           7,321              Mecklenburg County, North Carolina
-     22  orlando           Orlando Metro Area                      2,608,147     12 March 2020             95  5,401        95            3,281              Orange County, Florida
-     23  sanantonio        San Antonio Metro Area                  2,550,960     12 February 2020         124  5,169        105           4,449              Bexar County, Texas
-     24  portland          Portland Metro Area                     2,492,412     28 February 2020         108  3,707        142           1,559              Multnomah County, Oregon
-     25  sacramento        Sacramento Metro Area                   2,363,730     21 February 2020         115  2,555        96            1,793              Sacramento County, California
-     26  pittsburgh        Pittsburgh Metro Area                   2,317,600     13 March 2020             94  3,765        316           2,086              Allegheny County, Pennsylvania
-     27  lasvegas          Las Vegas Metro Area                    2,266,715     05 March 2020            102  8,815        379           8,815              Clark County, Nevada
-     28  austin            Austin Metro Area                       2,227,083     13 March 2020             94  7,004        145           4,664              Travis County, Texas
-     29  cincinnati        Cincinnati Metro Area                   2,221,208     14 March 2020             93  7,070        353           3,250              Hamilton County, Ohio
-     30  kansascity        Kansas City Metro Area                  2,157,990     07 March 2020            100  5,518        197           1,750              Wyandotte County, Kansas
+   HERE ARE THE 30 METRO AREAS, ORDERED BY POPULATION
+   DATA AS OF 03 February 2021.
+     RANK  IDENTIFIER    NAME                     POPULATION    FIRST INC.          NUM DAYS  NUM CASES    NUM DEATHS    MAX CASE COUNTY    MAX CASE COUNTY NAME
+   ------  ------------  -----------------------  ------------  ----------------  ----------  -----------  ------------  -----------------  ----------------------------------
+	1  nyc           NYC Metro Area           19,216,182    01 March 2020            339  1,570,532    52,935        621,218            New York City, New York
+	2  losangeles    LA Metro Area            18,711,436    25 January 2020          375  2,003,708    26,385        1,129,957          Los Angeles County, California
+	3  chicago       Chicago Metro Area       9,458,539     24 January 2020          376  824,383      15,096        456,144            Cook County, Illinois
+	4  dallas        Dallas Metro Area        7,573,136     09 March 2020            331  700,645      7,468         262,738            Dallas County, Texas
+	5  houston       Houston Metro Area       7,066,141     04 March 2020            336  490,925      6,087         323,408            Harris County, Texas
+	6  bayarea       Bay Area                 6,860,207     31 January 2020          369  330,559      4,012         103,236            Santa Clara County, California
+	7  dc            DC Metro Area            6,280,487     05 March 2020            335  367,490      5,913         68,518             Prince George's County, Maryland
+	8  miami         Miami Metro Area         6,166,488     06 March 2020            334  660,440      9,256         376,551            Miami-Dade County, Florida
+	9  philadelphia  Philadelphia Metro Area  6,102,434     06 March 2020            334  415,562      10,284        111,098            Philadelphia County, Pennsylvania
+       10  atlanta       Atlanta Metro Area       6,020,364     02 March 2020            338  481,514      6,006         84,807             Gwinnett County, Georgia
+       11  phoenix       Phoenix Metro Area       4,948,203     26 January 2020          374  523,129      8,325         479,978            Maricopa County, Arizona
+       12  boston        Boston Metro Area        4,873,019     01 February 2020         368  353,216      9,627         103,162            Middlesex County, Massachusetts
+       13  detroit       Detroit Metro Area       4,319,629     10 March 2020            330  248,467      8,266         97,429             Wayne County, Michigan
+       14  seattle       Seattle Metro Area       3,979,845     21 January 2020          379  143,511      2,236         79,063             King County, Washington
+       15  minneapolis   Minneapolis Metro Area   3,640,043     06 March 2020            334  288,879      3,840         96,262             Hennepin County, Minnesota
+       16  sandiego      San Diego Metro Area     3,338,330     10 February 2020         359  241,081      2,683         241,081            San Diego County, California
+       17  tampa         Tampa Metro Area         3,194,831     01 March 2020            339  202,358      3,552         101,910            Hillsborough County, Florida
+       18  denver        Denver Metro Area        2,967,239     05 March 2020            335  209,203      3,020         56,166             Denver County, Colorado
+       19  stlouis       St. Louis Metro Area     2,803,228     07 March 2020            333  245,406      4,217         84,254             St. Louis County, Missouri
+       20  baltimore     Baltimore Metro Area     2,800,053     08 March 2020            332  154,795      3,111         47,768             Baltimore County, Maryland
+       21  charlotte     Charlotte Metro Area     2,636,883     11 March 2020            329  217,212      2,436         88,055             Mecklenburg County, North Carolina
+       22  orlando       Orlando Metro Area       2,608,147     12 March 2020            328  185,303      2,185         104,620            Orange County, Florida
+       23  sanantonio    San Antonio Metro Area   2,550,960     12 February 2020         357  213,538      3,142         177,814            Bexar County, Texas
+       24  portland      Portland Metro Area      2,492,412     28 February 2020         341  85,605       1,125         30,278             Multnomah County, Oregon
+       25  sacramento    Sacramento Metro Area    2,363,730     21 February 2020         348  126,067      1,725         87,106             Sacramento County, California
+       26  pittsburgh    Pittsburgh Metro Area    2,317,600     13 March 2020            327  146,373      3,414         70,165             Allegheny County, Pennsylvania
+       27  lasvegas      Las Vegas Metro Area     2,266,715     05 March 2020            335  216,121      3,351         216,121            Clark County, Nevada
+       28  austin        Austin Metro Area        2,227,083     13 March 2020            327  137,713      1,414         70,631             Travis County, Texas
+       29  cincinnati    Cincinnati Metro Area    2,221,208     14 March 2020            326  186,056      1,374         68,156             Hamilton County, Ohio
+       30  kansascity    Kansas City Metro Area   2,157,990     07 March 2020            333  132,759      1,600         50,392             Johnson County, Kansas
 
 One can also select MSAs with the ``--metros`` flag. The ``-f`` or ``--format`` flag prints out a table of MSAs formatted in one of three ways: ``simple``, the default, is the tabular format shown above; ``github`` is `Github flavored Markdown`_; and ``rst`` is reStructuredText_. This is described in the help output, produced by ``covid19_create_movie_or_summary M -h``,
 
 .. code-block:: console
 
-   usage: covid19_create_movie_or_summary M [-h] [-f {simple,github,rst}]
-					 [--metros METROS]
+   usage: covid19_create_movie_or_summary M [-h] [-f {simple,github,rst,rst-simple,json}] [--metros METROS] [--topN TOPN]
 
    optional arguments:
      -h, --help            show this help message and exit
-     -f {simple,github,rst}, --format {simple,github,rst}
-			   Format of the table that displays MSA summary. Default
-			   is "simple".
-     --metros METROS       If chosen, list of selected metros for which to
-			   summarize COVID-19 data.
+     -f {simple,github,rst,rst-simple,json}, --format {simple,github,rst,rst-simple,json}
+			   Format of the table that displays MSA summary. Default is "simple".
+     --metros METROS       If chosen, list of selected metros for which to summarize COVID-19 data.
+     --topN TOPN           If defined, will be the top N (N must be an integer greater than 0) population metros to get data on.
 
-I have typically not specified a list of metros.
+The standard flag is ``-f`` or ``--format``. It asks which of the five formats to spit out the tabulated data to the console.
+
+1. ``simple`` is the default, and it means to display the tabular data in standard Markdown_ format. `The metro summary table <demonstration_simple_format_>`_ demonstrates this.
+
+2. ``github`` means to display the tabular data in standard `Github flavored Markdown`_ format.
+  
+3. ``rst`` means to display the tabular data in standard reStructuredText_ format.
+
+4. ``rst-simple`` means to display the tabular data using the fancier and *better* `list-table`_ reStructuredText_ format; its representation is *much* better and clearer than the standard reStructuredText_ to represent tables.
+
+5. ``json`` is the final one, and spits the tabular data out into JSON_ format.
+
+If you don't specify the optional arguments, ``--metros`` or ``--topN``, then *all* 380 metros are tabulated.
+
+* ``--metros`` looks for a list of MSAs that you have specified.
+
+* ``--topN`` looks for a positive integer
 
 .. _show_mode:
 

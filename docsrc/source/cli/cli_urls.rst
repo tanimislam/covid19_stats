@@ -17,3 +17,6 @@
 .. _`covid19_conus_cases_LATEST.mp4`: https://tanimislam.github.io/covid19movies/covid19_conus_cases_LATEST.mp4
 .. _mp4info: https://www.bento4.com/documentation/mp4info
 .. _`Tanim Islam`: https://tanimislam.github.io
+.. _Markdown: https://daringfireball.net/projects/markdown/
+.. _`list-table`: https://docutils.sourceforge.io/docs/ref/rst/directives.html#list-table
+.. _JSON: https://en.wikipedia.org/wiki/JSON
