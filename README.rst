@@ -555,7 +555,7 @@ Here is some output from using this COVID-19 tracker. The data lives underneath 
 
 .. _gif_animations:
   
-* GIF'd video animations of the COVID-19 trends in cases/deaths for NYC, Chicago, and Seattle as of 02 FEBRUARY 2021.	  
+* GIF'd video animations of the COVID-19 trends in cases/deaths for NYC, Chicago, Seattle, SF Bay Area, DC, and Richmond, as of 02 FEBRUARY 2021.	  
 
   .. list-table::
      :widths: auto
@@ -580,6 +580,20 @@ Here is some output from using this COVID-19 tracker. The data lives underneath 
 
      * - |anim_gif_conus|
      * - `Continental United States <https://tanimislam.github.io/covid19movies/covid19_conus_LATEST.mp4>`_
+
+* GIF'd video animations of the COVID-19 trends in cases/deaths for California, Texas, Florida, and Virginia, as of 02 FEBRUARY 2021.
+
+  .. list-table::
+     :widths: auto
+
+     * - |anim_gif_california|
+       - |anim_gif_texas|
+     * - `California <https://tanimislam.github.io/covid19movies/covid19_california_LATEST.mp4>`_
+       - `Texas <https://tanimislam.github.io/covid19movies/covid19_texas_LATEST.mp4>`_
+     * - |anim_gif_florida|
+       - |anim_gif_virginia|
+     * - `Florida <https://tanimislam.github.io/covid19movies/covid19_florida_LATEST.mp4>`_
+       - `Virginia <https://tanimislam.github.io/covid19movies/covid19_virginia_LATEST.mp4>`_
 
 The comprehensive documentation lives in HTML created with Sphinx_, and now in the `COVID-19 Stats GitHub Page`_ for this project. To generate the documentation,
 
@@ -651,10 +665,28 @@ The comprehensive documentation lives in HTML created with Sphinx_, and now in t
 
 .. |anim_gif_richmond| image:: https://tanimislam.github.io/covid19movies/covid19_richmond_LATEST.gif
    :width: 100%
-   :align: middle	   
+   :align: middle
 
 .. GIF ANIMATIONS CONUS
 
 .. |anim_gif_conus| image:: https://tanimislam.github.io/covid19movies/covid19_conus_LATEST.gif
+   :width: 100%
+   :align: middle
+
+.. GIF ANIMATIONS STATE
+
+.. |anim_gif_california| image:: https://tanimislam.github.io/covid19movies/covid19_california_LATEST.gif
+   :width: 100%
+   :align: middle
+
+.. |anim_gif_texas| image:: https://tanimislam.github.io/covid19movies/covid19_texas_LATEST.gif
+   :width: 100%
+   :align: middle
+
+.. |anim_gif_florida| image:: https://tanimislam.github.io/covid19movies/covid19_florida_LATEST.gif
+   :width: 100%
+   :align: middle
+
+.. |anim_gif_virginia| image:: https://tanimislam.github.io/covid19movies/covid19_virginia_LATEST.gif
    :width: 100%
    :align: middle
