@@ -70,7 +70,7 @@ This mode of operation, for example for California, will output seven files:
 * ``covid19_california_LATEST.pkl.gz`` is the `Pandas DataFrame`_  of the COVID-19 cases and deaths, total and per county, from the date of first incident to the latest incident.
 
 
-* ``covid19_nyc_cds_LATEST.pdf`` and ``covid19_nyc_cds_LATEST.png`` are the PDF and PNG showing the trend of COVID-19 cases and deaths in the NYC metro area.
+* ``covid19_california_cds_LATEST.pdf`` and ``covid19_california_cds_LATEST.png`` are the PDF and PNG showing the trend of COVID-19 cases and deaths in California.
 
   .. figure:: https://tanimislam.github.io/covid19movies/covid19_california_cds_LATEST.png
      :width: 100%
@@ -98,3 +98,43 @@ This mode of operation, for example for California, will output seven files:
 
 movie mode
 -----------
+``covid19_state_summary m`` (MOVIE flag) creates an MP4_ movie of COVID-19 cases and deaths for the US state or territory you specify. Its functionality is very similar to :ref:`movie mode in covid19_create_movie_or_summary <movie_mode>`.
+
+This mode of operation for California,
+
+.. code-block:: console
+
+   covid19_state_summary -n California -y m
+
+will output a quad structured movie of the cumulative COVID-19 cases and deaths for California, `covid19_california_LATEST.mp4`_. :numref:`fig_covid19_california_LATEST` is a GIF animation of that.
+
+.. _fig_covid19_california_LATEST:
+
+.. figure:: https://tanimislam.github.io/covid19movies/covid19_california_LATEST.gif
+   :width: 100%
+   :align: left
+
+   The four-quadrant movie, that ``covid19_state_summary m`` creates, of the cumulative COVID-19 cases and deaths in the state of California. Upper left quad is the summary information for the MSA. Lower left quad is the running tally of cumulative cases and deaths, by day from first incident. Upper right is *logarithmic* coloration of cumulative deaths, by day from first incident. Lower right is *logarithmic* coloration of cumulative cases, by day from first incident. Its structure matches that of :numref:`fig_covid19_nyc_LATEST`.
+
+Note also that the created MP4_ files have metadata associated with them. You can either inspect them using mp4info_ or using code in the :py:mod:`mutagen.mp4.MP4`. Here is what ``mp4info covid19_california_LATEST.mp4`` returns,
+
+.. code-block:: console
+
+   mp4info version -r
+   docs/covid19_california_LATEST.mp4:
+   Track   Type    Info
+   1       video   H264 High@4, 75.000 secs, 153 kbps, 1330x1168 @ 5.000000 fps
+    Name: california, ALL, 02-02-2021
+    Artist: Tanim Islam
+    Encoded with: Lavf57.56.101
+    Release Date: 02-02-2021
+    Album: STATE
+
+.. _states_ALL_mp4_metadata:
+    
+For US states and territories,
+
+* *Album* is ``STATE``.
+* *Artist* is `Tanim Islam`_ (duh).
+* *Name* is the name of the US state or territory, ``ALL`` if showing cases and deaths as quads in one movie (this is what `covid19_california_LATEST.mp4`_ shows), and the *last date* of COVID-19 cases and deaths that are reported.
+* *Release Date* is also the *last date* of COVID-19 cases and deaths that are reported.

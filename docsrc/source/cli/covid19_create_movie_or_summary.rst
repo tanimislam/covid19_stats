@@ -187,7 +187,7 @@ This mode of operation, for example for NYC, will output seven files:
   
 movie mode
 ^^^^^^^^^^^
-``covid19_create_movie_or_summary m`` (MOVIE flag) creates an MP4_ movie of COVID-19 cases and deaths for the MSA you specify (see the :ref:`high quality GIF animations <gif_animations>` of these MP4 movies). The help output, while running ``covid19_create_movie_or_summary m -h``, is shown below,
+``covid19_create_movie_or_summary m`` (MOVIE flag) creates an MP4_ movie of COVID-19 cases and deaths for the MSA you specify (see the :ref:`high quality GIF animations <gif_animations>` of these MP4_ movies). The help output, while running ``covid19_create_movie_or_summary m -h``, is shown below,
 
 .. code-block:: console
 
@@ -238,6 +238,8 @@ Note also that the created MP4_ files have metadata associated with them. You ca
     Release Date: 30-01-2021
     Album: METROPOLITAN STATISTICAL AREA
 
+.. _msas_ALL_mp4_metadata:
+    
 For MSAs,
 
 * *Album* is ``METROPOLITAN STATISTICAL AREA``.
@@ -259,6 +261,8 @@ For the CONUS_, such as `covid19_conus_LATEST.mp4`_, here is the output when run
     Release Date: 30-01-2021
     Album: CONUS
 
+.. _conus_ALL_mp4_metadata:
+    
 And here is its metadata,
 
 * *Album* is ``CONUS``.
@@ -330,4 +334,38 @@ Finally, :numref:`fig_covid19_conus_cases_LATEST` demonstrates the latest trend 
    :width: 100%
    :align: left
 
-   The trend of latest COVID-19 cumulative cases for the CONUS_. The underlying MP4 file is `covid19_conus_cases_LATEST.mp4`_. The limits of the cases in each county is deliberate.
+   The trend of latest COVID-19 cumulative cases for the CONUS_. The underlying MP4 file is `covid19_conus_cases_LATEST.mp4`_. I *deliberately* limit the maximum value of cases, in the colorbar, to the maximum cumulative COVID-19 *deaths* in a county in the region, for psychological effect; it's distressing to see the COVID-19 cumulative case map fill up with red as time goes on.
+   
+Note also that the created MP4_ files have metadata associated with them. You can either inspect them using mp4info_ or using code in the :py:mod:`mutagen.mp4.MP4`. Here is what ``mp4info covid19_nyc_cases_LATEST.mp4`` returns,
+
+.. code-block:: console
+
+   mp4info version -r
+   docs/covid19_nyc_cases_LATEST.mp4:
+   Track   Type    Info
+   1       video   H264 High@5, 67.800 secs, 133 kbps, 2004x1470 @ 5.000000 fps
+    Name: nyc, CASES, 02-02-2021
+    Artist: Tanim Islam
+    Encoded with: Lavf57.56.101
+    Release Date: 02-02-2021
+    Album: METROPOLITAN STATISTICAL AREA
+
+.. _msas_casedeath_mp4_metadata:
+    
+Its metadata is similar to those :ref:`MP4 movies that show COVID-19 cases and deaths for MSAs <msas_ALL_mp4_metadata>`. The difference is in the second element of the *Name*: it is ``CASES`` if the movie shows cumulative COVID-19 cases, and ``DEATHS`` if the movie shows cumulative COVID-19 deaths.
+
+For the CONUS_, here is what ``mp4info covid19_conus_cases_LATEST.mp4`` returns,
+
+.. code-block:: console
+
+   mp4info version -r
+   docs/covid19_conus_cases_LATEST.mp4:
+   Track   Type    Info
+   1       video   H264 High@4.2, 75.800 secs, 395 kbps, 2010x1056 @ 5.000000 fps
+    Name: conus, CASES, 02-02-2021
+    Artist: Tanim Islam
+    Encoded with: Lavf57.56.101
+    Release Date: 02-02-2021
+    Album: CONUS
+
+Its metadata is similar to those :ref:`MP4 movies that show COVID-19 cases and deaths for the CONUS <conus_ALL_mp4_metadata>`. The difference is in the second element of the *Name*: it is ``CASES`` if the movie shows cumulative COVID-19 cases, and ``DEATHS`` if the movie shows cumulative COVID-19 deaths.

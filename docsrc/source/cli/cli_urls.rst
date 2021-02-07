@@ -11,10 +11,13 @@
 .. _CONUS: https://en.wikipedia.org/wiki/Contiguous_United_States
 .. _`covid19_nyc_LATEST.mp4`: https://tanimislam.github.io/covid19movies/covid19_nyc_LATEST.mp4
 .. _`covid19_conus_LATEST.mp4`: https://tanimislam.github.io/covid19movies/covid19_conus_LATEST.mp4
+.. _`covid19_california_LATEST.mp4`: https://tanimislam.github.io/covid19movies/covid19_california_LATEST.mp4
 .. _PNG: https://en.wikipedia.org/wiki/Portable_Network_Graphics
 .. _`covid19_nyc_cases_LATEST.mp4`: https://tanimislam.github.io/covid19movies/covid19_nyc_cases_LATEST.mp4
 .. _`covid19_nyc_deaths_LATEST.mp4`: https://tanimislam.github.io/covid19movies/covid19_nyc_deaths_LATEST.mp4
 .. _`covid19_conus_cases_LATEST.mp4`: https://tanimislam.github.io/covid19movies/covid19_conus_cases_LATEST.mp4
+.. _`covid19_california_cases_LATEST.mp4`: https://tanimislam.github.io/covid19movies/covid19_california_cases_LATEST.mp4
+.. _`covid19_california_deaths_LATEST.mp4`: https://tanimislam.github.io/covid19movies/covid19_california_deaths_LATEST.mp4
 .. _mp4info: https://www.bento4.com/documentation/mp4info
 .. _`Tanim Islam`: https://tanimislam.github.io
 .. _Markdown: https://daringfireball.net/projects/markdown/

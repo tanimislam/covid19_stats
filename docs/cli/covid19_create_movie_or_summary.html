@@ -325,7 +325,7 @@
 </div>
 <div class="section" id="movie-mode">
 <span id="id4"></span><h2><span class="section-number">2.2.3. </span>movie mode<a class="headerlink" href="#movie-mode" title="Permalink to this headline">¶</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">m</span></code> (MOVIE flag) creates an <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> movie of COVID-19 cases and deaths for the MSA you specify (see the <a class="reference internal" href="../index.html#gif-animations"><span class="std std-ref">high quality GIF animations</span></a> of these MP4 movies). The help output, while running <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">m</span> <span class="pre">-h</span></code>, is shown below,</p>
+<p><code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">m</span></code> (MOVIE flag) creates an <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> movie of COVID-19 cases and deaths for the MSA you specify (see the <a class="reference internal" href="../index.html#gif-animations"><span class="std std-ref">high quality GIF animations</span></a> of these <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> movies). The help output, while running <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">m</span> <span class="pre">-h</span></code>, is shown below,</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: covid19_create_movie_or_summary m [-h] [-n NAME] [-M MAXNUM] [--conus]</span>
 <span class="go">                                         [-y]</span>
 
@@ -365,7 +365,7 @@
 <span class="go"> Album: METROPOLITAN STATISTICAL AREA</span>
 </pre></div>
 </div>
-<p>For MSAs,</p>
+<p id="msas-all-mp4-metadata">For MSAs,</p>
 <ul class="simple">
 <li><p><em>Album</em> is <code class="docutils literal notranslate"><span class="pre">METROPOLITAN</span> <span class="pre">STATISTICAL</span> <span class="pre">AREA</span></code>.</p></li>
 <li><p><em>Artist</em> is <a class="reference external" href="https://tanimislam.github.io">Tanim Islam</a> (duh).</p></li>
@@ -384,7 +384,7 @@
 <span class="go"> Album: CONUS</span>
 </pre></div>
 </div>
-<p>And here is its metadata,</p>
+<p id="conus-all-mp4-metadata">And here is its metadata,</p>
 <ul class="simple">
 <li><p><em>Album</em> is <code class="docutils literal notranslate"><span class="pre">CONUS</span></code>.</p></li>
 <li><p><em>Name</em> is <code class="docutils literal notranslate"><span class="pre">CONUS</span></code>, <code class="docutils literal notranslate"><span class="pre">ALL</span></code> if showing cases and deaths as quads in one movie (this is what <a class="reference external" href="https://tanimislam.github.io/covid19movies/covid19_conus_LATEST.mp4">covid19_conus_LATEST.mp4</a> shows), and the <em>last date</em> of COVID-19 cases and deaths that are reported.</p></li>
@@ -438,8 +438,34 @@
 </div>
 <div class="figure align-left" id="id12">
 <span id="fig-covid19-conus-cases-latest"></span><a class="reference internal image-reference" href="https://tanimislam.github.io/covid19movies/covid19_conus_cases_LATEST.gif"><img alt="https://tanimislam.github.io/covid19movies/covid19_conus_cases_LATEST.gif" src="https://tanimislam.github.io/covid19movies/covid19_conus_cases_LATEST.gif" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 2.7 </span><span class="caption-text">The trend of latest COVID-19 cumulative cases for the <a class="reference external" href="https://en.wikipedia.org/wiki/Contiguous_United_States">CONUS</a>. The underlying MP4 file is <a class="reference external" href="https://tanimislam.github.io/covid19movies/covid19_conus_cases_LATEST.mp4">covid19_conus_cases_LATEST.mp4</a>. The limits of the cases in each county is deliberate.</span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 2.7 </span><span class="caption-text">The trend of latest COVID-19 cumulative cases for the <a class="reference external" href="https://en.wikipedia.org/wiki/Contiguous_United_States">CONUS</a>. The underlying MP4 file is <a class="reference external" href="https://tanimislam.github.io/covid19movies/covid19_conus_cases_LATEST.mp4">covid19_conus_cases_LATEST.mp4</a>. I <em>deliberately</em> limit the maximum value of cases, in the colorbar, to the maximum cumulative COVID-19 <em>deaths</em> in a county in the region, for psychological effect; it’s distressing to see the COVID-19 cumulative case map fill up with red as time goes on.</span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
 </div>
+<p>Note also that the created <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> files have metadata associated with them. You can either inspect them using <a class="reference external" href="https://www.bento4.com/documentation/mp4info">mp4info</a> or using code in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">mutagen.mp4.MP4</span></code>. Here is what <code class="docutils literal notranslate"><span class="pre">mp4info</span> <span class="pre">covid19_nyc_cases_LATEST.mp4</span></code> returns,</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">mp4info version -r</span>
+<span class="go">docs/covid19_nyc_cases_LATEST.mp4:</span>
+<span class="go">Track   Type    Info</span>
+<span class="go">1       video   H264 High@5, 67.800 secs, 133 kbps, 2004x1470 @ 5.000000 fps</span>
+<span class="go"> Name: nyc, CASES, 02-02-2021</span>
+<span class="go"> Artist: Tanim Islam</span>
+<span class="go"> Encoded with: Lavf57.56.101</span>
+<span class="go"> Release Date: 02-02-2021</span>
+<span class="go"> Album: METROPOLITAN STATISTICAL AREA</span>
+</pre></div>
+</div>
+<p id="msas-casedeath-mp4-metadata">Its metadata is similar to those <a class="reference internal" href="#msas-all-mp4-metadata"><span class="std std-ref">MP4 movies that show COVID-19 cases and deaths for MSAs</span></a>. The difference is in the second element of the <em>Name</em>: it is <code class="docutils literal notranslate"><span class="pre">CASES</span></code> if the movie shows cumulative COVID-19 cases, and <code class="docutils literal notranslate"><span class="pre">DEATHS</span></code> if the movie shows cumulative COVID-19 deaths.</p>
+<p>For the <a class="reference external" href="https://en.wikipedia.org/wiki/Contiguous_United_States">CONUS</a>, here is what <code class="docutils literal notranslate"><span class="pre">mp4info</span> <span class="pre">covid19_conus_cases_LATEST.mp4</span></code> returns,</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">mp4info version -r</span>
+<span class="go">docs/covid19_conus_cases_LATEST.mp4:</span>
+<span class="go">Track   Type    Info</span>
+<span class="go">1       video   H264 High@4.2, 75.800 secs, 395 kbps, 2010x1056 @ 5.000000 fps</span>
+<span class="go"> Name: conus, CASES, 02-02-2021</span>
+<span class="go"> Artist: Tanim Islam</span>
+<span class="go"> Encoded with: Lavf57.56.101</span>
+<span class="go"> Release Date: 02-02-2021</span>
+<span class="go"> Album: CONUS</span>
+</pre></div>
+</div>
+<p>Its metadata is similar to those <a class="reference internal" href="#conus-all-mp4-metadata"><span class="std std-ref">MP4 movies that show COVID-19 cases and deaths for the CONUS</span></a>. The difference is in the second element of the <em>Name</em>: it is <code class="docutils literal notranslate"><span class="pre">CASES</span></code> if the movie shows cumulative COVID-19 cases, and <code class="docutils literal notranslate"><span class="pre">DEATHS</span></code> if the movie shows cumulative COVID-19 deaths.</p>
 </div>
 </div>
 
