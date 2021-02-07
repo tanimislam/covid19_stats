@@ -92,6 +92,7 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">2.3. covid19_state_summary</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#show-mode">2.3.1. show mode</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#movie-mode">2.3.2. movie mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#movie-cases-deaths-mode">2.3.3. movie cases deaths mode</a></li>
 </ul>
 </li>
 </ul>
@@ -257,7 +258,7 @@
 </div>
 <p>Note also that the created <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> files have metadata associated with them. You can either inspect them using <a class="reference external" href="https://www.bento4.com/documentation/mp4info">mp4info</a> or using code in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">mutagen.mp4.MP4</span></code>. Here is what <code class="docutils literal notranslate"><span class="pre">mp4info</span> <span class="pre">covid19_california_LATEST.mp4</span></code> returns,</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">mp4info version -r</span>
-<span class="go">docs/covid19_california_LATEST.mp4:</span>
+<span class="go">covid19_california_LATEST.mp4:</span>
 <span class="go">Track   Type    Info</span>
 <span class="go">1       video   H264 High@4, 75.000 secs, 153 kbps, 1330x1168 @ 5.000000 fps</span>
 <span class="go"> Name: california, ALL, 02-02-2021</span>
@@ -274,6 +275,54 @@
 <li><p><em>Name</em> is the name of the US state or territory, <code class="docutils literal notranslate"><span class="pre">ALL</span></code> if showing cases and deaths as quads in one movie (this is what <a class="reference external" href="https://tanimislam.github.io/covid19movies/covid19_california_LATEST.mp4">covid19_california_LATEST.mp4</a> shows), and the <em>last date</em> of COVID-19 cases and deaths that are reported.</p></li>
 <li><p><em>Release Date</em> is also the <em>last date</em> of COVID-19 cases and deaths that are reported.</p></li>
 </ul>
+</div>
+<div class="section" id="movie-cases-deaths-mode">
+<span id="movie-cases-deaths-mode-state"></span><h2><span class="section-number">2.3.3. </span>movie cases deaths mode<a class="headerlink" href="#movie-cases-deaths-mode" title="Permalink to this headline">¶</a></h2>
+<p>This is similar to <a class="reference internal" href="#movie-mode-state"><span class="std std-ref">movie mode</span></a>, except now we can visualize movies of cases or deaths. The help output, while running <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">mcd</span> <span class="pre">-h</span></code>, is shown below,</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: covid19_state_summary mcd [-h] [-d DISP]</span>
+
+<span class="go">optional arguments:</span>
+<span class="go">  -h, --help            show this help message and exit</span>
+<span class="go">  -d DISP, --disp DISP  Whether to display the &quot;cases&quot; or &quot;death&quot; trends of the given state. Default is &quot;cases&quot;.</span>
+<span class="go">  -s, --saveimages      If chosen, then save the images used to create the movie into a ZIP archive.</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-d</span></code> or <code class="docutils literal notranslate"><span class="pre">-disp</span></code> lets you choose whether to create a movie of the <code class="docutils literal notranslate"><span class="pre">cases</span></code> or <code class="docutils literal notranslate"><span class="pre">deaths</span></code> within the specified US state or territory.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-s</span></code> or <code class="docutils literal notranslate"><span class="pre">--saveimages</span></code> optionally lets you choose to save the <a class="reference external" href="https://en.wikipedia.org/wiki/Portable_Network_Graphics">PNG</a> images into a zip archive.</p></li>
+</ul>
+<p><a class="reference internal" href="#fig-covid19-california-cases-latest"><span class="std std-numref">Fig. 2.12</span></a> and <a class="reference internal" href="#fig-covid19-california-death-latest"><span class="std std-numref">Fig. 2.13</span></a> demonstrates this operation to create COVID-19 <code class="docutils literal notranslate"><span class="pre">cases</span></code> and <code class="docutils literal notranslate"><span class="pre">deaths</span></code> summary movies for the NYC metropolitan area. The command line syntax to generate these two movies is shown in each of their captions.</p>
+<div class="figure align-left" id="id7">
+<span id="fig-covid19-california-cases-latest"></span><a class="reference internal image-reference" href="https://tanimislam.github.io/covid19movies/covid19_california_cases_LATEST.gif"><img alt="https://tanimislam.github.io/covid19movies/covid19_california_cases_LATEST.gif" src="https://tanimislam.github.io/covid19movies/covid19_california_cases_LATEST.gif" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 2.12 </span><span class="caption-text">The trend of latest COVID-19 cumulative cases (lower right quadrant in <a class="reference internal" href="#fig-covid19-california-latest"><span class="std std-numref">Fig. 2.11</span></a>) in California. The underlying MP4 file is <a class="reference external" href="https://tanimislam.github.io/covid19movies/covid19_california_cases_LATEST.mp4">covid19_california_cases_LATEST.mp4</a>. The syntax used to create this movie is,</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+<div class="legend">
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">covid19_state_summary -n california -y mcd -d cases</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="figure align-left" id="id8">
+<span id="fig-covid19-california-death-latest"></span><a class="reference internal image-reference" href="https://tanimislam.github.io/covid19movies/covid19_california_deaths_LATEST.gif"><img alt="https://tanimislam.github.io/covid19movies/covid19_california_deaths_LATEST.gif" src="https://tanimislam.github.io/covid19movies/covid19_california_deaths_LATEST.gif" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-number">Fig. 2.13 </span><span class="caption-text">The trend of latest COVID-19 cumulative deaths (upper right quadrant in <a class="reference internal" href="#fig-covid19-california-latest"><span class="std std-numref">Fig. 2.11</span></a>) in California. The underlying MP4 file is <a class="reference external" href="https://tanimislam.github.io/covid19movies/covid19_california_deaths_LATEST.mp4">covid19_california_deaths_LATEST.mp4</a>. The syntax used to create this movie is,</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+<div class="legend">
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">covid19_state_summary -n california -y mcd -d death</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note also that the created <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> files have metadata associated with them. You can either inspect them using <a class="reference external" href="https://www.bento4.com/documentation/mp4info">mp4info</a> or using code in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">mutagen.mp4.MP4</span></code>. Here is what <code class="docutils literal notranslate"><span class="pre">mp4info</span> <span class="pre">covid19_california_cases_LATEST.mp4</span></code> returns,</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">mp4info version -r</span>
+<span class="go">covid19_california_cases_LATEST.mp4:</span>
+<span class="go">Track   Type    Info</span>
+<span class="go">1       video   H264 High@4, 75.000 secs, 170 kbps, 1408x1468 @ 5.000000 fps</span>
+<span class="go"> Name: california, CASES, 02-02-2021</span>
+<span class="go"> Artist: Tanim Islam</span>
+<span class="go"> Encoded with: Lavf57.56.101</span>
+<span class="go"> Release Date: 02-02-2021</span>
+<span class="go"> Album: STATE</span>
+</pre></div>
+</div>
+<p id="states-casedeath-mp4-metadata">Its metadata is similar to those <a class="reference internal" href="#states-all-mp4-metadata"><span class="std std-ref">MP4 movies that show COVID-19 cases and deaths for states</span></a>. The difference is in the second element of the <em>Name</em>: it is <code class="docutils literal notranslate"><span class="pre">CASES</span></code> if the movie shows cumulative COVID-19 cases, and <code class="docutils literal notranslate"><span class="pre">DEATHS</span></code> if the movie shows cumulative COVID-19 deaths.</p>
 </div>
 </div>
 

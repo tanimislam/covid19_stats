@@ -341,7 +341,7 @@ Note also that the created MP4_ files have metadata associated with them. You ca
 .. code-block:: console
 
    mp4info version -r
-   docs/covid19_nyc_cases_LATEST.mp4:
+   covid19_nyc_cases_LATEST.mp4:
    Track   Type    Info
    1       video   H264 High@5, 67.800 secs, 133 kbps, 2004x1470 @ 5.000000 fps
     Name: nyc, CASES, 02-02-2021
@@ -359,7 +359,7 @@ For the CONUS_, here is what ``mp4info covid19_conus_cases_LATEST.mp4`` returns,
 .. code-block:: console
 
    mp4info version -r
-   docs/covid19_conus_cases_LATEST.mp4:
+   covid19_conus_cases_LATEST.mp4:
    Track   Type    Info
    1       video   H264 High@4.2, 75.800 secs, 395 kbps, 2010x1056 @ 5.000000 fps
     Name: conus, CASES, 02-02-2021

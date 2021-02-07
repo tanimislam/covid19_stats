@@ -121,7 +121,7 @@ Note also that the created MP4_ files have metadata associated with them. You ca
 .. code-block:: console
 
    mp4info version -r
-   docs/covid19_california_LATEST.mp4:
+   covid19_california_LATEST.mp4:
    Track   Type    Info
    1       video   H264 High@4, 75.000 secs, 153 kbps, 1330x1168 @ 5.000000 fps
     Name: california, ALL, 02-02-2021
@@ -138,3 +138,66 @@ For US states and territories,
 * *Artist* is `Tanim Islam`_ (duh).
 * *Name* is the name of the US state or territory, ``ALL`` if showing cases and deaths as quads in one movie (this is what `covid19_california_LATEST.mp4`_ shows), and the *last date* of COVID-19 cases and deaths that are reported.
 * *Release Date* is also the *last date* of COVID-19 cases and deaths that are reported.
+
+.. _movie_cases_deaths_mode_state:
+
+movie cases deaths mode
+-------------------------
+This is similar to :ref:`movie_mode_state`, except now we can visualize movies of cases or deaths. The help output, while running ``covid19_create_movie_or_summary mcd -h``, is shown below,
+
+.. code-block:: console
+
+   usage: covid19_state_summary mcd [-h] [-d DISP]
+
+   optional arguments:
+     -h, --help            show this help message and exit
+     -d DISP, --disp DISP  Whether to display the "cases" or "death" trends of the given state. Default is "cases".
+     -s, --saveimages      If chosen, then save the images used to create the movie into a ZIP archive.
+
+* ``-d`` or ``-disp`` lets you choose whether to create a movie of the ``cases`` or ``deaths`` within the specified US state or territory.
+
+* ``-s`` or ``--saveimages`` optionally lets you choose to save the PNG_ images into a zip archive.
+
+:numref:`fig_covid19_california_cases_LATEST` and :numref:`fig_covid19_california_death_LATEST` demonstrates this operation to create COVID-19 ``cases`` and ``deaths`` summary movies for the NYC metropolitan area. The command line syntax to generate these two movies is shown in each of their captions.
+
+.. _fig_covid19_california_cases_LATEST:
+
+.. figure:: https://tanimislam.github.io/covid19movies/covid19_california_cases_LATEST.gif
+   :width: 100%
+   :align: left
+
+   The trend of latest COVID-19 cumulative cases (lower right quadrant in :numref:`fig_covid19_california_LATEST`) in California. The underlying MP4 file is `covid19_california_cases_LATEST.mp4`_. The syntax used to create this movie is,
+
+   .. code-block:: console
+
+      covid19_state_summary -n california -y mcd -d cases
+
+.. _fig_covid19_california_death_LATEST:
+
+.. figure:: https://tanimislam.github.io/covid19movies/covid19_california_deaths_LATEST.gif
+   :width: 100%
+   :align: left
+
+   The trend of latest COVID-19 cumulative deaths (upper right quadrant in :numref:`fig_covid19_california_LATEST`) in California. The underlying MP4 file is `covid19_california_deaths_LATEST.mp4`_. The syntax used to create this movie is,
+
+   .. code-block:: console
+
+      covid19_state_summary -n california -y mcd -d death
+   
+Note also that the created MP4_ files have metadata associated with them. You can either inspect them using mp4info_ or using code in the :py:mod:`mutagen.mp4.MP4`. Here is what ``mp4info covid19_california_cases_LATEST.mp4`` returns,
+
+.. code-block:: console
+
+   mp4info version -r
+   covid19_california_cases_LATEST.mp4:
+   Track   Type    Info
+   1       video   H264 High@4, 75.000 secs, 170 kbps, 1408x1468 @ 5.000000 fps
+    Name: california, CASES, 02-02-2021
+    Artist: Tanim Islam
+    Encoded with: Lavf57.56.101
+    Release Date: 02-02-2021
+    Album: STATE
+
+.. _states_casedeath_mp4_metadata:
+    
+Its metadata is similar to those :ref:`MP4 movies that show COVID-19 cases and deaths for states <states_ALL_mp4_metadata>`. The difference is in the second element of the *Name*: it is ``CASES`` if the movie shows cumulative COVID-19 cases, and ``DEATHS`` if the movie shows cumulative COVID-19 deaths.

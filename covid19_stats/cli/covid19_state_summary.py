@@ -90,12 +90,15 @@ def main( ):
             'of COVID-19 cases and deaths trend,',
             'for the specific state.' ] ) )
     #
-    ## make a movie of cases OR deaths
+    ## make a movie of cases OR deaths (mcd)
     parser_movcasedeath = subparsers.add_parser(
         'mcd', help = 'Make a large-sized movie of either "CASES" or "DEATHS" for given state.' )
     parser_movcasedeath.add_argument(
         '-d', '--disp', dest='movcasedeath_display', type=str, action='store', default = 'cases', metavar = 'DISP',
-        choices = ( 'cases', 'deaths' ), help = 'Whether to display the "cases" or "death" trends of the MSA or CONUS. Default is "cases".')
+        choices = ( 'cases', 'deaths' ), help = 'Whether to display the "cases" or "death" trends of the given state. Default is "cases".')
+    parser_movcasedeath.add_argument(
+        '-s', '--saveimages', dest='movcasedeath_saveimages', action='store_true', default=False,
+        help = 'If chosen, then save the images used to create the movie into a ZIP archive.' )
     #
     ##
     args = parser.parse_args( )
@@ -149,4 +152,5 @@ def main( ):
         viz.create_summary_cases_or_deaths_movie_frombeginning(
             data = data_state, maxnum_colorbar = maxnum,
             type_disp = args.movcasedeath_display,
-            dirname = args.dirname )
+            dirname = args.dirname,
+            save_imgfiles = args.movcasedeath_saveimages )
