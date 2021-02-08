@@ -1410,10 +1410,10 @@
 <p class="admonition-title">Warning</p>
 <p>This data set can get extremely large even with a few regions. Currently, my (<a class="reference external" href="https://tanimislam.github.io">Tanim Islam</a>) data set is over 700 MB in size.</p>
 </div>
-<p>A hopefully illuminating example is shown in <a class="reference download internal" download="" href="../_downloads/00f126e9a2abe7bc433abaf73dec0c6a/covid19_movie_updates_example.bash"><code class="xref download docutils literal notranslate"><span class="pre">covid19_movie_updates_example.bash</span></code></a>, where I run a <a class="reference external" href="https://en.wikipedia.org/wiki/Slurm_Workload_Manager">SLURM</a> scheduled job to farm out the creation of COVID-19 summary data among <em>nine</em> processors to 26 different regions,</p>
+<p>A hopefully illuminating example is shown in <a class="reference download internal" download="" href="../_downloads/00f126e9a2abe7bc433abaf73dec0c6a/covid19_movie_updates_example.bash"><code class="xref download docutils literal notranslate"><span class="pre">covid19_movie_updates_example.bash</span></code></a>, where I run a <a class="reference external" href="https://en.wikipedia.org/wiki/Slurm_Workload_Manager">SLURM</a> scheduled job to farm out the creation of COVID-19 summary data among <em>nine</em> processors to 25 different regions,</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Contiguous_United_States">CONUS</a></p></li>
-<li><p>13 MSAs: nyc, bayarea, dc, richmond, nyc, losangeles, neworleans, chicago, seattle, houston, dallas, albuquerque, newhaven.</p></li>
+<li><p>13 MSAs: nyc, bayarea, dc, richmond, losangeles, neworleans, chicago, seattle, houston, dallas, albuquerque, newhaven.</p></li>
 <li><p>12 US states or territories: California, Virginia, Texas, Florida, “New York”, Pennsylvania, Indiana, Michigan, Hawaii, “New Mexico”, “New Jersey”, Connecticut.</p></li>
 </ul>
 <div class="highlight-bash notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
@@ -1448,7 +1448,7 @@
 covid19_update_database
 <span class="c1">#</span>
 <span class="c1">## now generate the COVID-19 cases and deaths, movies and figures, for regions (MSAs, CONUS, states)</span>
-srun -N9 covid19_movie_updates --region nyc bayarea dc richmond nyc losangeles neworleans chicago seattle houston dallas albuquerque newhaven conus --state California Virginia Texas Florida <span class="s2">&quot;New York&quot;</span> Pennsylvania Indiana Michigan Hawaii <span class="s2">&quot;New Mexico&quot;</span> <span class="s2">&quot;New Jersey&quot;</span> Connecticut --topN<span class="o">=</span><span class="m">50</span> --dirname<span class="o">=</span>docs --info
+srun -N9 covid19_movie_updates --region nyc bayarea dc richmond losangeles neworleans chicago seattle houston dallas albuquerque newhaven conus --state California Virginia Texas Florida <span class="s2">&quot;New York&quot;</span> Pennsylvania Indiana Michigan Hawaii <span class="s2">&quot;New Mexico&quot;</span> <span class="s2">&quot;New Jersey&quot;</span> Connecticut --topN<span class="o">=</span><span class="m">50</span> --dirname<span class="o">=</span>docs --info
 </pre></div>
 </td></tr></table></div>
 </div>

@@ -56,10 +56,10 @@ Here are the flags and their meanings.
 
    This data set can get extremely large even with a few regions. Currently, my (`Tanim Islam`_) data set is over 700 MB in size.
 
-A hopefully illuminating example is shown in :download:`covid19_movie_updates_example.bash <examples/covid19_movie_updates_example.bash>`, where I run a SLURM_ scheduled job to farm out the creation of COVID-19 summary data among *nine* processors to 26 different regions,
+A hopefully illuminating example is shown in :download:`covid19_movie_updates_example.bash <examples/covid19_movie_updates_example.bash>`, where I run a SLURM_ scheduled job to farm out the creation of COVID-19 summary data among *nine* processors to 25 different regions,
 
 * CONUS_
-* 13 MSAs: nyc, bayarea, dc, richmond, nyc, losangeles, neworleans, chicago, seattle, houston, dallas, albuquerque, newhaven.
+* 13 MSAs: nyc, bayarea, dc, richmond, losangeles, neworleans, chicago, seattle, houston, dallas, albuquerque, newhaven.
 * 12 US states or territories: California, Virginia, Texas, Florida, "New York", Pennsylvania, Indiana, Michigan, Hawaii, "New Mexico", "New Jersey", Connecticut.
 
 .. literalinclude:: examples/covid19_movie_updates_example.bash
