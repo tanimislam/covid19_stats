@@ -59,8 +59,8 @@ Here are the flags and their meanings.
 A hopefully illuminating example is shown in :download:`covid19_movie_updates_example.bash <examples/covid19_movie_updates_example.bash>`, where I run a SLURM_ scheduled job to farm out the creation of COVID-19 summary data among *nine* processors to 25 different regions,
 
 * CONUS_
-* 13 MSAs: nyc, bayarea, dc, richmond, losangeles, neworleans, chicago, seattle, houston, dallas, albuquerque, newhaven.
-* 12 US states or territories: California, Virginia, Texas, Florida, "New York", Pennsylvania, Indiana, Michigan, Hawaii, "New Mexico", "New Jersey", Connecticut.
+* 12 MSAs: nyc, bayarea, dc, richmond, losangeles, neworleans, chicago, seattle, houston, dallas, albuquerque, newhaven.
+* 12 US states or territories: California, Virginia, Texas, Florida, New York, Pennsylvania, Indiana, Michigan, Hawaii, New Mexico, New Jersey, Connecticut.
 
 .. literalinclude:: examples/covid19_movie_updates_example.bash
    :language: bash
