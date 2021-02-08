@@ -34,7 +34,7 @@ This will create *nine* COVID-19 case and death summary movies and figures for e
 
 * `covid19_conus_cases_LATEST.mp4 <https://tanimislam.github.io/covid19movies/covid19_conus_cases_LATEST.mp4>`_ is the trend of cumulative cases in the CONUS_ (lower right quadrant of `covid19_conus_LATEST.mp4 <https://tanimislam.github.io/covid19movies/covid19_conus_LATEST.mp4>`_).
 
-* `covid19_conus_death_LATEST.mp4 <https://tanimislam.github.io/covid19movies/covid19_conus_death_LATEST.mp4>`_ is the trend of cumulative deaths in the CONUS_ (upper right quadrant of `covid19_conus_LATEST.mp4 <https://tanimislam.github.io/covid19movies/covid19_conus_LATEST.mp4>`_).
+* `covid19_conus_deaths_LATEST.mp4 <https://tanimislam.github.io/covid19movies/covid19_conus_deaths_LATEST.mp4>`_ is the trend of cumulative deaths in the CONUS_ (upper right quadrant of `covid19_conus_LATEST.mp4 <https://tanimislam.github.io/covid19movies/covid19_conus_LATEST.mp4>`_).
 
 Here are the flags and their meanings.
   
