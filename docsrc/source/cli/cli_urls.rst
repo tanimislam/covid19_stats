@@ -23,3 +23,8 @@
 .. _Markdown: https://daringfireball.net/projects/markdown/
 .. _`list-table`: https://docutils.sourceforge.io/docs/ref/rst/directives.html#list-table
 .. _JSON: https://en.wikipedia.org/wiki/JSON
+
+.. _MPI: https://en.wikipedia.org/wiki/Message_Passing_Interface
+.. _mpi4py: https://mpi4py.readthedocs.io/en/stable
+.. _`GitHub Page`: https://pages.github.com
+.. _SLURM: https://en.wikipedia.org/wiki/Slurm_Workload_Manager

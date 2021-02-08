@@ -1,0 +1,31 @@
+.. include:: cli_urls.rst
+
+.. _covid19_post2server:
+	     
+covid19_post2server
+======================
+This CLI is designed to be used by an external service to upload data sets created by :ref:`covid19_movie_updates` to an external location. I (`Tanim Islam`_) have tested it, but stopped using it, because the data set I currently have is impractically large; instead I have a private repository with a public `GitHub Page`_ to which I push my latest COVID-19 summary data updates.
+
+Its help output, when running ``covid19_post2server -h``, is the following,
+
+.. code-block:: console
+
+   usage: covid19_post2server [-h] [-d DIRNAME] -D REMOTE_DIRNAME [--pe PROCESS_ENDPOINT] [--ve VERIFY_ENDPOINT] [--info] {ssh,http} ...
+
+   positional arguments:
+     {ssh,http}            Here, we choose the form of the connection. ssh: perform an SSH tunnel to the RESTful server. http: direct HTTP(S) connection to the RESTful server.
+       ssh                 Use SSH tunneling to RESTful server.
+       http                Direct HTTP or HTTPS connection to RESTful server.
+
+   optional arguments:
+     -h, --help            show this help message and exit
+     -d DIRNAME, --dirname DIRNAME
+			   Name of the directory that contains the COVID-19 movies and figures to send off to the external RESTful endpoint. Default is /usr/WS2/islam5/covid19movies.
+     -D REMOTE_DIRNAME, --remote REMOTE_DIRNAME
+			   Name of the REMOTE (on server) directory into which to store the COVID-19 movies and figures.
+     --pe PROCESS_ENDPOINT
+			   The name of the PROCESSING RESTful endpoint on the remote HTTP server. Default is /api/covid19/processresults.
+     --ve VERIFY_ENDPOINT  The name of the PROCESSING RESTful endpoint on the remote HTTP server. Default is /api/covid19/verifyprocessedresults.
+     --info                If chosen, then print out INFO level logging statements.
+
+It has two modes of operation, either connection through an SSH tunnel (via the ``ssh`` keyword) or through the standard un-tunnelled connection (via the ``http`` keyword).

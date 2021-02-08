@@ -159,7 +159,7 @@ This mode of operation, for example for NYC, will output seven files:
 
 * ``covid19_nyc_LATEST.pkl.gz`` is the `Pandas DataFrame`_  of the COVID-19 cases and deaths, total and per county, from the date of first incident to the latest incident.
 
-* ``covid19_nyc_cds_LATEST.pdf`` and ``covid19_nyc_cds_LATEST.png`` are the PDF and PNG showing the trend of COVID-19 cases and deaths in the NYC metro area.
+* `covid19_nyc_cds_LATEST.pdf <https://tanimislam.github.io/covid19movies/covid19_nyc_cds_LATEST.pdf>`_ and `covid19_nyc_cds_LATEST.png <https://tanimislam.github.io/covid19movies/covid19_nyc_cds_LATEST.png>`_ are the PDF and PNG showing the trend of COVID-19 cases and deaths in the NYC metro area.
 
   .. figure:: https://tanimislam.github.io/covid19movies/covid19_nyc_cds_LATEST.png
      :width: 100%
@@ -167,7 +167,7 @@ This mode of operation, for example for NYC, will output seven files:
 
      The *latest* trend lines of cumulative cases and deaths in the NYC metropolitan area.
   
-* ``covid19_nyc_cases_LATEST.pdf`` and ``covid19_nyc_cases_LATEST.png`` are the PDF and PNG showing the county map, colored by number of COVID-19 cases, on the *LAST* incident day.
+* `covid19_nyc_cases_LATEST.pdf <https://tanimislam.github.io/covid19movies/covid19_nyc_cases_LATEST.pdf>`_ and `covid19_nyc_cases_LATEST.png <plots showing the <https://tanimislam.github.io/covid19movies/covid19_nyc_cases_LATEST.png>`_ are the PDF and PNG showing the county map, colored by number of COVID-19 cases, on the *LAST* incident day.
 
   .. figure:: https://tanimislam.github.io/covid19movies/covid19_nyc_cases_LATEST.png
      :width: 100%
@@ -175,7 +175,7 @@ This mode of operation, for example for NYC, will output seven files:
 
      The *latest* image of cumulative cases in the NYC metropolitan area.
 
-* ``covid19_nyc_death_LATEST.pdf`` and ``covid19_nyc_death_LATEST.png`` are the PDF and PNG showing the county map, colored by number of COVID-19 deaths, on the *LAST* incident day.
+* `covid19_nyc_death_LATEST.pdf <https://tanimislam.github.io/covid19movies/covid19_nyc_death_LATEST.pdf>`_ and `covid19_nyc_death_LATEST.png <https://tanimislam.github.io/covid19movies/covid19_nyc_death_LATEST.png>`_ are the PDF and PNG showing the county map, colored by number of COVID-19 deaths, on the *LAST* incident day.
 
   .. figure:: https://tanimislam.github.io/covid19movies/covid19_nyc_death_LATEST.png
      :width: 100%
