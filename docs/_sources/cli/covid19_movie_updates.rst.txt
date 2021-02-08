@@ -65,3 +65,4 @@ A hopefully illuminating example is shown in :download:`covid19_movie_updates_ex
 .. literalinclude:: examples/covid19_movie_updates_example.bash
    :language: bash
    :linenos:
+   :lines: 1-61
