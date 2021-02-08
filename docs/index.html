@@ -157,21 +157,18 @@
             
   <div class="section" id="welcome-to-the-covid19-stats-repository">
 <h1>Welcome to the COVID19_STATS repository<a class="headerlink" href="#welcome-to-the-covid19-stats-repository" title="Permalink to this headline">¶</a></h1>
-</div>
-<div class="section" id="readme">
-<h1>README<a class="headerlink" href="#readme" title="Permalink to this headline">¶</a></h1>
 <p>Hello world! This is my COVID-19 tracker. This is not nearly as sophisticated as what’s in <a class="reference external" href="https://ncov2019.live">ncov2019.live</a>, and described in <a class="reference external" href="https://www.newyorker.com/magazine/2020/03/30/the-high-schooler-who-became-a-covid-19-watchdog">this New Yorker article</a>.</p>
 <p>I have made major changes in the functionality and implementation from the original commits, since commit <a class="reference external" href="https://github.com/tanimislam/covid19_stats/commit/78917dd20c43bd65320cf51958fa481febef4338">#78917</a> for instance.</p>
 <ul>
 <li><p>The API code has been refactored into the <code class="docutils literal notranslate"><span class="pre">covid19_stats.engine</span></code> subdirectory, and is divided into three main submodules: <code class="docutils literal notranslate"><span class="pre">covid19_stats.engine.core</span></code> provides the higher level API calls for processing the COVID-19 data; <code class="docutils literal notranslate"><span class="pre">covid19_stats.engine.gis</span></code> provides the lower-level APIs to write out, read in, and process the raw GIS data provided mainly by the US Census Bureau; and <code class="docutils literal notranslate"><span class="pre">covid19_stats.engine.viz</span></code> does the visualization part.</p></li>
-<li><p>The command line interfaces (CLI) back-ends live in <code class="docutils literal notranslate"><span class="pre">covid19_stats.cli</span></code>. One of the command line interfaces, <code class="docutils literal notranslate"><span class="pre">covid19_update_database</span></code>, updates the git submodule (the <a class="reference external" href="https://github.com/nytimes/covid-19-data">NY Times COVID-19 repository</a>) with the <em>latest</em> data. Previously, one updated the database by manually running, from the repository’s top level directory,</p>
+<li><p>The command line interfaces (CLI) back-ends live in <code class="docutils literal notranslate"><span class="pre">covid19_stats.cli</span></code>. One of the command line interfaces, <a class="reference external" href="https://tanimislam.github.io/covid19_stats/cli/covid19_update_database.html#covid19-update-database">covid19_update_database</a>, updates the git submodule (the <a class="reference external" href="https://github.com/nytimes/covid-19-data">NY Times COVID-19 repository</a>) with the <em>latest</em> data. Previously, one updated the database by manually running, from the repository’s top level directory,</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git -C covid19_stats/covid-19-data pull origin master</span>
 </pre></div>
 </div>
 </li>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">testing</span></code> subdirectory contains <a class="reference external" href="https://jupyter.org">Jupyter Notebooks</a> that illuminate bits and pieces of this COVID-19 tracker’s functionality.</p></li>
 </ul>
-<p>Here is some output from using this COVID-19 tracker. The data lives underneath <a class="reference external" href="https://tanimislam.github.com/covid19movies">https://tanimislam.github.com/covid19movies</a></p>
+<p>Here is some output from using this COVID-19 tracker. The data lives underneath <a class="reference external" href="https://tanimislam.github.io/covid19movies">https://tanimislam.github.io/covid19movies</a></p>
 <ul>
 <li><p>The summary of COVID-19 statistics for the top 50 MSAs by estimated 2019 population.</p>
 <table class="colwidths-auto docutils align-default" id="id2">
