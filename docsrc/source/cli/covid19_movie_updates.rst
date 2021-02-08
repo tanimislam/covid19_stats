@@ -30,7 +30,7 @@ This will create *nine* COVID-19 case and death summary movies and figures for e
 
 * `covid19_conus_death_LATEST.pdf <https://tanimislam.github.io/covid19movies/covid19_conus_death_LATEST.pdf>`_ and `covid19_conus_death_LATEST.png <plots showing the <https://tanimislam.github.io/covid19movies/covid19_conus_death_LATEST.png>`_ are the PDF and PNG showing the CONUS_ county map, colored by number of COVID-19 deaths, on the *LAST* incident day.
 
-* `covid19_conus_LATEST.mp4 <https://tanimislam.github.io/covid19movies/covid19_conus_LATEST.mp4>`_ is the four-quadrant movie of trends, cumulative cases, and cumulative deaths in the CONUS_. See :ref:`fig_covid19_nyc_LATEST` for an example of its format, but for the NYC metropolitan area.
+* `covid19_conus_LATEST.mp4 <https://tanimislam.github.io/covid19movies/covid19_conus_LATEST.mp4>`_ is the four-quadrant movie of trends, cumulative cases, and cumulative deaths in the CONUS_. See :numref:`fig_covid19_nyc_LATEST` for an example of its format, but for the NYC metropolitan area.
 
 * `covid19_conus_cases_LATEST.mp4 <https://tanimislam.github.io/covid19movies/covid19_conus_cases_LATEST.mp4>`_ is the trend of cumulative cases in the CONUS_ (lower right quadrant of `covid19_conus_LATEST.mp4 <https://tanimislam.github.io/covid19movies/covid19_conus_LATEST.mp4>`_).
 
