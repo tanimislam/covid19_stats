@@ -1,0 +1,6 @@
+/* follow instructions from https://stackoverflow.com/questions/23211695/modifying-content-width-of-the-sphinx-theme-read-the-docs/33626140#33626140 on wideness in sphinx rtd_theme
+   This is for style.css
+*/
+.wy-nav-content {
+    max-width: 1200px !important;
+}

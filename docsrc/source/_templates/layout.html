@@ -1,0 +1,9 @@
+<!-- 
+     Follow instructions from https://stackoverflow.com/questions/23211695/modifying-content-width-of-the-sphinx-theme-read-the-docs/33626140#33626140 on wideness in sphinx rtd_theme
+     This is for layout.html
+*/
+--> 
+{% extends "!layout.html" %}
+{% block extrahead %}
+    <link href="{{ pathto("_static/style.css", True) }}" rel="stylesheet" type="text/css">
+{% endblock %}
