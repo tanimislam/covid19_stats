@@ -569,6 +569,12 @@ Here is some output from using this COVID-19 tracker. The data lives underneath 
      * - `SF Bay Area <https://tanimislam.github.io/covid19movies/covid19_bayarea_LATEST.mp4>`_
        - `Washington, DC <https://tanimislam.github.io/covid19movies/covid19_dc_LATEST.mp4>`_
        - `Richmond, VA <https://tanimislam.github.io/covid19movies/covid19_richmond_LATEST.mp4>`_
+     * - |anim_gif_sacramento|
+       -
+       -
+     * - `Sacramento <https://tanimislam.github.io/covid19movies/covid19_sacramento_LATEST.mp4>`_
+       -
+       -
 
   And here is the animation for the continental United States as of 15 FEBRUARY 2021
 
@@ -661,6 +667,10 @@ The comprehensive documentation lives in HTML created with Sphinx_, and now in t
    :align: middle
 
 .. |anim_gif_richmond| image:: https://tanimislam.github.io/covid19movies/covid19_richmond_LATEST.gif
+   :width: 100%
+   :align: middle
+
+.. |anim_gif_sacramento| image:: https://tanimislam.github.io/covid19movies/covid19_sacramento_LATEST.gif
    :width: 100%
    :align: middle
 
