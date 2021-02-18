@@ -28,3 +28,5 @@
 .. _mpi4py: https://mpi4py.readthedocs.io/en/stable
 .. _`GitHub Page`: https://pages.github.com
 .. _SLURM: https://en.wikipedia.org/wiki/Slurm_Workload_Manager
+.. _REST: https://en.wikipedia.org/wiki/Representational_state_transfer
+.. _SSH: https://en.wikipedia.org/wiki/SSH_(Secure_Shell)

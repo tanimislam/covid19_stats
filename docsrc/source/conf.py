@@ -28,7 +28,7 @@ version = ''
 # The full version, including alpha/beta/rc tags
 release = '1.0'
 
-tls_verify = False
+tls_verify = True
 
 # -- General configuration ---------------------------------------------------
 
@@ -64,6 +64,7 @@ intersphinx_mapping = {
     'Pillow' : ( 'https://pillow.readthedocs.io/en/stable', None ),
     'docutils' : ( 'https://docutils.readthedocs.io/en/sphinx-docs', None ),
     'mutagen'  : ( 'https://mutagen.readthedocs.io/en/latest', None ),
+    'nprstuff' : ( 'https://tanimislam.github.io/nprstuff', None ),
 }
 
 numfig = True
@@ -103,3 +104,6 @@ html_static_path = ['_static']
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
+
+# icon file
+html_favicon = 'covid19_stats.ico'
