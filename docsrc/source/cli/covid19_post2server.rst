@@ -94,7 +94,7 @@ In this mode, one specifies the remote name of the SSH_ server, and the username
 
 * Its processing endpoint is locally at ``http://localhost:31999/PROCESSING_ENDPOINT``.
 
-Its help screen, when running ``covid19_post2server http -h``, is,
+Its help screen, when running ``covid19_post2server ssh -h``, is,
 
 .. code-block:: console
 
