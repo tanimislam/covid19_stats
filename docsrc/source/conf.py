@@ -28,7 +28,7 @@ version = ''
 # The full version, including alpha/beta/rc tags
 release = '1.0'
 
-tls_verify = True
+tls_verify = False
 
 # -- General configuration ---------------------------------------------------
 
@@ -53,7 +53,7 @@ extensions = [
 ## following instructions here (https://github.com/svenevs/exhale/tree/master/docs/_intersphinx) to fix beautifulsoup doc.
 intersphinx_mapping = {
     'python': ('https://docs.python.org/3', None),
-    'requests': ( 'https://requests.kennethreitz.org/en/master/', None),
+    'requests': ( 'https://requests.readthedocs.io/en/master/', None),
     'beautifulsoup' : ( 'https://www.crummy.com/software/BeautifulSoup/bs4/doc/', '_intersphinx/bs4_objects.inv' ),
     'selenium' : ( 'https://selenium-python.readthedocs.io', None ),
     'pyqt5' : ( 'https://www.riverbankcomputing.com/static/Docs/PyQt5', "_intersphinx/pyqt5_objects.inv" ),

@@ -180,7 +180,7 @@ def display_fips_geom( fips_data, ax ):
 
 def display_fips( collection_of_fips, ax ):
     bdict = core.get_boundary_dict( collection_of_fips )
-    bbox = core.calculate_total_bbox( chain.from_iterable( bdict.values( ) ) )
+    bbox = gis.calculate_total_bbox( chain.from_iterable( bdict.values( ) ) )
     bdict = core.get_boundary_dict( collection_of_fips )
     m = create_and_draw_basemap( ax, bbox, resolution = 'h' )
     fc = list( to_rgba( '#1f77b4' ) )
@@ -196,6 +196,7 @@ def display_fips( collection_of_fips, ax ):
             x_cent = x.mean( )
             y_cent = y.mean( )
             ax.text( x_cent, y_cent, fips, fontsize = 10, fontweight = 'bold', color = 'red' )
+    return m
 
 def display_msa( msaname, ax, doShow = False ):
     fig = ax.figure
