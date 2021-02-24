@@ -1,3 +1,5 @@
+.. _resources_directory:
+
 RESOURCES
 ===========
 The ``resources`` subfolder consists of US census shapefile data, taken from `this URL <https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html>`_. The exploded ZIP archive of US counties was downloaded on 15 APRIL 2020 from `cb_2018_us_county_500k.zip <https://www2.census.gov/geo/tiger/GENZ2018/shp/cb_2018_us_county_500k.zip>`_. The FIPS data processed from the SHP files is stored in :download:`resources/fips_2018_data.pkl.gz </_static/fips_2018_data.pkl.gz>`.

@@ -7,6 +7,9 @@ from itertools import chain
 from covid19_stats import resourceDir
 
 def calculate_total_bbox( shapes ):
+    """
+    This gets the bounding box -- minimum and maximum latitude, and minimum and maximum longitude -- of a :py:class:`list` of shapes. Each shape is an :math:`N\times 2` shaped :py:class:`array <numpy.ndarray>`, with :math:`N` points describing . Each row is the latitude and longitude of a point -- first is the latitude, and second 
+    """
     def _get_bbox( shp ):
         lng_min = shp[:,0].min( )
         lng_max = shp[:,0].max( )

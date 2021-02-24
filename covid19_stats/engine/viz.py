@@ -179,7 +179,6 @@ def display_fips_geom( fips_data, ax ):
         ax.add_patch( poly )
 
 def display_fips( collection_of_fips, ax ):
-    bdict = core.get_boundary_dict( collection_of_fips )
     bbox = core.calculate_total_bbox( chain.from_iterable( bdict.values( ) ) )
     bdict = core.get_boundary_dict( collection_of_fips )
     m = create_and_draw_basemap( ax, bbox, resolution = 'h' )
