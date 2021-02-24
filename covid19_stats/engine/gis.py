@@ -8,7 +8,7 @@ from covid19_stats import resourceDir
 
 def calculate_total_bbox( shapes ):
     """
-    This gets the bounding box -- minimum and maximum latitude, and minimum and maximum longitude -- of a :py:class:`list` of shapes. Each shape is an :math:`N\times 2` shaped :py:class:`array <numpy.array>`, with :math:`N` points describing the boundary. Each row is the latitude and longitude of a point -- first is the latitude, and second is the longitude.
+    This gets the bounding box -- minimum and maximum latitude, and minimum and maximum longitude -- of a :py:class:`list` of shapes. Each shape is an :math:`N \times 2` shaped :py:class:`array <numpy.array>`, with :math:`N` points describing the boundary. Each row is the latitude and longitude of a point -- first is the latitude, and second is the longitude.
 
     For example, take the Richmond, VA, metropolitan statistical area. It consists of X counties: the city of Richmond, Chesterfield County, Henrico County, 
     """
