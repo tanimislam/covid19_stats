@@ -29,7 +29,7 @@ def my_colorbar( mappable, ax, **kwargs ):
 
 def create_and_draw_basemap(
     ax, bbox, resolution = 'i', river_linewidth = 5, river_alpha = 0.3,
-    coast_linewidth = 2, coast_alpha = 0.4 ):
+    coast_linewidth = 2, coast_alpha = 0.4, drawGrid = True ):
     min_lng, min_lat, max_lng, max_lat = bbox
     lng_center = 0.5 * ( min_lng + max_lng )
     lat_center = 0.5 * ( min_lat + max_lat )
@@ -40,8 +40,9 @@ def create_and_draw_basemap(
         llcrnrlat = lat_center - lat_delta, urcrnrlat = lat_center + lat_delta,
         llcrnrlon = lng_center - lng_delta, urcrnrlon = lng_center + lng_delta,
         resolution = resolution, area_thresh = 1.0, ellps = 'WGS84', ax = ax )
-    m.drawparallels(numpy.arange(min_lat, max_lat, lat_delta / 1.5 ), labels = [1,0,0,1] )
-    m.drawmeridians(numpy.arange(min_lng, max_lng, lng_delta / 1.5 ), labels = [1,0,0,1] )
+    if drawGrid:
+        m.drawparallels(numpy.arange(min_lat, max_lat, lat_delta / 1.5 ), labels = [1,0,0,1] )
+        m.drawmeridians(numpy.arange(min_lng, max_lng, lng_delta / 1.5 ), labels = [1,0,0,1] )
     #
     ## create a "black" with alpha = coast_alpha
     try:
@@ -62,7 +63,7 @@ def create_and_draw_basemap_smarter(
     river_linewidth = 5, river_alpha = 0.3 ,
     coast_linewidth = 2, coast_alpha = 0.4):
     #
-    ## smarter than create_and_draw_basemap, because here we solve for the basemap with the lat/lng deltas
+    ## smarter than create_and_draw_basemap because here we solve for the basemap with the lat/lng deltas
     ## that encompass ALL the boundary points of FIPS counties
     proj_dat = determine_corners_center_stereo( boundary_dict, scaling = scaling )
     m = Basemap(
@@ -165,7 +166,6 @@ def determine_corners_center_stereo( boundary_dict, scaling = 1.0 ):
         'lng_max' : lng_cent + scaling * ( lng_max - lng_cent ) }
 
 def display_fips_geom( fips_data, ax ):
-    assert( 'bbox' in fips_data and 'points' in fips_data )
     bbox = fips_data[ 'bbox' ]
     m = create_and_draw_basemap( ax, bbox, resolution = 'h' )
     fc = list( to_rgba( '#1f77b4' ) )
@@ -178,11 +178,11 @@ def display_fips_geom( fips_data, ax ):
             facecolor = tuple(fc), alpha = 1.0 )
         ax.add_patch( poly )
 
-def display_fips( collection_of_fips, ax ):
+def display_fips( collection_of_fips, ax, **kwargs ):
     bdict = core.get_boundary_dict( collection_of_fips )
     bbox = gis.calculate_total_bbox( chain.from_iterable( bdict.values( ) ) )
     bdict = core.get_boundary_dict( collection_of_fips )
-    m = create_and_draw_basemap( ax, bbox, resolution = 'h' )
+    m = create_and_draw_basemap( ax, bbox, **kwargs )
     fc = list( to_rgba( '#1f77b4' ) )
     fc[-1] = 0.25
     for fips in sorted( bdict ):

@@ -13,3 +13,4 @@ TABLE OF CONTENTS
    installation
    resources
    cli/cli
+   api/api

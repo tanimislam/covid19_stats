@@ -17,9 +17,10 @@ from covid19_stats.engine import gis
 
 class COVID19Database( object ):
     """
-    This class implements a Singleton_ with static access methods to US GIS data and COVID-19 data.
+    This class implements a `singleton pattern`_ with static access methods to US GIS_ data and COVID-19 cumulative summary case and death data, for territorial units within the United States. It lazily instantiates itself via GIS_ loading functionality.
 
-    .. _Singleton: https://en.wikipedia.org/wiki/Singleton_pattern
+    .. _`singleton pattern`: https://en.wikipedia.org/wiki/Singleton_pattern
+    .. _GIS: https://en.wikipedia.org/wiki/Geographic_information_system
     """
 
     class __COVID19Database( object ):
