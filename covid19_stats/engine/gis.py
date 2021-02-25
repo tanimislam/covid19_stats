@@ -8,9 +8,23 @@ from covid19_stats import resourceDir
 
 def calculate_total_bbox( shapes ):
     """
-    This gets the bounding box -- minimum and maximum latitude, and minimum and maximum longitude -- of a :py:class:`list` of shapes. Each shape is an :math:`N \times 2` shaped :py:class:`array <numpy.array>`, with :math:`N` points describing the boundary. Each row is the latitude and longitude of a point -- first is the latitude, and second is the longitude.
+    This gets the bounding box -- minimum and maximum latitude, and minimum and maximum longitude -- of a :py:class:`list` of shapes. 
 
-    For example, take the Richmond, VA, metropolitan statistical area. It consists of X counties: the city of Richmond, Chesterfield County, Henrico County, 
+    For example, take the Sacramento, CA, metropolitan statistical area. It consists of four counties: El Dorado County, Placer County, Sacramento County, and Yolo County. :numref:`gis_calculate_total_bbox_sacramento` demonstrates how this algorithm works. It takes the bounding boxes of each county's shape (shown in pink), and then takes the minimum and maximum latitude and longitude of each county's bbox to get the *total* bounding box (in green).
+
+    .. _gis_calculate_total_bbox_sacramento:
+
+    .. figure:: /_static/gis/gis_calculate_total_bbox_sacramento.png
+       :width: 100%
+       :align: left
+
+       Demonstration of this functionality on the four counties in the `Sacramento, CA MSA <https://en.wikipedia.org/wiki/Sacramento_metropolitan_area>`_. In green is the total bounding box of the lat/longitude shapes of all four counties.
+
+    Now here is the API description.
+
+    :param list shapes: A :py:class:`list` of shapes. Each shape is an :math:`N \\times 2` shaped :py:class:`array <numpy.array>`, with :math:`N` points describing the boundary. Each row is the latitude and longitude of a point -- first is the latitude, and second is the longitude. See :download:`gis_calculate_total_bbox_sacramento.pkl.gz </_static/gis/gis_calculate_total_bbox_sacramento.pkl.gz>` for a clear example given by :numref:`gis_calculate_total_bbox_sacramento`.
+    :returns: a four element :py:class:`tuple` of the total bounding box of the shape collection: minimum longitude, minimum latitude, maximum longitude, and maximum latitude.
+    :rtype: tuple
     """
     def _get_bbox( shp ):
         lng_min = shp[:,0].min( )
@@ -41,6 +55,22 @@ def _get_record_shapefile_astup( rec, shape ):
     return ( fips_code, data )
 
 def create_and_store_fips_2018( ):
+    """
+    Utility function that loads in the US CENSUS 2018 county information, located in :download:`cb_2018_us_county_500k.shp </_static/gis/cb_2018_us_county_500k.shp>` as a collection of `Shapefiles <https://en.wikipedia.org/wiki/Shapefile>`_, and returns a :py:class:`dict` of county information.
+
+    If there is no serialized version of this dictionary, this method *also* serializes the data structure, :download:`fips_2018_data.pkl.gz </_static/gis/fips_2018_data.pkl.gz>`, for easy reloading.
+
+    Subsequently, if :download:`fips_2018_data.pkl.gz </_static/gis/fips_2018_data.pkl.gz>` exists, then loads that file and returns that object.
+
+    :returns: a :py:class:`dict` of US county geographic data. The key is the `FIPS code`_ for the county. Each value is a :py:class:`dict`
+
+      * ``bbox`` is the lat/lng bounding box for that county.
+      * ``points`` is a list of shapes for that county. Each shape is an :math:`N \\times 2` shaped :py:class:`array <numpy.array>`, with :math:`N` points describing the boundary. Each row is the latitude and longitude of a point -- first is the latitude, and second is the longitude
+
+    This method uses `shapefile.Reader <https://github.com/GeospatialPython/pyshp>`_ to load in :download:`cb_2018_us_county_500k.shp </_static/gis/cb_2018_us_county_500k.shp>` if :download:`fips_2018_data.pkl.gz </_static/gis/fips_2018_data.pkl.gz>` does not exist.
+
+    .. _`FIPS code`: https://en.wikipedia.org/wiki/FIPS_county_code
+    """
     if os.path.isfile( os.path.join(
         resourceDir, 'fips_2018_data.pkl.gz' ) ):
         return pickle.load( gzip.open( os.path.join(
@@ -54,6 +84,14 @@ def create_and_store_fips_2018( ):
     return fips_2018_data
 
 def do_bbox_intersect( bbox1, bbox2 ):
+    """
+    Checks if two bounding boxes intersect.
+
+    :param tuple bbox1: the four-element :py:class:`tuple` of bounding box #1: minimum lng/lat, and maximum lng/lat.
+    :param tuple bbox2: the four-element :py:class:`tuple` of bounding box #2: minimum lng/lat, and maximum lng/lat.
+    :returns: ``True`` if intersect, ``False`` otherwise.
+    :rtype: bool
+    """
     lng1_min, lat1_min, lng1_max, lat1_max = bbox1
     lng2_min, lat2_min, lng2_max, lat2_max = bbox2
     if lng1_max < lng2_min or lng2_max < lng1_min: return False
@@ -61,6 +99,24 @@ def do_bbox_intersect( bbox1, bbox2 ):
     return True
         
 def get_fips_adjacency( fips, fips_data ):
+    """
+    Finds the `FIPS code`_ of all counties adjacent to a specified county. For example, Sacramento County, with `FIPS code`_ of 06067, has eight counties adjacent to it: 06005, 06013, 06017, 06061, 06077, 06095, 06101, 06113. :numref:`gis_get_fips_adjacency_sacramento` demonstrates that.
+
+    .. _gis_get_fips_adjacency_sacramento:
+
+    .. figure:: /_static/gis/gis_get_fips_adjacency_sacramento.png
+       :width: 100%
+       :align: left
+
+       Visualization of the eight counties adjacent to Sacramento County (06067). Sacramento County is accentuated for easier visualization here.
+
+    Now here is the API description.
+
+    :param str fips: the `FIPS code`_ of the US county or territorial unit.
+    :param dict fips_data: the US county :py:class:`dict` produced by, for example, :py:meth:`create_and_store_fips_2018 <covid19_stats.engine.gis.create_and_store_fips_2018>`.
+    :returns: a :py:class:`set` of `FIPS code`_\ s of counties adjacent to ``fips``.
+    :rtype: set
+    """
     assert( fips in fips_data )
     fips_excl = set( fips_data ) - set( [ fips ] )
     possible_fips = set(filter(
@@ -79,6 +135,14 @@ def get_fips_adjacency( fips, fips_data ):
 
 def construct_adjacency( fips_data, filename = os.path.join(
             resourceDir, 'fips_2018_adj.pkl.gz' ) ):
+    """
+    Creates, and then stores (or loads) the adjacency dictionary of all US counties and territorial units. If the storage file, which is by default :download:`fips_2018_adj.pkl.gz </_static/gis/fips_2018_adj.pkl.gz>`, does not exist, then will create and store this data into the storage file. Will return the data in the end.
+
+    :param dict fips_data: the US county :py:class:`dict` produced by, for example, :py:meth:`create_and_store_fips_2018 <covid19_stats.engine.gis.create_and_store_fips_2018>`.
+    :param str filename: the location of the adjacency dictionary file, which is by default :download:`fips_2018_adj.pkl.gz </_static/gis/fips_2018_adj.pkl.gz>` located in the ``covid19_stats`` resource directory.
+    :returns: a :py:class:`dict` of adjacency. Each key is a `FIPS code`_ of a county, and each value is a :py:class:`set` of counties and other territories adjacent to it. See :py:meth:`get_fips_adjacency <covid19_stats.engine.gis.get_fips_adjacency>` to see an example of this adjacency information for a single county.
+    :rtype: dict
+    """
     if os.path.isfile( filename ):
         return pickle.load( gzip.open( filename, 'rb' ) )
     with multiprocessing.Pool( processes = multiprocessing.cpu_count( ) ) as pool:
@@ -90,6 +154,17 @@ def construct_adjacency( fips_data, filename = os.path.join(
         return set_of_adjacents
 
 def create_and_store_fips_counties_2019( ):
+    """
+    :returns: a two element :py:class:`tuple`. The first element is a :py:class:`dict` of `FIPS code` to a :py:class:`dict` value: ``county`` and ``state``. The second element is the reverse :py:class:`dict` of a :py:class:`tuple` (of county and state) to its `FIPS code`_.
+
+      The first :py:class:`dict` is stored in :download:`all_2019_fips_cs_dict.pkl.gz </_static/gis/all_2019_fips_cs_dict.pkl.gz>`, and the second :py:class:`dict` is stored in :download:`all_2019_cs_fips_dict.pkl.gz </_static/gis/all_2019_cs_fips_dict.pkl.gz>`.
+
+      If either file does not exist, then the dictionary is created and stored into the appropriate file.
+
+      If the file exists, then the object is loaded from that file.
+
+    :rtype: tuple
+    """
     if all(map(lambda fname: os.path.isfile(
         os.path.join( resourceDir, fname ) ),
                    ( 'all_2019_fips_cs_dict.pkl.gz', 'all_2019_cs_fips_dict.pkl.gz' ) ) ):
@@ -176,6 +251,12 @@ def create_and_store_fips_counties_2019( ):
     return fips_countystate_dict, cs_fips_dict
 
 def create_fips_popmap_2019( ):
+    """
+    Creates a :py:class:`dict` of estimated 2019 US Census population in each US county or territory. Also stores this data into the file, :download:`fips_2019_popdict.pkl.gz </_static/gis/fips_2019_popdict.pkl.gz>`, if it does not exist. If it does exist, then loads the file :download:`fips_2019_popdict.pkl.gz </_static/gis/fips_2019_popdict.pkl.gz>` and returns that data.
+
+    :returns: a :py:class:`dict` of `FIPS code`_ to estimated 2019 US census population.
+    :rtype: dict
+    """
     if os.path.isfile( os.path.join(
         resourceDir, 'fips_2019_popdict.pkl.gz' ) ):
         return pickle.load( gzip.open( os.path.join(
@@ -194,6 +275,44 @@ def create_fips_popmap_2019( ):
     return fips_pop_dict
     
 def create_msa_2019( ):
+    """
+    Creates and returns *raw and unnormalized* :py:class:`list` of `Metropolitan statistical area`_\ s initially recorded in :download:`msa_2019.csv </_static/gis/msa_2019.csv>`, sorted by population from smallest to largest, and stores the object into :download:`msa_2019.pkl.gz </_static/gis/msa_2019.pkl.gz>` if it does not exist. If :download:`msa_2019.pkl.gz </_static/gis/msa_2019.pkl.gz>`, then loads this files and returns the subsequent object.
+
+    Each entry in the :py:class:`list` looks like this. For example, for `St. Louis, MO MSA <stlouis_>`_,
+
+    .. code-block:: python
+
+       {'msa': 41180,
+        'pop est 2019': 2803228,
+        'fips': {'17005',
+         '17013',
+         '17027',
+         '17083',
+         '17117',
+         '17119',
+         '17133',
+         '17163',
+         '29071',
+         '29099',
+         '29113',
+         '29183',
+         '29189',
+         '29219',
+         '29510'},
+        'state': 'MO-IL',
+        'RNAME': 'St. Louis',
+        'prefix': 'stlouis',
+        'region name': 'St. Louis Metro Area'}
+        
+    The keys for each MSA are ``msa`` (an integer code), ``pop est 2019`` is the US Census 2019 estimated population, ``fips`` is a :py:class:`set` of counties by `FIPS code`_ located in this MSA, the ``state`` are the states this MSA covers, ``RNAME`` is a legend name for plotting, ``prefix`` is the name used to identify those files that contain data for this MSA, and ``region name`` is the common and accepted MSA name.
+
+    :py:meth:`create_and_store_msas_and_fips <covid19_stats.engine.gis.create_and_store_msas_and_fips>` contains the fully normalized :py:class:`dict` of `Metropolitan statistical area`\ s used by the NY Times COVID-19 database, and :py:meth:`merge_msas <covid19_stats.engine.gis.merge_msas>` performs the normalization.
+
+    :returns: a sorted, but unnormalized, :py:class:`list` of `Metropolitan statistical area`\ s as defined by the 2019 US Census.
+    :rtype: list
+    .. _`Metropolitan statistical area`: https://en.wikipedia.org/wiki/Metropolitan_statistical_area
+    .. _stlouis: https://en.wikipedia.org/wiki/Greater_St._Louis
+    """
     if os.path.isfile( os.path.join(
         resourceDir, 'msa_2019.pkl.gz' ) ):
         return pickle.load( gzip.open( os.path.join(
@@ -271,6 +390,20 @@ def create_msa_2019( ):
     return all_data_msas
 
 def merge_msas( regionName, prefix, msaids, all_data_msas ):
+    """
+    This takes an input MSA_, defined by its ``prefix``, gives it a new or existing ``regionName``, by merging one or more :py:class:`set` of ``msaids``, in a :py:class:`list` of MSA_\ s as returned by, e.g., :py:meth:`create_msa_2019 <covid19_stats.engine.gis.create_msa_2019>`. It then returns a new :py:class:`list` of MSA_\ s in the same format as ``all_data_msas``.
+
+    This is used by, for example, normalizing the MSA_ data by merging *all* five boroughs in NYC into a single fake county, ``NYC``, in the New York City MSA.
+
+    :param str regionName: the region name (``region name`` key) of the merged MSA_.
+    :param str prefix: the named identifier of the MSA_ to be merged.
+    :param set msaids: the collection of MSA_\ s to be merged into ``prefix`` MSA_.
+    :param list all_data_msas: the input :py:class:`list` of county or US territory `FIPS code`_\ s. Implicitly, ``all_data_msas`` must contain those the MSA_\ s identified by ``prefix``.
+    :returns: a new :py:class:`list` of MSA_\ s in the same style as ``all_data_msas``, sorted by population from lowest to highest. None of the MSA_\ s in this new collection contain MSA_\ s in ``msaids``.
+    :rtype: list
+
+    .. _MSA: https://en.wikipedia.org/wiki/Metropolitan_statistical_area
+    """
     all_msaids = set( map(lambda entry: entry['msa'],
                           filter(lambda entry: 'status' not in entry, all_data_msas)))
     assert( len( set( msaids ) - set( all_msaids ) ) == 0 )
@@ -299,6 +432,41 @@ def merge_msas( regionName, prefix, msaids, all_data_msas ):
     return sorted( all_data_msas_post, key = lambda entry: entry[ 'pop est 2019' ] )
 
 def create_and_store_msas_and_fips_2019( ):
+    """
+    This returns a fully normalized :py:class:`dict` of MSA_\ s consistent with the the NY Times COVID-19 database. Also stores this data into the file, :download:`msa_2019_dict.pkl.gz </_static/gis/msa_2019_dict.pkl.gz>`, if it does not exist. If it does exist, then loads the file :download:`msa_2019_dict.pkl.gz </_static/gis/msa_2019_dict.pkl.gz>` and returns that data. It will also dump normalized :py:class:`list` of MSA_ data into :download:`msa_2019_post.pkl.gz </_static/gis/msa_2019_post.pkl.gz>`.
+
+    This method does four things:
+    
+    * merges San Francisco, San Jose, and Napa MSA_\ s into the SF Bay Area.
+    * merges NYC into the NYC metro area.
+    * renames Washington, DC to the DC metro area.
+    * merges Los Angeles, Riverside, and Oxnard MSA_\ s into the "Los Angeles" metro area (`greater Los Angeles <https://en.wikipedia.org/wiki/Greater_Los_Angeles>`_).
+
+    :returns: a :py:class:`dict` of MSA_ information. The key is the MSA_ data ``prefix``, and the value is a :py:class:`dict` of ``prefix``, ``region name``, ``fips``, and ``population``. For example, for `St. Louis <stlouis_>`_, it is,
+
+       .. code-block:: python
+
+          {'stlouis': {'prefix': 'stlouis',
+            'region name': 'St. Louis Metro Area',
+            'fips': {'17005',
+             '17013',
+             '17027',
+             '17083',
+             '17117',
+             '17119',
+             '17133',
+             '17163',
+             '29071',
+             '29099',
+             '29113',
+             '29183',
+             '29189',
+             '29219',
+             '29510'},
+            'population': 2803228}}
+    
+    :rtype: dict
+    """
     if os.path.isfile( os.path.join( resourceDir, 'msa_2019_dict.pkl.gz' ) ):
         return pickle.load( gzip.open( os.path.join(
             resourceDir, 'msa_2019_dict.pkl.gz' ), 'rb' ) )
