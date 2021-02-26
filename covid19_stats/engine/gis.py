@@ -444,6 +444,8 @@ def create_and_store_msas_and_fips_2019( ):
 
     :returns: a :py:class:`dict` of MSA_ information. The key is the MSA_ data ``prefix``, and the value is a :py:class:`dict` of ``prefix``, ``region name``, ``fips``, and ``population``. For example, for `St. Louis <stlouis_>`_, it is,
 
+       .. _stlouis_msa_example_data:
+
        .. code-block:: python
 
           {'stlouis': {'prefix': 'stlouis',

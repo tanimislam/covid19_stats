@@ -283,6 +283,8 @@ class COVID19Database( object ):
         """
         :returns: a :py:class:`list` of the big shebang, the *reason behind the reason*, for the whole data set of COVID-19 cumulative cases and deaths. Each entry is the status of cumulative COVID-19 cases and deaths for a specific county at a specific date. For example, one of the last entries in this :py:class:`list` is,
 
+           .. _county_covid19record_example:
+
            .. code-block:: python
 
               {'date': datetime.date(2021, 1, 19),
@@ -303,6 +305,8 @@ class COVID19Database( object ):
     def data_conus( cls ):
         """
         :returns: the same type of region data structure for a specific MSA_. Easier to show rather than describe in words this :py:class:`dict`.
+
+           .. _conus_example_data:
 
            .. code-block:: python
 
@@ -411,6 +415,8 @@ class COVID19Database( object ):
     def data_states( cls ):
         """
         :returns: the :py:class:`dict` of US state information, for states in the CONUS_. It returns the *same* type of data structure as what :py:meth:`create_and_store_msas_and_fips_2019 <covid19_stats.engine.gis.create_and_store_msas_and_fips_2019>` returns. But better show-than-tell, here is the data for the state of `Rhode Island <https://en.wikipedia.org/wiki/Rhode_Island>`_.
+
+           .. _rhode_island_state_example_data:
 
            .. code-block:: python
 

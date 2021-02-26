@@ -64,6 +64,7 @@ intersphinx_mapping = {
     'Pillow' : ( 'https://pillow.readthedocs.io/en/stable', None ),
     'docutils' : ( 'https://docutils.readthedocs.io/en/sphinx-docs', None ),
     'mutagen'  : ( 'https://mutagen.readthedocs.io/en/latest', None ),
+    'pandas'   : ( 'https://pandas.pydata.org/docs', None ),
     'nprstuff' : ( 'https://tanimislam.github.io/nprstuff', None ),
 }
 
