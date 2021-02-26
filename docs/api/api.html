@@ -101,6 +101,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#covid19-stats-module">4.1. covid19_stats module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#covid19-stats-engine-module">4.2. covid19_stats.engine module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#covid19-stats-engine-gis-module">4.3. covid19_stats.engine.gis module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#covid19-stats-engine-core-module">4.4. covid19_stats.engine.core module</a></li>
 </ul>
 </li>
 </ul>
@@ -173,9 +174,9 @@
   <div class="section" id="the-covid19-stats-api">
 <span id="using-the-api"></span><h1><span class="section-number">4. </span>THE COVID19_STATS API<a class="headerlink" href="#the-covid19-stats-api" title="Permalink to this headline">¶</a></h1>
 <p>The API provides a much richer base of functionality than the <a class="reference internal" href="../cli/cli.html#using-the-cli"><span class="std std-ref">CLI tools</span></a>, although I have gotten <em>very</em> far by using them. The structure of the API consists of a <a class="reference external" href="https://en.wikipedia.org/wiki/Singleton_pattern">singleton</a> that contains all the <a class="reference external" href="https://en.wikipedia.org/wiki/Geographic_information_system">GIS</a>, full COVID-19 state of all counties in the US, and necessary configuration data. <a class="reference internal" href="#figure-of-api-flow"><span class="std std-numref">Fig. 4.1</span></a> describes the implementation flow of synthesizing COVID-19 summary data.</p>
-<div class="figure align-left" id="id5">
+<div class="figure align-left" id="id8">
 <span id="figure-of-api-flow"></span><a class="reference internal image-reference" href="../_images/covid19_stats_api_covid19database_singleton.png"><img alt="../_images/covid19_stats_api_covid19database_singleton.png" src="../_images/covid19_stats_api_covid19database_singleton.png" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 4.1 </span><span class="caption-text"><a class="reference internal" href="#covid19_stats.COVID19Database" title="covid19_stats.COVID19Database"><code class="xref py py-class docutils literal notranslate"><span class="pre">COVID19Database</span></code></a> is the <a class="reference external" href="https://en.wikipedia.org/wiki/Singleton_pattern">singleton</a> that contains US <a class="reference external" href="https://en.wikipedia.org/wiki/Geographic_information_system">GIS</a> data, and trends of cumulative COVID-19 cases and deaths for <em>all</em> counties and atomic territorial units within the United States. It is somewhat-lazily instantiated by <a class="reference external" href="https://en.wikipedia.org/wiki/Geographic_information_system">GIS</a> functionality that lives in <a class="reference internal" href="#module-covid19_stats.engine.gis" title="covid19_stats.engine.gis"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gis</span></code></a>, and is in turn called by utility methods in <code class="xref py py-mod docutils literal notranslate"><span class="pre">core</span></code>.</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 4.1 </span><span class="caption-text"><a class="reference internal" href="#covid19_stats.COVID19Database" title="covid19_stats.COVID19Database"><code class="xref py py-class docutils literal notranslate"><span class="pre">COVID19Database</span></code></a> is the <a class="reference external" href="https://en.wikipedia.org/wiki/Singleton_pattern">singleton</a> that contains US <a class="reference external" href="https://en.wikipedia.org/wiki/Geographic_information_system">GIS</a> data, and trends of cumulative COVID-19 cases and deaths for <em>all</em> counties and atomic territorial units within the United States. It is somewhat-lazily instantiated by <a class="reference external" href="https://en.wikipedia.org/wiki/Geographic_information_system">GIS</a> functionality that lives in <a class="reference internal" href="#module-covid19_stats.engine.gis" title="covid19_stats.engine.gis"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gis</span></code></a>, and is in turn called by utility methods in <a class="reference internal" href="#module-covid19_stats.engine.core" title="covid19_stats.engine.core"><code class="xref py py-mod docutils literal notranslate"><span class="pre">core</span></code></a>.</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
 </div>
 <p>Subsequent subsections describe each of the main modules, with special emphasis given to <a class="reference internal" href="#covid19_stats.COVID19Database" title="covid19_stats.COVID19Database"><code class="xref py py-class docutils literal notranslate"><span class="pre">COVID19Database</span></code></a> due to its integral role.</p>
 <div class="section" id="covid19-stats-module">
@@ -194,7 +195,7 @@
 <dd><dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p><p>a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of the big shebang, the <em>reason behind the reason</em>, for the whole data set of COVID-19 cumulative cases and deaths. Each entry is the status of cumulative COVID-19 cases and deaths for a specific county at a specific date. For example, one of the last entries in this <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> is,</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;date&#39;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">19</span><span class="p">),</span>
+<span class="target" id="county-covid19record-example"></span><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;date&#39;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">19</span><span class="p">),</span>
  <span class="s1">&#39;county&#39;</span><span class="p">:</span> <span class="s1">&#39;Webster&#39;</span><span class="p">,</span>
  <span class="s1">&#39;state&#39;</span><span class="p">:</span> <span class="s1">&#39;West Virginia&#39;</span><span class="p">,</span>
  <span class="s1">&#39;fips&#39;</span><span class="p">:</span> <span class="s1">&#39;54101&#39;</span><span class="p">,</span>
@@ -219,7 +220,7 @@
 <dd><dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p><p>the same type of region data structure for a specific <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a>. Easier to show rather than describe in words this <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;RNAME&#39;</span><span class="p">:</span> <span class="s1">&#39;CONUS&#39;</span><span class="p">,</span>
+<span class="target" id="conus-example-data"></span><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;RNAME&#39;</span><span class="p">:</span> <span class="s1">&#39;CONUS&#39;</span><span class="p">,</span>
  <span class="s1">&#39;region name&#39;</span><span class="p">:</span> <span class="s1">&#39;CONUS&#39;</span><span class="p">,</span>
  <span class="s1">&#39;prefix&#39;</span><span class="p">:</span> <span class="s1">&#39;conus&#39;</span><span class="p">,</span>
  <span class="s1">&#39;fips&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;48059&#39;</span><span class="p">,</span>
@@ -289,7 +290,7 @@
 <dd><dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p><p>the <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> of US state information, for states in the <a class="reference external" href="https://en.wikipedia.org/wiki/Contiguous_United_States">CONUS</a>. It returns the <em>same</em> type of data structure as what <a class="reference internal" href="#covid19_stats.engine.gis.create_and_store_msas_and_fips_2019" title="covid19_stats.engine.gis.create_and_store_msas_and_fips_2019"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_and_store_msas_and_fips_2019</span></code></a> returns. But better show-than-tell, here is the data for the state of <a class="reference external" href="https://en.wikipedia.org/wiki/Rhode_Island">Rhode Island</a>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;rhode_island&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;RNAME&#39;</span><span class="p">:</span> <span class="s1">&#39;Rhode Island&#39;</span><span class="p">,</span>
+<span class="target" id="rhode-island-state-example-data"></span><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;rhode_island&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;RNAME&#39;</span><span class="p">:</span> <span class="s1">&#39;Rhode Island&#39;</span><span class="p">,</span>
   <span class="s1">&#39;region name&#39;</span><span class="p">:</span> <span class="s1">&#39;Rhode Island&#39;</span><span class="p">,</span>
   <span class="s1">&#39;prefix&#39;</span><span class="p">:</span> <span class="s1">&#39;rhode_island&#39;</span><span class="p">,</span>
   <span class="s1">&#39;fips&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;44001&#39;</span><span class="p">,</span> <span class="s1">&#39;44003&#39;</span><span class="p">,</span> <span class="s1">&#39;44005&#39;</span><span class="p">,</span> <span class="s1">&#39;44007&#39;</span><span class="p">,</span> <span class="s1">&#39;44009&#39;</span><span class="p">],</span>
@@ -486,9 +487,9 @@
 <code class="sig-prename descclassname"><span class="pre">covid19_stats.engine.gis.</span></code><code class="sig-name descname"><span class="pre">calculate_total_bbox</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shapes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.engine.gis.calculate_total_bbox" title="Permalink to this definition">¶</a></dt>
 <dd><p>This gets the bounding box – minimum and maximum latitude, and minimum and maximum longitude – of a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of shapes.</p>
 <p>For example, take the Sacramento, CA, metropolitan statistical area. It consists of four counties: El Dorado County, Placer County, Sacramento County, and Yolo County. <a class="reference internal" href="#gis-calculate-total-bbox-sacramento"><span class="std std-numref">Fig. 4.2</span></a> demonstrates how this algorithm works. It takes the bounding boxes of each county’s shape (shown in pink), and then takes the minimum and maximum latitude and longitude of each county’s bbox to get the <em>total</em> bounding box (in green).</p>
-<div class="figure align-left" id="id6">
+<div class="figure align-left" id="id9">
 <span id="gis-calculate-total-bbox-sacramento"></span><a class="reference internal image-reference" href="../_images/gis_calculate_total_bbox_sacramento.png"><img alt="../_images/gis_calculate_total_bbox_sacramento.png" src="../_images/gis_calculate_total_bbox_sacramento.png" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 4.2 </span><span class="caption-text">Demonstration of this functionality on the four counties in the <a class="reference external" href="https://en.wikipedia.org/wiki/Sacramento_metropolitan_area">Sacramento, CA MSA</a>. In green is the total bounding box of the lat/longitude shapes of all four counties.</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 4.2 </span><span class="caption-text">Demonstration of this functionality on the four counties in the <a class="reference external" href="https://en.wikipedia.org/wiki/Sacramento_metropolitan_area">Sacramento, CA MSA</a>. In green is the total bounding box of the lat/longitude shapes of all four counties.</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
 </div>
 <p>Now here is the API description.</p>
 <dl class="field-list simple">
@@ -574,7 +575,7 @@
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p><p>a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> of <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a> information. The key is the <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a> data <code class="docutils literal notranslate"><span class="pre">prefix</span></code>, and the value is a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> of <code class="docutils literal notranslate"><span class="pre">prefix</span></code>, <code class="docutils literal notranslate"><span class="pre">region</span> <span class="pre">name</span></code>, <code class="docutils literal notranslate"><span class="pre">fips</span></code>, and <code class="docutils literal notranslate"><span class="pre">population</span></code>. For example, for <a class="reference external" href="https://en.wikipedia.org/wiki/Greater_St._Louis">St. Louis</a>, it is,</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;stlouis&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;prefix&#39;</span><span class="p">:</span> <span class="s1">&#39;stlouis&#39;</span><span class="p">,</span>
+<span class="target" id="stlouis-msa-example-data"></span><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;stlouis&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;prefix&#39;</span><span class="p">:</span> <span class="s1">&#39;stlouis&#39;</span><span class="p">,</span>
   <span class="s1">&#39;region name&#39;</span><span class="p">:</span> <span class="s1">&#39;St. Louis Metro Area&#39;</span><span class="p">,</span>
   <span class="s1">&#39;fips&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;17005&#39;</span><span class="p">,</span>
    <span class="s1">&#39;17013&#39;</span><span class="p">,</span>
@@ -680,9 +681,9 @@
 <dt id="covid19_stats.engine.gis.get_fips_adjacency">
 <code class="sig-prename descclassname"><span class="pre">covid19_stats.engine.gis.</span></code><code class="sig-name descname"><span class="pre">get_fips_adjacency</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fips</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fips_data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.engine.gis.get_fips_adjacency" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the <a class="reference external" href="https://en.wikipedia.org/wiki/FIPS_county_code">FIPS code</a> of all counties adjacent to a specified county. For example, Sacramento County, with <a class="reference external" href="https://en.wikipedia.org/wiki/FIPS_county_code">FIPS code</a> of 06067, has eight counties adjacent to it: 06005, 06013, 06017, 06061, 06077, 06095, 06101, 06113. <a class="reference internal" href="#gis-get-fips-adjacency-sacramento"><span class="std std-numref">Fig. 4.3</span></a> demonstrates that.</p>
-<div class="figure align-left" id="id7">
+<div class="figure align-left" id="id10">
 <span id="gis-get-fips-adjacency-sacramento"></span><a class="reference internal image-reference" href="../_images/gis_get_fips_adjacency_sacramento.png"><img alt="../_images/gis_get_fips_adjacency_sacramento.png" src="../_images/gis_get_fips_adjacency_sacramento.png" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 4.3 </span><span class="caption-text">Visualization of the eight counties adjacent to Sacramento County (06067). Sacramento County is accentuated for easier visualization here.</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 4.3 </span><span class="caption-text">Visualization of the eight counties adjacent to Sacramento County (06067). Sacramento County is accentuated for easier visualization here.</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
 </div>
 <p>Now here is the API description.</p>
 <dl class="field-list simple">
@@ -720,6 +721,276 @@
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)">list</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="covid19-stats-engine-core-module">
+<h2><span class="section-number">4.4. </span>covid19_stats.engine.core module<a class="headerlink" href="#covid19-stats-engine-core-module" title="Permalink to this headline">¶</a></h2>
+<p>This module provides the core functionality that the <code class="docutils literal notranslate"><span class="pre">covid19_stats</span></code> command line tools use to summarize and visualize COVID-19 case and death statistics. Here are utility methods to identify data on geographical regions such as <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a>s, states, or the <a class="reference external" href="https://en.wikipedia.org/wiki/Contiguous_United_States">CONUS</a>; to create cumulative case and death data for geographical data; and to print out summary reports of COVID-19 cases and deaths for <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a>s in different formats.</p>
+<span class="target" id="module-covid19_stats.engine.core"></span><dl class="py function">
+<dt id="covid19_stats.engine.core.display_tabulated_metros">
+<code class="sig-prename descclassname"><span class="pre">covid19_stats.engine.core.</span></code><code class="sig-name descname"><span class="pre">display_tabulated_metros</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">form</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'simple'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_metros</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.engine.core.display_tabulated_metros" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints summary COVID-19 cumulative cases and deaths of all or selected <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a>s to stdout a nice tabulated table, in either a simple format with <code class="docutils literal notranslate"><span class="pre">simple</span></code>, <a class="reference external" href="https://github.github.com/gfm/#tables-extension-">Github flavored Markdown</a> with <code class="docutils literal notranslate"><span class="pre">github</span></code>, <a class="reference external" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html#tables">reStructuredText</a> with <code class="docutils literal notranslate"><span class="pre">rst</span></code>, or <a class="reference external" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html#list-table">list-tabled reStructuredText</a> with <code class="docutils literal notranslate"><span class="pre">rst-simple</span></code>.</p>
+<p>Otherwise, if one chooses <code class="docutils literal notranslate"><span class="pre">json</span></code>, then returns a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of that information.</p>
+<p>This acts as an API back-end to <a class="reference internal" href="../cli/covid19_create_movie_or_summary.html#metro-mode"><span class="std std-ref">summarizing MSAs functionality in covid19_create_movie_or_summary</span></a>. Please see <a class="reference internal" href="../cli/covid19_create_movie_or_summary.html#demonstration-simple-format"><span class="std std-ref">demonstration output</span></a> for what this data looks like on screen.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>form</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – <p>If one of <code class="docutils literal notranslate"><span class="pre">simple</span></code>, <code class="docutils literal notranslate"><span class="pre">github</span></code>, <code class="docutils literal notranslate"><span class="pre">rst</span></code>, or <code class="docutils literal notranslate"><span class="pre">rst-simple</span></code>, then prints the table of <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a> summary COVID-19 data to screen. If one of <code class="docutils literal notranslate"><span class="pre">simple</span></code>, <code class="docutils literal notranslate"><span class="pre">github</span></code>, or <code class="docutils literal notranslate"><span class="pre">rst</span></code>, then uses <code class="xref py py-meth docutils literal notranslate"><span class="pre">tabulate</span></code> to format the data.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">json</span></code>, then returns a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of summary data of COVID-19 cumulative cases and deaths for all or specified <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a>s as <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> entries. This <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> is sorted from largest <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a> population to smallest. An example output is <a class="reference download internal" download="" href="../_downloads/9249dccc9246275aae85ea2fabb4b0fa/core_summary_data.json"><code class="xref download docutils literal notranslate"><span class="pre">core_summary_data.json</span></code></a>. Here are the first two entries,</p>
+<span class="target" id="summary-data-example"></span><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[{</span><span class="s1">&#39;RANK&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="s1">&#39;PREFIX&#39;</span><span class="p">:</span> <span class="s1">&#39;nyc&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;NAME&#39;</span><span class="p">:</span> <span class="s1">&#39;NYC Metro Area&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;POPULATION&#39;</span><span class="p">:</span> <span class="mi">19216182</span><span class="p">,</span>
+  <span class="s1">&#39;FIRST INC.&#39;</span><span class="p">:</span> <span class="s1">&#39;01 March 2020&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;NUM DAYS&#39;</span><span class="p">:</span> <span class="mi">324</span><span class="p">,</span>
+  <span class="s1">&#39;NUM CASES&#39;</span><span class="p">:</span> <span class="mi">1390557</span><span class="p">,</span>
+  <span class="s1">&#39;NUM DEATHS&#39;</span><span class="p">:</span> <span class="mi">50378</span><span class="p">,</span>
+  <span class="s1">&#39;MAX CASE COUNTY&#39;</span><span class="p">:</span> <span class="mi">541846</span><span class="p">,</span>
+  <span class="s1">&#39;MAX CASE COUNTY NAME&#39;</span><span class="p">:</span> <span class="s1">&#39;New York City, New York&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;RANK&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+  <span class="s1">&#39;PREFIX&#39;</span><span class="p">:</span> <span class="s1">&#39;losangeles&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;NAME&#39;</span><span class="p">:</span> <span class="s1">&#39;LA Metro Area&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;POPULATION&#39;</span><span class="p">:</span> <span class="mi">18711436</span><span class="p">,</span>
+  <span class="s1">&#39;FIRST INC.&#39;</span><span class="p">:</span> <span class="s1">&#39;25 January 2020&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;NUM DAYS&#39;</span><span class="p">:</span> <span class="mi">360</span><span class="p">,</span>
+  <span class="s1">&#39;NUM CASES&#39;</span><span class="p">:</span> <span class="mi">1828244</span><span class="p">,</span>
+  <span class="s1">&#39;NUM DEATHS&#39;</span><span class="p">:</span> <span class="mi">21240</span><span class="p">,</span>
+  <span class="s1">&#39;MAX CASE COUNTY&#39;</span><span class="p">:</span> <span class="mi">1032277</span><span class="p">,</span>
+  <span class="s1">&#39;MAX CASE COUNTY NAME&#39;</span><span class="p">:</span> <span class="s1">&#39;Los Angeles County, California&#39;</span><span class="p">}]</span>
+</pre></div>
+</div>
+</p></li>
+<li><p><strong>selected_metros</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a>) – Optional argument. By default, will print or return information on <em>all</em> <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a>s. Otherwise specify the <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a>s available as keys of the <a class="reference internal" href="#covid19_stats.COVID19Database.data_msas_2019" title="covid19_stats.COVID19Database.data_msas_2019"><code class="xref py py-meth docutils literal notranslate"><span class="pre">data_msas_2019</span></code></a> dictionary.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="covid19_stats.engine.core.display_tabulated_metros_fromjson">
+<code class="sig-prename descclassname"><span class="pre">covid19_stats.engine.core.</span></code><code class="sig-name descname"><span class="pre">display_tabulated_metros_fromjson</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">summary_data_json</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.engine.core.display_tabulated_metros_fromjson" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes the <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> data of summary COVID-19 death in <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a>s, and prints out to <a class="reference external" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html#list-table">list-tabled reStructuredText</a>. An example of this data structure is <a class="reference download internal" download="" href="../_downloads/9249dccc9246275aae85ea2fabb4b0fa/core_summary_data.json"><code class="xref download docutils literal notranslate"><span class="pre">core_summary_data.json</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>summary_data_json</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a>) – a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of summary data of COVID-19 cumulative cases and deaths for <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a>s as <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> entries. This <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> is sorted from largest <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a> population to smallest. An example output is <a class="reference download internal" download="" href="../_downloads/9249dccc9246275aae85ea2fabb4b0fa/core_summary_data.json"><code class="xref download docutils literal notranslate"><span class="pre">core_summary_data.json</span></code></a> and shown <a class="reference internal" href="#summary-data-example"><span class="std std-ref">here</span></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="covid19_stats.engine.core.get_boundary_dict">
+<code class="sig-prename descclassname"><span class="pre">covid19_stats.engine.core.</span></code><code class="sig-name descname"><span class="pre">get_boundary_dict</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fips_collection</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.engine.core.get_boundary_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> of <a class="reference external" href="https://en.wikipedia.org/wiki/FIPS_county_code">FIPS code</a> to the collection of geographic areas for that county. The geographic data comes from <a class="reference internal" href="#covid19_stats.COVID19Database.fips_data_2018" title="covid19_stats.COVID19Database.fips_data_2018"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fips_data_2018</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fips_collection</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.9)"><em>set</em></a>) – the <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">set</span></code></a> of <a class="reference external" href="https://en.wikipedia.org/wiki/FIPS_county_code">FIPS code</a>s of counties or US territorial units for which to get geographic information.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>. The key is the <a class="reference external" href="https://en.wikipedia.org/wiki/FIPS_county_code">FIPS code</a> of a county or territorial unit, and the value is the <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of geographic regions for that county or unit.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="covid19_stats.engine.core.get_clustering_fips">
+<code class="sig-prename descclassname"><span class="pre">covid19_stats.engine.core.</span></code><code class="sig-name descname"><span class="pre">get_clustering_fips</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection_of_fips</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adj</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.engine.core.get_clustering_fips" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the <em>separate</em> clusters of counties or territorial units that are clustered together. This is used to identify possibly <em>different</em> clusters of counties that may be separate from each other. If one does not supply an adjacency <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>, it uses the adjacency dictionary that <a class="reference internal" href="#covid19_stats.COVID19Database.fips_adj_2018" title="covid19_stats.COVID19Database.fips_adj_2018"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fips_adj_2018</span></code></a> returns. Look at <a class="reference download internal" download="" href="../_downloads/fe45627bb5b517173a4d63a8a8219261/fips_2018_adj.pkl.gz"><code class="xref download docutils literal notranslate"><span class="pre">fips_2018_adj.pkl.gz</span></code></a> to see what this dictionary looks like.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>collection_of_fips</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a>) – the <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of counties or territorial units, each identified by its <a class="reference external" href="https://en.wikipedia.org/wiki/FIPS_county_code">FIPS code</a>.</p></li>
+<li><p><strong>adj</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – optionally specified adjacency dictionary. Otherwise it uses the <a class="reference internal" href="#covid19_stats.COVID19Database.fips_adj_2018" title="covid19_stats.COVID19Database.fips_adj_2018"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fips_adj_2018</span></code></a> returned dictionary. Look at <a class="reference download internal" download="" href="../_downloads/fe45627bb5b517173a4d63a8a8219261/fips_2018_adj.pkl.gz"><code class="xref download docutils literal notranslate"><span class="pre">fips_2018_adj.pkl.gz</span></code></a> to see what this dictionary looks like.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of counties clustered together. Each cluster is a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">set</span></code></a> of <a class="reference external" href="https://en.wikipedia.org/wiki/FIPS_county_code">FIPS code</a>s of counties grouped together.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)">list</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="covid19_stats.engine.core.get_county_state">
+<code class="sig-prename descclassname"><span class="pre">covid19_stats.engine.core.</span></code><code class="sig-name descname"><span class="pre">get_county_state</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fips</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.engine.core.get_county_state" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fips</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – the <a class="reference external" href="https://en.wikipedia.org/wiki/FIPS_county_code">FIPS code</a> of the county or territorial unit.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> of <code class="docutils literal notranslate"><span class="pre">county</span></code> and <code class="docutils literal notranslate"><span class="pre">state</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="covid19_stats.engine.core.get_data_fips">
+<code class="sig-prename descclassname"><span class="pre">covid19_stats.engine.core.</span></code><code class="sig-name descname"><span class="pre">get_data_fips</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fips</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.engine.core.get_data_fips" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a county identified by its <a class="reference external" href="https://en.wikipedia.org/wiki/FIPS_county_code">FIPS code</a>, Returns the COVID-19 cumulative cases and deaths record of a single county or territorial unit identified by its <a class="reference external" href="https://en.wikipedia.org/wiki/FIPS_county_code">FIPS code</a>. Takes the data from the cumulative cases and deaths record of the NY Times COVID-19 database (see <a class="reference internal" href="#covid19_stats.COVID19Database.all_counties_nytimes_covid19_data" title="covid19_stats.COVID19Database.all_counties_nytimes_covid19_data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">all_counties_nytimes_covid19_data</span></code></a>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fips</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – the <a class="reference external" href="https://en.wikipedia.org/wiki/FIPS_county_code">FIPS code</a> of the county or territorial unit.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of records of COVID-19 cumulative cases and deaths for that county. See <a class="reference internal" href="#county-covid19record-example"><span class="std std-ref">here</span></a> for an example of a record in this <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)">list</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="covid19_stats.engine.core.get_fips_msa">
+<code class="sig-prename descclassname"><span class="pre">covid19_stats.engine.core.</span></code><code class="sig-name descname"><span class="pre">get_fips_msa</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">county</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.engine.core.get_fips_msa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a county and state of a county or territorial unit, returns its <a class="reference external" href="https://en.wikipedia.org/wiki/FIPS_county_code">FIPS code</a> and the data structure on the <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a> in which this county lies.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>county</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – county name.</p></li>
+<li><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – state name.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a two-element <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>. First element is the county or territorial unit <a class="reference external" href="https://en.wikipedia.org/wiki/FIPS_county_code">FIPS code</a>. Second element is the geographical information on the <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a> (see <a class="reference internal" href="#stlouis-msa-example-data"><span class="std std-ref">St. Louis data</span></a> for example).</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)">tuple</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="covid19_stats.engine.core.get_incident_data">
+<code class="sig-prename descclassname"><span class="pre">covid19_stats.engine.core.</span></code><code class="sig-name descname"><span class="pre">get_incident_data</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.engine.core.get_incident_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given geographical information on a region, will return COVID-19 cumulative statistics on all the counties or territorial units of that structure. Best to show by example.</p>
+<p>For example, for the <code class="docutils literal notranslate"><span class="pre">bayearea</span></code> <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a>, the output incident data structure for 26 February 2021 lives in <a class="reference download internal" download="" href="../_downloads/0fbd9c7408afabb39aa8aba2f5728b63/core_incident_data_bayarea.pkl.gz"><code class="xref download docutils literal notranslate"><span class="pre">core_incident_data_bayarea.pkl.gz</span></code></a>. This structure is a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> with the following keys and values.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">bbox</span></code> is a 4-element <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a> of the region bounding box: minimum lat/lng, and maximum lat/lng.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">boundaries</span></code> is a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> of boundary information. Each key is the <a class="reference external" href="https://en.wikipedia.org/wiki/FIPS_county_code">FIPS code</a>, and its value is a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of boundary lat/lngs for that county or territorial unit. Look at <a class="reference download internal" download="" href="../_downloads/fd9403d1c766a71b9e77174e8db8426e/gis_calculate_total_bbox_sacramento.pkl.gz"><code class="xref download docutils literal notranslate"><span class="pre">gis_calculate_total_bbox_sacramento.pkl.gz</span></code></a> for an example of this data structure.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">last</span> <span class="pre">day</span></code> is the number of days (from first COVID-19 incident) in this incident data set.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">df</span></code> is the <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pandas</span> <span class="pre">DataFrame</span></code></a> that contains COVID-19 cumulative case and death data for all counties or territorial units in that region.</p></li>
+</ul>
+<p>This <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pandas</span> <span class="pre">DataFrame</span></code></a>, located under the <code class="docutils literal notranslate"><span class="pre">df</span></code> key, has the following columns ordered by first to last incident date.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">days_from_beginning</span></code> is the day relative to the first incident. It starts at 0 and ends at <code class="docutils literal notranslate"><span class="pre">last</span> <span class="pre">day</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">date</span></code> contains the <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.date" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">date</span></code></a> of the incident day, from first to last.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cases</span></code> are the cumulative COVID-19 cases for the whole region from first to last incident date.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">death</span></code> are the cumulative COVID-19 deaths for the whole region from first to last incident date.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cases_&lt;NUM&gt;</span></code> are the cumulative COVID-19 cases for a given county or territorial unit in the region (&lt;NUM&gt; is its <a class="reference external" href="https://en.wikipedia.org/wiki/FIPS_county_code">FIPS code</a>) from first to last incident date.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">deaths_&lt;NUM&gt;</span></code> are the cumulative COVID-19 deaths for a given county or territorial unit in the region (&lt;NUM&gt; is its <a class="reference external" href="https://en.wikipedia.org/wiki/FIPS_county_code">FIPS code</a>) from first to last incident date.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Optional argument, but if specified is the geographical information of a region. By default is the <code class="docutils literal notranslate"><span class="pre">bayarea</span></code> <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a>. See <a class="reference internal" href="#stlouis-msa-example-data"><span class="std std-ref">St. Louis data</span></a> for an example of an <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a>. See <a class="reference internal" href="#rhode-island-state-example-data"><span class="std std-ref">Rhode Island data</span></a> for an example of a US state or territory. See <a class="reference internal" href="#conus-example-data"><span class="std std-ref">CONUS data</span></a> for the <a class="reference external" href="https://en.wikipedia.org/wiki/Contiguous_United_States">CONUS</a>.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> described above, see <a class="reference download internal" download="" href="../_downloads/0fbd9c7408afabb39aa8aba2f5728b63/core_incident_data_bayarea.pkl.gz"><code class="xref download docutils literal notranslate"><span class="pre">core_incident_data_bayarea.pkl.gz</span></code></a>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="covid19_stats.engine.core.get_max_cases_county">
+<code class="sig-prename descclassname"><span class="pre">covid19_stats.engine.core.</span></code><code class="sig-name descname"><span class="pre">get_max_cases_county</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inc_data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.engine.core.get_max_cases_county" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convenience method that returns a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> of the <a class="reference external" href="https://en.wikipedia.org/wiki/FIPS_county_code">FIPS code</a>, county, state, and cases for the county or territorial unit, for the county in a region that has the <em>worst</em> number of COVID-19 cases.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>inc_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – the incident data structure for a region. See <a class="reference internal" href="#covid19_stats.engine.core.get_incident_data" title="covid19_stats.engine.core.get_incident_data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_incident_data</span></code></a> for what this output looks like.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p>a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> of summary information on the <em>worst-perfoming</em> county in the region, COVID-19 case wise. For <a class="reference download internal" download="" href="../_downloads/0fbd9c7408afabb39aa8aba2f5728b63/core_incident_data_bayarea.pkl.gz"><code class="xref download docutils literal notranslate"><span class="pre">core_incident_data_bayarea.pkl.gz</span></code></a>, this is,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;fips&#39;</span><span class="p">:</span> <span class="s1">&#39;06085&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;cases&#39;</span><span class="p">:</span> <span class="mi">94366</span><span class="p">,</span>
+ <span class="s1">&#39;county&#39;</span><span class="p">:</span> <span class="s1">&#39;Santa Clara County&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;state&#39;</span><span class="p">:</span> <span class="s1">&#39;California&#39;</span><span class="p">}</span>
+</pre></div>
+</div>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="covid19_stats.engine.core.get_maximum_cases">
+<code class="sig-prename descclassname"><span class="pre">covid19_stats.engine.core.</span></code><code class="sig-name descname"><span class="pre">get_maximum_cases</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inc_data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.engine.core.get_maximum_cases" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convenience method that returns a two-element <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a> of the <a class="reference external" href="https://en.wikipedia.org/wiki/FIPS_county_code">FIPS code</a> and number of COVID-19 cases, for the <em>worst-performing</em> county, case-wise.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>inc_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – the incident data structure for a region. See <a class="reference internal" href="#covid19_stats.engine.core.get_incident_data" title="covid19_stats.engine.core.get_incident_data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_incident_data</span></code></a> for what this output looks like.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p>the two-element <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a> of <a class="reference external" href="https://en.wikipedia.org/wiki/FIPS_county_code">FIPS code</a> and cumulative number of COVID-19 cases. For <a class="reference download internal" download="" href="../_downloads/0fbd9c7408afabb39aa8aba2f5728b63/core_incident_data_bayarea.pkl.gz"><code class="xref download docutils literal notranslate"><span class="pre">core_incident_data_bayarea.pkl.gz</span></code></a>, this is,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="s1">&#39;06085&#39;</span><span class="p">,</span> <span class="mi">94366</span><span class="p">)</span>
+</pre></div>
+</div>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)">tuple</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="covid19_stats.engine.core.get_mp4_album_name">
+<code class="sig-prename descclassname"><span class="pre">covid19_stats.engine.core.</span></code><code class="sig-name descname"><span class="pre">get_mp4_album_name</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.engine.core.get_mp4_album_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method operates on <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> movie output from command line tools that produce COVID-19 case and death summary movies – such as <a class="reference internal" href="../cli/covid19_create_movie_or_summary.html#covid19-create-movie-or-summary"><span class="std std-ref">covid19_create_movie_or_summary</span></a>, <a class="reference internal" href="../cli/covid19_state_summary.html#covid19-state-summary"><span class="std std-ref">covid19_state_summary</span></a>, or <a class="reference internal" href="../cli/covid19_movie_updates.html#covid19-movie-updates"><span class="std std-ref">covid19_movie_updates</span></a> – or methods that create <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> files – such as <code class="xref py py-meth docutils literal notranslate"><span class="pre">create_summary_cases_or_deaths_movie_frombeginning</span></code> or <code class="xref py py-meth docutils literal notranslate"><span class="pre">create_summary_movie_frombeginning</span></code>.</p>
+<p>It determines whether the geographic region is classified as a <code class="docutils literal notranslate"><span class="pre">STATE</span></code>, <code class="docutils literal notranslate"><span class="pre">CONUS</span></code>, or a <code class="docutils literal notranslate"><span class="pre">METROPOLITAN</span> <span class="pre">STATISTICAL</span> <span class="pre">AREA</span></code>. It is used in four CLI functionalities:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../cli/covid19_create_movie_or_summary.html#movie-mode"><span class="std std-ref">movie mode functionality for covid19_create_movie_or_summary</span></a>.</p></li>
+<li><p><a class="reference internal" href="../cli/covid19_create_movie_or_summary.html#movie-cases-deaths-mode"><span class="std std-ref">movie cases death mode functionality for covid19_create_movie_or_summary</span></a>.</p></li>
+<li><p><a class="reference internal" href="../cli/covid19_state_summary.html#movie-mode-state"><span class="std std-ref">movie mode functionality for covid19_state_summary</span></a>.</p></li>
+<li><p><a class="reference internal" href="../cli/covid19_state_summary.html#movie-cases-deaths-mode-state"><span class="std std-ref">movie cases death mode functionality for covid19_state_summary</span></a>.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – <p>the geographic data on the identified region. See <a class="reference internal" href="#stlouis-msa-example-data"><span class="std std-ref">St. Louis data</span></a> for an example of an <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a>. See <a class="reference internal" href="#rhode-island-state-example-data"><span class="std std-ref">Rhode Island data</span></a> for an example of a US state or territory. See <a class="reference internal" href="#conus-example-data"><span class="std std-ref">CONUS data</span></a> for the <a class="reference external" href="https://en.wikipedia.org/wiki/Contiguous_United_States">CONUS</a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;prefix&#39;</span><span class="p">:</span> <span class="s1">&#39;providence&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;region name&#39;</span><span class="p">:</span> <span class="s1">&#39;Providence Metro Area&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;fips&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;25005&#39;</span><span class="p">,</span> <span class="s1">&#39;44001&#39;</span><span class="p">,</span> <span class="s1">&#39;44003&#39;</span><span class="p">,</span> <span class="s1">&#39;44005&#39;</span><span class="p">,</span> <span class="s1">&#39;44007&#39;</span><span class="p">,</span> <span class="s1">&#39;44009&#39;</span><span class="p">},</span>
+ <span class="s1">&#39;population&#39;</span><span class="p">:</span> <span class="mi">1624578</span><span class="p">}</span>
+</pre></div>
+</div>
+</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>If the <code class="docutils literal notranslate"><span class="pre">prefix</span></code> is one of the <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a>s, <code class="docutils literal notranslate"><span class="pre">METROPOLITAN</span> <span class="pre">STATISTICAL</span> <span class="pre">AREA</span></code>. If its <code class="docutils literal notranslate"><span class="pre">prefix</span></code> is identified as a state, then <code class="docutils literal notranslate"><span class="pre">STATE</span></code>. If its prefix is <code class="docutils literal notranslate"><span class="pre">conus</span></code>, then <code class="docutils literal notranslate"><span class="pre">CONUS</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="covid19_stats.engine.core.get_msa_data">
+<code class="sig-prename descclassname"><span class="pre">covid19_stats.engine.core.</span></code><code class="sig-name descname"><span class="pre">get_msa_data</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msaname</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.engine.core.get_msa_data" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>msaname</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – the identifier name for the <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a>, which must be one of the keys in the <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> that <a class="reference internal" href="#covid19_stats.COVID19Database.data_msas_2019" title="covid19_stats.COVID19Database.data_msas_2019"><code class="xref py py-meth docutils literal notranslate"><span class="pre">data_msas_2019</span></code></a> returns.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a> geographical information (see <a class="reference internal" href="#stlouis-msa-example-data"><span class="std std-ref">St. Louis data</span></a> for example).</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)">dict</a></p>
 </dd>
 </dl>
 </dd></dl>
