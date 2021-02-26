@@ -19,8 +19,17 @@ class COVID19Database( object ):
     """
     This class implements a `singleton pattern`_ with static access methods to US GIS_ data and COVID-19 cumulative summary case and death data, for territorial units within the United States. It lazily instantiates itself via GIS_ loading functionality.
 
+    The main data this `singleton <singleton pattern_>`_ object contains is the cumulative COVID-19 cumulative cases and deaths, for US counties, produced by the `NY Times COVID-19 database <https://github.com/nytimes/covid-19-data>`_.
+
+    This creates a custom `FIPS code`_, with number `00001`, by melding together the five New York City boroughs (`Manhattan <https://en.wikipedia.org/wiki/Manhattan>`_, `Brooklyn <https://en.wikipedia.org/wiki/Brooklyn>`_, `Queens <https://en.wikipedia.org/wiki/Queens>`_, `The Bronx <https://en.wikipedia.org/wiki/The_Bronx>`_, and `Staten Island <https://en.wikipedia.org/wiki/Staten_Island>`_). This makes the COVID-19 geographic data set consistent with the COVID-19 cumulative cases and deaths data sets of the `NY Times COVID-19 database <https://github.com/nytimes/covid-19-data>`_.
+
+    In addition to a :py:class:`dict` of MSA_ regions created or loaded by :py:meth:`create_and_store_msas_and_fips_2019 <covid19_stats.engine.gis.create_and_store_msas_and_fips_2019>`, this class also contains CONUS_ and state and territory regions dictionaries.
+
     .. _`singleton pattern`: https://en.wikipedia.org/wiki/Singleton_pattern
     .. _GIS: https://en.wikipedia.org/wiki/Geographic_information_system
+    .. _`FIPS code`: https://en.wikipedia.org/wiki/FIPS_county_code
+    .. _MSA: https://en.wikipedia.org/wiki/Metropolitan_statistical_area
+    .. _CONUS: https://en.wikipedia.org/wiki/Contiguous_United_States
     """
 
     class __COVID19Database( object ):
@@ -226,56 +235,213 @@ class COVID19Database( object ):
 
     @classmethod
     def fips_data_2018( cls ):
+        """
+        :returns: the :py:class:`dict` of county geographical information. It returns the *same* data structure as what :py:meth:`create_and_store_fips_2018 <covid19_stats.engine.gis.create_and_store_fips_2018>` returns.
+        :rtype: dict
+        """
         inst = COVID19Database._getInstance( )
         return inst.fips_data_2018
 
     @classmethod
     def fips_adj_2018( cls ):
+        """
+        :returns: the :py:class:`dict` of adjacency information for US counties and territories. It returns the *same* data structure as what :py:meth:`construct_adjacency <covid19_stats.engine.gis.construct_adjacency>` returns.
+        :rtype: dict
+        """
         inst = COVID19Database._getInstance( )
         return inst.fips_adj_2018
 
     @classmethod
     def fips_countystate_dict( cls ):
+        """
+        :returns: the :py:class:`dict` of county `FIPS code`_ to a :py:class:`dict` of ``county`` and ``state``. It returns one of the :py:class:`dict`\ s (mapping of county `FIPS code`_ to county and state name) that :py:meth:`create_and_store_fips_counties_2019 <covid19_stats.engine.gis.create_and_store_fips_counties_2019>` returns.
+        :rtype: dict
+        """
         inst = COVID19Database._getInstance( )
         return inst.fips_countystate_dict
 
     @classmethod
     def fips_msas_2019( cls ):
+        """
+        :returns: the :py:class:`dict` of county `FIPS code`_ to the MSA_, identified by its prefix (for example, ``nyc`` is the New York City metropolitan area). *Implictly*, this :py:class:`dict` only contains the counties that lie within an MSA_.
+        :rtype: dict
+        """
         inst = COVID19Database._getInstance( )
         return inst.fips_msas_2019
 
     @classmethod
     def data_msas_2019( cls ):
+        """
+        :returns: the :py:class:`dict` of MSA_ region information. It returns the *same* data structure as what :py:meth:`create_and_store_msas_and_fips_2019 <covid19_stats.engine.gis.create_and_store_msas_and_fips_2019>` returns.
+        :rtype: dict
+        """
         inst = COVID19Database._getInstance( )
         return inst.data_msas_2019
         
     @classmethod
     def all_counties_nytimes_covid19_data( cls ):
+        """
+        :returns: a :py:class:`list` of the big shebang, the *reason behind the reason*, for the whole data set of COVID-19 cumulative cases and deaths. Each entry is the status of cumulative COVID-19 cases and deaths for a specific county at a specific date. For example, one of the last entries in this :py:class:`list` is,
+
+           .. code-block:: python
+
+              {'date': datetime.date(2021, 1, 19),
+               'county': 'Webster',
+               'state': 'West Virginia',
+               'fips': '54101',
+               'cumulative cases': 223,
+               'cumulative death': 0}
+               
+        As of 25 February 2021, there are almost :math:`10^6` records in this :py:class:`list`.
+        
+        :rtype: list
+        """
         inst = COVID19Database._getInstance( )
         return inst.all_counties_nytimes_covid19_data
 
     @classmethod
     def data_conus( cls ):
+        """
+        :returns: the same type of region data structure for a specific MSA_. Easier to show rather than describe in words this :py:class:`dict`.
+
+           .. code-block:: python
+
+              {'RNAME': 'CONUS',
+               'region name': 'CONUS',
+               'prefix': 'conus',
+               'fips': ['48059',
+                '48253',
+                '48441',
+                '39133',
+                '39153',
+                '13095',
+                '13177',
+                '13273',
+                '13321',
+                '41043',
+                '36001',
+                '36083',
+                '36091',
+                '36093',
+                ...],
+               'population': 308126624}
+
+        :rtype: dict
+        """
         inst = COVID19Database._getInstance( )
         return inst.data_conus
 
     @classmethod
     def mapping_state_rname_conus( cls ):
+        """
+        :returns: a :py:class:`dict` of state names, for states in the CONUS_, to the region identifying name. Here is what it returns,
+
+           .. code-block:: python
+
+              {'New Mexico': 'new_mexico',
+               'Minnesota': 'minnesota',
+               'Maryland': 'maryland',
+               'Tennessee': 'tennessee',
+               'Oregon': 'oregon',
+               'New Hampshire': 'new_hampshire',
+               'Ohio': 'ohio',
+               'Maine': 'maine',
+               'Utah': 'utah',
+               'Alabama': 'alabama',
+               'Michigan': 'michigan',
+               'Iowa': 'iowa',
+               'New York': 'new_york',
+               'South Carolina': 'south_carolina',
+               'Nebraska': 'nebraska',
+               'Vermont': 'vermont',
+               'Arizona': 'arizona',
+               'California': 'california',
+               'Virginia': 'virginia',
+               'North Dakota': 'north_dakota',
+               'Kansas': 'kansas',
+               'District of Columbia': 'district_of_columbia',
+               'North Carolina': 'north_carolina',
+               'Delaware': 'delaware',
+               'Massachusetts': 'massachusetts',
+               'Oklahoma': 'oklahoma',
+               'Florida': 'florida',
+               'Montana': 'montana',
+               'Idaho': 'idaho',
+               'Pennsylvania': 'pennsylvania',
+               'Texas': 'texas',
+               'Illinois': 'illinois',
+               'Kentucky': 'kentucky',
+               'Mississippi': 'mississippi',
+               'Wyoming': 'wyoming',
+               'Colorado': 'colorado',
+               'Arkansas': 'arkansas',
+               'Indiana': 'indiana',
+               'Nevada': 'nevada',
+               'Georgia': 'georgia',
+               'New Jersey': 'new_jersey',
+               'Connecticut': 'connecticut',
+               'West Virginia': 'west_virginia',
+               'Louisiana': 'louisiana',
+               'Rhode Island': 'rhode_island',
+               'Wisconsin': 'wisconsin',
+               'Missouri': 'missouri',
+               'Washington': 'washington',
+               'South Dakota': 'south_dakota'}
+
+        :rtype: dict
+        """
         inst = COVID19Database._getInstance( )
         return inst.mapping_state_rname_conus
 
     @classmethod
     def mapping_state_rname_nonconus( cls ):
+        """
+        :returns: a :py:class:`dict` of state names, for states and territories outside the CONUS_, to the region identifying name. Here is what it returns,
+
+           .. code-block:: python
+
+              {'Alaska': 'alaska', 'Hawaii': 'hawaii', 'Puerto Rico': 'puerto_rico'}
+
+        :rtype: dict
+        """
         inst = COVID19Database._getInstance( )
         return inst.mapping_state_rname_nonconus
 
     @classmethod
     def data_states( cls ):
+        """
+        :returns: the :py:class:`dict` of US state information, for states in the CONUS_. It returns the *same* type of data structure as what :py:meth:`create_and_store_msas_and_fips_2019 <covid19_stats.engine.gis.create_and_store_msas_and_fips_2019>` returns. But better show-than-tell, here is the data for the state of `Rhode Island <https://en.wikipedia.org/wiki/Rhode_Island>`_.
+
+           .. code-block:: python
+
+              {'rhode_island': {'RNAME': 'Rhode Island',
+                'region name': 'Rhode Island',
+                'prefix': 'rhode_island',
+                'fips': ['44001', '44003', '44005', '44007', '44009'],
+                'population': 1059361}}
+
+        The identifying key is the lowercase, no-spaced version of the state's name. Look at the values of the :py:class:`dict` that :py:meth:`mapping_state_rname_conus <covid19_stats.COVID19Database.mapping_state_rname_conus>` returns.
+        :rtype: dict
+        """
         inst = COVID19Database._getInstance( )
         return inst.data_states
         
     @classmethod
     def data_nonconus_states_territories( cls ):
+        """
+    :returns: the :py:class:`dict` of US state and territory information, for states and territories *not* in the CONUS_. It returns the *same* type of data structure as what :py:meth:`create_and_store_msas_and_fips_2019 <covid19_stats.engine.gis.create_and_store_msas_and_fips_2019>` returns. But better show-than-tell, here is the data for the state of `Hawaii <https://en.wikipedia.org/wiki/Hawaii>`_.
+
+           .. code-block:: python
+
+              {'hawaii': {'RNAME': 'Hawaii',
+                'region name': 'Hawaii',
+                'prefix': 'hawaii',
+                'fips': ['15009', '15003', '15001', '15007', '15005'],
+                'population': 1415786}}
+
+        The identifying key is the lowercase, no-spaced version of the state's name. Look at the values of the :py:class:`dict` that :py:meth:`mapping_state_rname_nonconus <covid19_stats.COVID19Database.mapping_state_rname_nonconus>` returns.
+        :rtype: dict
+        """
         inst = COVID19Database._getInstance( )        
         return inst.data_nonconus_states_territories
     
