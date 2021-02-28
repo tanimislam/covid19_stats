@@ -5,8 +5,9 @@ def signal_handler( signal, frame ):
 signal.signal( signal.SIGINT, signal_handler )
 import os, numpy, tempfile, warnings, tabulate, logging, json
 from covid19_stats import COVID19Database
-from covid19_stats.engine import ( core, viz, get_string_commas_num,
-                                  find_plausible_maxnum )
+from covid19_stats.engine import (
+    core, viz, get_string_commas_num,
+    find_plausible_maxnum )
 from argparse import ArgumentParser
 
 #
