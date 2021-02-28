@@ -3,5 +3,6 @@ __pycache__
 scratch
 foo.py
 .ipynb*
+mailmap
 README.html
 *.egg-info
