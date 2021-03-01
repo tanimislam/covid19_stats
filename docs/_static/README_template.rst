@@ -2,7 +2,7 @@ Hello world! This is my COVID-19 tracker. This is not nearly as sophisticated as
 
 I have made major changes in the functionality and implementation from the original commits, since commit `#78917`_ for instance.
 
-* The API code has been refactored into the ``covid19_stats.engine`` subdirectory, and is divided into three main submodules: ``covid19_stats.engine.core`` provides the higher level API calls for processing the COVID-19 data; ``covid19_stats.engine.gis`` provides the lower-level APIs to write out, read in, and process the raw GIS data provided mainly by the US Census Bureau; and ``covid19_stats.engine.viz`` does the visualization part.
+* The API code has been refactored into the |engine_main| module, and is divided into three main submodules: |engine_core| provides the higher level API calls for processing the COVID-19 data; |engine_gis| provides the lower-level APIs to write out, read in, and process the raw GIS data provided mainly by the US Census Bureau; and |engine_cli| does the visualization part.
 
 * The command line interfaces (CLI) back-ends live in ``covid19_stats.cli``. One of the command line interfaces, `covid19_update_database`_, updates the git submodule (the `NY Times COVID-19 repository`_) with the *latest* data. Previously, one updated the database by manually running, from the repository's top level directory,
 
@@ -10,7 +10,11 @@ I have made major changes in the functionality and implementation from the origi
 
      git -C covid19_stats/covid-19-data pull origin master
   
-* The ``testing`` subdirectory contains `Jupyter Notebooks`_ that illuminate bits and pieces of this COVID-19 tracker’s functionality.
+* The ``testing`` subdirectory contains `Jupyter Notebooks`_ that illuminate bits and pieces of this COVID-19 tracker’s functionality. It also consists of `Jupyter Notebooks <https://jupyter.org>`_ that create output for the API documentation.
+
+  * ``testing/covid19_excuse_gis_visualizations.ipynb`` shows output for the |engine_gis| module documentation.
+  * ``testing/covid19_excuse_core_visualizations.ipynb`` shows output for the |engine_core| module documentation.
+  * ``testing/covid19_excuse_main_visualizations.ipynb`` shows output for the |engine_main| module documentation.
 
 Here is some output from using this COVID-19 tracker. The data lives underneath `https://tanimislam.github.io/covid19movies <https://tanimislam.github.io/covid19movies>`_
 
@@ -209,3 +213,8 @@ The comprehensive documentation lives in HTML created with Sphinx_, and now in t
    :align: middle
 
 .. _`covid19_update_database`: https://tanimislam.github.io/covid19_stats/cli/covid19_update_database.html#covid19-update-database
+
+.. |engine_gis|  replace:: `covid19_stats.engine.gis <https://tanimislam.github.io/covid19_stats/api/api.html#covid19-stats-engine-gis-module>`_
+.. |engine_main| replace:: `covid19_stats.engine <https://tanimislam.github.io/covid19_stats/api/api.html#covid19-stats-engine-module>`_
+.. |engine_core| replace:: `covid19_stats.engine.core <https://tanimislam.github.io/covid19_stats/api/api.html#covid19-stats-engine-core-module>`_
+.. |engine_viz|  replace:: `covid19_stats.engine.viz <https://tanimislam.github.io/covid19_stats/api/api.html#covid19-stats-engine-viz-module>`_
