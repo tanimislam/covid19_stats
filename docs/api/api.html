@@ -102,6 +102,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#covid19-stats-engine-module">4.2. covid19_stats.engine module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#covid19-stats-engine-gis-module">4.3. covid19_stats.engine.gis module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#covid19-stats-engine-core-module">4.4. covid19_stats.engine.core module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#covid19-stats-engine-viz-module">4.5. covid19_stats.engine.viz module</a></li>
 </ul>
 </li>
 </ul>
@@ -447,7 +448,7 @@
 <span class="target" id="module-covid19_stats.engine"></span><dl class="py function">
 <dt id="covid19_stats.engine.find_plausible_maxnum">
 <code class="sig-prename descclassname"><span class="pre">covid19_stats.engine.</span></code><code class="sig-name descname"><span class="pre">find_plausible_maxnum</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maxnum</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.engine.find_plausible_maxnum" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a default plausible limit, for the plotting of COVID-19 cumulative cases and deaths located in <code class="xref py py-mod docutils literal notranslate"><span class="pre">viz</span></code>.</p>
+<dd><p>Returns a default plausible limit, for the plotting of COVID-19 cumulative cases and deaths located in <a class="reference internal" href="#module-covid19_stats.engine.viz" title="covid19_stats.engine.viz"><code class="xref py py-mod docutils literal notranslate"><span class="pre">viz</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>maxnum</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – the maximum number.</p>
@@ -993,6 +994,16 @@
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)">dict</a></p>
 </dd>
 </dl>
+</dd></dl>
+
+</div>
+<div class="section" id="covid19-stats-engine-viz-module">
+<h2><span class="section-number">4.5. </span>covid19_stats.engine.viz module<a class="headerlink" href="#covid19-stats-engine-viz-module" title="Permalink to this headline">¶</a></h2>
+<p>This module provides visualization methods for COVID-19 cumulative cases and deaths for <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a>s, states, and the <a class="reference external" href="https://en.wikipedia.org/wiki/Contiguous_United_States">CONUS</a>.  These command line interfaces – <a class="reference internal" href="../cli/covid19_create_movie_or_summary.html#covid19-create-movie-or-summary"><span class="std std-ref">covid19_create_movie_or_summary</span></a>, <a class="reference internal" href="../cli/covid19_state_summary.html#covid19-state-summary"><span class="std std-ref">covid19_state_summary</span></a>, and <a class="reference internal" href="../cli/covid19_movie_updates.html#covid19-movie-updates"><span class="std std-ref">covid19_movie_updates</span></a> – are front-ends to the methods in this module.</p>
+<span class="target" id="module-covid19_stats.engine.viz"></span><dl class="py function">
+<dt id="covid19_stats.engine.viz.my_colorbar">
+<code class="sig-prename descclassname"><span class="pre">covid19_stats.engine.viz.</span></code><code class="sig-name descname"><span class="pre">my_colorbar</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mappable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.engine.viz.my_colorbar" title="Permalink to this definition">¶</a></dt>
+<dd><p>secret saucing (explanation is incomprehensible) from <a class="reference external" href="https://joseph-long.com/writing/colorbars/">https://joseph-long.com/writing/colorbars/</a></p>
 </dd></dl>
 
 </div>
