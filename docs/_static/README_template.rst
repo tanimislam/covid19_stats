@@ -14,7 +14,7 @@ I have made major changes in the functionality and implementation from the origi
 
   * ``testing/covid19_excuse_gis_visualizations.ipynb`` shows output for the |engine_gis| module documentation.
   * ``testing/covid19_excuse_core_visualizations.ipynb`` shows output for the |engine_core| module documentation.
-  * ``testing/covid19_excuse_main_visualizations.ipynb`` shows output for the |engine_main| module documentation.
+  * ``testing/covid19_excuse_main_visualizations.ipynb`` shows output for the |engine_top| module documentation, and specifically the `COVID19Database <https://tanimislam.github.io/covid19_stats/api/api.html#covid19_stats.COVID19Database>`_ object.
 
 Here is some output from using this COVID-19 tracker. The data lives underneath `https://tanimislam.github.io/covid19movies <https://tanimislam.github.io/covid19movies>`_
 
@@ -214,7 +214,13 @@ The comprehensive documentation lives in HTML created with Sphinx_, and now in t
 
 .. _`covid19_update_database`: https://tanimislam.github.io/covid19_stats/cli/covid19_update_database.html#covid19-update-database
 
-.. |engine_gis|  replace:: `covid19_stats.engine.gis <https://tanimislam.github.io/covid19_stats/api/api.html#covid19-stats-engine-gis-module>`_
-.. |engine_main| replace:: `covid19_stats.engine <https://tanimislam.github.io/covid19_stats/api/api.html#covid19-stats-engine-module>`_
-.. |engine_core| replace:: `covid19_stats.engine.core <https://tanimislam.github.io/covid19_stats/api/api.html#covid19-stats-engine-core-module>`_
-.. |engine_viz|  replace:: `covid19_stats.engine.viz <https://tanimislam.github.io/covid19_stats/api/api.html#covid19-stats-engine-viz-module>`_
+.. |engine_gis|  replace:: `covid19_stats.engine.gis`_
+.. |engine_main| replace:: `covid19_stats.engine`_
+.. |engine_core| replace:: `covid19_stats.engine.core`_
+.. |engine_viz|  replace:: `covid19_stats.engine.viz`_
+.. |engine_top|  replace:: `covid19_stats`_
+.. _`covid19_stats.engine.gis`: https://tanimislam.github.io/covid19_stats/api/api.html#covid19-stats-engine-gis-module
+.. _`covid19_stats.engine`: https://tanimislam.github.io/covid19_stats/api/api.html#covid19-stats-engine-module
+.. _`covid19_stats.engine.core`: https://tanimislam.github.io/covid19_stats/api/api.html#covid19-stats-engine-core-module
+.. _`covid19_stats.engine.viz`: https://tanimislam.github.io/covid19_stats/api/api.html#covid19-stats-engine-viz-module
+.. _`covid19_stats`: https://tanimislam.github.io/covid19_stats/api/api.html#covid19-stats-module
