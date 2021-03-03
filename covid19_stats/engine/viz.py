@@ -204,7 +204,7 @@ def display_msa( msaname, ax, doShow = False ):
     #
     data_msa = core.get_msa_data( msaname )
     bdict = core.get_boundary_dict( data_msa[ 'fips' ] )
-    bbox = core.calculate_total_bbox( chain.from_iterable( bdict.values( ) ) )
+    bbox = gis.calculate_total_bbox( chain.from_iterable( bdict.values( ) ) )
     m = create_and_draw_basemap( ax, bbox, resolution = 'h' )
     fc = list( to_rgba( '#1f77b4' ) )
     fc[-1] = 0.25
