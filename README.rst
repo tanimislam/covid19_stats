@@ -574,11 +574,11 @@ Here is some output from using this COVID-19 tracker. The data lives underneath 
        - `Washington, DC <https://tanimislam.github.io/covid19movies/covid19_dc_LATEST.mp4>`_
        - `Richmond, VA <https://tanimislam.github.io/covid19movies/covid19_richmond_LATEST.mp4>`_
      * - |anim_gif_sacramento|
-       -
-       -
-     * - `Sacramento <https://tanimislam.github.io/covid19movies/covid19_sacramento_LATEST.mp4>`_
-       -
-       -
+       - |anim_gif_houston|
+       - |anim_gif_dallas|
+     * - `Sacramento, CA <https://tanimislam.github.io/covid19movies/covid19_sacramento_LATEST.mp4>`_
+       - `Houston, TX <https://tanimislam.github.io/covid19movies/covid19_houston_LATEST.mp4>`_
+       - `Dallas, TX <https://tanimislam.github.io/covid19movies/covid19_dallas_LATEST.mp4>`_
 
   And here is the animation for the continental United States as of 03 MARCH 2021
 
@@ -678,6 +678,15 @@ The comprehensive documentation lives in HTML created with Sphinx_, and now in t
    :width: 100%
    :align: middle
 
+.. |anim_gif_houston| image:: https://tanimislam.github.io/covid19movies/covid19_houston_LATEST.gif
+   :width: 100%
+   :align: middle
+
+.. |anim_gif_dallas| image:: https://tanimislam.github.io/covid19movies/covid19_dallas_LATEST.gif
+   :width: 100%
+   :align: middle
+
+	   
 .. GIF ANIMATIONS CONUS
 
 .. |anim_gif_conus| image:: https://tanimislam.github.io/covid19movies/covid19_conus_LATEST.gif
