@@ -16,7 +16,7 @@ The final three CLIs, :ref:`covid19_movie_updates`, :ref:`covid19_post2server`, 
 
 2. Creates summary movies of 26 regions (described :ref:`here <covid19_movie_updates_illuminating>`) using :ref:`covid19_movie_updates`, using nine nodes on a supercomputing cluster.
 
-3. Creates animated GIFs of 12 regions, described in the `README <https://tanimislam.github.io/covid19_stats>`_, using back-end functionality implemented by :py:meth:`mp4togif <nprstuff.core.convert_image.mp4togif>`.
+3. Creates animated GIFs of 14 regions, described in the `README <https://tanimislam.github.io/covid19_stats>`_, using back-end functionality implemented by :py:meth:`mp4togif <nprstuff.core.convert_image.mp4togif>`.
 
 4. *Deploys* the summary COVID-19 cumulative cases and deaths, movies and figures and JSON_ files, into `https://tanimislam.github.io/covid19movies <https://tanimislam.github.io/covid19movies>`_.
 
