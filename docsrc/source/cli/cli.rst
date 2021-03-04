@@ -22,7 +22,13 @@ The final three CLIs, :ref:`covid19_movie_updates`, :ref:`covid19_post2server`, 
 
 5. Updates the `covid19_stats repo <https://github.com/tanimislam/covid19_stats>`_ ``README`` using :ref:`covid19_update_readme`.
 
-This tooling updates the COVID-19 summary data, and the `covid19_stats repo <https://github.com/tanimislam/covid19_stats>`_ ``README``, every three days at 1130 PM PST.
+This tooling updates the COVID-19 summary data, and the `covid19_stats repo <https://github.com/tanimislam/covid19_stats>`_ ``README``, every day at 1230 AM PST. Here is a diagram!
+
+.. figure:: figures/daily_update_five_steps.png
+   :width: 100%
+   :align: left
+
+   Diagram taken from a presentation given at the 4 March 2021 Sacramento Python meetup, depicting the *five* steps needed to update COVID-19 summary data for 26 regions in the United States. As of 4 March 2021, the data takes up nearly 1 GB of space and takes roughly 45 minutes to generate.
    
 Here are the six command line tools.
 
