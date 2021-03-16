@@ -55,6 +55,7 @@ intersphinx_mapping = {
     'python': ('https://docs.python.org/3', None),
     'requests': ( 'https://requests.readthedocs.io/en/master/', None),
     'beautifulsoup' : ( 'https://www.crummy.com/software/BeautifulSoup/bs4/doc/', '_intersphinx/bs4_objects.inv' ),
+    'cartopy'  : ( 'https://scitools.org.uk/cartopy/docs/latest', None ),
     'selenium' : ( 'https://selenium-python.readthedocs.io', None ),
     'pyqt5' : ( 'https://www.riverbankcomputing.com/static/Docs/PyQt5', "_intersphinx/pyqt5_objects.inv" ),
     'requests_oauthlib' : ( 'https://requests-oauthlib.readthedocs.io/en/latest', None ),

@@ -21,7 +21,7 @@ from covid19_stats.engine import gis, core, get_string_commas_num
 
 def my_colorbar( mappable, ax, **kwargs ):
     """
-    secret saucing (explanation is incomprehensible) from https://joseph-long.com/writing/colorbars. I do not understand how it works the way it does, but it does! I shamelessly copy the method description from the :py:meth:`colorbar method <matplotlib.pyplot.colorbar>`. I have also updated this thing to `this website <https://stackoverflow.com/questions/30030328/correct-placement-of-colorbar-relative-to-geo-axes-cartopy>`_.
+    secret saucing (explanation is incomprehensible) from https://joseph-long.com/writing/colorbars. I do not understand how it works the way it does, but it does! I shamelessly copy the method description from the :py:meth:`colorbar method <matplotlib.pyplot.colorbar>`. I have also updated this thing to `this website <https://stackoverflow.com/questions/30030328/correct-placement-of-colorbar-relative-to-geo-axes-cartopy>`_ that now works on :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>`.
 
     :param mappable: a :py:class:`ScalarMappable <matplotlib.cm.ScalarMappable>` described by this colorbar.
     :param ax: the parent :py:class:`Axes <matplotlib.axes.Axes>` from whose space a new colorbar axes will be stolen.
@@ -38,6 +38,27 @@ def create_and_draw_fromfig(
     fig, bbox, river_linewidth = 5, river_alpha = 0.3,
     coast_linewidth = 2, coast_alpha = 0.4, drawGrid = True, mult_bounds_lat = 1.05,
     mult_bounds_lng = 1.05, rows = 1, cols = 1, num = 1 ):
+    """
+    This creates an :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>`, with lots of physical geographic features, and optional (but turned on by default) latitude and longitude gridding, of a region specified by a bounding box. This uses `stereographic projection`_. For example, here is the :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>` displaying the CONUS_.
+    
+    ## FIXME       
+
+    :param fig: the :py:class:`Figure <matplotlib.figure.Figure>` onto which to create a :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>` containing geographic features. Last three arguments -- ``rows``, ``cols``, and ``num`` -- describe the relative placement of the created :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>`. See :py:meth:`add_subplot <matplotlib.figure.Figure.add_subplot>` for those three arguments' meanings.
+    :param tuple bbox: a four-element :py:class:`tuple`. Elements in order are *minimum* longitude, *minimum* latitude, *maximum* longitude, and *maximum* latitude.
+    :param int river_linewidth: the width, in pixels, of river geographical features.
+    :param float river_alpha: the color alpha of river geographical features.
+    :param int coast_linewidth: the width, in pixels, of the coast lines.
+    :param float coast_alpha: the color alpha of coast lines.
+    :param bool drawGrid: if ``True``, then overlay the latitude and longitude grid lines. Otherwise do not. Default is ``True``.
+    :param float mult_bounds_lat: often times, especially with geographic regions that cover a significant area of the earth, we need to put a multiplier :math:`> 1` on the *latitudinal* extent of the plot, so that *all* features can be seen. By default this value is 1.05, but it must be :math:`\ge 1`.
+    :param float mult_bounds_lng: often times, especially with geographic regions that cover a significant area of the earth, we need to put a multiplier :math:`> 1` on the *longitudinal* extent of the plot, so that *all* features can be seen. By default this value is 1.05, but it must be :math:`\ge 1`.
+    :param int rows: the number of rows for axes in the :py:class:`Figure <matplotlib.figure.Figure>` grid. Must be :math:`\ge 1`, and by default is 1.
+    :param int cols: the number of columns for axes in the :py:class:`Figure <matplotlib.figure.Figure>` grid. Must be :math:`\ge 1`, and by default is 1.
+    :param int num: the plot number of the :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>` in this :py:class:`Figure <matplotlib.figure.Figure>` grid. Must be :math:`\ge 1` and :math:`\le`\ ``rows`` times ``columns``. Its default is 1. Look at :py:meth:`add_subplot <matplotlib.figure.Figure.add_subplot>` for its  meaning.
+    :rtype: :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>`
+
+    .. _`stereographic projection`: https://en.wikipedia.org/wiki/Stereographic_projection
+    """
     assert( mult_bounds_lat >= 1.0 )
     assert( mult_bounds_lng >= 1.0 )
     assert( rows >= 1 )
