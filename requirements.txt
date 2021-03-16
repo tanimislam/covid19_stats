@@ -1,4 +1,4 @@
-basemap
+cartopy
 mpi4py
 mutagen
 networkx

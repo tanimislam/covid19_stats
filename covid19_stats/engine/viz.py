@@ -13,7 +13,6 @@ from matplotlib.cm import ScalarMappable
 from matplotlib.colors import LogNorm, to_rgba
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_agg import FigureCanvasAgg
-from mpl_toolkits.basemap import Basemap
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from distutils.spawn import find_executable
 from nprstuff.core import autocrop_image
@@ -83,73 +82,6 @@ def create_and_draw_fromfig(
         facecolor = numpy.concatenate([ cfeature.COLORS['water'], [ river_alpha, ] ]) )
     ax.add_feature( lakef )
     return ax
-
-def create_and_draw_basemap(
-    ax, bbox, resolution = 'i', river_linewidth = 5, river_alpha = 0.3,
-    coast_linewidth = 2, coast_alpha = 0.4, drawGrid = True ):
-    min_lng, min_lat, max_lng, max_lat = bbox
-    lng_center = 0.5 * ( min_lng + max_lng )
-    lat_center = 0.5 * ( min_lat + max_lat )
-    lng_delta = 1.05 * ( max_lng - min_lng ) * 0.5
-    lat_delta = 1.05 * ( max_lat - min_lat ) * 0.5
-    m = Basemap(
-        projection = 'stere', lon_0 = lng_center, lat_0 = lat_center, lat_ts = lat_center,
-        llcrnrlat = lat_center - lat_delta, urcrnrlat = lat_center + lat_delta,
-        llcrnrlon = lng_center - lng_delta, urcrnrlon = lng_center + lng_delta,
-        resolution = resolution, area_thresh = 1.0, ellps = 'WGS84', ax = ax )
-    if drawGrid:
-        m.drawparallels(numpy.arange(min_lat, max_lat, lat_delta / 1.5 ), labels = [1,0,0,1] )
-        m.drawmeridians(numpy.arange(min_lng, max_lng, lng_delta / 1.5 ), labels = [1,0,0,1] )
-    #
-    ## create a "black" with alpha = coast_alpha
-    try:
-        cblack = list( to_rgba( 'black' ) )
-        cblack[-1] = coast_alpha
-        m.drawcoastlines( linewidth = coast_linewidth, color = cblack )
-    except: pass
-    #
-    ## create a "blue" with alpha = 0.3, and is the first blue color when plotting
-    cblue = list( to_rgba( '#1f77b4' ) )
-    cblue[-1] = river_alpha
-    m.drawrivers( linewidth = river_linewidth, color = cblue )
-    m.fillcontinents( lake_color = cblue, color = 'white' )
-    return m
-
-def create_and_draw_basemap_smarter(
-    ax, boundary_dict, resolution = 'i', scaling = 1.3,
-    river_linewidth = 5, river_alpha = 0.3 ,
-    coast_linewidth = 2, coast_alpha = 0.4):
-    #
-    ## smarter than create_and_draw_basemap because here we solve for the basemap with the lat/lng deltas
-    ## that encompass ALL the boundary points of FIPS counties
-    proj_dat = determine_corners_center_stereo( boundary_dict, scaling = scaling )
-    m = Basemap(
-        projection = 'stere', lon_0 = proj_dat['lng_cent'], lat_0 = proj_dat['lat_cent'],
-        llcrnrlat = proj_dat['lat_min'], urcrnrlat = proj_dat[ 'lat_max' ],
-        llcrnrlon = proj_dat['lng_min'], urcrnrlon = proj_dat[ 'lng_max' ],
-        resolution = resolution, area_thresh = 1.0, ellps = 'WGS84', ax = ax )
-    max_lat = proj_dat[ 'lat_max' ]
-    min_lat = proj_dat[ 'lat_min' ]
-    lat_delta = 0.5 * ( max_lat - min_lat )
-    max_lng = proj_dat[ 'lng_max' ]
-    min_lng = proj_dat[ 'lng_min' ]
-    lng_delta = 0.5 * ( max_lng - min_lng )
-    m.drawparallels(numpy.arange(min_lat, max_lat, lat_delta / 1.5 ), labels = [1,0,0,1] )
-    m.drawmeridians(numpy.arange(min_lng, max_lng, lng_delta / 1.5 ), labels = [1,0,0,1] )
-    #
-    ## create a "black" with alpha = 0.4
-    try:
-        cblack = list( to_rgba( 'black' ) )
-        cblack[-1] = coast_alpha
-        m.drawcoastlines( linewidth = coast_linewidth, color = cblack )
-    except: pass
-    #
-    ## create a "blue" with alpha = 0.3, and is the first blue color when plotting
-    cblue = list( to_rgba( '#1f77b4' ) )
-    cblue[-1] = river_alpha
-    m.drawrivers( linewidth = river_linewidth, color = cblue )
-    m.fillcontinents( lake_color = cblue, color = 'white' )
-    return m
     
 def determine_corners_center_stereo( boundary_dict, scaling = 1.0 ):
     import scipy.optimize
@@ -222,39 +154,20 @@ def determine_corners_center_stereo( boundary_dict, scaling = 1.0 ):
         'lng_min' : lng_cent + scaling * ( lng_min - lng_cent ),
         'lng_max' : lng_cent + scaling * ( lng_max - lng_cent ) }
 
-def display_fips_geom( fips_data, ax ):
+def display_fips_geom( fips_data, fig ):
     bbox = fips_data[ 'bbox' ]
-    m = create_and_draw_basemap( ax, bbox, resolution = 'h' )
+    ax = create_and_draw_fromfig( ax, bbox, resolution = 'h' )
     fc = list( to_rgba( '#1f77b4' ) )
     fc[-1] = 0.25
     for shape in fips_data[ 'points' ]:
-        x, y = m( shape[:,0], shape[:,1] )
         poly = Polygon(
-            numpy.array([ x, y ]).T, closed = True,
+            shape, closed = True,
             edgecolor = 'k', linewidth = 2.0, linestyle = 'dashed',
-            facecolor = tuple(fc), alpha = 1.0 )
+            facecolor = tuple(fc), alpha = 1.0, transform = ccrs.PlateCarree( ) )
         ax.add_patch( poly )
+    return ax
 
-def display_fips( collection_of_fips, ax, **kwargs ):
-    bdict = core.get_boundary_dict( collection_of_fips )
-    bbox = gis.calculate_total_bbox( chain.from_iterable( bdict.values( ) ) )
-    m = create_and_draw_basemap( ax, bbox, **kwargs )
-    fc = list( to_rgba( '#1f77b4' ) )
-    fc[-1] = 0.25
-    for fips in sorted( bdict ):
-        for shape in bdict[ fips ]:
-            x, y = m( shape[:,0], shape[:,1] )
-            poly = Polygon(
-                numpy.array([ x, y ]).T, closed = True,
-                edgecolor = 'k', linewidth = 2.0, linestyle = 'dashed',
-                facecolor = tuple(fc), alpha = 1.0 )
-            ax.add_patch( poly )
-            x_cent = x.mean( )
-            y_cent = y.mean( )
-            ax.text( x_cent, y_cent, fips, fontsize = 10, fontweight = 'bold', color = 'red' )
-    return m
-
-def display_fips_cartopy( collection_of_fips, fig, **kwargs ):
+def display_fips( collection_of_fips, fig, **kwargs ):
     bdict = core.get_boundary_dict( collection_of_fips )
     bbox = gis.calculate_total_bbox( chain.from_iterable( bdict.values( ) ) )
     ax = create_and_draw_fromfig( fig, bbox, **kwargs )
@@ -269,124 +182,44 @@ def display_fips_cartopy( collection_of_fips, fig, **kwargs ):
             ax.add_patch( poly )
             lng_cent = shape[:,0].mean( )
             lat_cent = shape[:,1].mean( )
-            ax.text( lng_cent, lat_cent, fips, fontsize = 10, fontweight = 'bold', color = 'red',
-                    transform = ccrs.PlateCarree( ) )
+            ax.text(
+                lng_cent, lat_cent, fips, fontsize = 10, fontweight = 'bold', color = 'red',
+                transform = ccrs.PlateCarree( ) )
     return ax    
 
-def display_msa( msaname, ax, doShow = False ):
-    fig = ax.figure
+def display_msa( msaname, fig, doShow = False ):
     fig.set_size_inches([18,18])
     #
     data_msa = core.get_msa_data( msaname )
     bdict = core.get_boundary_dict( data_msa[ 'fips' ] )
     bbox = gis.calculate_total_bbox( chain.from_iterable( bdict.values( ) ) )
-    m = create_and_draw_basemap( ax, bbox, resolution = 'h' )
+    ax = create_and_draw_fromfig( fig, bbox )
     fc = list( to_rgba( '#1f77b4' ) )
     fc[-1] = 0.25
     for fips in sorted( bdict ):
         for shape in bdict[ fips ]:
-            x, y = m( shape[:,0], shape[:,1] )
             poly = Polygon(
-                numpy.array([ x, y ]).T, closed = True,
+                shape, closed = True,
                 edgecolor = 'k', linewidth = 2.0, linestyle = 'dashed',
-                facecolor = tuple(fc), alpha = 1.0 )
+                facecolor = tuple(fc), alpha = 1.0, transform = ccrs.PlateCarree( ) )
             ax.add_patch( poly )
-            x_cent = x.mean( )
-            y_cent = y.mean( )
-            ax.text( x_cent, y_cent, fips, fontsize = 10, fontweight = 'bold', color = 'red' )
+            lng_cent = shape[:,0].mean( )
+            lat_cent = shape[:,1].mean( )
+            ax.text(
+                lng_cent, lat_cent, fips, fontsize = 10, fontweight = 'bold', color = 'red',
+                transform = ccrs.PlateCarree( ) )
     #
     ## now info on this MSA
     ax.text( 0.01, 0.98, 'COUNTIES IN %s.' % data_msa[ 'region name' ], fontsize = 20, fontweight = 'bold',
             transform = ax.transAxes, horizontalalignment = 'left', verticalalignment = 'top' )
-    if not doShow: return
+    if not doShow: return ax
     #
     canvas = FigureCanvasAgg( fig )
     canvas.print_figure( 'msa_%s_counties.png' % msaname, bbox_inches = 'tight' )
     autocrop_image.autocrop_image( 'msa_%s_counties.png' % msaname )
-    
-def plot_cases_or_deaths_bycounty(
-    inc_data, regionName, ax, type_disp = 'cases', days_from_beginning = 0, resolution = 'h',
-    maxnum_colorbar = 5000.0, doTitle = True, plot_artists = { },
-    poly_line_width = 1.0, doSmarter = False ):
-    cases_dict = { 'cases' : 'cases', 'deaths' : 'death' }
-    assert( resolution in ( 'c', 'l', 'i', 'h', 'f' ) )
-    assert( type_disp in cases_dict )
-    assert( days_from_beginning >= 0 )
-    assert( days_from_beginning <= inc_data[ 'last day' ] )
-    assert( maxnum_colorbar > 1 )
-    key = cases_dict[ type_disp ]
-    #
-    ## NOW CREATE BASEMAP HIGH REZ
-    ## LAZY LOADING
-    if 'isBaseMapped' not in plot_artists:
-        if not doSmarter:
-            m = create_and_draw_basemap( ax, inc_data[ 'bbox' ], resolution = resolution )
-        else: m = create_and_draw_basemap_smarter(
-            ax, inc_data[ 'boundaries' ],
-            resolution = resolution, river_linewidth = 1.0, river_alpha = 0.15,
-            coast_linewidth = 1.0, coast_alpha = 0.25 )
-        plot_artists[ 'isBaseMapped' ] = m
-        plot_artists[ 'sm' ] = ScalarMappable( norm = LogNorm( 1.0, maxnum_colorbar ), cmap = 'jet' )
-    #
-    ## draw boundaries if not defined
-    boundaries = inc_data['boundaries']
-    df_dfm = inc_data['df'][ inc_data['df']['days_from_beginning'] == days_from_beginning ].copy( )
-    sm = plot_artists[ 'sm' ]
-    m = plot_artists[ 'isBaseMapped' ]
-    for fips in sorted( boundaries ):
-        nums = df_dfm['%s_%s' % ( type_disp, fips )].max( )
-        if nums == 0: fc = ( 1.0, 1.0, 1.0, 0.0 )
-        else: fc = sm.to_rgba( nums )
-        art_key = '%s_polys_%s' % ( key, fips )
-        if art_key not in plot_artists:
-            plot_artists.setdefault( art_key, [ ] )
-            for shape in boundaries[ fips ]:
-                x, y = m( shape[:,0], shape[:,1] )
-                poly = Polygon(
-                    numpy.array([ x, y ]).T, closed = True,
-                    linewidth = poly_line_width, linestyle = 'dashed',
-                    facecolor = fc, alpha = 0.4 )
-                ax.add_patch( poly )
-                plot_artists[ art_key ].append( poly )
-        else:
-            for poly in plot_artists[ art_key ]:
-                poly.set_facecolor( fc )
-                poly.set_alpha( 0.4 )
-    
-    #
-    ## now add the colorbar associated with sm
-    if 'cb' not in plot_artists:        
-        cb = my_colorbar( sm, ax, alpha = 0.8 )
-        cb.set_label( 'number of %s' % type_disp, fontsize = 18, fontweight = 'bold' )
-        plot_artists[ 'cb' ] = cb
-    #
-    ## now put in the legend in upper left corner, fontsize = 14, weight = bold
-    ## following info: date, days after beginning, number of cases
-    date_s = df_dfm.date.max().strftime( '%d %B %Y' )
-    num_tot = df_dfm[ key ].max( )
-    if '%s_text' % key not in plot_artists:
-        txt = ax.text(
-            0.01, 0.02, '\n'.join([
-                '%s' % date_s,
-                '%d days from 1st case' % days_from_beginning,
-                '%s cumulative %s' % ( type_disp, get_string_commas_num( num_tot ) ) ]),
-            color = ( 0.0, 0.0, 0.0, 0.8 ),
-            fontsize = 18, fontweight = 'bold', transform = ax.transAxes,
-            horizontalalignment = 'left', verticalalignment = 'bottom' )
-        plot_artists[ '%s_text' % key ] = txt
-    else:
-        plot_artists[ '%s_text' % key ].set_text('\n'.join([
-            '%s' % date_s,
-            '%d days from 1st case' % days_from_beginning,
-            '%s cumulative %s' % ( type_disp, get_string_commas_num( num_tot ) ) ] ) )
-            
-    if doTitle:
-        ax.set_title( '\n'.join([
-            'Cumulative number of COVID-19 %s' % type_disp,
-            'in %s after %d / %d days from start' % ( regionName, days_from_beginning, inc_data[ 'last day'] ) ] ),
-                    fontsize = 18, fontweight = 'bold' )
+    return ax
 
-def plot_cases_or_deaths_bycounty_cartopy(
+def plot_cases_or_deaths_bycounty(
     inc_data, regionName, fig, type_disp = 'cases', days_from_beginning = 0,
     maxnum_colorbar = 5000.0, doTitle = True, plot_artists = { },
     poly_line_width = 1.0, doSmarter = False, rows = 1, cols = 1, num = 1 ):
@@ -593,13 +426,13 @@ def create_plots_daysfrombeginning(
     ## now plots
     death_plot_artists = { }
     cases_plot_artists = { }
-    plot_cases_or_deaths_bycounty_cartopy(
+    plot_cases_or_deaths_bycounty(
         inc_data, regionName, fig, type_disp = 'deaths',
         days_from_beginning = first_day, doTitle = False,
         maxnum_colorbar = maxnum_colorbar,
         plot_artists = death_plot_artists, doSmarter = doSmarter,
         rows = 2, cols = 2, num = 2 )
-    plot_cases_or_deaths_bycounty_cartopy(
+    plot_cases_or_deaths_bycounty(
         inc_data, regionName, fig, type_disp = 'cases',
         days_from_beginning = first_day, doTitle = False,
         maxnum_colorbar = maxnum_colorbar,
@@ -641,13 +474,13 @@ def create_plots_daysfrombeginning(
     #
     ## now do for the remaining days
     for day in sorted_days[1:]:
-        plot_cases_or_deaths_bycounty_cartopy(
+        plot_cases_or_deaths_bycounty(
             inc_data, regionName, fig, type_disp = 'deaths',
             days_from_beginning = day, doTitle = False,
             maxnum_colorbar = maxnum_colorbar,
             plot_artists = death_plot_artists,
             rows = 2, cols = 2, num = 2 )
-        plot_cases_or_deaths_bycounty_cartopy(
+        plot_cases_or_deaths_bycounty(
             inc_data, regionName, fig, type_disp = 'cases',
             days_from_beginning = day, doTitle = False,
             maxnum_colorbar = maxnum_colorbar,
@@ -914,7 +747,6 @@ def get_summary_demo_data(
         #
         ## save figures
         canvas = FigureCanvasAgg( fig )
-        #file_prefix = 'covid19_%s_cds_%s' % ( prefix, last_date_str )
         file_prefix = 'covid19_%s_cds_LATEST' % ( prefix )
         pngfile = os.path.abspath( os.path.join( dirname, '%s.png' % file_prefix ) )
         pdffile = os.path.abspath( os.path.join( dirname, '%s.pdf' % file_prefix ) )
@@ -927,16 +759,16 @@ def get_summary_demo_data(
     #
     ## now create figures CASES and DEATHS
     def make_plot_and_save( case ):
-        assert( case in ( 'cases', 'deaths' ) )
         prefix_dict = { 'cases' : 'cases', 'deaths' : 'death' }
+        assert( case in prefix_dict )
         file_prefix = 'covid19_%s_%s_LATEST' % ( prefix, prefix_dict[ case ] )
         fig_mine = Figure( )
-        ax_mine = fig_mine.add_subplot(111)
         fig_mine.set_size_inches([ 12.0, 12.0 ])
         plot_cases_or_deaths_bycounty(
-            inc_data, regionName, ax_mine, type_disp = case,
+            inc_data, regionName, fig_mine, type_disp = case,
             days_from_beginning = inc_data[ 'last day' ],
-            maxnum_colorbar = maxnum_colorbar, doTitle = True, doSmarter = doSmarter )
+            maxnum_colorbar = maxnum_colorbar, doTitle = True,
+            doSmarter = doSmarter )
         canvas_mine = FigureCanvasAgg( fig_mine )
         pngfile = os.path.abspath( os.path.join( dirname, '%s.png' % file_prefix ) )
         pdffile = os.path.abspath( os.path.join( dirname, '%s.pdf' % file_prefix ) )
