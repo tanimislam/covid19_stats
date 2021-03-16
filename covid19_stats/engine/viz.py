@@ -420,16 +420,17 @@ def create_plots_daysfrombeginning(
     doSmarter = False
     if prefix == 'conus': doSmarter = True
     fig = Figure( )
-    ax_deaths = fig.add_subplot(111)
     #
     ## first plot, get correct width multiplication
     sorted_days = sorted( set( days_from_beginning ) )
     first_day = min( days_from_beginning )
+    plot_artists = { }
     plot_cases_or_deaths_bycounty(
-        inc_data, regionName, ax_deaths, type_disp = 'deaths',
+        inc_data, regionName, fig, type_disp = 'deaths',
         days_from_beginning = first_day, doTitle = False,
         maxnum_colorbar = maxnum_colorbar,
-        plot_artists = { }, doSmarter = doSmarter )
+        plot_artists = plot_artists, doSmarter = doSmarter )
+    ax_deaths = plot_artists[ 'axes' ]
     ratio_width_height = ax_deaths.get_xlim( )[1] / ax_deaths.get_ylim( )[1]
     height_units = 2.0
     width_units = 1 + ratio_width_height
