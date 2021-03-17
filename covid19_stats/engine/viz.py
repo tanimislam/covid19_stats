@@ -519,7 +519,7 @@ def create_plots_daysfrombeginning(
     return fnames
 
 def create_summary_cases_or_deaths_movie_frombeginning(
-    data = core.get_msa_data( 'bayarea' ), maxnum_colorbar = 5000.0,
+    inc_data, maxnum_colorbar = 5000.0,
     type_disp = 'cases', dirname = os.getcwd( ), save_imgfiles = False ):
     assert( type_disp in ( 'cases', 'deaths' ) )
     assert( os.path.isdir( dirname ) )
@@ -532,20 +532,21 @@ def create_summary_cases_or_deaths_movie_frombeginning(
     ## create directory
     tmp_dirname = tempfile.mkdtemp( suffix = 'covid19' )
     #
-    prefix = data[ 'prefix' ]
-    regionName = data[ 'region name' ]
-    counties_and_states = list( map( core.get_county_state, data[ 'fips' ] ) )
-    inc_data = core.get_incident_data( data )
+    prefix = inc_data[ 'prefix' ]
+    regionName = inc_data[ 'region name' ]
+    counties_and_states = list( map( core.get_county_state, inc_data[ 'fips' ] ) )
     last_date = max( inc_data['df'].date )
     #
     all_days_from_begin = list(range(inc_data['last day'] + 1 ) )
     numprocs = multiprocessing.cpu_count( )
-    if data['prefix'] != 'conus': input_status = { 'doSmarter' : False }
+    if inc_data['prefix'] != 'conus': input_status = { 'doSmarter' : False }
     else: input_status = { 'doSmarter' : True }
     def myfunc( input_tuple ):
         days_collection, i_status = input_tuple
         time00 = i_status[ 'time00' ]
         doSmarter = i_status[ 'doSmarter' ]
+        procno = i_status[ 'procno' ]
+        numprocs = i_status[ 'numprocs' ]
         days_coll_sorted = sorted( days_collection )
         fig = Figure( )
         fig.set_size_inches([24,18])
@@ -561,16 +562,20 @@ def create_summary_cases_or_deaths_movie_frombeginning(
             canvas.print_figure( fname, bbox_inches = 'tight' )
             autocrop_image.autocrop_image( fname, fixEven = True )
             fnames.append( fname )
-        logging.info( 'took %0.3f seconds to process %d of %d days.' % (
-            time.time( ) - time00, len( fnames ), len( all_days_from_begin ) ) )
+        logging.info( 'took %0.3f seconds to process all %d days owned by process %d / %d.' % (
+            time.time( ) - time00, len( fnames ), procno, numprocs ) )
         return fnames
 
     input_status[ 'time00' ] = time.time( )
     with multiprocessing.Pool( processes = numprocs ) as pool:
         input_tuples = list(zip(map(lambda idx: all_days_from_begin[idx::numprocs], range(numprocs)),
-                                [ input_status ] * numprocs ) )
+                                map(lambda idx: {
+                                    'time00' : input_status[ 'time00' ],
+                                    'doSmarter' : input_status[ 'doSmarter' ],
+                                    'procno' : idx + 1,
+                                    'numprocs' : numprocs }, range(numprocs))))
         for tup in input_tuples:
-            days_collection, _ = tup
+            days_collection, i_status = tup
             if any(filter(lambda day: day < 0, days_collection ) ):
                 logging.info( 'error days collection: %s.' % days_collection )
         allfiles = sorted(chain.from_iterable( pool.map(
@@ -588,11 +593,10 @@ def create_summary_cases_or_deaths_movie_frombeginning(
     #
     ## thank instructions from https://hamelot.io/visualization/using-ffmpeg-to-convert-a-set-of-images-into-a-video/
     ## make MP4 movie, 5 fps, quality = 25
-    proc = subprocess.Popen([
+    stdout_val = subprocess.check_output([
         ffmpeg_exec, '-y', '-r', '5', '-f', 'image2', '-i', allfile_name,
         '-vcodec', 'libx264', '-crf', '25', '-pix_fmt', 'yuv420p',
-        movie_name ], stdout = subprocess.PIPE, stderr = subprocess.STDOUT )
-    stdout_val, stderr_val = proc.communicate( )
+        movie_name ], stderr = subprocess.STDOUT )
     #
     ## if saving the image files
     if save_imgfiles:
@@ -608,7 +612,7 @@ def create_summary_cases_or_deaths_movie_frombeginning(
     ## store metadata
     mp4tags = mutagen.mp4.MP4( movie_name )
     mp4tags['\xa9nam'] = [ '%s, %s, %s' % ( prefix, type_disp.upper( ), last_date.strftime('%d-%m-%Y') ) ]
-    mp4tags['\xa9alb'] = [ core.get_mp4_album_name( data ), ]
+    mp4tags['\xa9alb'] = [ core.get_mp4_album_name( inc_data ), ]
     mp4tags['\xa9ART'] = [ 'Tanim Islam' ]
     mp4tags['\xa9day'] = [ last_date.strftime('%d-%m-%Y') ]
     mp4tags.save( )
@@ -616,8 +620,7 @@ def create_summary_cases_or_deaths_movie_frombeginning(
     return os.path.basename( movie_name ) # for now return basename        
 
 def create_summary_movie_frombeginning(
-    data = core.get_msa_data( 'bayarea' ),
-    maxnum_colorbar = 5000.0, dirname = os.getcwd( ) ):
+    inc_data, maxnum_colorbar = 5000.0, dirname = os.getcwd( ) ):
     #
     ## make sure dirname is a directory
     assert( os.path.isdir( dirname ) )
@@ -630,22 +633,23 @@ def create_summary_movie_frombeginning(
     ## create directory
     tmp_dirname = tempfile.mkdtemp( suffix = 'covid19' )
     #
-    prefix = data[ 'prefix' ]
-    regionName = data[ 'region name' ]
-    counties_and_states = list( map( core.get_county_state, data[ 'fips' ] ) )
-    inc_data = core.get_incident_data( data )
+    prefix = inc_data[ 'prefix' ]
+    regionName = inc_data[ 'region name' ]
+    counties_and_states = list( map( core.get_county_state, inc_data[ 'fips' ] ) )
     last_date = max( inc_data['df'].date )
     #
     all_days_from_begin = list(range(inc_data['last day'] + 1 ) )
     def myfunc( input_tuple ):
-        days_collection, time00 = input_tuple
+        days_collection, i_status = input_tuple
+        time00 = i_status[ 'time00' ]
+        procno = i_status[ 'procno' ]
+        numprocs = i_status[ 'numprocs' ]
         fnames = create_plots_daysfrombeginning(
             inc_data, regionName, dirname = tmp_dirname,
             days_from_beginning = days_collection, prefix = prefix,
             maxnum_colorbar = maxnum_colorbar )
-        logging.info( 'took %0.3f seconds to process %d of %d days.' % (
-            time.time( ) - time00,
-            len( fnames ), len( all_days_from_begin ) ) )
+        logging.info( 'took %0.3f seconds to process all %d days owned by process %d / %d.' % (
+            time.time( ) - time00, len( fnames ), procno, numprocs ) )
         return fnames
     #
     ## first make all the plots
@@ -653,7 +657,10 @@ def create_summary_movie_frombeginning(
     with multiprocessing.Pool( processes = multiprocessing.cpu_count( ) ) as pool:
         numprocs = multiprocessing.cpu_count( )
         input_tuples = list(zip(map(lambda idx: all_days_from_begin[idx::numprocs], range(numprocs)),
-                                [ time0 ] * numprocs ) )
+                                map(lambda idx: {
+                                    'time00' : time0,
+                                    'procno' : idx + 1,
+                                    'numprocs' : numprocs }, range(numprocs))))
         for tup in input_tuples:
             days_collection, _ = tup
             if any(filter(lambda day: day < 0, days_collection ) ):
@@ -672,11 +679,10 @@ def create_summary_movie_frombeginning(
     #
     ## thank instructions from https://hamelot.io/visualization/using-ffmpeg-to-convert-a-set-of-images-into-a-video/
     ## make MP4 movie, 5 fps, quality = 25
-    proc = subprocess.Popen([ ffmpeg_exec, '-y', '-r', '5', '-f', 'image2', '-i', allfile_name,
-                             '-vcodec', 'libx264', '-crf', '25', '-pix_fmt', 'yuv420p',
-                             movie_name ], stdout = subprocess.PIPE,
-                            stderr = subprocess.STDOUT )
-    stdout_val, stderr_val = proc.communicate( )
+    stdout_val = subprocess.check_output(
+        [ ffmpeg_exec, '-y', '-r', '5', '-f', 'image2', '-i', allfile_name,
+         '-vcodec', 'libx264', '-crf', '25', '-pix_fmt', 'yuv420p',
+         movie_name ], stderr = subprocess.STDOUT )
     #
     ## now later remove those images and then remove the directory
     list(map(lambda fname: os.remove( fname ), allfiles ) )
@@ -685,7 +691,7 @@ def create_summary_movie_frombeginning(
     ## store metadata
     mp4tags = mutagen.mp4.MP4( movie_name )
     mp4tags['\xa9nam'] = [ '%s, ALL, %s' % ( prefix, last_date.strftime('%d-%m-%Y') ) ]
-    mp4tags['\xa9alb'] = [ core.get_mp4_album_name( data ), ]
+    mp4tags['\xa9alb'] = [ core.get_mp4_album_name( inc_data ), ]
     mp4tags['\xa9ART'] = [ 'Tanim Islam' ]
     mp4tags['\xa9day'] = [ last_date.strftime('%d-%m-%Y') ]
     mp4tags.save( )
@@ -693,17 +699,16 @@ def create_summary_movie_frombeginning(
     return os.path.basename( movie_name )
 
 def get_summary_demo_data(
-    data = core.get_msa_data( 'bayarea' ), maxnum_colorbar = 5000.0,
+    inc_data, maxnum_colorbar = 5000.0,
     dirname = os.getcwd( ), store_data = True ):
     #
     ## now is dirname a directory
     assert( os.path.isdir( dirname ) )
     doSmarter = False
-    if data[ 'prefix' ] == 'conus': doSmarter = True
-    prefix = data[ 'prefix' ]
-    regionName = data[ 'region name' ]
-    counties_and_states = list( map( core.get_county_state, data[ 'fips' ] ) )
-    inc_data = core.get_incident_data( data )
+    if inc_data[ 'prefix' ] == 'conus': doSmarter = True
+    prefix = inc_data[ 'prefix' ]
+    regionName = inc_data[ 'region name' ]
+    counties_and_states = list( map( core.get_county_state, inc_data[ 'fips' ] ) )
     df_cases_deaths_region = inc_data[ 'df' ]
     #
     first_date = min( df_cases_deaths_region.date )

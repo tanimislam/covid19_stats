@@ -14,15 +14,14 @@ from argparse import ArgumentParser
 ## suppress warnings
 warnings.simplefilter( 'ignore' )
 
-def _summarize_data( data_msa, maxnum ):
-    regionName = data_msa[ 'region name' ]
-    population = data_msa[ 'population' ]
-    inc_data = core.get_incident_data( data_msa )
-    max_fips, max_cases = core.get_maximum_cases( inc_data )
+def _summarize_data( inc_data_msa, maxnum ):
+    regionName = inc_data_msa[ 'region name' ]
+    population = inc_data_msa[ 'population' ]
+    max_fips, max_cases = core.get_maximum_cases( inc_data_msa )
     max_cs = core.get_county_state( max_fips )
-    first_date = inc_data['df'].date.min( )
-    last_date = inc_data['df'].date.max( )
-    last_day = inc_data[ 'last day' ]
+    first_date = inc_data_msa['df'].date.min( )
+    last_date = inc_data_msa['df'].date.max( )
+    last_day = inc_data_msa[ 'last day' ]
     print( '\n'.join([
         'HERE ARE DETAILS FOR %s.' % regionName,
         '2019 EST. POP = %s.' % get_string_commas_num( population ),
@@ -43,8 +42,8 @@ def _try_continue( ):
         return False
     return val_map[ val ]
 
-def _get_default_maxnum( data ):
-    max_cases = core.get_max_cases_county( core.get_incident_data( data ) )[ 'cases' ]
+def _get_default_maxnum( inc_data ):
+    max_cases = core.get_max_cases_county( inc_data )[ 'cases' ]
     maxnum = find_plausible_maxnum( max_cases )
     return maxnum
 
@@ -178,17 +177,18 @@ def main( ):
                 return
             data = data_msas_2019[ msaname ]
         else: data = COVID19Database.data_conus( )
+        inc_data = core.get_incident_data( data )
         maxnum = args.maxnum
-        if maxnum is None: maxnum = _get_default_maxnum( data )
+        if maxnum is None: maxnum = _get_default_maxnum( inc_data )
         if maxnum < 1:
             print( 'Error, maximum number for visualization %d < 1.' % maxnum )
             return
-        _summarize_data( data, maxnum )
+        _summarize_data( inc_data, maxnum )
         if args.do_yes_moviemetro: status = args.do_yes_moviemetro
         else: status = _try_continue( )
         if status:
             movie_name = viz.create_summary_movie_frombeginning(
-                data = data, maxnum_colorbar = maxnum,
+                inc_data, maxnum_colorbar = maxnum,
                 dirname = args.dirname )
             return
         
@@ -204,17 +204,18 @@ def main( ):
                 return
             data = data_msas_2019[ msaname ]
         else: data = COVID19Database.data_conus( )
+        inc_data = core.get_incident_data( data )
         maxnum = args.summmetro_maxnum
-        if maxnum is None: maxnum = _get_default_maxnum( data )
+        if maxnum is None: maxnum = _get_default_maxnum( inc_data )
         if maxnum < 1:
             print( 'Error, maximum number for visualization %d < 1.' % maxnum )
             return
 
-        _summarize_data( data, maxnum )
+        _summarize_data( inc_data, maxnum )
         if args.do_yes_summmetro: status = args.do_yes_summmetro
         else: status = _try_continue( )
         if status:
-            viz.get_summary_demo_data( data, maxnum_colorbar = maxnum, dirname = args.dirname )
+            viz.get_summary_demo_data( inc_data, maxnum_colorbar = maxnum, dirname = args.dirname )
             return
     elif args.choose_option == 'mcd':
         #
@@ -228,18 +229,19 @@ def main( ):
                 return
             data = data_msas_2019[ msaname ]
         else: data = COVID19Database.data_conus( )
+        inc_data = core.get_incident_data( data )
         maxnum = args.movcasedeath_maxnum
-        if maxnum is None: maxnum = _get_default_maxnum( data )
+        if maxnum is None: maxnum = _get_default_maxnum( inc_data )
         if maxnum < 1:
             print( 'Error, maximum number for visualization %d < 1.' % maxnum )
             return
 
-        _summarize_data( data, maxnum )
+        _summarize_data( inc_data, maxnum )
         if args.do_yes_movcasedeath: status = args.do_yes_movcasedeath
         else: status = _try_continue( )
         if status:
             viz.create_summary_cases_or_deaths_movie_frombeginning(
-                data = data, maxnum_colorbar = args.movcasedeath_maxnum,
+                inc_data, maxnum_colorbar = args.movcasedeath_maxnum,
                 type_disp = args.movcasedeath_display, dirname = args.dirname,
                 save_imgfiles = args.movcasedeath_saveimages )
             return

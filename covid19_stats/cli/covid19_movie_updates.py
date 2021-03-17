@@ -23,26 +23,30 @@ def _get_data_state_or_territory( statename ):
     if statename in mapping_state_rname_conus:
         data_state = data_states[
             mapping_state_rname_conus[ statename ] ]
-        return data_state, _get_maxnum( data_state )
+        inc_data = core.get_incident_data( data_state )
+        return inc_data, _get_maxnum( inc_data )
     if statename in mapping_state_rname_nonconus:
         data_state = data_nonconus_states_territories[
             mapping_state_rname_nonconus[ statename ] ]
-        return data_state, _get_maxnum( data_state )
+        inc_data = core.get_incident_data( data_state )
+        return inc_data, _get_maxnum( inc_data )
     raise ValueError("Error, the chosen state or territory, %s, not in one of the %d defined." % (
-        statename, len( mapping_state_rname_conus ) + len( mapping_state_rname_nonconu ) ) )
+        statename, len( mapping_state_rname_conus ) + len( mapping_state_rname_nonconus ) ) )
 
 def _summarize_state_or_territory( statename, dirname, time0 ):
     assert( os.path.isdir( dirname ) )
-    data, maxnum = _get_data_state_or_territory( statename )
-    viz.get_summary_demo_data( data, maxnum_colorbar = maxnum, dirname = dirname, store_data = False )
+    inc_data, maxnum = _get_data_state_or_territory( statename )
+    viz.get_summary_demo_data(
+        inc_data, maxnum_colorbar = maxnum,
+        dirname = dirname, store_data = False )
     logging.info( 'at %0.3f seconds to create summary of %s.' % (
         time.time( ) - time0, statename ) )
 
 def _movie_state_or_territory( statename, dirname, time0 ):
     assert( os.path.isdir( dirname ) )
-    data, maxnum = _get_data_state_or_territory( statename )
+    inc_data, maxnum = _get_data_state_or_territory( statename )
     movie_name = viz.create_summary_movie_frombeginning(
-        data = data, maxnum_colorbar = maxnum,
+        inc_data, maxnum_colorbar = maxnum,
         dirname = dirname )
     logging.info( 'at %0.3f seconds to create movie of %s.' % (
         time.time( ) - time0, statename ) )
@@ -50,9 +54,9 @@ def _movie_state_or_territory( statename, dirname, time0 ):
 def _movie_casedeaths_state_or_territory( statename, dirname, time0, type_disp = 'cases' ):
     assert( os.path.isdir( dirname ) )
     assert( type_disp.lower( ) in ( 'cases', 'deaths' ) )
-    data, maxnum = _get_data_state_or_territory( statename )
+    inc_data, maxnum = _get_data_state_or_territory( statename )
     viz.create_summary_cases_or_deaths_movie_frombeginning(
-        data = data, maxnum_colorbar = maxnum,
+        inc_data, maxnum_colorbar = maxnum,
         type_disp = type_disp.lower( ), dirname = dirname,
         save_imgfiles = False )
     logging.info( 'at %0.3f seconds to create %s movie of %s.' % (
@@ -61,23 +65,24 @@ def _movie_casedeaths_state_or_territory( statename, dirname, time0, type_disp =
 def _get_data( msa_or_conus_name ):
     if msa_or_conus_name.lower( ) == 'conus':
         data_conus = COVID19Database.data_conus( )
-        return data_conus, _get_maxnum( data_conus )
+        inc_data = core.get_incident_data( data_conus )
+        return inc_data, _get_maxnum( inc_data )
     if msa_or_conus_name.lower( ) in COVID19Database.data_msas_2019( ):
         data_msas_2019 = COVID19Database.data_msas_2019( )
-        return data_msas_2019[ msa_or_conus_name.lower( ) ], _get_maxnum(
-            data_msas_2019[ msa_or_conus_name.lower( ) ] )
+        inc_data = core.get_incident_data( data_msas_2019[ msa_or_conus_name.lower( ) ] )
+        return inc_data, _get_maxnum( inc_data )
     raise ValueError("Error, the chosen MSA name %s not one of the %d defined." % (
         msa_or_conus_name.lower( ), len( COVID19Database.data_msas_2019( ) ) ) )
 
-def _get_maxnum( data ):
-    max_cases = core.get_max_cases_county( core.get_incident_data( data ) )[ 'cases' ]
+def _get_maxnum( inc_data ):
+    max_cases = core.get_max_cases_county( inc_data )[ 'cases' ]
     maxnum = find_plausible_maxnum( max_cases )
     return maxnum
 
 def _summarize_metro_or_conus( msa_or_conus_name, dirname, time0 ):
     assert( os.path.isdir( dirname ) )
-    data, maxnum = _get_data( msa_or_conus_name )
-    viz.get_summary_demo_data( data, maxnum_colorbar = maxnum, dirname = dirname, store_data = False )
+    inc_data, maxnum = _get_data( msa_or_conus_name )
+    viz.get_summary_demo_data( inc_data, maxnum_colorbar = maxnum, dirname = dirname, store_data = False )
     logging.info( 'at %0.3f seconds to create summary of %s.' % (
         time.time( ) - time0, msa_or_conus_name.lower( ) ) )
 
@@ -91,9 +96,9 @@ def _summarize( msas_or_conus, dirname, time0 ):
 
 def _movie_metro_or_conus( msa_or_conus_name, dirname, time0 ):
     assert( os.path.isdir( dirname ) )
-    data, maxnum = _get_data( msa_or_conus_name )
+    inc_data, maxnum = _get_data( msa_or_conus_name )
     movie_name = viz.create_summary_movie_frombeginning(
-        data = data, maxnum_colorbar = maxnum,
+        inc_data, maxnum_colorbar = maxnum,
         dirname = dirname )
     logging.info( 'at %0.3f seconds to create movie of %s.' % (
         time.time( ) - time0, msa_or_conus_name.lower( ) ) )
@@ -109,9 +114,9 @@ def _movie( msas_or_conus, dirname, time0 ):
 def _movie_casedeaths_metro_or_conus( msa_or_conus_name, dirname, time0, type_disp = 'cases' ):
     assert( os.path.isdir( dirname ) )
     assert( type_disp.lower( ) in ( 'cases', 'deaths' ) )
-    data, maxnum = _get_data( msa_or_conus_name )
+    inc_data, maxnum = _get_data( msa_or_conus_name )
     viz.create_summary_cases_or_deaths_movie_frombeginning(
-        data = data, maxnum_colorbar = maxnum,
+        inc_data, maxnum_colorbar = maxnum,
         type_disp = type_disp.lower( ), dirname = dirname,
         save_imgfiles = False )
     logging.info( 'at %0.3f seconds to create %s movie of %s.' % (

@@ -27,7 +27,7 @@ def get_boundary_dict( fips_collection ):
         fips, fips_data_2018[ fips ][ 'points' ] ), fips_collection ) )
     return boundary_dict
 
-def get_mp4_album_name( data ):
+def get_mp4_album_name( inc_data ):
     """
     This method operates on MP4_ movie output from command line tools that produce COVID-19 case and death summary movies -- such as :ref:`covid19_create_movie_or_summary`, :ref:`covid19_state_summary`, or :ref:`covid19_movie_updates` -- or methods that create MP4_ files -- such as :py:meth:`create_summary_cases_or_deaths_movie_frombeginning <covid19_stats.engine.viz.create_summary_cases_or_deaths_movie_frombeginning>` or :py:meth:`create_summary_movie_frombeginning <covid19_stats.engine.viz.create_summary_movie_frombeginning>`.
 
@@ -38,7 +38,7 @@ def get_mp4_album_name( data ):
     * :ref:`movie mode functionality for covid19_state_summary <movie_mode_state>`.
     * :ref:`movie cases death mode functionality for covid19_state_summary <movie_cases_deaths_mode_state>`.
 
-    :param dict data: the geographic data on the identified region. See :ref:`St. Louis data <stlouis_msa_example_data>` for an example of an MSA_. See :ref:`Rhode Island data <rhode_island_state_example_data>` for an example of a US state or territory. See :ref:`CONUS data <conus_example_data>` for the CONUS_.
+    :param dict inc_data: the :py:class:`dict` that *contains* geographic data on the identified region. See :ref:`St. Louis data <stlouis_msa_example_data>` for an example of an MSA_ geographic data :py:class:`dict`. See :ref:`Rhode Island data <rhode_island_state_example_data>` for an example of a US state or territory. See :ref:`CONUS data <conus_example_data>` for the CONUS_.
        
        .. code-block:: python
 
@@ -55,9 +55,9 @@ def get_mp4_album_name( data ):
     """
     data_states_territories_names = set( COVID19Database.data_states( ) ) | set(
         COVID19Database.data_nonconus_states_territories())
-    if data['prefix'] in data_states_territories_names:
+    if inc_data['prefix'] in data_states_territories_names:
         return 'STATE'
-    if data['prefix'].lower( ) == 'conus':
+    if inc_data['prefix'].lower( ) == 'conus':
         return 'CONUS'
     return 'METROPOLITAN STATISTICAL AREA'
 
@@ -126,6 +126,10 @@ def get_incident_data( data = None ):
     * ``boundaries`` is a :py:class:`dict` of boundary information. Each key is the `FIPS code`_, and its value is a :py:class:`list` of boundary lat/lngs for that county or territorial unit. Look at :download:`gis_calculate_total_bbox_sacramento.pkl.gz </_static/gis/gis_calculate_total_bbox_sacramento.pkl.gz>` for an example of this data structure.
     * ``last day`` is the number of days (from first COVID-19 incident) in this incident data set.
     * ``df`` is the :py:class:`Pandas DataFrame <pandas.DataFrame>` that contains COVID-19 cumulative case and death data for all counties or territorial units in that region.
+    * ``prefix` is the :py:class:`string <str>` inherited from the input ``prefix`` key in the ``data`` :py:class:`dict`.
+    * ``region name`` is the :py:class:`string <str>` inherited from the input ``region name`` key in the ``data`` :py:class:`dict`.
+    * ``population`` is the :py:class:`int` inherited from the input ``population`` key in the ``data`` :py:class:`dict`.
+    * ``fips`` is the :py:class:`set` inherited from the input ``fips`` key in the ``data`` :py:class:`dict`.
 
     This :py:class:`Pandas DataFrame <pandas.DataFrame>`, located under the ``df`` key, has the following columns ordered by first to last incident date.
 
@@ -207,7 +211,11 @@ def get_incident_data( data = None ):
         boundary_dict.values( ) ) )
     incident_data = {
         'df' : df_cases_deaths_region, 'bbox' : total_bbox, 'boundaries' : boundary_dict,
-        'last day' : df_cases_deaths_region.days_from_beginning.max( ) }
+        'last day' : df_cases_deaths_region.days_from_beginning.max( ),
+        'prefix' : data[ 'prefix' ],
+        'region name' : data[ 'region name' ],
+        'fips' : data[ 'fips' ],
+        'population' : data[ 'population' ] }
     return incident_data
 
 def get_max_cases_county( inc_data ):

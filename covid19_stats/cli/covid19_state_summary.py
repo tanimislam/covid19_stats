@@ -14,15 +14,14 @@ from argparse import ArgumentParser
 ## suppress warnings
 warnings.simplefilter( 'ignore' )
 
-def _summarize_data( data_state, maxnum ):
-    regionName = data_state[ 'region name' ]
-    population = data_state[ 'population' ]
-    inc_data = core.get_incident_data( data_state )
-    max_fips, max_cases = core.get_maximum_cases( inc_data )
+def _summarize_data( inc_data_state, maxnum ):
+    regionName = inc_data_state[ 'region name' ]
+    population = inc_data_state[ 'population' ]
+    max_fips, max_cases = core.get_maximum_cases( inc_data_state )
     max_cs = core.get_county_state( max_fips )
-    first_date = inc_data['df'].date.min( )
-    last_date = inc_data['df'].date.max( )
-    last_day = inc_data[ 'last day' ]
+    first_date = inc_data_state['df'].date.min( )
+    last_date = inc_data_state['df'].date.max( )
+    last_day = inc_data_state[ 'last day' ]
     print( '\n'.join([
         'HERE ARE DETAILS FOR %s.' % regionName,
         '2019 EST. POP = %s.' % get_string_commas_num( population ),
@@ -115,15 +114,16 @@ def main( ):
     else:
         data_state = data_nonconus_states_territories[
             mapping_state_rname_nonconus[ statename ] ]
-        
+
+    inc_data = core.get_incident_data( data_state )
     maxnum = args.maxnum
     if maxnum is None:
-        max_cases = core.get_max_cases_county( core.get_incident_data( data_state ) )[ 'cases' ]
+        max_cases = core.get_max_cases_county( inc_data )[ 'cases' ]
         maxnum = find_plausible_maxnum( max_cases )
     if maxnum < 1:
         print( 'Error, maximum number for visualization %d < 1.' % maxnum )
         return
-    _summarize_data( data_state, maxnum )
+    _summarize_data( inc_data, maxnum )
         
     #
     ## quad movie summary
@@ -132,7 +132,7 @@ def main( ):
         else: status = _try_continue( )
         if not status: return
         movie_name = viz.create_summary_movie_frombeginning(
-            data = data_state, maxnum_colorbar = maxnum,
+            inc_data, maxnum_colorbar = maxnum,
             dirname = args.dirname )
     #
     ## cumulative COVID-19 stats up to last day
@@ -141,7 +141,7 @@ def main( ):
         else: status = _try_continue( )
         if not status: return
         viz.get_summary_demo_data(
-            data_state, maxnum_colorbar = maxnum, dirname = args.dirname )
+            inc_data, maxnum_colorbar = maxnum, dirname = args.dirname )
     #
     ## movie of only either COVID-19 cases or deaths
     elif args.choose_option == 'mcd':
@@ -150,7 +150,7 @@ def main( ):
         if not status: return
         #
         viz.create_summary_cases_or_deaths_movie_frombeginning(
-            data = data_state, maxnum_colorbar = maxnum,
+            inc_data, maxnum_colorbar = maxnum,
             type_disp = args.movcasedeath_display,
             dirname = args.dirname,
             save_imgfiles = args.movcasedeath_saveimages )
