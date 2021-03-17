@@ -1,14 +1,12 @@
 import os, sys, numpy, titlecase, time, pandas, zipfile, mutagen.mp4
 import subprocess, tempfile, shutil, datetime, logging, copy
 import pathos.multiprocessing as multiprocessing
-from concurrent.futures import ProcessPoolExecutor
 from itertools import chain
 from multiprocessing import Value, Manager
 import cartopy.feature as cfeature
 import cartopy.crs as ccrs
 from matplotlib.axes import Axes
 from matplotlib.patches import Polygon
-from matplotlib.collections import PatchCollection
 from matplotlib.cm import ScalarMappable
 from matplotlib.colors import LogNorm, to_rgba
 from matplotlib.figure import Figure
@@ -41,7 +39,13 @@ def create_and_draw_fromfig(
     """
     This creates an :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>`, with lots of physical geographic features, and optional (but turned on by default) latitude and longitude gridding, of a region specified by a bounding box. This uses `stereographic projection`_. For example, here is the :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>` displaying the CONUS_.
     
-    ## FIXME       
+    .. _viz_create_and_draw_fromfig_conus:
+
+    .. figure:: /_static/viz/viz_create_and_draw_fromfig_conus.png
+       :width: 100%
+       :align: left
+
+       Demonstrations of this functionality, which underlies (or overlays?) the geographical features for visualizing COVID-19 cases and deaths.
 
     :param fig: the :py:class:`Figure <matplotlib.figure.Figure>` onto which to create a :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>` containing geographic features. Last three arguments -- ``rows``, ``cols``, and ``num`` -- describe the relative placement of the created :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>`. See :py:meth:`add_subplot <matplotlib.figure.Figure.add_subplot>` for those three arguments' meanings.
     :param tuple bbox: a four-element :py:class:`tuple`. Elements in order are *minimum* longitude, *minimum* latitude, *maximum* longitude, and *maximum* latitude.
@@ -103,81 +107,10 @@ def create_and_draw_fromfig(
         facecolor = numpy.concatenate([ cfeature.COLORS['water'], [ river_alpha, ] ]) )
     ax.add_feature( lakef )
     return ax
-    
-def determine_corners_center_stereo( boundary_dict, scaling = 1.0 ):
-    import scipy.optimize
-    all_latlngs = numpy.concatenate( list(chain.from_iterable( boundary_dict.values( ) ) ), axis = 0 )
-    phis = numpy.radians( all_latlngs[:,0] )
-    thets = numpy.pi / 2 - numpy.radians( all_latlngs[:,1])
-    v_z = numpy.array([
-        numpy.mean( numpy.cos( phis ) * numpy.sin( thets ) ),
-        numpy.mean( numpy.sin( phis ) * numpy.sin( thets ) ),
-        numpy.mean( numpy.cos( thets ) ) ])
-    v_z = v_z / numpy.linalg.norm( v_z )
-    cand_phi = numpy.arctan2( v_z[1], v_z[0] )
-    cand_thet= numpy.arccos( v_z[2] )
-    #
-    def penalty_centroid( thet, phi ):
-        v_z = numpy.array([ numpy.cos( phi ) * numpy.sin( thet ), numpy.sin( phi ) * numpy.sin( thet ), numpy.cos( thet ) ] )
-        v_y = numpy.array([ -numpy.cos( phi ) * numpy.cos( thet ), -numpy.sin( phi ) * numpy.cos( thet ), numpy.sin( thet ) ] )
-        v_x = numpy.array([ -numpy.sin( phi ), numpy.cos( phi ), 0 ])
-        v_z = v_z / numpy.linalg.norm( v_z )
-        v_y = v_y / numpy.linalg.norm( v_y )
-        v_x = v_x / numpy.linalg.norm( v_x )
-        #
-        ## position on unit sphere, +Y true north, +X true east
-        zvals = numpy.cos( phis ) * numpy.sin( thets ) * v_z[0] + numpy.sin( phis ) * numpy.sin( thets ) * v_z[1] + numpy.cos( thets ) * v_z[2]
-        xvals = numpy.cos( phis ) * numpy.sin( thets ) * v_x[0] + numpy.sin( phis ) * numpy.sin( thets ) * v_x[1] + numpy.cos( thets ) * v_x[2]
-        yvals = numpy.cos( phis ) * numpy.sin( thets ) * v_y[0] + numpy.sin( phis ) * numpy.sin( thets ) * v_y[1] + numpy.cos( thets ) * v_y[2]
-        #
-        ## stereoproj
-        Xvs = xvals / zvals
-        Yvs = yvals / zvals
-        pen_x = 0.5 * ( Xvs.max( ) + Xvs.min( ) )
-        pen_y = 0.5 * ( Yvs.max( ) + Yvs.min( ) )
-        return pen_x**2 + pen_y**2
 
-    thet, phi = scipy.optimize.fmin(lambda vec: penalty_centroid( vec[0], vec[1] ), [ cand_thet, cand_phi ], disp = False )
-    #
-    ## central latlngs?
-    lat_cent = 90.0 - numpy.degrees( thet )
-    lng_cent = numpy.degrees( phi )
-    #
-    ## now determine the dataframe for stereographic projections
-    df_latlng_stereos = pandas.DataFrame({ 'lat' : all_latlngs[:,1], 'lng' : all_latlngs[:,0] })
-    #
-    ## now stereo proj
-    v_z = numpy.array([ numpy.cos( phi ) * numpy.sin( thet ), numpy.sin( phi ) * numpy.sin( thet ), numpy.cos( thet ) ] )
-    v_y = numpy.array([ -numpy.cos( phi ) * numpy.cos( thet ), -numpy.sin( phi ) * numpy.cos( thet ), numpy.sin( thet ) ] )
-    v_x = numpy.array([ -numpy.sin( phi ), numpy.cos( phi ), 0 ])
-    v_z = v_z / numpy.linalg.norm( v_z )
-    v_y = v_y / numpy.linalg.norm( v_y )
-    v_x = v_x / numpy.linalg.norm( v_x )
-    #
-    ## position on unit sphere, +Y true north, +X true east
-    zvals = numpy.cos( phis ) * numpy.sin( thets ) * v_z[0] + numpy.sin( phis ) * numpy.sin( thets ) * v_z[1] + numpy.cos( thets ) * v_z[2]
-    xvals = numpy.cos( phis ) * numpy.sin( thets ) * v_x[0] + numpy.sin( phis ) * numpy.sin( thets ) * v_x[1] + numpy.cos( thets ) * v_x[2]
-    yvals = numpy.cos( phis ) * numpy.sin( thets ) * v_y[0] + numpy.sin( phis ) * numpy.sin( thets ) * v_y[1] + numpy.cos( thets ) * v_y[2]
-    #
-    ## stereoproj
-    Xvs = xvals / zvals
-    Yvs = yvals / zvals
-    df_latlng_stereos[ 'Xvs' ] = Xvs
-    df_latlng_stereos[ 'Yvs' ] = Yvs
-    lng_max = df_latlng_stereos[ df_latlng_stereos.Xvs == df_latlng_stereos.Xvs.max( ) ].lng.max( )
-    lng_min = df_latlng_stereos[ df_latlng_stereos.Xvs == df_latlng_stereos.Xvs.min( ) ].lng.min( )
-    lat_max = df_latlng_stereos[ df_latlng_stereos.Yvs == df_latlng_stereos.Yvs.max( ) ].lat.max( )
-    lat_min = df_latlng_stereos[ df_latlng_stereos.Yvs == df_latlng_stereos.Yvs.min( ) ].lat.min( )
-    return {
-        'lat_cent' : lat_cent, 'lng_cent' : lng_cent,
-        'lat_min' : lat_cent + scaling * ( lat_min - lat_cent ),
-        'lat_max' : lat_cent + scaling * ( lat_max - lat_cent ),
-        'lng_min' : lng_cent + scaling * ( lng_min - lng_cent ),
-        'lng_max' : lng_cent + scaling * ( lng_max - lng_cent ) }
-
-def display_fips_geom( fips_data, fig ):
+def display_fips_geom( fips_data, fig, **kwargs ):
     bbox = fips_data[ 'bbox' ]
-    ax = create_and_draw_fromfig( ax, bbox, resolution = 'h' )
+    ax = create_and_draw_fromfig( ax, bbox, **kwargs )
     fc = list( to_rgba( '#1f77b4' ) )
     fc[-1] = 0.25
     for shape in fips_data[ 'points' ]:
@@ -208,13 +141,13 @@ def display_fips( collection_of_fips, fig, **kwargs ):
                 transform = ccrs.PlateCarree( ) )
     return ax    
 
-def display_msa( msaname, fig, doShow = False ):
+def display_msa( msaname, fig, doShow = False, **kwargs ):
     fig.set_size_inches([18,18])
     #
     data_msa = core.get_msa_data( msaname )
     bdict = core.get_boundary_dict( data_msa[ 'fips' ] )
     bbox = gis.calculate_total_bbox( chain.from_iterable( bdict.values( ) ) )
-    ax = create_and_draw_fromfig( fig, bbox )
+    ax = create_and_draw_fromfig( fig, bbox , **kwargs)
     fc = list( to_rgba( '#1f77b4' ) )
     fc[-1] = 0.25
     for fips in sorted( bdict ):
