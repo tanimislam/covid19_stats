@@ -185,49 +185,6 @@
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install --user git+https://github.com/tanimislam/covid19_stats.git#egginfo=covid19_stats</span>
 </pre></div>
 </div>
-<p>However, <a class="reference external" href="https://matplotlib.org/basemap/">Basemap</a> can be a bugbear to install. Here is what worked for me when installing on the Linux machine.</p>
-<ol class="arabic">
-<li><p>First, although <a class="reference external" href="https://matplotlib.org/basemap">Basemap</a> will install, your Python shell (and hence your CLI) won’t be able to find it. This is almost certainly a bug in Basemap. Running <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">mpl_toolkits.basemap</span> <span class="pre">import</span> <span class="pre">Basemap</span></code> won’t work. First, look for where <code class="docutils literal notranslate"><span class="pre">basemap</span></code> is installed. In my case, it was located at <code class="docutils literal notranslate"><span class="pre">~/.local/lib/python3.7/site-packages/basemap-1.2.1-py3.7-linux-x86_64.egg/</span></code>. The directory structure right below it looks like this,</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">EGG-INFO</span>
-<span class="go">_geoslib.cpython-37m-x86_64-linux-gnu.so</span>
-<span class="go">_geoslib.py</span>
-<span class="go">mpl_toolkits</span>
-<span class="go">__pycache__</span>
-</pre></div>
-</div>
-</li>
-<li><p><code class="docutils literal notranslate"><span class="pre">cd</span></code> into <code class="docutils literal notranslate"><span class="pre">mpl_toolkits</span></code>. You should see a <code class="docutils literal notranslate"><span class="pre">basemap</span></code> subdirectory when you look in it.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">basemap</span>
-<span class="go">__init__.py</span>
-<span class="go">__pycache__</span>
-</pre></div>
-</div>
-</li>
-<li><p>You should also have an <code class="docutils literal notranslate"><span class="pre">mpl_toolkits</span></code> library module installed locally. In my case it was <code class="docutils literal notranslate"><span class="pre">~/.local/lib/python3.7/site-packages/mpl_toolkits/</span></code>. Inside it looks like,</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">axes_grid</span>
-<span class="go">axes_grid1</span>
-<span class="go">axisartist</span>
-<span class="go">mplot3d</span>
-<span class="go">tests</span>
-</pre></div>
-</div>
-</li>
-<li><p>In the real <code class="docutils literal notranslate"><span class="pre">mpl_toolkits</span></code> directory, make a symbolic link to the <code class="docutils literal notranslate"><span class="pre">basemap</span></code> directory underneath, e.g., <code class="docutils literal notranslate"><span class="pre">~/.local/lib/python3.7/site-packages/basemap-1.2.1-py3.7-linux-x86_64.egg/</span></code>. Thus in the correct <code class="docutils literal notranslate"><span class="pre">mpl_toolkits</span></code> subdirectory, run, e.g.,</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">ln -sf ~/.local/lib/python3.7/site-packages/basemap-1.2.1-py3.7-linux-x86_64.egg/mpl_toolkits/basemap basemap</span>
-</pre></div>
-</div>
-<p>If you have done everything correctly, its data structure will look like what is shown below, with a valid symbolic link to <code class="docutils literal notranslate"><span class="pre">basemap</span></code>.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">axes_grid</span>
-<span class="go">axes_grid1</span>
-<span class="go">axisartist</span>
-<span class="go">basemap -&gt; ~/.local/lib/python3.7/site-packages/basemap-1.2.1-py3.7-linux-x86_64.egg/</span>
-<span class="go">mplot3d</span>
-<span class="go">tests</span>
-</pre></div>
-</div>
-</li>
-</ol>
-<p>If you’re lucky, running <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">mpl_toolkits.basemap</span> <span class="pre">import</span> <span class="pre">Basemap</span></code> will work without further issues.</p>
 </div>
 
 

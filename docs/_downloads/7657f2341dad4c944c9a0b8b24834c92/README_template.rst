@@ -123,7 +123,6 @@ The comprehensive documentation lives in HTML created with Sphinx_, and now in t
 .. _`this New Yorker article`: https://www.newyorker.com/magazine/2020/03/30/the-high-schooler-who-became-a-covid-19-watchdog
 .. _`#78917`: https://github.com/tanimislam/covid19_stats/commit/78917dd20c43bd65320cf51958fa481febef4338
 .. _`Jupyter Notebooks`: https://jupyter.org
-.. _Basemap: https://matplotlib.org/basemap
 .. _`Github flavored Markdown`: https://github.github.com/gfm
 .. _reStructuredText: https://docutils.sourceforge.io/rst.html
 .. _`Pandas DataFrame`: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.htm
