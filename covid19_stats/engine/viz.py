@@ -540,23 +540,21 @@ def create_summary_cases_or_deaths_movie_frombeginning(
     #
     all_days_from_begin = list(range(inc_data['last day'] + 1 ) )
     numprocs = multiprocessing.cpu_count( )
-    if data['prefix'] != 'conus': input_status = { 'doSmarter' : False, 'resolution' : 'h' }
-    else: input_status = { 'doSmarter' : True, 'resolution' : 'i' }
+    if data['prefix'] != 'conus': input_status = { 'doSmarter' : False }
+    else: input_status = { 'doSmarter' : True }
     def myfunc( input_tuple ):
         days_collection, i_status = input_tuple
         time00 = i_status[ 'time00' ]
-        resolution = i_status[ 'resolution' ]
         doSmarter = i_status[ 'doSmarter' ]
         days_coll_sorted = sorted( days_collection )
         fig = Figure( )
         fig.set_size_inches([24,18])
-        ax = fig.add_subplot(111)
         plot_artists = { }
         fnames = [ ]
         for day in sorted( set( days_collection ) ):
             plot_cases_or_deaths_bycounty(
-                inc_data, regionName, ax, type_disp = type_disp, days_from_beginning = day,
-                resolution = resolution, doSmarter = doSmarter, plot_artists = plot_artists )
+                inc_data, regionName, fig, type_disp = type_disp, days_from_beginning = day,
+                doSmarter = doSmarter, plot_artists = plot_artists )
             canvas = FigureCanvasAgg( fig )
             fname = os.path.join( tmp_dirname, 'covid19_%s_%s_LATEST.%04d.png' % (
                 prefix, type_disp, day ) ) # last_date.strftime( '%d%m%Y' )
