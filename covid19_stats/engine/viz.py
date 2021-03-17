@@ -47,6 +47,8 @@ def create_and_draw_fromfig(
 
        Demonstrations of this functionality, which underlies (or overlays?) the geographical features for visualizing COVID-19 cases and deaths.
 
+    Here are the arguments.
+
     :param fig: the :py:class:`Figure <matplotlib.figure.Figure>` onto which to create a :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>` containing geographic features. Last three arguments -- ``rows``, ``cols``, and ``num`` -- describe the relative placement of the created :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>`. See :py:meth:`add_subplot <matplotlib.figure.Figure.add_subplot>` for those three arguments' meanings.
     :param tuple bbox: a four-element :py:class:`tuple`. Elements in order are *minimum* longitude, *minimum* latitude, *maximum* longitude, and *maximum* latitude.
     :param int river_linewidth: the width, in pixels, of river geographical features.
@@ -109,19 +111,57 @@ def create_and_draw_fromfig(
     return ax
 
 def display_fips_geom( fips_data, fig, **kwargs ):
-    bbox = fips_data[ 'bbox' ]
-    ax = create_and_draw_fromfig( ax, bbox, **kwargs )
+    """
+    Demonstrative plot, returning a :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>`, of a FIPS data collection. For example, for the NYC Metro Area, this is,
+
+    .. _viz_display_fips_geom_nyc:
+
+    .. figure:: /_static/viz/viz_display_fips_geom_nyc.png
+       :width: 100%
+       :align: left
+
+       Demonstration of this method showing the counties in the NYC Metro Area. One can extract the patches in this object to manually change the colors of these county polygons.
+       
+    Here are the arguments.
+
+    :param dict fips_data: the :py:class:`dict` of FIPS geographic data. This has keys of ``prefix``, ``fips``, and ``population``. Look at :ref:`the St. Louis FIPS region data <stlouis_msa_example_data>` for its structure.
+    :param fig: the :py:class:`Figure <matplotlib.figure.Figure>` onto which to draw this :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>`.
+    :rtype: :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>`
+    """
+    bdict = core.get_boundary_dict( fips_data[ 'fips' ] )
+    bbox = gis.calculate_total_bbox( chain.from_iterable( bdict.values( ) ) )
+    ax = create_and_draw_fromfig( fig, bbox, **kwargs )
     fc = list( to_rgba( '#1f77b4' ) )
     fc[-1] = 0.25
-    for shape in fips_data[ 'points' ]:
-        poly = Polygon(
-            shape, closed = True,
-            edgecolor = 'k', linewidth = 2.0, linestyle = 'dashed',
-            facecolor = tuple(fc), alpha = 1.0, transform = ccrs.PlateCarree( ) )
-        ax.add_patch( poly )
+    for fips in bdict:
+        for shape in bdict[ fips ]:
+            poly = Polygon(
+                shape, closed = True,
+                edgecolor = 'k', linewidth = 2.0, linestyle = 'dashed',
+                facecolor = tuple(fc), alpha = 1.0, transform = ccrs.PlateCarree( ) )
+            ax.add_patch( poly )
     return ax
 
 def display_fips( collection_of_fips, fig, **kwargs ):
+    """
+    Method that is very similar to :py:meth:`display_fips_geom <covid19_stats.engine.viz.display_fips_geom>`, except this *also* displays the FIPS code of each county. For example, for `Rhode Island`_, this is.
+    
+    .. _viz_display_fips_rhodeisland:
+
+    .. figure:: /_static/viz/viz_display_fips_rhodeisland.png
+       :width: 100%
+       :align: left
+
+       Demonstration of this method showing the counties in `Rhode Island`_. The FIPS code of each county is shown in red. One can extract the patches in this object to manually change the colors of these county polygons.
+
+    Here are the arguments.
+
+    :param collection_of_fips: can be a :py:class:`list`, :py:class:`set`, or other iterable of FIPS codes to visualize and label.
+    :param fig: the :py:class:`Figure <matplotlib.figure.Figure>` onto which to draw this :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>`.
+    :rtype: :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>`
+
+    .. _`Rhode Island`: https://en.wikipedia.org/wiki/Rhode_Island
+    """
     bdict = core.get_boundary_dict( collection_of_fips )
     bbox = gis.calculate_total_bbox( chain.from_iterable( bdict.values( ) ) )
     ax = create_and_draw_fromfig( fig, bbox, **kwargs )
@@ -142,6 +182,26 @@ def display_fips( collection_of_fips, fig, **kwargs ):
     return ax    
 
 def display_msa( msaname, fig, doShow = False, **kwargs ):
+    """
+    Convenience method that visualizes and labels, by FIPS code, the counties in a `Metropolitan Statistical Area <msa_>`_. It can optionally save the output to a file, ``msa_<msaname>_counties.png``. Here is an example of the NYC Metro Area.
+
+    .. _viz_display_msa_nyc:
+
+    .. figure:: /_static/viz/viz_display_msa_nyc.png
+       :width: 100%
+       :align: left
+
+       Display of the NYC Metro Area, with extra annotations beyond what :py:meth:`display_fips <covid19_stats.engine.viz.display_fips>` can do.
+
+    Here are the arguments.
+
+    :param str msaname: the identifying name for the `MSA <msa_>`_, for example ``nyc``.
+    :param fig: the :py:class:`Figure <matplotlib.figure.Figure>` onto which to draw this :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>`.
+    :param bool doShow: if ``False``, then just display the figure. If ``True``, also save to a file, ``msa_<msaname>_counties.png``. Default is ``False``.
+    :rtype: :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>`
+
+    .. _msa: https://en.wikipedia.org/wiki/Metropolitan_statistical_area
+    """
     fig.set_size_inches([18,18])
     #
     data_msa = core.get_msa_data( msaname )
