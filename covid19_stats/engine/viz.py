@@ -313,7 +313,6 @@ def plot_cases_or_deaths_bycounty(
             'Cumulative number of COVID-19 %s' % type_disp,
             'in %s after %d / %d days from start' % ( regionName, days_from_beginning, inc_data[ 'last day'] ) ] ),
                     fontsize = 18, fontweight = 'bold' )
-
         
 def plot_cases_deaths_region( inc_data, regionName, ax, days_from_beginning = 0, doTitle = True ):
     assert( days_from_beginning >= 0 )
