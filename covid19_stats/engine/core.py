@@ -146,7 +146,9 @@ def get_incident_data( data = None, multiprocess = True ):
     * ``bbox`` is a 4-element :py:class:`tuple` of the region bounding box: minimum lat/lng, and maximum lat/lng.
     * ``boundaries`` is a :py:class:`dict` of boundary information. Each key is the `FIPS code`_, and its value is a :py:class:`list` of boundary lat/lngs for that county or territorial unit. Look at :download:`gis_calculate_total_bbox_sacramento.pkl.gz </_static/gis/gis_calculate_total_bbox_sacramento.pkl.gz>` for an example of this data structure.
     * ``last day`` is the number of days (from first COVID-19 incident) in this incident data set.
-    * ``df`` is the :py:class:`Pandas DataFrame <pandas.DataFrame>` that contains COVID-19 cumulative case and death data for all counties or territorial units in that region.
+    * ``df`` is the :py:class:`DataFrame <pandas.DataFrame>` that contains COVID-19 cumulative case and death data for all counties or territorial units in that region.
+    * ``df_1day`` is the :py:class:`DataFrame <pandas.DataFrame>` that contains the 1-day averaged COVID-19 *new* case and death data for all counties or territorial units in that region.
+    * ``df_7day`` is the :py:class:`DataFrame <pandas.DataFrame>` that contains the 7-day averaged COVID-19 *new* case and death data for all counties or territorial units in that region.
     * ``prefix` is the :py:class:`string <str>` inherited from the input ``prefix`` key in the ``data`` :py:class:`dict`.
     * ``region name`` is the :py:class:`string <str>` inherited from the input ``region name`` key in the ``data`` :py:class:`dict`.
     * ``population`` is the :py:class:`int` inherited from the input ``population`` key in the ``data`` :py:class:`dict`.
@@ -234,67 +236,69 @@ def get_incident_data( data = None, multiprocess = True ):
     df_cases_deaths_region[ 'days_from_beginning' ] = list(
         map(lambda mydate: ( mydate - df_cases_deaths_region.date.min( ) ).days, 
             df_cases_deaths_region.date ) )
-    
-    # #
-    # ## now create a dictionary of cases, with key being the date, value being list of entries of counties for that date
-    # all_data_region_bydate = { }
-    # for entry in all_data_region:
-    #     mydate = entry[ 'date' ]
-    #     all_data_region_bydate.setdefault( mydate, [] ).append( entry )  
-    # #
-    # ## now create a dictionary of cumulative deaths and cases by date
-    # cases_deaths_region_bydate = dict(
-    #     map(lambda mydate: ( mydate, { 'cumulative cases' : sum(
-    #         map(lambda entry: entry['cumulative cases' ], all_data_region_bydate[ mydate ] ) ),
-    #                                   'cumulative death' : sum(
-    #                                       map(lambda entry: entry['cumulative death' ],
-    #             all_data_region_bydate[ mydate ] ) ) } ),
-    #         all_data_region_bydate ) )
-    # #
-    # ## now create the dataframe to analyse
-    # df_cases_deaths_region = pandas.DataFrame({
-    #     'date' : sorted( cases_deaths_region_bydate ),
-    #     'cases' : list(map(lambda mydate:
-    #                     cases_deaths_region_bydate[mydate][ 'cumulative cases' ],
-    #                     sorted( cases_deaths_region_bydate ) ) ),
-    #     'death' : list(map(lambda mydate:
-    #                     cases_deaths_region_bydate[mydate][ 'cumulative death' ],
-    #                     sorted( cases_deaths_region_bydate ) ) ) } )
-    # df_cases_deaths_region[ 'days_from_beginning' ] = list(
-    #     map(lambda mydate: ( mydate - min( cases_deaths_region_bydate ) ).days, 
-    #         df_cases_deaths_region.date ) )
-    # #
-    # ## now get the cumulative cases and cumulative deaths by FIPS code
-    # cases_deaths_region_byfips_bydate = { }
-    # for mydate in all_data_region_bydate:
-    #     data_mydate = { }
-    #     fips_excl = fips_collection - set(map(lambda entry: entry['fips'], all_data_region_bydate[ mydate ]))
-    #     for fips in fips_excl:
-    #         data_mydate[ fips ] = { 'cumulative cases' : 0, 'cumulative death' : 0 }
-    #     for entry in all_data_region_bydate[ mydate ]:
-    #         data_mydate[ entry[ 'fips' ] ] = {
-    #             'cumulative cases' : entry[ 'cumulative cases' ],
-    #             'cumulative death' : entry[ 'cumulative death' ] }
-    #     cases_deaths_region_byfips_bydate[ mydate ] = data_mydate
-    # #
-    # ## now add cumulative deaths and cases by fips data to the dataframe
-    # for fips in sorted(fips_collection):
-    #     df_cases_deaths_region[ 'cases_%s' % fips ] = list(
-    #         map(lambda mydate: cases_deaths_region_byfips_bydate[ mydate ][ fips ][ 'cumulative cases' ],
-    #             sorted( cases_deaths_region_bydate ) ) )
-    #     df_cases_deaths_region[ 'deaths_%s' % fips ] = list(
-    #         map(lambda mydate: cases_deaths_region_byfips_bydate[ mydate ][ fips ][ 'cumulative death' ],
-    #             sorted( cases_deaths_region_bydate ) ) )
+
+    #
+    ## now do the SAME things, but for the 7-day averaged new cases and deaths.
+    ## in this case, the days_from_beginning starts from 7, and the ``date`` starts from day 7 (not day 0).
+    num_days  = len( numpy.array(df_cases_deaths_region.cases ) )
+    days_7day = numpy.array( list(range( 7, num_days ) ), dtype=int )
+    days_1day = numpy.array( list(range( 1, num_days ) ), dtype=int )
+    def get_newcases_avg( fips, num_days = 7 ):
+        assert( num_days >= 1 )
+        cases_cumul = numpy.array( df_cases_deaths_region[ 'cases_%s' % fips ], dtype = int )
+        return ( cases_cumul[num_days:] - cases_cumul[:-num_days] ) * 1.0 / num_days
+    def get_newdeaths_avg( fips, num_days = 7 ):
+        assert( num_days >= 1 )
+        deaths_cumul = numpy.array( df_cases_deaths_region[ 'deaths_%s' % fips ], dtype = int )
+        return ( deaths_cumul[num_days:] - deaths_cumul[:-num_days] ) * 1.0 / num_days
+    #
+    ## 7 day average
+    df_cases_deaths_region_7day = pandas.DataFrame(
+        dict(chain.from_iterable([
+            map(lambda fips: (
+                'cases_%s_7day_new' % fips, get_newcases_avg( fips, num_days = 7 ) ),
+                dict_df_all_fips ),
+            map(lambda fips: (
+                'deaths_%s_7day_new' % fips, get_newdeaths_avg( fips, num_days = 7 ) ),
+                dict_df_all_fips ) ]) ) )
+    cases_names_7day = sorted(map(lambda fips: 'cases_%s_7day_new' % fips, dict_df_all_fips ) )
+    deaths_names_7day= sorted(map(lambda fips: 'deaths_%s_7day_new'% fips, dict_df_all_fips ) )
+    df_cases_deaths_region_7day[ 'cases_new' ] = numpy.array(
+        df_cases_deaths_region_7day[ pandas.Index( cases_names_7day ) ].sum( axis = 1 ), dtype = float )
+    df_cases_deaths_region_7day[ 'death_new' ] = numpy.array(
+        df_cases_deaths_region_7day[ pandas.Index( deaths_names_7day )].sum( axis = 1 ), dtype = float )
+    df_cases_deaths_region_7day[ 'days_from_beginning' ] = days_7day
+    df_cases_deaths_region_7day[ 'date' ] = list( df_cases_deaths_region.date )[7:]
+    #
+    ## 1 day average
+    df_cases_deaths_region_1day = pandas.DataFrame(
+        dict(chain.from_iterable([
+            map(lambda fips: (
+                'cases_%s_1day_new' % fips, get_newcases_avg( fips, num_days = 1 ) ),
+                dict_df_all_fips ),
+            map(lambda fips: (
+                'deaths_%s_1day_new' % fips, get_newdeaths_avg( fips, num_days = 1 ) ),
+                dict_df_all_fips ) ]) ) )
+    cases_names_1day = sorted(map(lambda fips: 'cases_%s_1day_new' % fips, dict_df_all_fips ) )
+    deaths_names_1day= sorted(map(lambda fips: 'deaths_%s_1day_new'% fips, dict_df_all_fips ) )
+    df_cases_deaths_region_1day[ 'cases_new' ] = numpy.array(
+        df_cases_deaths_region_1day[ pandas.Index( cases_names_1day ) ].sum( axis = 1 ), dtype = float )
+    df_cases_deaths_region_1day[ 'death_new' ] = numpy.array(
+        df_cases_deaths_region_1day[ pandas.Index( deaths_names_1day )].sum( axis = 1 ), dtype = float )
+    df_cases_deaths_region_1day[ 'days_from_beginning' ] = days_1day
+    df_cases_deaths_region_1day[ 'date' ] = list( df_cases_deaths_region.date )[1:]
+            
     #
     ## now calculate the bounding box of this collection of fips data
     boundary_dict = get_boundary_dict( fips_collection )
     total_bbox = gis.calculate_total_bbox( chain.from_iterable(
         boundary_dict.values( ) ) )
-
+    
     #
     ## return
     incident_data = {
         'df' : df_cases_deaths_region, 'bbox' : total_bbox, 'boundaries' : boundary_dict,
+        'df_7day' : df_cases_deaths_region_7day, 'df_1day' : df_cases_deaths_region_1day,
         'last day' : df_cases_deaths_region.days_from_beginning.max( ),
         'prefix' : data[ 'prefix' ],
         'region name' : data[ 'region name' ],
