@@ -1,5 +1,5 @@
 import os, sys, numpy, glob, tabulate, logging, requests, json
-import datetime, pandas, titlecase, networkx
+import datetime, pandas, titlecase, networkx, time
 from pathos.multiprocessing import Pool, cpu_count
 from itertools import chain
 from dateutil.relativedelta import relativedelta
@@ -101,20 +101,41 @@ def get_msa_data( msaname ):
     data_msas_2019 = COVID19Database.data_msas_2019( )
     assert( msaname in data_msas_2019 )
     return data_msas_2019[ msaname ].copy( )
+    
 
 def get_data_fips( fips ):
     """
     Given a county identified by its `FIPS code`_, Returns the COVID-19 cumulative cases and deaths record of a single county or territorial unit identified by its `FIPS code`_. Takes the data from the cumulative cases and deaths record of the NY Times COVID-19 database (see :py:meth:`all_counties_nytimes_covid19_data <covid19_stats.COVID19Database.all_counties_nytimes_covid19_data>`).
 
     :param str fips: the `FIPS code`_ of the county or territorial unit.
-    :returns: a :py:class:`list` of records of COVID-19 cumulative cases and deaths for that county. See :ref:`here <county_covid19record_example>` for an example of a record in this :py:class:`list`.
-    :rtype: list
+    :returns: a two-element :py:class:`tuple`. First element is the ``fips``, and the second is the :py:class:`DataFrame <pandas.DataFrame>` representing the cumulative COVID-19 cases and deaths *ordered* by earliest to latest date. This :py:class:`DataFrame <pandas.DataFrame>` has three columns: ``date`` is the :py:class:`date <datetime.date>` of recorded incidence in that county, ``cases_<fips>`` is the cumulative COVID-19 cases on that :py:class:`date <datetime.date>`, and ``deaths_<fips>` is the cumulative COVID-19 deaths on that :py:class:`date <datetime.date>`. Here, ``<fips>`` is the FIPS code of that county.
+    :rtype: tuple
     """
-    all_counties_nytimes_covid19_data = COVID19Database.all_counties_nytimes_covid19_data( )
-    data_by_date = sorted(filter(lambda entry: entry['fips'] == fips,
-                                 all_counties_nytimes_covid19_data ),
-                          key = lambda entry: entry['date'] )
-    return data_by_date
+    all_counties_nytimes_covid19_data_df = COVID19Database.all_counties_nytimes_covid19_data( )
+    df_data_by_date = all_counties_nytimes_covid19_data_df[ all_counties_nytimes_covid19_data_df.fips == fips ].copy( ).sort_values( 'date' ).reset_index( )
+    df_data_by_date['cases_%s' % fips ] = numpy.array( df_data_by_date['cumulative cases'], dtype=int )
+    df_data_by_date['deaths_%s' % fips ] = numpy.array( df_data_by_date['cumulative death'], dtype=int )
+    df_data_by_date.pop( 'cumulative cases' )
+    df_data_by_date.pop( 'cumulative death' )
+    df_data_by_date.pop( 'county' )
+    df_data_by_date.pop( 'state' )
+    df_data_by_date.pop( 'fips' )
+    df_data_by_date.pop( 'index' )
+    return fips, df_data_by_date
+    
+    #date_list = list( df_data_by_date.date )
+    #county_list = list( df_data_by_date.county )
+    #state_list = list( df_data_by_date.state )
+    #cases_list = list( df_data_by_date['cumulative cases'] )
+    #death_list = list( df_data_by_date['cumulative death'] )
+    #
+    #return list(map(lambda tup: {
+    #    'date' : tup[0], 'county' : tup[1], 'state' : tup[2], 'fips' : fips, 'cumulative cases' : tup[3],
+    #    'cumulative death' : tup[4] }, zip( date_list, county_list, state_list, cases_list, death_list ) ) )
+    #data_by_date = sorted(filter(lambda entry: entry['fips'] == fips,
+    #                             all_counties_nytimes_covid19_data ),
+    #                      key = lambda entry: entry['date'] )
+    #return data_by_date
 
 def get_incident_data( data = None ):
     """
@@ -150,65 +171,123 @@ def get_incident_data( data = None ):
     fips_collection = set( data['fips'] )
     #
     ## now this creates a dictionary of incidents and deaths per county
-    all_data_region = sorted(
-        chain.from_iterable(map(
-            get_data_fips, fips_collection ) ),
-        key = lambda entry: entry['date'] )
+    ## make process a LITTLE more efficient, because get_incident_data on CONUS is SLOW....
+    time0 = time.time( )
+    with Pool( processes = cpu_count( ) ) as pool:
+        dict_df_all_fips = dict(pool.map(
+            get_data_fips, set( fips_collection ) ) )
+        logging.info( 'took %0.3f seconds to get all date-sorted raw incident data for %s.' % (
+            time.time( ) - time0, regionName ) )
+
     #
-    ## now create a dictionary of cases, with key being the date, value being list of entries of counties for that date
-    all_data_region_bydate = { }
-    for entry in all_data_region:
-        mydate = entry[ 'date' ]
-        all_data_region_bydate.setdefault( mydate, [] ).append( entry )  
+    ## now get UNION of dates
+    all_dates = set(chain.from_iterable(map(lambda fips: list( dict_df_all_fips[ fips ].date ), dict_df_all_fips ) ) )
+    max_date = max( all_dates )
     #
-    ## now create a dictionary of cumulative deaths and cases by date
-    cases_deaths_region_bydate = dict(
-        map(lambda mydate: ( mydate, { 'cumulative cases' : sum(
-            map(lambda entry: entry['cumulative cases' ], all_data_region_bydate[ mydate ] ) ),
-                                      'cumulative death' : sum(
-                                          map(lambda entry: entry['cumulative death' ],
-                all_data_region_bydate[ mydate ] ) ) } ),
-            all_data_region_bydate ) )
+    ## assert that max date for EACH dataframe is the max_date
+    max_all_date = set(map(lambda fips: dict_df_all_fips[ fips ].date.max( ), dict_df_all_fips ) )
+    assert( len( max_all_date ) == 1 )
+    assert( max( max_all_date ) == max_date )
     #
-    ## now create the dataframe to analyse
-    df_cases_deaths_region = pandas.DataFrame({
-        'date' : sorted( cases_deaths_region_bydate ),
-        'cases' : list(map(lambda mydate:
-                        cases_deaths_region_bydate[mydate][ 'cumulative cases' ],
-                        sorted( cases_deaths_region_bydate ) ) ),
-        'death' : list(map(lambda mydate:
-                        cases_deaths_region_bydate[mydate][ 'cumulative death' ],
-                        sorted( cases_deaths_region_bydate ) ) ) } )
+    ## now for each of those FIPS, append stuff pad so that dates are SAME for each FIPS. If missing, assumed cumulative cases and deaths ZERO
+    for fips in dict_df_all_fips:
+        dates_rem = set( all_dates - set( dict_df_all_fips[ fips ].date ) )
+        if len( dates_rem ) == 0: continue
+        data_to_append = pandas.DataFrame( {
+            'date' : sorted( dates_rem ),
+            'cases_%s' % fips : [ 0 ] * len( dates_rem ),
+            'deaths_%s' % fips : [ 0 ] * len( dates_rem ) } )
+        df_new = dict_df_all_fips[ fips ].copy( ).append( data_to_append ).sort_values( 'date' ).reset_index( )
+        dict_df_all_fips[ fips ] = df_new
+    #
+    ## Now get ONE of the dates (all dates are now the same)
+    dates_in_order = list( dict_df_all_fips[ min( dict_df_all_fips ) ].date )
+    for fips in dict_df_all_fips:
+        dict_df_all_fips[ fips ].pop( 'date' )
+    dict_to_make_into_df = { 'date' : dates_in_order }
+    #
+    ## now the cumulative COVID-19 cases and deaths for each region
+    for fips in sorted( dict_df_all_fips ):
+        dict_to_make_into_df[ 'cases_%s' % fips ] = numpy.array(
+            dict_df_all_fips[ fips ][ 'cases_%s' % fips ], dtype=int )
+        dict_to_make_into_df[ 'deaths_%s' % fips ] = numpy.array(
+            dict_df_all_fips[ fips ][ 'deaths_%s' % fips ], dtype=int )
+    #
+    ## now the first iteration of creating the cases_deaths_region_bydate DataFrame
+    df_cases_deaths_region = pandas.DataFrame( dict_to_make_into_df ).reset_index( )
+    #
+    ## now cumulative cases and deaths
+    ## welcome to goofy Pandas DataFrames hell!
+    cases_names = sorted(map(lambda fips: 'cases_%s' % fips, dict_df_all_fips ) )
+    deaths_names= sorted(map(lambda fips: 'deaths_%s' % fips, dict_df_all_fips ) )
+    df_cases_deaths_region[ 'cases' ] = numpy.array(
+        df_cases_deaths_region[ pandas.Index( cases_names ) ].sum(axis = 1 ), dtype = int )
+    df_cases_deaths_region[ 'death' ] = numpy.array(
+        df_cases_deaths_region[ pandas.Index( deaths_names )].sum(axis = 1 ), dtype = int )
+    #
+    ## now the days_from_beginning column
     df_cases_deaths_region[ 'days_from_beginning' ] = list(
-        map(lambda mydate: ( mydate - min( cases_deaths_region_bydate ) ).days, 
+        map(lambda mydate: ( mydate - df_cases_deaths_region.date.min( ) ).days, 
             df_cases_deaths_region.date ) )
-    #
-    ## now get the cumulative cases and cumulative deaths by FIPS code
-    cases_deaths_region_byfips_bydate = { }
-    for mydate in all_data_region_bydate:
-        data_mydate = { }
-        fips_excl = fips_collection - set(map(lambda entry: entry['fips'], all_data_region_bydate[ mydate ]))
-        for fips in fips_excl:
-            data_mydate[ fips ] = { 'cumulative cases' : 0, 'cumulative death' : 0 }
-        for entry in all_data_region_bydate[ mydate ]:
-            data_mydate[ entry[ 'fips' ] ] = {
-                'cumulative cases' : entry[ 'cumulative cases' ],
-                'cumulative death' : entry[ 'cumulative death' ] }
-        cases_deaths_region_byfips_bydate[ mydate ] = data_mydate
-    #
-    ## now add cumulative deaths and cases by fips data to the dataframe
-    for fips in sorted(fips_collection):
-        df_cases_deaths_region[ 'cases_%s' % fips ] = list(
-            map(lambda mydate: cases_deaths_region_byfips_bydate[ mydate ][ fips ][ 'cumulative cases' ],
-                sorted( cases_deaths_region_bydate ) ) )
-        df_cases_deaths_region[ 'deaths_%s' % fips ] = list(
-            map(lambda mydate: cases_deaths_region_byfips_bydate[ mydate ][ fips ][ 'cumulative death' ],
-                sorted( cases_deaths_region_bydate ) ) )
+    
+    # #
+    # ## now create a dictionary of cases, with key being the date, value being list of entries of counties for that date
+    # all_data_region_bydate = { }
+    # for entry in all_data_region:
+    #     mydate = entry[ 'date' ]
+    #     all_data_region_bydate.setdefault( mydate, [] ).append( entry )  
+    # #
+    # ## now create a dictionary of cumulative deaths and cases by date
+    # cases_deaths_region_bydate = dict(
+    #     map(lambda mydate: ( mydate, { 'cumulative cases' : sum(
+    #         map(lambda entry: entry['cumulative cases' ], all_data_region_bydate[ mydate ] ) ),
+    #                                   'cumulative death' : sum(
+    #                                       map(lambda entry: entry['cumulative death' ],
+    #             all_data_region_bydate[ mydate ] ) ) } ),
+    #         all_data_region_bydate ) )
+    # #
+    # ## now create the dataframe to analyse
+    # df_cases_deaths_region = pandas.DataFrame({
+    #     'date' : sorted( cases_deaths_region_bydate ),
+    #     'cases' : list(map(lambda mydate:
+    #                     cases_deaths_region_bydate[mydate][ 'cumulative cases' ],
+    #                     sorted( cases_deaths_region_bydate ) ) ),
+    #     'death' : list(map(lambda mydate:
+    #                     cases_deaths_region_bydate[mydate][ 'cumulative death' ],
+    #                     sorted( cases_deaths_region_bydate ) ) ) } )
+    # df_cases_deaths_region[ 'days_from_beginning' ] = list(
+    #     map(lambda mydate: ( mydate - min( cases_deaths_region_bydate ) ).days, 
+    #         df_cases_deaths_region.date ) )
+    # #
+    # ## now get the cumulative cases and cumulative deaths by FIPS code
+    # cases_deaths_region_byfips_bydate = { }
+    # for mydate in all_data_region_bydate:
+    #     data_mydate = { }
+    #     fips_excl = fips_collection - set(map(lambda entry: entry['fips'], all_data_region_bydate[ mydate ]))
+    #     for fips in fips_excl:
+    #         data_mydate[ fips ] = { 'cumulative cases' : 0, 'cumulative death' : 0 }
+    #     for entry in all_data_region_bydate[ mydate ]:
+    #         data_mydate[ entry[ 'fips' ] ] = {
+    #             'cumulative cases' : entry[ 'cumulative cases' ],
+    #             'cumulative death' : entry[ 'cumulative death' ] }
+    #     cases_deaths_region_byfips_bydate[ mydate ] = data_mydate
+    # #
+    # ## now add cumulative deaths and cases by fips data to the dataframe
+    # for fips in sorted(fips_collection):
+    #     df_cases_deaths_region[ 'cases_%s' % fips ] = list(
+    #         map(lambda mydate: cases_deaths_region_byfips_bydate[ mydate ][ fips ][ 'cumulative cases' ],
+    #             sorted( cases_deaths_region_bydate ) ) )
+    #     df_cases_deaths_region[ 'deaths_%s' % fips ] = list(
+    #         map(lambda mydate: cases_deaths_region_byfips_bydate[ mydate ][ fips ][ 'cumulative death' ],
+    #             sorted( cases_deaths_region_bydate ) ) )
     #
     ## now calculate the bounding box of this collection of fips data
     boundary_dict = get_boundary_dict( fips_collection )
     total_bbox = gis.calculate_total_bbox( chain.from_iterable(
         boundary_dict.values( ) ) )
+
+    #
+    ## return
     incident_data = {
         'df' : df_cases_deaths_region, 'bbox' : total_bbox, 'boundaries' : boundary_dict,
         'last day' : df_cases_deaths_region.days_from_beginning.max( ),

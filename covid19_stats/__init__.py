@@ -1,7 +1,7 @@
 __author__ = 'Tanim Islam'
 __email__ = 'tanim.islam@gmail.com'
 
-import sys, os, logging, datetime, numpy
+import sys, os, logging, datetime, numpy, pandas
 from itertools import chain
 
 _mainDir = os.path.dirname( os.path.abspath( __file__ ) )
@@ -96,13 +96,16 @@ class COVID19Database( object ):
 
             #
             ## all COVID-19 data
-            self.all_counties_nytimes_covid19_data = list(
+            all_counties_nytimes_covid19_data = list(
                 filter(None,
                        map(self.get_stat_line,
                            list(
                                map(lambda line: line.strip(), filter(
                                 lambda line: len( line.strip( ) ) != 0,
                                 open( os.path.join( covid19ResDir, "us-counties.csv" ), "r" ).readlines())))[1:])))
+            self.all_counties_nytimes_covid19_data = pandas.DataFrame(
+                dict(map(lambda key: ( key, list(map(lambda entry: entry[key], all_counties_nytimes_covid19_data ) ) ),
+                         { 'date', 'county', 'state', 'fips', 'cumulative cases', 'cumulative death' } ) ) )
     
             #
             ## FIPS data for county shapes 2018
@@ -133,8 +136,8 @@ class COVID19Database( object ):
                     fips, self.fips_data_2018[ fips ][ 'points' ] ), fips_collection ) )
                 return boundary_dict
                 
-            _fips_missing_2019 = set( self.fips_msas_2019 ) - set(
-                map(lambda entry: entry['fips'], self.all_counties_nytimes_covid19_data ) )
+            _fips_missing_2019 = set( self.fips_msas_2019 ) - set( self.all_counties_nytimes_covid19_data.fips )
+            # map(lambda entry: entry['fips'], all_counties_nytimes_covid19_data ) )
             _fips_five_boroughs = _fips_missing_2019 & self.data_msas_2019['nyc']['fips']
             #
             nyc_fips = '00001'
@@ -281,22 +284,11 @@ class COVID19Database( object ):
     @classmethod
     def all_counties_nytimes_covid19_data( cls ):
         """
-        :returns: a :py:class:`list` of the big shebang, the *reason behind the reason*, for the whole data set of COVID-19 cumulative cases and deaths. Each entry is the status of cumulative COVID-19 cases and deaths for a specific county at a specific date. For example, one of the last entries in this :py:class:`list` is,
-
-           .. _county_covid19record_example:
-
-           .. code-block:: python
-
-              {'date': datetime.date(2021, 1, 19),
-               'county': 'Webster',
-               'state': 'West Virginia',
-               'fips': '54101',
-               'cumulative cases': 223,
-               'cumulative death': 0}
+        :returns: a :py:class:`DataFrame <pandas.DataFrame>` of the big shebang, the *reason behind the reason*, for the whole data set of COVID-19 cumulative cases and deaths. *It is unordered*. Here are the keys in this :py:class:`DataFrame <pandas.DataFrame>`: ``date`` (type :py:class:`date <datetime.date>`), ``county`` (of type :py:class:`string <str>`), ``state`` (of type :py:class:`string <str>`), ``fips`` (the FIPS code of type :py:class:`string <str>`), ``cumulative cases`` (of type :py:class:`int`), and ``cumulative death`` (of type :py:class:`int`).
                
         As of 25 February 2021, there are almost :math:`10^6` records in this :py:class:`list`.
         
-        :rtype: list
+        :rtype: :py:class:`DataFrame <pandas.DataFrame>`
         """
         inst = COVID19Database._getInstance( )
         return inst.all_counties_nytimes_covid19_data

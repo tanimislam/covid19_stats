@@ -251,7 +251,7 @@ def plot_cases_or_deaths_bycounty(
         if not doSmarter:
             ax = create_and_draw_fromfig( fig, inc_data[ 'bbox' ], rows = rows, cols = cols, num = num )
         else: ax = create_and_draw_fromfig(
-            fig, boundaries,
+            fig, inc_data[ 'bbox' ],
             river_linewidth = 1.0, river_alpha = 0.15,
             coast_linewidth = 1.0, coast_alpha = 0.25, mult_bounds_lat = 1.25,
             rows = rows, cols = cols, num = num )
