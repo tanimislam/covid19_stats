@@ -137,7 +137,7 @@ def get_data_fips( fips ):
     #                      key = lambda entry: entry['date'] )
     #return data_by_date
 
-def get_incident_data( data = None ):
+def get_incident_data( data = None, multiprocess = True ):
     """
     Given geographical information on a region, will return COVID-19 cumulative statistics on all the counties or territorial units of that structure. Best to show by example.
 
@@ -162,6 +162,7 @@ def get_incident_data( data = None ):
     * ``deaths_<NUM>`` are the cumulative COVID-19 deaths for a given county or territorial unit in the region (<NUM> is its `FIPS code`_) from first to last incident date.
     
     :param dict data: Optional argument, but if specified is the geographical information of a region. By default is the ``bayarea`` MSA_. See :ref:`St. Louis data <stlouis_msa_example_data>` for an example of an MSA_. See :ref:`Rhode Island data <rhode_island_state_example_data>` for an example of a US state or territory. See :ref:`CONUS data <conus_example_data>` for the CONUS_.
+    :param bool multiprocess: if ``True``, then use multiprocessing to get the incident data information, otherwise do not. Default is ``True``.
     :returns: the :py:class:`dict` described above, see :download:`core_incident_data_bayarea.pkl.gz </_static/core/core_incident_data_bayarea.pkl.gz>`.
     :rtype: dict
     """
@@ -173,11 +174,15 @@ def get_incident_data( data = None ):
     ## now this creates a dictionary of incidents and deaths per county
     ## make process a LITTLE more efficient, because get_incident_data on CONUS is SLOW....
     time0 = time.time( )
-    with Pool( processes = cpu_count( ) ) as pool:
-        dict_df_all_fips = dict(pool.map(
+    if multiprocess:
+        with Pool( processes = cpu_count( ) ) as pool:
+            dict_df_all_fips = dict(pool.map(
+                get_data_fips, set( fips_collection ) ) )
+    else:
+        dict_df_all_fips = dict(map(
             get_data_fips, set( fips_collection ) ) )
-        logging.info( 'took %0.3f seconds to get all date-sorted raw incident data for %s.' % (
-            time.time( ) - time0, regionName ) )
+    logging.info( 'took %0.3f seconds to get all date-sorted raw incident data for %s.' % (
+        time.time( ) - time0, regionName ) )
 
     #
     ## now get UNION of dates
@@ -509,7 +514,7 @@ def display_tabulated_metros( form = 'simple', selected_metros = None ):
     incident_data_dict = { }
     with Pool( processes = cpu_count( ) ) as pool:
         incident_data_dict = dict(pool.map(
-            lambda prefix: ( prefix, get_incident_data( data_msas_2019[ prefix ] ) ),
+            lambda prefix: ( prefix, get_incident_data( data_msas_2019[ prefix ], multiprocess = False ) ),
             data_msas_2019 ) )
     date_last = max(map(lambda inc_data: inc_data['df'].date.max( ), incident_data_dict.values()))
 
