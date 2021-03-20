@@ -3,64 +3,63 @@ import subprocess, tempfile, shutil, datetime, logging
 import pathos.multiprocessing as multiprocessing
 from itertools import chain
 from multiprocessing import Value, Manager
+import cartopy.feature as cfeature
+import cartopy.crs as ccrs
 from matplotlib.patches import Polygon
 from matplotlib.collections import PatchCollection
 from matplotlib.cm import ScalarMappable
-from matplotlib.colors import LogNorm, to_rgba
+from matplotlib.colors import LogNorm, to_rgba, Normalize
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_agg import FigureCanvasAgg
-from mpl_toolkits.basemap import Basemap
-from mpl_toolkits.axes_grid1 import make_axes_locatable
 from distutils.spawn import find_executable
 from nprstuff.core import autocrop_image
 #
 from covid19_stats.engine import gis, core, get_string_commas_num
 from covid19_stats.engine.viz import (
-    my_colorbar, create_and_draw_basemap, create_and_draw_basemap_smarter,
+    my_colorbar, create_and_draw_fromfig,
     determine_corners_center_stereo, display_fips_geom, display_fps, display_msa )
     
-def plot_cases_or_deaths_bycounty(
-    inc_data, regionName, ax, type_disp = 'cases', days_from_beginning = 0, resolution = 'h',
+def plot_cases_or_deaths_rate_bycounty(
+    inc_data, regionName, fig, type_disp = 'cases', days_from_beginning = 7,
     maxnum_colorbar = 5000.0, doTitle = True, plot_artists = { },
-    poly_line_width = 1.0, doSmarter = False ):
-    assert( resolution in ( 'c', 'l', 'i', 'h', 'f' ) )
-    assert( type_disp in ( 'cases', 'deaths' ) )
-    assert( days_from_beginning >= 0 )
-    assert( days_from_beginning <= inc_data[ 'last day' ] )
+    poly_line_width = 1.0, doSmarter = False, rows = 1, cols = 1, num = 1 ):
+    cases_dict = { 'cases' : 'cases', 'deaths' : 'death' }
+    assert( type_disp in cases_dict )
+    assert( days_from_beginning >= inc_data['df_7day']['days_from_beginning'].min( ) )
+    assert( days_from_beginning <= inc_data['df_7day']['days_from_beginning'].max( ) )
     assert( maxnum_colorbar > 1 )
-    if type_disp == 'cases': key = 'cases'
-    elif type_disp == 'deaths': key = 'death'
+    key = cases_dict[ type_disp ]
     #
     ## NOW CREATE BASEMAP HIGH REZ
     ## LAZY LOADING
-    if 'isBaseMapped' not in plot_artists:
+    boundaries = inc_data['boundaries']
+    if 'axes' not in plot_artists:
         if not doSmarter:
-            m = create_and_draw_basemap( ax, inc_data[ 'bbox' ], resolution = resolution )
-        else: m = create_and_draw_basemap_smarter(
-            ax, inc_data[ 'boundaries' ],
-            resolution = resolution, river_linewidth = 1.0, river_alpha = 0.15,
-            coast_linewidth = 1.0, coast_alpha = 0.25 )
-        plot_artists[ 'isBaseMapped' ] = m
-        plot_artists[ 'sm' ] = ScalarMappable( norm = LogNorm( 1.0, maxnum_colorbar ), cmap = 'jet' )
+            ax = create_and_draw_fromfig( fig, inc_data[ 'bbox' ], rows = rows, cols = cols, num = num )
+        else: ax = create_and_draw_fromfig(
+            fig, inc_data[ 'bbox' ],
+            river_linewidth = 1.0, river_alpha = 0.15,
+            coast_linewidth = 1.0, coast_alpha = 0.25, mult_bounds_lat = 1.25,
+            rows = rows, cols = cols, num = num )
+        plot_artists[ 'axes' ] = ax
+        plot_artists[ 'sm' ] = ScalarMappable( norm = Normalize( 0.0, maxnum_colorbar ), cmap = 'jet' )
     #
     ## draw boundaries if not defined
-    boundaries = inc_data['boundaries']
-    df_dfm = inc_data['df'][ inc_data['df']['days_from_beginning'] == days_from_beginning ].copy( )
+    df_dfm = inc_data['df'][ inc_data['df_7day']['days_from_beginning'] == days_from_beginning ].copy( )
     sm = plot_artists[ 'sm' ]
-    m = plot_artists[ 'isBaseMapped' ]
+    ax = plot_artists[ 'axes' ]
     for fips in sorted( boundaries ):
-        nums = df_dfm['%s_%s' % ( type_disp, fips )].max( )
+        nums = max(0, df_dfm['%s_%s' % ( type_disp, fips )].max( ) )
         if nums == 0: fc = ( 1.0, 1.0, 1.0, 0.0 )
         else: fc = sm.to_rgba( nums )
         art_key = '%s_polys_%s' % ( key, fips )
         if art_key not in plot_artists:
             plot_artists.setdefault( art_key, [ ] )
             for shape in boundaries[ fips ]:
-                x, y = m( shape[:,0], shape[:,1] )
                 poly = Polygon(
-                    numpy.array([ x, y ]).T, closed = True,
+                    shape, closed = True,
                     linewidth = poly_line_width, linestyle = 'dashed',
-                    facecolor = fc, alpha = 0.4 )
+                    facecolor = fc, alpha = 0.4, transform = ccrs.PlateCarree( ) )
                 ax.add_patch( poly )
                 plot_artists[ art_key ].append( poly )
         else:
@@ -84,7 +83,7 @@ def plot_cases_or_deaths_bycounty(
             0.01, 0.02, '\n'.join([
                 '%s' % date_s,
                 '%d days from 1st case' % days_from_beginning,
-                '%s cumulative %s' % ( type_disp, get_string_commas_num( num_tot ) ) ]),
+                '%s 7 day average new: %s' % ( type_disp, get_string_commas_num( num_tot ) ) ]),
             color = ( 0.0, 0.0, 0.0, 0.8 ),
             fontsize = 18, fontweight = 'bold', transform = ax.transAxes,
             horizontalalignment = 'left', verticalalignment = 'bottom' )
@@ -93,13 +92,14 @@ def plot_cases_or_deaths_bycounty(
         plot_artists[ '%s_text' % key ].set_text('\n'.join([
             '%s' % date_s,
             '%d days from 1st case' % days_from_beginning,
-            '%s cumulative %s' % ( type_disp, get_string_commas_num( num_tot ) ) ] ) )
+            '%s 7 day average new: %s' % ( type_disp, get_string_commas_num( num_tot ) ) ] ) )
             
     if doTitle:
         ax.set_title( '\n'.join([
-            'Cumulative number of COVID-19 %s' % type_disp,
-            'in %s after %d / %d days from start' % ( regionName, days_from_beginning, inc_data[ 'last day'] ) ] ),
-                    fontsize = 18, fontweight = 'bold' )
+            '7 day average new number of COVID-19 %s' % type_disp,
+            'in %s after %d / %d days from start' % (
+                regionName, days_from_beginning, inc_data[ 'last day'] ) ] ),
+                     fontsize = 18, fontweight = 'bold' )
 
 def plot_cases_deaths_region( inc_data, regionName, ax, days_from_beginning = 0, doTitle = True ):
     assert( days_from_beginning >= 0 )
