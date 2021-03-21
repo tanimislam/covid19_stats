@@ -465,6 +465,39 @@ def plot_cases_deaths_region( inc_data, regionName, ax, days_from_beginning = 0,
 def create_plots_daysfrombeginning(
     inc_data, regionName, prefix, days_from_beginning = [ 0 ],
     dirname = os.getcwd( ), maxnum_colorbar = 5000 ):
+    """
+    Creates a collection of quad PNG_ images (see :numref:`movie_mode` or :numref:`movie_mode_state`) representing state of cumulative COVID-19 cases and deaths for a geographical region. Like :ref:`movie mode <movie_mode>` in :ref:`covid19_create_movie_or_summary` or :ref:`state movie mode <movie_mode_state>`, the four quadrants are,
+
+    * ``upper left`` is the summary information for the geographical region.
+    * ``lower left`` is the running tally of cumulative cases and deaths, by day from first incident.
+    * ``upper right`` is the *logarithmic* coloration of cumulative deaths, by day from first incident.
+    * ``lower right`` is the *logarithmic* coloration of cumulative cases, by day from first incident.
+
+    :py:meth:`create_summary_movie_frombeginning <covid19_stats.engine.viz.create_summary_movie_frombeginning>` uses this functionality in a multiprocessing fashion to create MP4_ movie files geographical regions. It is easier to show rather than tell. :numref:`viz_create_plots_daysfrombeginning_nyc` is a quad plot of cumulative COVID-19 cases and deaths NYC metro area, 150 days after this metro's first COVID-19 incident, that is created by this function.
+
+    .. _viz_create_plots_daysfrombeginning_nyc:
+    
+    .. figure:: /_static/viz/covid19_nyc_LATEST.0150.png
+       :width: 100%
+       :align: left
+
+       Quad plot of cumulative COVID-19 cases and deaths for the NYC metro area, 150 days after its first incident. The name of the file is ``covid19_nyc_LATEST.0150.png``.
+
+    The collection of PNG_ images that this method creates are auto-cropped and, where needed, *resized* so that their widths and heights are even numbers. FFmpeg_, run through :py:meth:`create_summary_movie_frombeginning <covid19_stats.engine.viz.create_summary_movie_frombeginning>`, cannot create an MP4_ from PNG_\ s unless the images' widths and heights are divisible by 2.
+
+    :param dict inc_data: the data for incidence of COVID-19 cases and deaths for a given geographical region. See :py:meth:`get_incident_data <covid19_stats.engine.core.get_incident_data>` for the format of the output data.
+    :param str regionName: the name of the region to display in title plots. For example, in :numref:`viz_plot_cases_or_deaths_bycounty_nyc`, this is ``NYC Metro Area``.
+    :param str prefix: the identifying name to put into the output PNG_ files. For example, in :numref:`viz_create_plots_daysfrombeginning_nyc`, the ``prefix`` is ``nyc``, and the name of the file is ``covid19_nyc_LATEST.0150.png``. If the prefix is ``conus``, then this module creates plots appropriate for geographic regions (such as CONUS_) that cover significant areas of the earth's surface.
+    :param list days_from_beginning: the :py:class:`list` of days to create quad PNG_ images. Must be nonempty, and every element must be :math:`\ge 0`. Default is ``[ 0, ]``.
+    :param str dirname: the directory into which to save the quad PNG_ images. The default is the current working directory.
+    :param float maxnum_colorbar: the coloring limits for the plots of cumulative cases (lower right) and cumulative deaths (upper right). Must be :math:`\ge 1`.
+    :returns: the :py:class:`list` of filenames of PNG_ quad images that this method creates, into ``dirname``. For example, in the method invocation shown in :numref:`viz_create_plots_daysfrombeginning_nyc`, ``days_from_beginning = [ 150, ]``, and the list this method returns is ``[ '<dirname>/covid19_nyc_LATEST.0150.png', ]``.
+    :rtype: list
+
+    .. _PNG: https://en.wikipedia.org/wiki/Portable_Network_Graphics
+    .. _MP4: https://en.wikipedia.org/wiki/MPEG-4_Part_14
+    .. _FFmpeg: https://en.wikipedia.org/wiki/FFmpeg
+    """
     assert( os.path.isdir( dirname ) )
     #assert(all(filter(lambda day: day >= 0, days_from_beginning ) ) )
     #assert(all(filter(lambda day: day <= inc_data[ 'last day' ], days_from_beginning ) ) )
@@ -581,6 +614,60 @@ def create_plots_daysfrombeginning(
 def create_summary_cases_or_deaths_movie_frombeginning(
     inc_data, maxnum_colorbar = 5000.0,
     type_disp = 'cases', dirname = os.getcwd( ), save_imgfiles = False ):
+    """
+    This is the back-end method for :ref:`movie cases deaths mode <movie_cases_deaths_mode>` for :ref:`covid19_create_movie_or_summary`, and :ref:`state movie cases deaths mode <movie_cases_deaths_mode_state>` for :ref:`covid19_state_summary`. This creates an MP4_ movie file of cumulative COVID-19 cases *or* deaths, with identifying metadata, for a given geographical region. :numref:`viz_create_summary_cases_or_deaths_movie_frombeginning_table` shows the *resulting* MP4_ movie files, of cumulative COVID-19 cases and deaths, for the NYC metro area (top row), and the state of Virginia_ (bottom row).
+
+    .. _viz_create_summary_cases_or_deaths_movie_frombeginning_table:
+
+    .. list-table:: Latest cumulative COVID-19 cases, and deaths, for the NYC metro area and Virginia_
+       :widths: auto
+
+       * - |covid19_nyc_cases|
+         - |covid19_nyc_deaths|
+       * - NYC metro area, latest movie of COVID-19 cumulative cases
+         - NYC metro area, latest movie of COVID-19 cumulative deaths
+       * - |covid19_virginia_cases|
+         - |covid19_virginia_deaths|
+       * - Virginia_, latest movie of COVID-19 cumulative cases
+         - Virginia_, latest movie of COVID-19 cumulative deaths
+
+    Here are the arguments,
+
+    :param dict inc_data: the data for incidence of COVID-19 cases and deaths for a given geographical region. See :py:meth:`get_incident_data <covid19_stats.engine.core.get_incident_data>` for the format of the output data.
+    :param float maxnum_colorbar: the coloring limits for the plot. Must be :math:`\ge 1`.
+    :param type_disp: if ``cases``, then show cumulative COVID-19 cases. If ``deaths``, then show cumulative COVID-19 deaths. Can only be ``cases`` or ``deaths``.
+    :param str dirname: the directory into which to save the MP4_ movie file, and optionally a `zip archive`_ of the PNG_ image files used to create the MP4_ movie. The default is the current working directory.
+    :param bool save_imgfiles: if ``True``, then will create a `zip archive`_ of the PNG_ image files used to create the MP4_ movie. Its full name is ``<dirname>/covid19_<prefix>_<type_disp>_LATEST_imagefiles.zip``. ``<dirname>`` is the directory to save the MP4_ file, ``<prefix>`` is the region name prefix (for example ``nyc`` for the NYC metro area) located in ``inc_data['prefix']``, and ``<type_disp>`` is either ``cases`` or ``death``. The default is ``False``.
+    :returns: the base name of the MP4_ movie file it creates. For example, if ``inc_data['prefix']`` is ``nyc`` and ``type_disp`` is ``cases``, this method returns ``covid19_nyc_cases_LATEST.mp4``. This method also saves the MP4_ file as ``<dirname>/covid19_nyc_cases_LATEST.mp4``, where ``<dirname>`` is the directory to save the MP4_ file.
+    :rtype: str
+
+    .. |covid19_nyc_cases| raw:: html
+       
+       <video controls width="100%">
+       <source src="https://tanimislam.github.io/covid19movies/covid19_nyc_cases_LATEST.mp4">
+       </video>
+
+    .. |covid19_nyc_deaths| raw:: html
+       
+       <video controls width="100%">
+       <source src="https://tanimislam.github.io/covid19movies/covid19_nyc_deaths_LATEST.mp4">
+       </video>
+
+    .. |covid19_virginia_cases| raw:: html
+       
+       <video controls width="100%">
+       <source src="https://tanimislam.github.io/covid19movies/covid19_virginia_cases_LATEST.mp4">
+       </video>
+
+    .. |covid19_virginia_deaths| raw:: html
+       
+       <video controls width="100%">
+       <source src="https://tanimislam.github.io/covid19movies/covid19_virginia_deaths_LATEST.mp4">
+       </video>
+
+    .. _Virginia: https://en.wikipedia.org/wiki/Virginia
+    .. _`zip archive`: https://en.wikipedia.org/wiki/ZIP_(file_format)
+    """
     assert( type_disp in ( 'cases', 'deaths' ) )
     assert( os.path.isdir( dirname ) )
     #
@@ -663,7 +750,7 @@ def create_summary_cases_or_deaths_movie_frombeginning(
         with zipfile.ZipFile( os.path.join( dirname, '%s_imagefiles.zip' % movie_prefix ), mode = 'w',
                              compression = zipfile.ZIP_DEFLATED, compresslevel = 9 ) as zf:
             for fname in allfiles: zf.write( fname, arcname = os.path.join(
-                '%s_imagefiles' % movie_prefix, os.path.basename( fname ) ) )    
+                '%s_imagefiles' % movie_prefix, os.path.basename( fname ) ) )
     #
     ## now later remove those images and then remove the directory
     list(map(lambda fname: os.remove( fname ), allfiles ) )
@@ -680,7 +767,41 @@ def create_summary_cases_or_deaths_movie_frombeginning(
     return os.path.basename( movie_name ) # for now return basename        
 
 def create_summary_movie_frombeginning(
-    inc_data, maxnum_colorbar = 5000.0, dirname = os.getcwd( ) ):
+    inc_data, maxnum_colorbar = 5000.0, dirname = os.getcwd( ), save_imgfiles = False ):
+    """
+    This is the back-end method for :ref:`movie mode <movie_mode>` for :ref:`covid19_create_movie_or_summary`, and :ref:`state movie mode <movie_mode_state>` for :ref:`covid19_state_summary`. This creates an MP4_ quad movie file of both cumulative COVID-19 cases and deaths for a geographical region, and *optionally* a `zip archive`_ of PNG_ images used to create the MP4_ file. This uses :py:meth:`create_plots_daysfrombeginning <covid19_stats.engine.viz.create_plots_daysfrombeginning>` in a multiprocessing function, to create sub-collections of PNG_ quad images, and then collate them into an MP4_ file using FFmpeg_. :numref:`viz_create_summary_movie_frombeginning_table` shows the *resulting* MP4_ movie files, of cumulative COVID-19 cases and deaths, for the NYC metro area and the state of Virginia_.
+
+    .. _viz_create_summary_movie_frombeginning_table:
+
+    .. list-table:: Latest cumulative quad movies of COVID-19 for the NYC metro area and Virginia_
+       :widths: auto
+
+       * - |covid19_nyc_quad|
+         - |covid19_virginia_quad|
+       * - NYC metro area, latest quad movie of COVID-19 cumulative cases and deaths
+         - Virginia_, latest quad movie of COVID-19 cumulative cases and deaths
+
+    Here are the arguments,
+
+    :param dict inc_data: the data for incidence of COVID-19 cases and deaths for a given geographical region. See :py:meth:`get_incident_data <covid19_stats.engine.core.get_incident_data>` for the format of the output data.
+    :param float maxnum_colorbar: the coloring limits for the plots of cumulative cases (lower right) and cumulative deaths (upper right) in the quad movie. Must be :math:`\ge 1`.
+    :param str dirname: the directory into which to save the MP4_ movie file, and optionally a `zip archive`_ of the PNG_ image files used to create the MP4_ movie. The default is the current working directory.
+    :param bool save_imgfiles: if ``True``, then will create a `zip archive`_ of the PNG_ image files used to create the MP4_ movie. Its full name is ``<dirname>/covid19_<prefix>_LATEST_imagefiles.zip``. ``<dirname>`` is the directory to save the MP4_ file, and ``<prefix>`` is the region name prefix (for example ``nyc`` for the NYC metro area) located in ``inc_data['prefix']``. The default is ``False``.
+    :returns: the base name of the MP4_ movie file it creates. For example, if ``inc_data['prefix']`` is ``nyc``, this method returns ``covid19_nyc_LATEST.mp4``. This method also saves the MP4_ file as ``<dirname>/covid19_nyc_LATEST.mp4``, where ``<dirname>`` is the directory to save the MP4_ file.
+    :rtype: str
+
+    .. |covid19_nyc_quad| raw:: html
+       
+       <video controls width="100%">
+       <source src="https://tanimislam.github.io/covid19movies/covid19_nyc_LATEST.mp4">
+       </video>
+
+    .. |covid19_virginia_quad| raw:: html
+       
+       <video controls width="100%">
+       <source src="https://tanimislam.github.io/covid19movies/covid19_virginia_LATEST.mp4">
+       </video>
+    """
     #
     ## make sure dirname is a directory
     assert( os.path.isdir( dirname ) )
@@ -744,6 +865,14 @@ def create_summary_movie_frombeginning(
          '-vcodec', 'libx264', '-crf', '25', '-pix_fmt', 'yuv420p',
          movie_name ], stderr = subprocess.STDOUT )
     #
+    ## if saving the image files
+    if save_imgfiles:
+        with zipfile.ZipFile( os.path.join( dirname, '%s_imagefiles.zip' % movie_prefix ), mode = 'w',
+                             compression = zipfile.ZIP_DEFLATED, compresslevel = 9 ) as zf:
+            for fname in allfiles: zf.write( fname, arcname = os.path.join(
+                '%s_imagefiles' % movie_prefix, os.path.basename( fname ) ) )
+    
+    #
     ## now later remove those images and then remove the directory
     list(map(lambda fname: os.remove( fname ), allfiles ) )
     shutil.rmtree( tmp_dirname )
@@ -761,6 +890,52 @@ def create_summary_movie_frombeginning(
 def get_summary_demo_data(
     inc_data, maxnum_colorbar = 5000.0,
     dirname = os.getcwd( ), store_data = True ):
+    """
+    This is the back-end method for :ref:`show mode <show_mode>` for :ref:`covid19_create_movie_or_summary`, and :ref:`state show mode <show_mode_state>` for :ref:`covid19_state_summary`. This creates *six* or *seven* files for a given geographical region. Given an input ``inc_data`` :py:class:`dict`, it produces six files by default. Here ``prefix`` is the value of ``inc_data['prefix']`` (for example ``nyc`` for the NYC metro area).
+
+    * ``covid19_<prefix>_cases_LATEST.pdf`` and ``covid19_<prefix>_cases_LATEST.png``: a PDF_ and PNG_ plot of the *latest* cumulative COVID-19 cases for the geographical region.
+    
+    * ``covid19_<prefix>_death_LATEST.pdf`` and ``covid19_<prefix>_death_LATEST.png``: a PDF_ and PNG_ plot of the *latest* cumulative COVID-19 deaths for the geographical region.
+
+    * ``covid19_<prefix>_cds_LATEST.pdf`` and ``covid19_<prefix>_cds_LATEST.png``: a PDF_ and PNG_ plot of the *latest* cumulative COVID-19 case and death trend lines for the geographical region.
+
+    Optionally, one can choose to dump out a serialized :py:class:`Pandas DataFrame <pandas.DataFrame>` of the COVID-19 cases and deaths, total and per county, from the date of first incident to the latest incident. Its file name is ``covid19_<prefix>_LATEST.pkl.gz``.
+
+    :numref:`viz_get_summary_demo_data_nyc` displays the *latest* output for the NYC metro area.
+
+    .. _viz_get_summary_demo_data_nyc:
+
+    .. list-table:: Latest plots of cumulative COVID-19 cases, deaths, and trend lines for the NYC metro area
+       :widths: auto
+
+       * - |covid19_nyc_cases_latest|
+         - |covid19_nyc_death_latest|
+         - |covid19_nyc_cds_latest|
+       * - NYC metro area, plot of latest COVID-19 cumulative cases
+         - NYC metro area, plot of latest COVID-19 cumulative deaths
+         - NYC metro area, plot of latest trend lines of COVID-19 cumulative cases and deaths
+
+    .. |covid19_nyc_cases_latest| image:: https://tanimislam.github.io/covid19movies/covid19_nyc_cases_LATEST.png
+       :width: 100%
+       :align: middle
+       
+    .. |covid19_nyc_death_latest| image:: https://tanimislam.github.io/covid19movies/covid19_nyc_death_LATEST.png
+       :width: 100%
+       :align: middle
+
+    .. |covid19_nyc_cds_latest| image:: https://tanimislam.github.io/covid19movies/covid19_nyc_cds_LATEST.png
+       :width: 100%
+       :align: middle
+
+    Here are the arguments.
+
+    :param dict inc_data: the data for incidence of COVID-19 cases and deaths for a given geographical region. See :py:meth:`get_incident_data <covid19_stats.engine.core.get_incident_data>` for the format of the output data.
+    :param float maxnum_colorbar: the coloring limits for the cumulative COVID-19 cases and deaths plots. Must be :math:`\ge 1`.
+    :param str dirname: the directory into which to save the six or seven files. The default is the current working directory.
+    :param bool store_data: if ``True``, then create the serialized :py:class:`Pandas DataFrame <pandas.DataFrame>` of the COVID-19 cases and deaths, total and per county, from the date of first incident to the latest incident. Default is ``True``.
+
+    .. _PDF: https://en.wikipedia.org/wiki/PDF
+    """
     #
     ## now is dirname a directory
     assert( os.path.isdir( dirname ) )
