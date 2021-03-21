@@ -237,6 +237,47 @@ def plot_cases_or_deaths_bycounty(
     inc_data, regionName, fig, type_disp = 'cases', days_from_beginning = 0,
     maxnum_colorbar = 5000.0, doTitle = True, plot_artists = { },
     poly_line_width = 1.0, doSmarter = False, rows = 1, cols = 1, num = 1 ):
+    """
+    The lower-level function that displays the status of COVID-19 cases or deaths given an incidident data :py:class:`dict`, ``inc_data``. It displays the status of cumulative COVID-19 cases or deaths, a specific number of days from the beginning, coloring the counties in that region according to the legend maximum, and places the resulting :py:class:`GeoAxes <cartopy.mpl.GeoAxes>` at a specific location in a :py:class:`Figure <matplotlib.figure.Figure>` grid of :py:class:`Axes <matplotlib.axes.Axes>` or :py:class:`GeoAxes <cartopy.mpl.GeoAxes>.
+
+    Instead of returning a :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>`, this initializes a :py:class:`dict` of matplotlib objects, ``plot_artists``. In this way, subsequent plots, e.g. for different days after the beginnning, do not have to perform the relatively costly operation of recreating the :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>` and fully painting in the :py:class:`Polygon <matplotlib.patches.Polygon>` patches; instead, these :py:class:`Polygon <matplotlib.patches.Polygon>` patches are re-colored and necessary :py:class:`Text <matplotlib.text.Text>` artists' strings are changed.
+
+    .. _plot_artists_dict_discussion:
+
+    This :py:class:`dict`, ``plot_artists``, has the following keys,
+
+    * ``axes``: when initialized, the :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>` that consists of all counties, with COVID-19 cases or deaths, to display.
+    * ``sm``: the :py:class:`ScalarMappable <matplotlib.cm.ScalarMappable>` describing the coloration by value for each county.
+
+    Furthermore, it is easier to show rather than tell. :numref:`viz_plot_cases_or_deaths_bycounty_nyc` depicts both cumulative COVID-19 cases and deaths for the NYC metro area, 150 days after this metro's first COVID-19 incident.
+
+    .. _viz_plot_cases_or_deaths_bycounty_nyc:
+
+    .. figure:: /_static/viz/viz_plot_cases_or_deaths_bycounty_nyc.png
+       :width: 100%
+       :align: left
+
+       On the left, is the COVID-19 cumulative cases, and on the right, is the COVID-19 cumulative deaths, for the NYC metro area, 150 days after its first COVID-19 incident. The color limits for cases (left) is :math:`1.7\\times 10^6`, while the color limits for death (right) is :math:`5.6\\times 10^4`. We have chosen to display the titles over both plots. Color scaling is logarithmic.
+
+    Here are the arguments.
+    
+    :param dict inc_data: the data for incidence of COVID-19 cases and deaths for a given geographical region. See :py:meth:`get_incident_data <covid19_stats.engine.core.get_incident_data>` for the format of the output data.
+    :param str regionName: the name of the region to display in title plots. For example, in :numref:`viz_plot_cases_or_deaths_bycounty_nyc`, this is ``NYC Metro Area``.
+    :param fig: the :py:class:`Figure <matplotlib.figure.Figure>` onto which to create a :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>` (stored into the ``plot_artists`` :py:class:`dict`) containing geographic features. Last three arguments -- ``rows``, ``cols``, and ``num`` -- describe the relative placement of the created :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>`. See :py:meth:`add_subplot <matplotlib.figure.Figure.add_subplot>` for those three arguments' meanings.
+    :param str type_disp: if ``cases``, then show cumulative COVID-19 cases. If ``deaths``, then show cumulative COVID-19 deaths. Can only be ``cases`` or ``deaths``.
+    :param int days_from_beginning: days after first incident of COVID-19 in this region. Must be :math:`\ge 0`.
+    :param float maxnum_colorbar: the coloring limits for the plot. Must be :math:`\ge 1`.
+    :param bool doTitle: if ``True``, then display the title over the plot. Default is ``True``.
+    :param dict plot_artists: this contains the essential plotting objects for quicker re-display when plotting different days. Look at :ref:`this description <plot_artists_dict_discussion>`.
+    :param float poly_line_width: the line width of the counties to draw in the plot.
+    :param bool doSmarter: if ``False``, then make a plot tailored for small regions (relative to the size of the earth), such as states or MSA_\ s. If ``True``, then make a plot tailored for large regions such as the CONUS_. Default is ``False``.
+    :param int rows: the number of rows for axes in the :py:class:`Figure <matplotlib.figure.Figure>` grid. Must be :math:`\ge 1`, and by default is 1.
+    :param int cols: the number of columns for axes in the :py:class:`Figure <matplotlib.figure.Figure>` grid. Must be :math:`\ge 1`, and by default is 1.
+    :param int num: the plot number of the :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>` in this :py:class:`Figure <matplotlib.figure.Figure>` grid. Must be :math:`\ge 1` and :math:`\le`\ ``rows`` times ``columns``. Its default is 1. Look at :py:meth:`add_subplot <matplotlib.figure.Figure.add_subplot>` for its  meaning.
+    
+    .. _MSA: https://en.wikipedia.org/wiki/Metropolitan_statistical_area
+    .. _CONUS: https://en.wikipedia.org/wiki/Contiguous_United_States
+    """
     cases_dict = { 'cases' : 'cases', 'deaths' : 'death' }
     assert( type_disp in cases_dict )
     assert( days_from_beginning >= 0 )
