@@ -8,7 +8,7 @@ import cartopy.crs as ccrs
 from matplotlib.axes import Axes
 from matplotlib.patches import Polygon
 from matplotlib.cm import ScalarMappable
-from matplotlib.colors import LogNorm, to_rgba
+from matplotlib.colors import LogNorm, Normalize, to_rgba
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 from mpl_toolkits.axes_grid1 import make_axes_locatable
