@@ -157,7 +157,7 @@ The required ``-n`` or ``--name`` flag specifies the MSA. The ``-M`` or ``--maxn
 
 This mode of operation, for example for NYC, will output seven files:
 
-* ``covid19_nyc_LATEST.pkl.gz`` is the `Pandas DataFrame`_  of the COVID-19 cases and deaths, total and per county, from the date of first incident to the latest incident.
+* ``covid19_nyc_LATEST.pkl.gz`` is the serialized :py:class:`Pandas DataFrame <pandas.DataFrame>` of the COVID-19 cases and deaths, total and per county, from the date of first incident to the latest incident.
 
 * `covid19_nyc_cds_LATEST.pdf <https://tanimislam.github.io/covid19movies/covid19_nyc_cds_LATEST.pdf>`_ and `covid19_nyc_cds_LATEST.png <https://tanimislam.github.io/covid19movies/covid19_nyc_cds_LATEST.png>`_ are the PDF and PNG showing the trend of COVID-19 cases and deaths in the NYC metro area.
 
