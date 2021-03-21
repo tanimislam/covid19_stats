@@ -356,6 +356,25 @@ def plot_cases_or_deaths_bycounty(
                     fontsize = 18, fontweight = 'bold' )
         
 def plot_cases_deaths_region( inc_data, regionName, ax, days_from_beginning = 0, doTitle = True ):
+    """
+    Plots trend lines of cumulative COVID-19 cases *and* deaths for a region. It is easier to show rather than tell. :numref:`viz_plot_cases_deaths_region_nyc` depicts trend lines of cumulative COVID-19 cases and deaths for the NYC metro area, 150 days after this metro's first COVID-19 incident.
+
+    .. _viz_plot_cases_deaths_region_nyc:
+
+    .. figure:: /_static/viz/viz_plot_cases_deaths_region_nyc.png
+       :width: 100%
+       :align: left
+
+       Plot of cumulative COVID-19 cases and deaths for the NYC metro area, 150 days after its first incident. Plot scaling is logarithmic, and dots accentuate the state of the cumulative cases and deaths 150 days after first incident. We have chosen to display the title.
+
+    Here are the arguments.
+    
+    :param dict inc_data: the data for incidence of COVID-19 cases and deaths for a given geographical region. See :py:meth:`get_incident_data <covid19_stats.engine.core.get_incident_data>` for the format of the output data.
+    :param str regionName: the name of the region to display in title plots. For example, in :numref:`viz_plot_cases_or_deaths_bycounty_nyc`, this is ``NYC Metro Area``.
+    :param ax: the :py:class:`Axes <matplotlib.axes.Axes>` onto which to make this plot.
+    :param int days_from_beginning: days after first incident of COVID-19 in this region. Must be :math:`\ge 0`.
+    :param bool doTitle: if ``True``, then display the title over the plot. Default is ``True``.
+    """
     assert( days_from_beginning >= 0 )
     assert( days_from_beginning <= inc_data[ 'last day' ] )
     df_cases_deaths_region = pandas.DataFrame({
