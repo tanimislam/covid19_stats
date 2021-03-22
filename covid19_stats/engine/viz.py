@@ -526,8 +526,6 @@ def create_plots_daysfrombeginning(
     ## now create a figure of correct size, just trialing and erroring it
     fig = Figure( )
     fig.set_size_inches([ 18.0 * width_units / height_units, 18.0 * 0.8 ] )
-    #ax_deaths = fig.add_subplot(222)
-    #ax_cases = fig.add_subplot(224)
     ax_cd = fig.add_subplot(223)
     #
     ## now plots
@@ -705,7 +703,7 @@ def create_summary_cases_or_deaths_movie_frombeginning(
                 doSmarter = doSmarter, plot_artists = plot_artists )
             canvas = FigureCanvasAgg( fig )
             fname = os.path.join( tmp_dirname, 'covid19_%s_%s_LATEST.%04d.png' % (
-                prefix, type_disp, day ) ) # last_date.strftime( '%d%m%Y' )
+                prefix, type_disp, day ) )
             canvas.print_figure( fname, bbox_inches = 'tight' )
             autocrop_image.autocrop_image( fname, fixEven = True )
             fnames.append( fname )
@@ -876,7 +874,7 @@ def create_summary_movie_frombeginning(
     ## now later remove those images and then remove the directory
     list(map(lambda fname: os.remove( fname ), allfiles ) )
     shutil.rmtree( tmp_dirname )
-     #
+    #
     ## store metadata
     mp4tags = mutagen.mp4.MP4( movie_name )
     mp4tags['\xa9nam'] = [ '%s, ALL, %s' % ( prefix, last_date.strftime('%d-%m-%Y') ) ]
@@ -953,7 +951,7 @@ def get_summary_demo_data(
     last_date_str = last_date.strftime('%d%m%Y' )
     if store_data:
         df_cases_deaths_region.to_pickle(
-            os.path.join( dirname, 'covid19_%s_LATEST.pkl.gz' % ( prefix ) ) )
+            os.path.join( dirname, 'covid19_%s_LATEST.pkl.gz' % prefix ) )
 
     def create_plot_cds( ):
         #

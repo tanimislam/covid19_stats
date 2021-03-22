@@ -12,6 +12,18 @@ def get_string_commas_num( num ):
     """
     return "%s" % f"{num:,d}"
 
+def get_string_commas_num_float( num ):
+    """
+    This is the secret-sauce of formatting floats as strings with commas for every 3 digits. For example, ``1234.56`` becomes "1,234.56". I copied code from `this other location`_.
+
+    :param float num: input number.
+    :returns: the nicely formatted output :py:class:`string <str>` representing an input number.
+    :type: str
+    
+    .. _`this other location`: https://stackoverflow.com/questions/10677350/convert-float-to-comma-separated-string/10677386
+    """
+    return '{0:,.2f}'.format( num )
+
 def find_plausible_maxnum( maxnum ):
     """
     Returns a default plausible limit, for the plotting of COVID-19 cumulative cases and deaths located in :py:mod:`viz <covid19_stats.engine.viz>`.
