@@ -42,7 +42,7 @@ def plot_cases_or_deaths_rate_bycounty(
             coast_linewidth = 1.0, coast_alpha = 0.25, mult_bounds_lat = 1.25,
             rows = rows, cols = cols, num = num )
         plot_artists[ 'axes' ] = ax
-        plot_artists[ 'sm' ] = ScalarMappable( norm = Normalize( 0.0, maxnum_colorbar ), cmap = 'jet' )
+        plot_artists[ 'sm' ] = ScalarMappable( norm = Normalize( 0.0, maxnum_colorbar ), cmap = 'gist_ncar_r' )
     #
     ## draw boundaries if not defined
     df_dfm = inc_data['df'][ inc_data['df_7day']['days_from_beginning'] == days_from_beginning ].copy( )
