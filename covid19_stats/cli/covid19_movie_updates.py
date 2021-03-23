@@ -129,7 +129,7 @@ def _movie_casedeaths_metro_or_conus( msa_or_conus_name, dirname, time0, type_di
     viz2.create_summary_cases_or_deaths_rate_movie_frombeginning(
         inc_data, type_disp = type_disp.lower( ), dirname = dirname,
         save_imgfiles = False )
-    logging.info( 'at %0.3f seconds to create %s movie of %s.' % (
+    logging.info( 'at %0.3f seconds to create %s movies of %s.' % (
         time.time( ) - time0, type_disp.upper( ), msa_or_conus_name.lower( ) ) )
 
 def _movie_casedeaths( msas_or_conus, dirname, time0, type_disp = 'cases' ):
