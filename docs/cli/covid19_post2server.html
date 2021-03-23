@@ -12,7 +12,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>3.5. covid19_post2server &mdash; COVID19_STATS 1.0 documentation</title>
+  <title>3.6. covid19_post2server &mdash; COVID19_STATS 1.0 documentation</title>
   
 
   
@@ -45,8 +45,8 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="3.6. covid19_update_readme" href="covid19_update_readme.html" />
-    <link rel="prev" title="3.4. covid19_movie_updates" href="covid19_movie_updates.html" />
+    <link rel="next" title="3.7. covid19_update_readme" href="covid19_update_readme.html" />
+    <link rel="prev" title="3.5. covid19_movie_updates" href="covid19_movie_updates.html" />
     <link href="../_static/style.css" rel="stylesheet" type="text/css">
 
 </head>
@@ -100,13 +100,14 @@
 <li class="toctree-l2"><a class="reference internal" href="covid19_update_database.html">3.1. covid19_update_database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="covid19_create_movie_or_summary.html">3.2. covid19_create_movie_or_summary</a></li>
 <li class="toctree-l2"><a class="reference internal" href="covid19_state_summary.html">3.3. covid19_state_summary</a></li>
-<li class="toctree-l2"><a class="reference internal" href="covid19_movie_updates.html">3.4. covid19_movie_updates</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">3.5. covid19_post2server</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#http-operation">3.5.1. http operation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ssh-operation">3.5.2. ssh operation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_region_summary_rate.html">3.4. covid19_region_summary_rate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_movie_updates.html">3.5. covid19_movie_updates</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3.6. covid19_post2server</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#http-operation">3.6.1. http operation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ssh-operation">3.6.2. ssh operation</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="covid19_update_readme.html">3.6. covid19_update_readme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_update_readme.html">3.7. covid19_update_readme</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../api/api.html">4. THE COVID19_STATS API</a></li>
@@ -160,7 +161,7 @@
         
           <li><a href="cli.html"><span class="section-number">3. </span>USING THE CLI</a> &raquo;</li>
         
-      <li><span class="section-number">3.5. </span>covid19_post2server</li>
+      <li><span class="section-number">3.6. </span>covid19_post2server</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -180,7 +181,7 @@
            <div itemprop="articleBody">
             
   <div class="section" id="covid19-post2server">
-<span id="id2"></span><h1><span class="section-number">3.5. </span>covid19_post2server<a class="headerlink" href="#covid19-post2server" title="Permalink to this headline">¶</a></h1>
+<span id="id3"></span><h1><span class="section-number">3.6. </span>covid19_post2server<a class="headerlink" href="#covid19-post2server" title="Permalink to this headline">¶</a></h1>
 <p>This CLI is designed to be used by an external service to upload data sets created by <a class="reference internal" href="covid19_movie_updates.html#covid19-movie-updates"><span class="std std-ref">covid19_movie_updates</span></a> to an external location. I (<a class="reference external" href="https://tanimislam.github.io">Tanim Islam</a>) have tested it, but stopped using it, because the data set I currently have is impractically large; instead I have a private repository with a public <a class="reference external" href="https://pages.github.com">GitHub Page</a> to which I push my latest COVID-19 summary data updates. This CLI is a front-end to functionality that lives in <code class="docutils literal notranslate"><span class="pre">covid19_stats.engine.pushpull</span></code>.</p>
 <p>Its help output, when running <code class="docutils literal notranslate"><span class="pre">covid19_post2server</span> <span class="pre">-h</span></code>, is the following,</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: covid19_post2server [-h] [-d DIRNAME] -D REMOTE_DIRNAME [--pe PROCESS_ENDPOINT] [--ve VERIFY_ENDPOINT] [--info] {ssh,http} ...</span>
@@ -211,7 +212,7 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">--info</span></code> if chosen, then run with INFO level debugging to screen.</p></li>
 </ul>
 <p id="restful-absolute-locations">If <code class="docutils literal notranslate"><span class="pre">https://remote_http_server</span></code> is the remote HTTP(S) server, then the verification endpoint is at <code class="docutils literal notranslate"><span class="pre">https://remote_http_server/VERIFY_ENDPOINT</span></code>, and the processing endpoint is at <code class="docutils literal notranslate"><span class="pre">https://remote_http_server/PROCESSING_ENDPOINT</span></code>.</p>
-<p><code class="docutils literal notranslate"><span class="pre">covid19_post2server</span></code> has two modes of operation, either connection through an SSH tunnel (via the <code class="docutils literal notranslate"><span class="pre">ssh</span></code> keyword as described in <a class="reference internal" href="#ssh-operation"><span class="std std-numref">Section 3.5.2</span></a>) or through the standard un-tunnelled connection (via the <code class="docutils literal notranslate"><span class="pre">http</span></code> keyword as described in <a class="reference internal" href="#http-operation"><span class="std std-numref">Section 3.5.1</span></a>). However, this construction is <em>incomplete</em>. The client <a class="reference external" href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST</a> commands that this CLI emits requires a <a class="reference external" href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST</a> server to consume those commands and <em>transfer</em> that data.</p>
+<p><code class="docutils literal notranslate"><span class="pre">covid19_post2server</span></code> has two modes of operation, either connection through an SSH tunnel (via the <code class="docutils literal notranslate"><span class="pre">ssh</span></code> keyword as described in <a class="reference internal" href="#ssh-operation"><span class="std std-numref">Section 3.6.2</span></a>) or through the standard un-tunnelled connection (via the <code class="docutils literal notranslate"><span class="pre">http</span></code> keyword as described in <a class="reference internal" href="#http-operation"><span class="std std-numref">Section 3.6.1</span></a>). However, this construction is <em>incomplete</em>. The client <a class="reference external" href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST</a> commands that this CLI emits requires a <a class="reference external" href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST</a> server to consume those commands and <em>transfer</em> that data.</p>
 <ul class="simple">
 <li><p>The server must have a remote directory, specified by <code class="docutils literal notranslate"><span class="pre">REMOTE_DIRNAME</span></code>, that is owned by the server process.</p></li>
 <li><p>The accessible server <a class="reference external" href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST</a> remote prefix address, with the name <code class="docutils literal notranslate"><span class="pre">HTTP_SERVER</span></code> specified when running <code class="docutils literal notranslate"><span class="pre">covid19_post2server</span> <span class="pre">http</span></code>.</p></li>
@@ -220,7 +221,7 @@
 <li><p><em>Implicitly</em>, the <a class="reference external" href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST</a> server must be able to authenticate an user by their email address and password in <a class="reference internal" href="#http-operation"><span class="std std-ref">http mode</span></a>, or must be able to login an user remotely through <a class="reference external" href="https://en.wikipedia.org/wiki/SSH_(Secure_Shell)">SSH</a> with their username and password in <a class="reference internal" href="#ssh-operation"><span class="std std-ref">ssh mode</span></a>. Also, as described in <a class="reference internal" href="#ssh-operation"><span class="std std-ref">ssh mode</span></a>, the <a class="reference external" href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST</a> server must <em>also</em> be able to authenticate with <a class="reference external" href="https://en.wikipedia.org/wiki/SSH_(Secure_Shell)">SSH</a> username and password.</p></li>
 </ul>
 <div class="section" id="http-operation">
-<span id="id3"></span><h2><span class="section-number">3.5.1. </span>http operation<a class="headerlink" href="#http-operation" title="Permalink to this headline">¶</a></h2>
+<span id="id4"></span><h2><span class="section-number">3.6.1. </span>http operation<a class="headerlink" href="#http-operation" title="Permalink to this headline">¶</a></h2>
 <p>In this mode, one specifies a <em>valid</em> email address and password, to the <a class="reference external" href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST</a> server, to upload the COVID-19 data.</p>
 <p>Its help screen, when running <code class="docutils literal notranslate"><span class="pre">covid19_post2server</span> <span class="pre">http</span> <span class="pre">-h</span></code>, is,</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: covid19_post2server http [-h] -e HTTP_EMAIL -p HTTP_PASSWORD -s HTTP_SERVER [--noverify]</span>
@@ -240,7 +241,7 @@
 <p>Use <code class="docutils literal notranslate"><span class="pre">--noverify</span></code> to optionally disable SSL verification.</p>
 </div>
 <div class="section" id="ssh-operation">
-<span id="id4"></span><h2><span class="section-number">3.5.2. </span>ssh operation<a class="headerlink" href="#ssh-operation" title="Permalink to this headline">¶</a></h2>
+<span id="id5"></span><h2><span class="section-number">3.6.2. </span>ssh operation<a class="headerlink" href="#ssh-operation" title="Permalink to this headline">¶</a></h2>
 <p>In this mode, one specifies the remote name of the <a class="reference external" href="https://en.wikipedia.org/wiki/SSH_(Secure_Shell)">SSH</a> server, and the username and password to login to the server.</p>
 <p><em>In actuality</em>, <code class="docutils literal notranslate"><span class="pre">covid19_post2server</span></code> performs an <a class="reference external" href="https://en.wikipedia.org/wiki/SSH_(Secure_Shell)">SSH</a> tunnel from port 31999 on the local machine, to port 443 on the remote server machine. At that point, <a class="reference external" href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST</a> operations occur as described in <a class="reference internal" href="#http-operation"><span class="std std-ref">http mode</span></a>. <em>Implicitly</em>, the <a class="reference external" href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST</a> server must also be able to authenticate a <a class="reference external" href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST</a> client with the <a class="reference external" href="https://en.wikipedia.org/wiki/SSH_(Secure_Shell)">SSH</a> login username and password.</p>
 <ul class="simple">
@@ -270,8 +271,8 @@
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="covid19_update_readme.html" class="btn btn-neutral float-right" title="3.6. covid19_update_readme" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="covid19_movie_updates.html" class="btn btn-neutral float-left" title="3.4. covid19_movie_updates" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="covid19_update_readme.html" class="btn btn-neutral float-right" title="3.7. covid19_update_readme" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="covid19_movie_updates.html" class="btn btn-neutral float-left" title="3.5. covid19_movie_updates" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

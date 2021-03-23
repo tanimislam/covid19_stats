@@ -107,9 +107,10 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="covid19_state_summary.html">3.3. covid19_state_summary</a></li>
-<li class="toctree-l2"><a class="reference internal" href="covid19_movie_updates.html">3.4. covid19_movie_updates</a></li>
-<li class="toctree-l2"><a class="reference internal" href="covid19_post2server.html">3.5. covid19_post2server</a></li>
-<li class="toctree-l2"><a class="reference internal" href="covid19_update_readme.html">3.6. covid19_update_readme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_region_summary_rate.html">3.4. covid19_region_summary_rate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_movie_updates.html">3.5. covid19_movie_updates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_post2server.html">3.6. covid19_post2server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_update_readme.html">3.7. covid19_update_readme</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../api/api.html">4. THE COVID19_STATS API</a></li>
@@ -183,7 +184,7 @@
            <div itemprop="articleBody">
             
   <div class="section" id="covid19-create-movie-or-summary">
-<span id="id2"></span><h1><span class="section-number">3.2. </span>covid19_create_movie_or_summary<a class="headerlink" href="#covid19-create-movie-or-summary" title="Permalink to this headline">¶</a></h1>
+<span id="id3"></span><h1><span class="section-number">3.2. </span>covid19_create_movie_or_summary<a class="headerlink" href="#covid19-create-movie-or-summary" title="Permalink to this headline">¶</a></h1>
 <p>This CLI is the <em>main</em> top-level CLI currently in the repository. Its purpose is to <em>individually</em> create COVID-19 summary movies and figures, of cumulative cases and deaths, in the <a class="reference external" href="https://en.wikipedia.org/wiki/Contiguous_United_States">Contiguous United States (CONUS)</a> or one of the 380 defined MSAs.</p>
 <p>It has four modes of operation. Its help output, when running <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">-h</span></code>, produces the following,</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: covid19_create_movie_or_summary [-h] [-d DIRNAME] [--info] {M,m,s,mcd} ...</span>
@@ -278,7 +279,7 @@
 </ul>
 </div>
 <div class="section" id="show-mode">
-<span id="id3"></span><h2><span class="section-number">3.2.2. </span>show mode<a class="headerlink" href="#show-mode" title="Permalink to this headline">¶</a></h2>
+<span id="id4"></span><h2><span class="section-number">3.2.2. </span>show mode<a class="headerlink" href="#show-mode" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">s</span></code> (SHOW flag) summarizes the latest COVID-19 statistics for a specified MSA. The help output, while running <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">s</span> <span class="pre">-h</span></code>, is shown below,</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: covid19_create_movie_or_summary s [-h] [-n NAME] [-M MAXNUM] [--conus]</span>
 <span class="go">                                         [-y]</span>
@@ -318,27 +319,27 @@
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">covid19_nyc_LATEST.pkl.gz</span></code> is the serialized <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pandas</span> <span class="pre">DataFrame</span></code></a> of the COVID-19 cases and deaths, total and per county, from the date of first incident to the latest incident.</p></li>
 <li><p><a class="reference external" href="https://tanimislam.github.io/covid19movies/covid19_nyc_cds_LATEST.pdf">covid19_nyc_cds_LATEST.pdf</a> and <a class="reference external" href="https://tanimislam.github.io/covid19movies/covid19_nyc_cds_LATEST.png">covid19_nyc_cds_LATEST.png</a> are the PDF and PNG showing the trend of COVID-19 cases and deaths in the NYC metro area.</p>
-<div class="figure align-left" id="id6">
+<div class="figure align-left" id="id7">
 <a class="reference internal image-reference" href="https://tanimislam.github.io/covid19movies/covid19_nyc_cds_LATEST.png"><img alt="https://tanimislam.github.io/covid19movies/covid19_nyc_cds_LATEST.png" src="https://tanimislam.github.io/covid19movies/covid19_nyc_cds_LATEST.png" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 3.2 </span><span class="caption-text">The <em>latest</em> trend lines of cumulative cases and deaths in the NYC metropolitan area.</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 3.2 </span><span class="caption-text">The <em>latest</em> trend lines of cumulative cases and deaths in the NYC metropolitan area.</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
 </div>
 </li>
 <li><p><a class="reference external" href="https://tanimislam.github.io/covid19movies/covid19_nyc_cases_LATEST.pdf">covid19_nyc_cases_LATEST.pdf</a> and <a class="reference external" href="https://tanimislam.github.io/covid19movies/covid19_nyc_cases_LATEST.png">covid19_nyc_cases_LATEST.png &lt;plots showing the</a> are the PDF and PNG showing the county map, colored by number of COVID-19 cases, on the <em>LAST</em> incident day.</p>
-<div class="figure align-left" id="id7">
+<div class="figure align-left" id="id8">
 <a class="reference internal image-reference" href="https://tanimislam.github.io/covid19movies/covid19_nyc_cases_LATEST.png"><img alt="https://tanimislam.github.io/covid19movies/covid19_nyc_cases_LATEST.png" src="https://tanimislam.github.io/covid19movies/covid19_nyc_cases_LATEST.png" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 3.3 </span><span class="caption-text">The <em>latest</em> image of cumulative cases in the NYC metropolitan area.</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 3.3 </span><span class="caption-text">The <em>latest</em> image of cumulative cases in the NYC metropolitan area.</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
 </div>
 </li>
 <li><p><a class="reference external" href="https://tanimislam.github.io/covid19movies/covid19_nyc_death_LATEST.pdf">covid19_nyc_death_LATEST.pdf</a> and <a class="reference external" href="https://tanimislam.github.io/covid19movies/covid19_nyc_death_LATEST.png">covid19_nyc_death_LATEST.png</a> are the PDF and PNG showing the county map, colored by number of COVID-19 deaths, on the <em>LAST</em> incident day.</p>
-<div class="figure align-left" id="id8">
+<div class="figure align-left" id="id9">
 <a class="reference internal image-reference" href="https://tanimislam.github.io/covid19movies/covid19_nyc_death_LATEST.png"><img alt="https://tanimislam.github.io/covid19movies/covid19_nyc_death_LATEST.png" src="https://tanimislam.github.io/covid19movies/covid19_nyc_death_LATEST.png" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 3.4 </span><span class="caption-text">The <em>latest</em> image of cumulative deaths in the NYC metropolitan area.</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 3.4 </span><span class="caption-text">The <em>latest</em> image of cumulative deaths in the NYC metropolitan area.</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
 </div>
 </li>
 </ul>
 </div>
 <div class="section" id="movie-mode">
-<span id="id4"></span><h2><span class="section-number">3.2.3. </span>movie mode<a class="headerlink" href="#movie-mode" title="Permalink to this headline">¶</a></h2>
+<span id="id5"></span><h2><span class="section-number">3.2.3. </span>movie mode<a class="headerlink" href="#movie-mode" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">m</span></code> (MOVIE flag) creates an <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> movie of COVID-19 cases and deaths for the MSA you specify (see the <a class="reference internal" href="../index.html#gif-animations"><span class="std std-ref">high quality GIF animations</span></a> of these <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> movies). The help output, while running <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">m</span> <span class="pre">-h</span></code>, is shown below,</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: covid19_create_movie_or_summary m [-h] [-n NAME] [-M MAXNUM] [--conus]</span>
 <span class="go">                                         [-y]</span>
@@ -363,9 +364,9 @@
 </pre></div>
 </div>
 <p>will output a quad structured movie of the cumulative COVID-19 cases and deaths for the NYC metropolitan area, <a class="reference external" href="https://tanimislam.github.io/covid19movies/covid19_nyc_LATEST.mp4">covid19_nyc_LATEST.mp4</a>. <a class="reference internal" href="#fig-covid19-nyc-latest"><span class="std std-numref">Fig. 3.5</span></a> is a GIF animation of that.</p>
-<div class="figure align-left" id="id9">
+<div class="figure align-left" id="id10">
 <span id="fig-covid19-nyc-latest"></span><a class="reference internal image-reference" href="https://tanimislam.github.io/covid19movies/covid19_nyc_LATEST.gif"><img alt="https://tanimislam.github.io/covid19movies/covid19_nyc_LATEST.gif" src="https://tanimislam.github.io/covid19movies/covid19_nyc_LATEST.gif" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 3.5 </span><span class="caption-text">The four-quadrant movie, that <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">m</span></code> creates, of the cumulative COVID-19 cases and deaths in the NYC metropolitan area. Upper left quad is the summary information for the MSA. Lower left quad is the running tally of cumulative cases and deaths, by day from first incident. Upper right is <em>logarithmic</em> coloration of cumulative deaths, by day from first incident. Lower right is <em>logarithmic</em> coloration of cumulative cases, by day from first incident.</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 3.5 </span><span class="caption-text">The four-quadrant movie, that <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">m</span></code> creates, of the cumulative COVID-19 cases and deaths in the NYC metropolitan area. Upper left quad is the summary information for the MSA. Lower left quad is the running tally of cumulative cases and deaths, by day from first incident. Upper right is <em>logarithmic</em> coloration of cumulative deaths, by day from first incident. Lower right is <em>logarithmic</em> coloration of cumulative cases, by day from first incident.</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
 </div>
 <p>Note also that the created <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> files have metadata associated with them. You can either inspect them using <a class="reference external" href="https://www.bento4.com/documentation/mp4info">mp4info</a> or using code in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">mutagen.mp4.MP4</span></code>. Here is what <code class="docutils literal notranslate"><span class="pre">mp4info</span> <span class="pre">covid19_nyc_LATEST.mp4</span></code> returns,</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">mp4info version -r</span>
@@ -405,7 +406,7 @@
 </ul>
 </div>
 <div class="section" id="movie-cases-deaths-mode">
-<span id="id5"></span><h2><span class="section-number">3.2.4. </span>movie cases deaths mode<a class="headerlink" href="#movie-cases-deaths-mode" title="Permalink to this headline">¶</a></h2>
+<span id="id6"></span><h2><span class="section-number">3.2.4. </span>movie cases deaths mode<a class="headerlink" href="#movie-cases-deaths-mode" title="Permalink to this headline">¶</a></h2>
 <p>This is similar to <a class="reference internal" href="#movie-mode"><span class="std std-ref">movie mode</span></a>, except now we can visualize movies of cases or deaths, and optionally <em>save</em>, the collection of <a class="reference external" href="https://en.wikipedia.org/wiki/Portable_Network_Graphics">PNG</a> images used to create the movie, into a zip file. The help output, while running <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">mcd</span> <span class="pre">-h</span></code>, is shown below,</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: covid19_create_movie_or_summary mcd [-h] [-n NAME] [-d DISP] [-M MAXNUM] [-s] [--conus] [-y]</span>
 
@@ -428,18 +429,18 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">-s</span></code> or <code class="docutils literal notranslate"><span class="pre">--saveimages</span></code> optionally lets you choose to save the <a class="reference external" href="https://en.wikipedia.org/wiki/Portable_Network_Graphics">PNG</a> images into a zip archive.</p></li>
 </ul>
 <p><a class="reference internal" href="#fig-covid19-nyc-cases-latest"><span class="std std-numref">Fig. 3.6</span></a> and <a class="reference internal" href="#fig-covid19-nyc-death-latest"><span class="std std-numref">Fig. 3.7</span></a> demonstrates this operation to create COVID-19 <code class="docutils literal notranslate"><span class="pre">cases</span></code> and <code class="docutils literal notranslate"><span class="pre">deaths</span></code> summary movies for the NYC metropolitan area. The command line syntax to generate these two movies is shown in each of their captions.</p>
-<div class="figure align-left" id="id10">
+<div class="figure align-left" id="id11">
 <span id="fig-covid19-nyc-cases-latest"></span><a class="reference internal image-reference" href="https://tanimislam.github.io/covid19movies/covid19_nyc_cases_LATEST.gif"><img alt="https://tanimislam.github.io/covid19movies/covid19_nyc_cases_LATEST.gif" src="https://tanimislam.github.io/covid19movies/covid19_nyc_cases_LATEST.gif" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 3.6 </span><span class="caption-text">The trend of latest COVID-19 cumulative cases (lower right quadrant in <a class="reference internal" href="#fig-covid19-nyc-latest"><span class="std std-numref">Fig. 3.5</span></a>) in the NYC metropolitan area. The underlying MP4 file is <a class="reference external" href="https://tanimislam.github.io/covid19movies/covid19_nyc_cases_LATEST.mp4">covid19_nyc_cases_LATEST.mp4</a>. The syntax used to create this movie is,</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 3.6 </span><span class="caption-text">The trend of latest COVID-19 cumulative cases (lower right quadrant in <a class="reference internal" href="#fig-covid19-nyc-latest"><span class="std std-numref">Fig. 3.5</span></a>) in the NYC metropolitan area. The underlying MP4 file is <a class="reference external" href="https://tanimislam.github.io/covid19movies/covid19_nyc_cases_LATEST.mp4">covid19_nyc_cases_LATEST.mp4</a>. The syntax used to create this movie is,</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
 <div class="legend">
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">covid19_create_movie_or_summary mcd -n nyc -d cases -y</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="figure align-left" id="id11">
+<div class="figure align-left" id="id12">
 <span id="fig-covid19-nyc-death-latest"></span><a class="reference internal image-reference" href="https://tanimislam.github.io/covid19movies/covid19_nyc_deaths_LATEST.gif"><img alt="https://tanimislam.github.io/covid19movies/covid19_nyc_deaths_LATEST.gif" src="https://tanimislam.github.io/covid19movies/covid19_nyc_deaths_LATEST.gif" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 3.7 </span><span class="caption-text">The trend of latest COVID-19 cumulative deaths (upper right quadrant in <a class="reference internal" href="#fig-covid19-nyc-latest"><span class="std std-numref">Fig. 3.5</span></a>) in the NYC metropolitan area. The underlying MP4 file is <a class="reference external" href="https://tanimislam.github.io/covid19movies/covid19_nyc_deaths_LATEST.mp4">covid19_nyc_deaths_LATEST.mp4</a>. The syntax used to create this movie is,</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 3.7 </span><span class="caption-text">The trend of latest COVID-19 cumulative deaths (upper right quadrant in <a class="reference internal" href="#fig-covid19-nyc-latest"><span class="std std-numref">Fig. 3.5</span></a>) in the NYC metropolitan area. The underlying MP4 file is <a class="reference external" href="https://tanimislam.github.io/covid19movies/covid19_nyc_deaths_LATEST.mp4">covid19_nyc_deaths_LATEST.mp4</a>. The syntax used to create this movie is,</span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
 <div class="legend">
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">covid19_create_movie_or_summary mcd -n nyc -d death -y</span>
 </pre></div>
@@ -450,9 +451,9 @@
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">covid19_create_movie_or_summary mcd --conus -d cases -y</span>
 </pre></div>
 </div>
-<div class="figure align-left" id="id12">
+<div class="figure align-left" id="id13">
 <span id="fig-covid19-conus-cases-latest"></span><a class="reference internal image-reference" href="https://tanimislam.github.io/covid19movies/covid19_conus_cases_LATEST.gif"><img alt="https://tanimislam.github.io/covid19movies/covid19_conus_cases_LATEST.gif" src="https://tanimislam.github.io/covid19movies/covid19_conus_cases_LATEST.gif" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 3.8 </span><span class="caption-text">The trend of latest COVID-19 cumulative cases for the <a class="reference external" href="https://en.wikipedia.org/wiki/Contiguous_United_States">CONUS</a>. The underlying MP4 file is <a class="reference external" href="https://tanimislam.github.io/covid19movies/covid19_conus_cases_LATEST.mp4">covid19_conus_cases_LATEST.mp4</a>. I <em>deliberately</em> limit the maximum value of cases, in the colorbar, to the maximum cumulative COVID-19 <em>deaths</em> in a county in the region, for psychological effect; it’s distressing to see the COVID-19 cumulative case map fill up with red as time goes on.</span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 3.8 </span><span class="caption-text">The trend of latest COVID-19 cumulative cases for the <a class="reference external" href="https://en.wikipedia.org/wiki/Contiguous_United_States">CONUS</a>. The underlying MP4 file is <a class="reference external" href="https://tanimislam.github.io/covid19movies/covid19_conus_cases_LATEST.mp4">covid19_conus_cases_LATEST.mp4</a>. I <em>deliberately</em> limit the maximum value of cases, in the colorbar, to the maximum cumulative COVID-19 <em>deaths</em> in a county in the region, for psychological effect; it’s distressing to see the COVID-19 cumulative case map fill up with red as time goes on.</span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
 </div>
 <p>Note also that the created <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> files have metadata associated with them. You can either inspect them using <a class="reference external" href="https://www.bento4.com/documentation/mp4info">mp4info</a> or using code in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">mutagen.mp4.MP4</span></code>. Here is what <code class="docutils literal notranslate"><span class="pre">mp4info</span> <span class="pre">covid19_nyc_cases_LATEST.mp4</span></code> returns,</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">mp4info version -r</span>

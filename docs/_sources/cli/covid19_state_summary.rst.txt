@@ -114,7 +114,7 @@ will output a quad structured movie of the cumulative COVID-19 cases and deaths 
    :width: 100%
    :align: left
 
-   The four-quadrant movie, that ``covid19_state_summary m`` creates, of the cumulative COVID-19 cases and deaths in the state of California. Upper left quad is the summary information for the MSA. Lower left quad is the running tally of cumulative cases and deaths, by day from first incident. Upper right is *logarithmic* coloration of cumulative deaths, by day from first incident. Lower right is *logarithmic* coloration of cumulative cases, by day from first incident. Its structure matches that of :numref:`fig_covid19_nyc_LATEST`.
+   The four-quadrant movie, that ``covid19_state_summary m`` creates, of the cumulative COVID-19 cases and deaths in the state of California. Upper left quad is the summary information for the state. Lower left quad is the running tally of cumulative cases and deaths, by day from first incident. Upper right is *logarithmic* coloration of cumulative deaths, by day from first incident. Lower right is *logarithmic* coloration of cumulative cases, by day from first incident. Its structure matches that of :numref:`fig_covid19_nyc_LATEST`.
 
 Note also that the created MP4_ files have metadata associated with them. You can either inspect them using mp4info_ or using code in the :py:mod:`mutagen.mp4.MP4`. Here is what ``mp4info covid19_california_LATEST.mp4`` returns,
 
@@ -143,7 +143,7 @@ For US states and territories,
 
 movie cases deaths mode
 -------------------------
-This is similar to :ref:`movie_mode_state`, except now we can visualize movies of cases or deaths. The help output, while running ``covid19_create_movie_or_summary mcd -h``, is shown below,
+This is similar to :ref:`movie_mode_state`, except now we can visualize movies of cases or deaths. The help output, while running ``covid19_state_summary mcd -h``, is shown below,
 
 .. code-block:: console
 
@@ -154,7 +154,7 @@ This is similar to :ref:`movie_mode_state`, except now we can visualize movies o
      -d DISP, --disp DISP  Whether to display the "cases" or "death" trends of the given state. Default is "cases".
      -s, --saveimages      If chosen, then save the images used to create the movie into a ZIP archive.
 
-* ``-d`` or ``-disp`` lets you choose whether to create a movie of the ``cases`` or ``deaths`` within the specified US state or territory.
+* ``-d`` or ``--disp`` lets you choose whether to create a movie of the ``cases`` or ``deaths`` within the specified US state or territory.
 
 * ``-s`` or ``--saveimages`` optionally lets you choose to save the PNG_ images into a zip archive.
 

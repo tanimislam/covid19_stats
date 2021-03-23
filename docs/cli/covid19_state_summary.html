@@ -45,7 +45,7 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="3.4. covid19_movie_updates" href="covid19_movie_updates.html" />
+    <link rel="next" title="3.4. covid19_region_summary_rate" href="covid19_region_summary_rate.html" />
     <link rel="prev" title="3.2. covid19_create_movie_or_summary" href="covid19_create_movie_or_summary.html" />
     <link href="../_static/style.css" rel="stylesheet" type="text/css">
 
@@ -105,9 +105,10 @@
 <li class="toctree-l3"><a class="reference internal" href="#movie-cases-deaths-mode">3.3.3. movie cases deaths mode</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="covid19_movie_updates.html">3.4. covid19_movie_updates</a></li>
-<li class="toctree-l2"><a class="reference internal" href="covid19_post2server.html">3.5. covid19_post2server</a></li>
-<li class="toctree-l2"><a class="reference internal" href="covid19_update_readme.html">3.6. covid19_update_readme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_region_summary_rate.html">3.4. covid19_region_summary_rate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_movie_updates.html">3.5. covid19_movie_updates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_post2server.html">3.6. covid19_post2server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_update_readme.html">3.7. covid19_update_readme</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../api/api.html">4. THE COVID19_STATS API</a></li>
@@ -181,7 +182,7 @@
            <div itemprop="articleBody">
             
   <div class="section" id="covid19-state-summary">
-<span id="id2"></span><h1><span class="section-number">3.3. </span>covid19_state_summary<a class="headerlink" href="#covid19-state-summary" title="Permalink to this headline">¶</a></h1>
+<span id="id3"></span><h1><span class="section-number">3.3. </span>covid19_state_summary<a class="headerlink" href="#covid19-state-summary" title="Permalink to this headline">¶</a></h1>
 <p>This CLI behaves <em>very</em> similarly to <a class="reference internal" href="covid19_create_movie_or_summary.html#covid19-create-movie-or-summary"><span class="std std-ref">covid19_create_movie_or_summary</span></a>, except it operates on US states or territories instead of the <a class="reference external" href="https://en.wikipedia.org/wiki/Contiguous_United_States">CONUS</a> or US MSAs. It has <em>three</em> modes of operation. Its help output, when running <code class="docutils literal notranslate"><span class="pre">covid19_state_summary</span> <span class="pre">-h</span></code>, produces the following hard-to-read output,</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: covid19_state_summary [-h] [-d DIRNAME] [--info]</span>
 <span class="go">                             [-n {Alabama,Alaska,Arizona,Arkansas,California,Colorado,Connecticut,Delaware,District of Columbia,Florida,Georgia,Hawaii,Idaho,Illinois,Indiana,Iowa,Kansas,Kentucky,Louisiana,Maine,Maryland,Massachusetts,Michigan,Minnesota,Mississippi,Missouri,Montana,Nebraska,Nevada,New Hampshire,New Jersey,New Mexico,New York,North Carolina,North Dakota,Ohio,Oklahoma,Oregon,Pennsylvania,Puerto Rico,Rhode Island,South Carolina,South Dakota,Tennessee,Texas,Utah,Vermont,Virginia,Washington,West Virginia,Wisconsin,Wyoming}]</span>
@@ -239,21 +240,21 @@
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">covid19_california_LATEST.pkl.gz</span></code> is the <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.htm">Pandas DataFrame</a>  of the COVID-19 cases and deaths, total and per county, from the date of first incident to the latest incident.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">covid19_california_cds_LATEST.pdf</span></code> and <code class="docutils literal notranslate"><span class="pre">covid19_california_cds_LATEST.png</span></code> are the PDF and PNG showing the trend of COVID-19 cases and deaths in California.</p>
-<div class="figure align-left" id="id3">
+<div class="figure align-left" id="id4">
 <a class="reference internal image-reference" href="https://tanimislam.github.io/covid19movies/covid19_california_cds_LATEST.png"><img alt="https://tanimislam.github.io/covid19movies/covid19_california_cds_LATEST.png" src="https://tanimislam.github.io/covid19movies/covid19_california_cds_LATEST.png" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 3.9 </span><span class="caption-text">The <em>latest</em> trend lines of cumulative cases and deaths in California.</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 3.9 </span><span class="caption-text">The <em>latest</em> trend lines of cumulative cases and deaths in California.</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
 </div>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">covid19_california_cases_LATEST.pdf</span></code> and <code class="docutils literal notranslate"><span class="pre">covid19_california_cases_LATEST.png</span></code> are the PDF and PNG showing the county map, colored by number of COVID-19 cases, on the <em>LAST</em> incident day.</p>
-<div class="figure align-left" id="id4">
+<div class="figure align-left" id="id5">
 <a class="reference internal image-reference" href="https://tanimislam.github.io/covid19movies/covid19_california_cases_LATEST.png"><img alt="https://tanimislam.github.io/covid19movies/covid19_california_cases_LATEST.png" src="https://tanimislam.github.io/covid19movies/covid19_california_cases_LATEST.png" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 3.10 </span><span class="caption-text">The <em>latest</em> image of cumulative cases in California.</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 3.10 </span><span class="caption-text">The <em>latest</em> image of cumulative cases in California.</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
 </div>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">covid19_california_death_LATEST.pdf</span></code> and <code class="docutils literal notranslate"><span class="pre">covid19_california_death_LATEST.png</span></code> are the PDF and PNG showing the county map, colored by number of COVID-19 deaths, on the <em>LAST</em> incident day.</p>
-<div class="figure align-left" id="id5">
+<div class="figure align-left" id="id6">
 <a class="reference internal image-reference" href="https://tanimislam.github.io/covid19movies/covid19_california_death_LATEST.png"><img alt="https://tanimislam.github.io/covid19movies/covid19_california_death_LATEST.png" src="https://tanimislam.github.io/covid19movies/covid19_california_death_LATEST.png" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 3.11 </span><span class="caption-text">The <em>latest</em> image of cumulative deaths in California.</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 3.11 </span><span class="caption-text">The <em>latest</em> image of cumulative deaths in California.</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
 </div>
 </li>
 </ul>
@@ -266,9 +267,9 @@
 </pre></div>
 </div>
 <p>will output a quad structured movie of the cumulative COVID-19 cases and deaths for California, <a class="reference external" href="https://tanimislam.github.io/covid19movies/covid19_california_LATEST.mp4">covid19_california_LATEST.mp4</a>. <a class="reference internal" href="#fig-covid19-california-latest"><span class="std std-numref">Fig. 3.12</span></a> is a GIF animation of that.</p>
-<div class="figure align-left" id="id6">
+<div class="figure align-left" id="id7">
 <span id="fig-covid19-california-latest"></span><a class="reference internal image-reference" href="https://tanimislam.github.io/covid19movies/covid19_california_LATEST.gif"><img alt="https://tanimislam.github.io/covid19movies/covid19_california_LATEST.gif" src="https://tanimislam.github.io/covid19movies/covid19_california_LATEST.gif" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 3.12 </span><span class="caption-text">The four-quadrant movie, that <code class="docutils literal notranslate"><span class="pre">covid19_state_summary</span> <span class="pre">m</span></code> creates, of the cumulative COVID-19 cases and deaths in the state of California. Upper left quad is the summary information for the MSA. Lower left quad is the running tally of cumulative cases and deaths, by day from first incident. Upper right is <em>logarithmic</em> coloration of cumulative deaths, by day from first incident. Lower right is <em>logarithmic</em> coloration of cumulative cases, by day from first incident. Its structure matches that of <a class="reference internal" href="covid19_create_movie_or_summary.html#fig-covid19-nyc-latest"><span class="std std-numref">Fig. 3.5</span></a>.</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 3.12 </span><span class="caption-text">The four-quadrant movie, that <code class="docutils literal notranslate"><span class="pre">covid19_state_summary</span> <span class="pre">m</span></code> creates, of the cumulative COVID-19 cases and deaths in the state of California. Upper left quad is the summary information for the state. Lower left quad is the running tally of cumulative cases and deaths, by day from first incident. Upper right is <em>logarithmic</em> coloration of cumulative deaths, by day from first incident. Lower right is <em>logarithmic</em> coloration of cumulative cases, by day from first incident. Its structure matches that of <a class="reference internal" href="covid19_create_movie_or_summary.html#fig-covid19-nyc-latest"><span class="std std-numref">Fig. 3.5</span></a>.</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
 </div>
 <p>Note also that the created <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> files have metadata associated with them. You can either inspect them using <a class="reference external" href="https://www.bento4.com/documentation/mp4info">mp4info</a> or using code in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">mutagen.mp4.MP4</span></code>. Here is what <code class="docutils literal notranslate"><span class="pre">mp4info</span> <span class="pre">covid19_california_LATEST.mp4</span></code> returns,</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">mp4info version -r</span>
@@ -292,7 +293,7 @@
 </div>
 <div class="section" id="movie-cases-deaths-mode">
 <span id="movie-cases-deaths-mode-state"></span><h2><span class="section-number">3.3.3. </span>movie cases deaths mode<a class="headerlink" href="#movie-cases-deaths-mode" title="Permalink to this headline">¶</a></h2>
-<p>This is similar to <a class="reference internal" href="#movie-mode-state"><span class="std std-ref">movie mode</span></a>, except now we can visualize movies of cases or deaths. The help output, while running <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">mcd</span> <span class="pre">-h</span></code>, is shown below,</p>
+<p>This is similar to <a class="reference internal" href="#movie-mode-state"><span class="std std-ref">movie mode</span></a>, except now we can visualize movies of cases or deaths. The help output, while running <code class="docutils literal notranslate"><span class="pre">covid19_state_summary</span> <span class="pre">mcd</span> <span class="pre">-h</span></code>, is shown below,</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: covid19_state_summary mcd [-h] [-d DISP]</span>
 
 <span class="go">optional arguments:</span>
@@ -302,22 +303,22 @@
 </pre></div>
 </div>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">-d</span></code> or <code class="docutils literal notranslate"><span class="pre">-disp</span></code> lets you choose whether to create a movie of the <code class="docutils literal notranslate"><span class="pre">cases</span></code> or <code class="docutils literal notranslate"><span class="pre">deaths</span></code> within the specified US state or territory.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-d</span></code> or <code class="docutils literal notranslate"><span class="pre">--disp</span></code> lets you choose whether to create a movie of the <code class="docutils literal notranslate"><span class="pre">cases</span></code> or <code class="docutils literal notranslate"><span class="pre">deaths</span></code> within the specified US state or territory.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">-s</span></code> or <code class="docutils literal notranslate"><span class="pre">--saveimages</span></code> optionally lets you choose to save the <a class="reference external" href="https://en.wikipedia.org/wiki/Portable_Network_Graphics">PNG</a> images into a zip archive.</p></li>
 </ul>
 <p><a class="reference internal" href="#fig-covid19-california-cases-latest"><span class="std std-numref">Fig. 3.13</span></a> and <a class="reference internal" href="#fig-covid19-california-death-latest"><span class="std std-numref">Fig. 3.14</span></a> demonstrates this operation to create COVID-19 <code class="docutils literal notranslate"><span class="pre">cases</span></code> and <code class="docutils literal notranslate"><span class="pre">deaths</span></code> summary movies for the NYC metropolitan area. The command line syntax to generate these two movies is shown in each of their captions.</p>
-<div class="figure align-left" id="id7">
+<div class="figure align-left" id="id8">
 <span id="fig-covid19-california-cases-latest"></span><a class="reference internal image-reference" href="https://tanimislam.github.io/covid19movies/covid19_california_cases_LATEST.gif"><img alt="https://tanimislam.github.io/covid19movies/covid19_california_cases_LATEST.gif" src="https://tanimislam.github.io/covid19movies/covid19_california_cases_LATEST.gif" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 3.13 </span><span class="caption-text">The trend of latest COVID-19 cumulative cases (lower right quadrant in <a class="reference internal" href="#fig-covid19-california-latest"><span class="std std-numref">Fig. 3.12</span></a>) in California. The underlying MP4 file is <a class="reference external" href="https://tanimislam.github.io/covid19movies/covid19_california_cases_LATEST.mp4">covid19_california_cases_LATEST.mp4</a>. The syntax used to create this movie is,</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 3.13 </span><span class="caption-text">The trend of latest COVID-19 cumulative cases (lower right quadrant in <a class="reference internal" href="#fig-covid19-california-latest"><span class="std std-numref">Fig. 3.12</span></a>) in California. The underlying MP4 file is <a class="reference external" href="https://tanimislam.github.io/covid19movies/covid19_california_cases_LATEST.mp4">covid19_california_cases_LATEST.mp4</a>. The syntax used to create this movie is,</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
 <div class="legend">
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">covid19_state_summary -n california -y mcd -d cases</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="figure align-left" id="id8">
+<div class="figure align-left" id="id9">
 <span id="fig-covid19-california-death-latest"></span><a class="reference internal image-reference" href="https://tanimislam.github.io/covid19movies/covid19_california_deaths_LATEST.gif"><img alt="https://tanimislam.github.io/covid19movies/covid19_california_deaths_LATEST.gif" src="https://tanimislam.github.io/covid19movies/covid19_california_deaths_LATEST.gif" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 3.14 </span><span class="caption-text">The trend of latest COVID-19 cumulative deaths (upper right quadrant in <a class="reference internal" href="#fig-covid19-california-latest"><span class="std std-numref">Fig. 3.12</span></a>) in California. The underlying MP4 file is <a class="reference external" href="https://tanimislam.github.io/covid19movies/covid19_california_deaths_LATEST.mp4">covid19_california_deaths_LATEST.mp4</a>. The syntax used to create this movie is,</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 3.14 </span><span class="caption-text">The trend of latest COVID-19 cumulative deaths (upper right quadrant in <a class="reference internal" href="#fig-covid19-california-latest"><span class="std std-numref">Fig. 3.12</span></a>) in California. The underlying MP4 file is <a class="reference external" href="https://tanimislam.github.io/covid19movies/covid19_california_deaths_LATEST.mp4">covid19_california_deaths_LATEST.mp4</a>. The syntax used to create this movie is,</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
 <div class="legend">
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">covid19_state_summary -n california -y mcd -d death</span>
 </pre></div>
@@ -346,7 +347,7 @@
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="covid19_movie_updates.html" class="btn btn-neutral float-right" title="3.4. covid19_movie_updates" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="covid19_region_summary_rate.html" class="btn btn-neutral float-right" title="3.4. covid19_region_summary_rate" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="covid19_create_movie_or_summary.html" class="btn btn-neutral float-left" title="3.2. covid19_create_movie_or_summary" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 

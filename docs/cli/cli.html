@@ -100,9 +100,10 @@
 <li class="toctree-l2"><a class="reference internal" href="covid19_update_database.html">3.1. covid19_update_database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="covid19_create_movie_or_summary.html">3.2. covid19_create_movie_or_summary</a></li>
 <li class="toctree-l2"><a class="reference internal" href="covid19_state_summary.html">3.3. covid19_state_summary</a></li>
-<li class="toctree-l2"><a class="reference internal" href="covid19_movie_updates.html">3.4. covid19_movie_updates</a></li>
-<li class="toctree-l2"><a class="reference internal" href="covid19_post2server.html">3.5. covid19_post2server</a></li>
-<li class="toctree-l2"><a class="reference internal" href="covid19_update_readme.html">3.6. covid19_update_readme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_region_summary_rate.html">3.4. covid19_region_summary_rate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_movie_updates.html">3.5. covid19_movie_updates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_post2server.html">3.6. covid19_post2server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_update_readme.html">3.7. covid19_update_readme</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../api/api.html">4. THE COVID19_STATS API</a></li>
@@ -174,10 +175,10 @@
            <div itemprop="articleBody">
             
   <div class="section" id="using-the-cli">
-<span id="id2"></span><h1><span class="section-number">3. </span>USING THE CLI<a class="headerlink" href="#using-the-cli" title="Permalink to this headline">¶</a></h1>
-<p>There are <em>six</em> command line interfaces that have been defined here.</p>
+<span id="id3"></span><h1><span class="section-number">3. </span>USING THE CLI<a class="headerlink" href="#using-the-cli" title="Permalink to this headline">¶</a></h1>
+<p>There are <em>seven</em> command line interfaces that have been defined here.</p>
 <p>The first CLI, <a class="reference internal" href="covid19_update_database.html#covid19-update-database"><span class="std std-ref">covid19_update_database</span></a>, <em>only</em> updates the  <a class="reference external" href="https://github.com/nytimes/covid-19-data">NY Times COVID-19 repository</a> with the latest data.</p>
-<p>The next two CLIs, <a class="reference internal" href="covid19_create_movie_or_summary.html#covid19-create-movie-or-summary"><span class="std std-ref">covid19_create_movie_or_summary</span></a> and <a class="reference internal" href="covid19_state_summary.html#covid19-state-summary"><span class="std std-ref">covid19_state_summary</span></a>, synthesize the COVID-19 movies and figures, that represent cumulative cases and deaths, for metropolitan statistical areas (MSAs), the <a class="reference external" href="https://en.wikipedia.org/wiki/Contiguous_United_States">CONUS</a>, or individual US states and territories.</p>
+<p>The next two CLIs, <a class="reference internal" href="covid19_create_movie_or_summary.html#covid19-create-movie-or-summary"><span class="std std-ref">covid19_create_movie_or_summary</span></a> and <a class="reference internal" href="covid19_state_summary.html#covid19-state-summary"><span class="std std-ref">covid19_state_summary</span></a>, synthesize the COVID-19 movies and figures, that represent <em>cumulative</em> cases and deaths, for metropolitan statistical areas (MSAs), the <a class="reference external" href="https://en.wikipedia.org/wiki/Contiguous_United_States">CONUS</a>, or individual US states and territories. The third CLI, <a class="reference internal" href="covid19_region_summary_rate.html#covid19-region-summary-rate"><span class="std std-ref">covid19_region_summary_rate</span></a>, synthesizes the COVID-19 movies and figures, that represent <em>seven day averaged</em> new cases and deaths per day, for MSAs, the <a class="reference external" href="https://en.wikipedia.org/wiki/Contiguous_United_States">CONUS</a>, or individdual US states and territories.</p>
 <p>The final three CLIs, <a class="reference internal" href="covid19_movie_updates.html#covid19-movie-updates"><span class="std std-ref">covid19_movie_updates</span></a>, <a class="reference internal" href="covid19_post2server.html#covid19-post2server"><span class="std std-ref">covid19_post2server</span></a>, and <a class="reference internal" href="covid19_update_readme.html#covid19-update-readme"><span class="std std-ref">covid19_update_readme</span></a>, are designed for external services to <em>deploy</em> summary data on specific US regions into other locations. A currently private (but perhaps soon to be <em>public</em>) GitHub repo, <a class="reference external" href="https://github.com/tanimislam/covid19movies">covid19movies</a>, does the following five things in order.</p>
 <ol class="arabic simple">
 <li><p>Updates the NY Times COVID-19 data locally by running <a class="reference internal" href="covid19_update_database.html#covid19-update-database"><span class="std std-ref">covid19_update_database</span></a>.</p></li>
@@ -187,11 +188,11 @@
 <li><p>Updates the <a class="reference external" href="https://github.com/tanimislam/covid19_stats">covid19_stats repo</a> <code class="docutils literal notranslate"><span class="pre">README</span></code> using <a class="reference internal" href="covid19_update_readme.html#covid19-update-readme"><span class="std std-ref">covid19_update_readme</span></a>.</p></li>
 </ol>
 <p>This tooling updates the COVID-19 summary data, and the <a class="reference external" href="https://github.com/tanimislam/covid19_stats">covid19_stats repo</a> <code class="docutils literal notranslate"><span class="pre">README</span></code>, every day at 1230 AM PST. Here is a diagram!</p>
-<div class="figure align-left" id="id4">
+<div class="figure align-left" id="id5">
 <a class="reference internal image-reference" href="../_images/daily_update_five_steps.png"><img alt="../_images/daily_update_five_steps.png" src="../_images/daily_update_five_steps.png" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 3.1 </span><span class="caption-text">Diagram taken from a presentation given at the 4 March 2021 Sacramento Python meetup, depicting the <em>five</em> steps needed to update COVID-19 summary data for 26 regions in the United States. As of 4 March 2021, the data takes up nearly 1 GB of space and takes roughly 45 minutes to generate.</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 3.1 </span><span class="caption-text">Diagram taken from a presentation given at the 4 March 2021 Sacramento Python meetup, depicting the <em>five</em> steps needed to update COVID-19 summary data for 26 regions in the United States. As of 4 March 2021, the data takes up nearly 1 GB of space and takes roughly 45 minutes to generate.</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
 </div>
-<p>Here are the six command line tools.</p>
+<p>Here are the seven command line tools.</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="covid19_update_database.html">3.1. covid19_update_database</a></li>
@@ -208,13 +209,19 @@
 <li class="toctree-l2"><a class="reference internal" href="covid19_state_summary.html#movie-cases-deaths-mode">3.3.3. movie cases deaths mode</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="covid19_movie_updates.html">3.4. covid19_movie_updates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="covid19_post2server.html">3.5. covid19_post2server</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="covid19_post2server.html#http-operation">3.5.1. http operation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="covid19_post2server.html#ssh-operation">3.5.2. ssh operation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="covid19_region_summary_rate.html">3.4. covid19_region_summary_rate</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="covid19_region_summary_rate.html#show-mode">3.4.1. show mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_region_summary_rate.html#movie-mode">3.4.2. movie mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_region_summary_rate.html#movie-cases-deaths-mode">3.4.3. movie cases deaths mode</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="covid19_update_readme.html">3.6. covid19_update_readme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="covid19_movie_updates.html">3.5. covid19_movie_updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="covid19_post2server.html">3.6. covid19_post2server</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="covid19_post2server.html#http-operation">3.6.1. http operation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_post2server.html#ssh-operation">3.6.2. ssh operation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="covid19_update_readme.html">3.7. covid19_update_readme</a></li>
 </ul>
 </div>
 </div>
