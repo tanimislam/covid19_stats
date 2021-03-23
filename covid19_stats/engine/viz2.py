@@ -515,7 +515,7 @@ def create_summary_rate_movie_frombeginning(
     os.chmod( movie_name, 0o644 )    
     return os.path.basename( movie_name )
 
-def get_summary_demo_data(
+def get_summary_demo_rate_data(
     inc_data, dirname = os.getcwd( ), store_data = True ):
     #
     ## now is dirname a directory

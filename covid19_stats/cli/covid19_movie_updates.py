@@ -4,7 +4,7 @@ from mpi4py import MPI
 from itertools import product
 from argparse import ArgumentParser
 #
-from covid19_stats.engine import core, viz, find_plausible_maxnum
+from covid19_stats.engine import core, viz, viz2, find_plausible_maxnum
 from covid19_stats import COVID19Database
 
 warnings.filterwarnings("ignore") # suppress all warnings
@@ -39,6 +39,7 @@ def _summarize_state_or_territory( statename, dirname, time0 ):
     viz.get_summary_demo_data(
         inc_data, maxnum_colorbar = maxnum,
         dirname = dirname, store_data = False )
+    viz2.get_summary_demo_rate_data( inc_data, dirname = dirname, store_data = False )
     logging.info( 'at %0.3f seconds to create summary of %s.' % (
         time.time( ) - time0, statename ) )
 
@@ -48,6 +49,8 @@ def _movie_state_or_territory( statename, dirname, time0 ):
     movie_name = viz.create_summary_movie_frombeginning(
         inc_data, maxnum_colorbar = maxnum,
         dirname = dirname )
+    movie_7day_name = viz2.create_summary_rate_movie_frombeginning(
+        inc_data,dirname = dirname )
     logging.info( 'at %0.3f seconds to create movie of %s.' % (
         time.time( ) - time0, statename ) )
 
@@ -58,6 +61,9 @@ def _movie_casedeaths_state_or_territory( statename, dirname, time0, type_disp =
     viz.create_summary_cases_or_deaths_movie_frombeginning(
         inc_data, maxnum_colorbar = maxnum,
         type_disp = type_disp.lower( ), dirname = dirname,
+        save_imgfiles = False )
+    viz2.create_summary_cases_or_deaths_rate_movie_frombeginning(
+        inc_data, dirname = dirname, type_disp = type_disp.lower( ),
         save_imgfiles = False )
     logging.info( 'at %0.3f seconds to create %s movie of %s.' % (
         time.time( ) - time0, type_disp.upper( ), statename ) )
@@ -83,6 +89,7 @@ def _summarize_metro_or_conus( msa_or_conus_name, dirname, time0 ):
     assert( os.path.isdir( dirname ) )
     inc_data, maxnum = _get_data( msa_or_conus_name )
     viz.get_summary_demo_data( inc_data, maxnum_colorbar = maxnum, dirname = dirname, store_data = False )
+    viz2.get_summary_demo_rate_data( inc_data, dirname = dirname, store_data = False )
     logging.info( 'at %0.3f seconds to create summary of %s.' % (
         time.time( ) - time0, msa_or_conus_name.lower( ) ) )
 
@@ -118,6 +125,9 @@ def _movie_casedeaths_metro_or_conus( msa_or_conus_name, dirname, time0, type_di
     viz.create_summary_cases_or_deaths_movie_frombeginning(
         inc_data, maxnum_colorbar = maxnum,
         type_disp = type_disp.lower( ), dirname = dirname,
+        save_imgfiles = False )
+    viz2.create_summary_cases_or_deaths_rate_movie_frombeginning(
+        inc_data, type_disp = type_disp.lower( ), dirname = dirname,
         save_imgfiles = False )
     logging.info( 'at %0.3f seconds to create %s movie of %s.' % (
         time.time( ) - time0, type_disp.upper( ), msa_or_conus_name.lower( ) ) )
