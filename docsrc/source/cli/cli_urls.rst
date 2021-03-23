@@ -13,6 +13,7 @@
 .. _`covid19_conus_LATEST.mp4`: https://tanimislam.github.io/covid19movies/covid19_conus_LATEST.mp4
 .. _`covid19_california_LATEST.mp4`: https://tanimislam.github.io/covid19movies/covid19_california_LATEST.mp4
 .. _PNG: https://en.wikipedia.org/wiki/Portable_Network_Graphics
+.. _PDF: https://en.wikipedia.org/wiki/PDF
 .. _`covid19_nyc_cases_LATEST.mp4`: https://tanimislam.github.io/covid19movies/covid19_nyc_cases_LATEST.mp4
 .. _`covid19_nyc_deaths_LATEST.mp4`: https://tanimislam.github.io/covid19movies/covid19_nyc_deaths_LATEST.mp4
 .. _`covid19_conus_cases_LATEST.mp4`: https://tanimislam.github.io/covid19movies/covid19_conus_cases_LATEST.mp4
@@ -23,6 +24,16 @@
 .. _Markdown: https://daringfireball.net/projects/markdown/
 .. _`list-table`: https://docutils.sourceforge.io/docs/ref/rst/directives.html#list-table
 .. _JSON: https://en.wikipedia.org/wiki/JSON
+.. _MSA: https://en.wikipedia.org/wiki/Metropolitan_statistical_area
+.. _CONUS: https://en.wikipedia.org/wiki/Contiguous_United_States
+
+.. stuff for covid19_region_summary_rate
+
+.. _`covid19_7day_nyc_LATEST.mp4`: https://tanimislam.github.io/covid19movies/covid19_7day_nyc_LATEST.mp4
+.. _`covid19_7day_california_LATEST.mp4`: https://tanimislam.github.io/covid19movies/covid19_7day_california_LATEST.mp4
+.. _`covid19_7day_california_cases_LATEST.mp4`: https://tanimislam.github.io/covid19movies/covid19_7day_california_cases_LATEST.mp4
+.. _`covid19_7day_california_deaths_LATEST.mp4`: https://tanimislam.github.io/covid19movies/covid19_7day_california_deaths_LATEST.mp4
+.. _`covid19_7day_conus_LATEST.mp4`: https://tanimislam.github.io/covid19movies/covid19_7day_conus_LATEST.mp4
 
 .. _MPI: https://en.wikipedia.org/wiki/Message_Passing_Interface
 .. _mpi4py: https://mpi4py.readthedocs.io/en/stable

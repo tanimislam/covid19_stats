@@ -4,11 +4,11 @@
 
 USING THE CLI
 ==================
-There are *six* command line interfaces that have been defined here.
+There are *seven* command line interfaces that have been defined here.
 
 The first CLI, :ref:`covid19_update_database`, *only* updates the  `NY Times COVID-19 repository`_ with the latest data.
 
-The next two CLIs, :ref:`covid19_create_movie_or_summary` and :ref:`covid19_state_summary`, synthesize the COVID-19 movies and figures, that represent cumulative cases and deaths, for metropolitan statistical areas (MSAs), the CONUS_, or individual US states and territories.
+The next two CLIs, :ref:`covid19_create_movie_or_summary` and :ref:`covid19_state_summary`, synthesize the COVID-19 movies and figures, that represent *cumulative* cases and deaths, for metropolitan statistical areas (MSAs), the CONUS_, or individual US states and territories. The third CLI, :ref:`covid19_region_summary_rate`, synthesizes the COVID-19 movies and figures, that represent *seven day averaged* new cases and deaths per day, for MSAs, the CONUS_, or individdual US states and territories.
 
 The final three CLIs, :ref:`covid19_movie_updates`, :ref:`covid19_post2server`, and :ref:`covid19_update_readme`, are designed for external services to *deploy* summary data on specific US regions into other locations. A currently private (but perhaps soon to be *public*) GitHub repo, `covid19movies <https://github.com/tanimislam/covid19movies>`_, does the following five things in order.
 
@@ -30,7 +30,7 @@ This tooling updates the COVID-19 summary data, and the `covid19_stats repo <htt
 
    Diagram taken from a presentation given at the 4 March 2021 Sacramento Python meetup, depicting the *five* steps needed to update COVID-19 summary data for 26 regions in the United States. As of 4 March 2021, the data takes up nearly 1 GB of space and takes roughly 45 minutes to generate.
    
-Here are the six command line tools.
+Here are the seven command line tools.
 
 .. toctree::
    :maxdepth: 3
@@ -38,6 +38,7 @@ Here are the six command line tools.
    covid19_update_database
    covid19_create_movie_or_summary
    covid19_state_summary
+   covid19_region_summary_rate
    covid19_movie_updates
    covid19_post2server
    covid19_update_readme
