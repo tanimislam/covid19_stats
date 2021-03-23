@@ -19,7 +19,8 @@ def _get_state_names( ):
     return sorted( set( mapping_state_rname_conus + mapping_state_rname_nonconus ) )
 
 def _get_msa_names( ):
-    return sorted( COVID19Database.data_msas_2019( ) )
+    data_msas = COVID19Database.data_msas_2019( )
+    return sorted( data_msas, key = lambda msa: data_msas[ msa ]['population'] )[::-1]
 
 def _get_inc_data_msa_or_conus( msa_or_conus_name ):
     if msa_or_conus_name.lower( ) == 'conus':
@@ -137,7 +138,7 @@ def main( ):
         print( 'here are the %d states or territories: %s.' % ( len( state_names ), ', '.join( state_names ) ) )
         return
     if args.do_msas:
-        print( 'here are the %d MSAs: %s.' % ( len( msa_names ), ', '.join( msa_names ) ) )
+        print( 'here are the %d MSAs sorted from largest to smallest population: %s.' % ( len( msa_names ), ', '.join( msa_names ) ) )
         return
     #
     ## 
