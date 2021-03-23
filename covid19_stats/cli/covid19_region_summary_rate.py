@@ -134,10 +134,10 @@ def main( ):
         print( 'Error, only one of --states or --msas must be defined. Exiting...' )
         return
     if args.do_states:
-        print( 'here are the %d states: %s.' % ( len( state_names ), state_names ) )
+        print( 'here are the %d states: %s.' % ( len( state_names ), ', '.join( state_names ) ) )
         return
     if args.do_msas:
-        print( 'here are the %d MSAs: %s.' % ( len( msa_names ), msa_names ) )
+        print( 'here are the %d MSAs: %s.' % ( len( msa_names ), ', '.join( msa_names ) ) )
         return
     #
     ## 
