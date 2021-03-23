@@ -87,7 +87,7 @@ def main( ):
         help = 'Make movies or other summary 7 day averaged COVID-19 data for a geographical region. Can be a state, can be an MSA, or can be "conus". Default is "nyc".' )
     parser.add_argument(
         '--states', dest='do_states', action='store_true', default = False,
-        help = 'If chosen, then print out possible states as regions that you can choose.' )
+        help = 'If chosen, then print out possible states or US territories as regions that you can choose.' )
     parser.add_argument(
         '--msas', dest='do_msas', action='store_true', default = False,
         help = 'If chosen, then print out possible MSAs as regions that you can choose.' )
@@ -134,7 +134,7 @@ def main( ):
         print( 'Error, only one of --states or --msas must be defined. Exiting...' )
         return
     if args.do_states:
-        print( 'here are the %d states: %s.' % ( len( state_names ), ', '.join( state_names ) ) )
+        print( 'here are the %d states or territories: %s.' % ( len( state_names ), ', '.join( state_names ) ) )
         return
     if args.do_msas:
         print( 'here are the %d MSAs: %s.' % ( len( msa_names ), ', '.join( msa_names ) ) )
