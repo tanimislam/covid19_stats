@@ -85,21 +85,21 @@ def main( ):
         help = 'If chosen, then print out INFO level logging statements.' )
     parser.add_argument(
         '-R', '--region', dest='region', type=str, action='store', default = 'nyc',
-        help = 'Make movies or other summary 7 day averaged COVID-19 data for a geographical region. Can be a state, can be an MSA, or can be "conus". Default is "nyc".' )
+        help = 'Make movies or other summary 7 day averaged COVID-19 data for a geographical region. Can be a state or US territory, can be an MSA, or can be "conus". Default is "nyc".' )
     parser.add_argument(
         '--states', dest='do_states', action='store_true', default = False,
-        help = 'If chosen, then print out possible states or US territories as regions that you can choose.' )
+        help = 'If chosen, then print out possible states or US territories as geographical regions that you can choose.' )
     parser.add_argument(
         '--msas', dest='do_msas', action='store_true', default = False,
-        help = 'If chosen, then print out possible MSAs as regions that you can choose.' )
+        help = 'If chosen, then print out possible MSAs as geographical regions that you can choose.' )
     #
     subparsers = parser.add_subparsers(
         help = ' '.join([
             'Choose one of three options:',
-            '(m) make a movie of the COVID-19 cumulative stats for the state;',
+            '(m) make a movie of the COVID-19 cumulative stats for a geographhical region;',
             '(s) dumps summary plots of last incident date,',
-            'and cumulative covid-19 stats, of a state;',
-            'and (mcd) make a movie of either "CASES" or "DEATHS" in the state.' ] ),
+            'and cumulative covid-19 stats, of a geographical region;',
+            'and (mcd) make a movie of either "CASES" or "DEATHS" in a geographical region.' ] ),
         dest = 'choose_option' )
     #
     ## make summary movie (m)
@@ -135,10 +135,16 @@ def main( ):
         print( 'Error, only one of --states or --msas must be defined. Exiting...' )
         return
     if args.do_states:
-        print( 'here are the %d states or territories: %s.' % ( len( state_names ), ', '.join( state_names ) ) )
+        state_names_formatted = '\n'.join(map(lambda idx: ', '.join(state_names[idx:idx+10]),
+                                              list(range(len(state_names)))[::10]))
+        print( 'here are the %d states or territories: %s.' % (
+            len( state_names ), state_names_formatted ) )
         return
     if args.do_msas:
-        print( 'here are the %d MSAs sorted from largest to smallest population: %s.' % ( len( msa_names ), ', '.join( msa_names ) ) )
+        msa_names_formatted = '\n'.join(map(lambda idx: ', '.join( msa_names[idx:idx+10]),
+                                        list(range(len(msa_names)))[::10]))
+        print( 'here are the %d MSAs sorted from largest to smallest population: %s.' % (
+            len( msa_names ), msa_names_formatted ) )
         return
     #
     ## 
