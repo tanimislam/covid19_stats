@@ -72,7 +72,7 @@ def plot_cases_or_deaths_rate_bycounty(
     ## now add the colorbar associated with sm
     if 'cb' not in plot_artists:        
         cb = my_colorbar( sm, ax, alpha = 0.8 )
-        cb.set_label( 'number of %s' % type_disp, fontsize = 18, fontweight = 'bold' )
+        cb.set_label( 'number of new %s/day' % type_disp, fontsize = 18, fontweight = 'bold' )
         plot_artists[ 'cb' ] = cb
     #
     ## now put in the legend in upper left corner, fontsize = 14, weight = bold

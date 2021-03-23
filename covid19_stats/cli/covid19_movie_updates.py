@@ -50,7 +50,7 @@ def _movie_state_or_territory( statename, dirname, time0 ):
         inc_data, maxnum_colorbar = maxnum,
         dirname = dirname )
     movie_7day_name = viz2.create_summary_rate_movie_frombeginning(
-        inc_data,dirname = dirname )
+        inc_data, dirname = dirname )
     logging.info( 'at %0.3f seconds to create movie of %s.' % (
         time.time( ) - time0, statename ) )
 
@@ -107,6 +107,8 @@ def _movie_metro_or_conus( msa_or_conus_name, dirname, time0 ):
     movie_name = viz.create_summary_movie_frombeginning(
         inc_data, maxnum_colorbar = maxnum,
         dirname = dirname )
+    movie_7day_name = viz2.create_summary_rate_movie_frombeginning(
+        inc_data, dirname = dirname )
     logging.info( 'at %0.3f seconds to create movie of %s.' % (
         time.time( ) - time0, msa_or_conus_name.lower( ) ) )
 
