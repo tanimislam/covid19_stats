@@ -236,7 +236,8 @@ def display_msa( msaname, fig, doShow = False, **kwargs ):
 def plot_cases_or_deaths_bycounty(
     inc_data, regionName, fig, type_disp = 'cases', days_from_beginning = 0,
     maxnum_colorbar = 5000.0, doTitle = True, plot_artists = { },
-    poly_line_width = 1.0, doSmarter = False, rows = 1, cols = 1, num = 1 ):
+    poly_line_width = 1.0, legend_text_scaling = 1.0,
+    doSmarter = False, rows = 1, cols = 1, num = 1 ):
     """
     The lower-level function that displays the status of COVID-19 cases or deaths given an incidident data :py:class:`dict`, ``inc_data``. It displays the status of cumulative COVID-19 cases or deaths, a specific number of days from the beginning, coloring the counties in that region according to the legend maximum, and places the resulting :py:class:`GeoAxes <cartopy.mpl.GeoAxes>` at a specific location in a :py:class:`Figure <matplotlib.figure.Figure>` grid of :py:class:`Axes <matplotlib.axes.Axes>` or :py:class:`GeoAxes <cartopy.mpl.GeoAxes>.
 
@@ -270,6 +271,7 @@ def plot_cases_or_deaths_bycounty(
     :param bool doTitle: if ``True``, then display the title over the plot. Default is ``True``.
     :param dict plot_artists: this contains the essential plotting objects for quicker re-display when plotting different days. Look at :ref:`this description <plot_artists_dict_discussion>`.
     :param float poly_line_width: the line width of the counties to draw in the plot.
+    :param float legend_text_scaling: sometimes the text annotations showing the date, number of incident days, and cumulative deaths or cases is *too large*. This is a multiplier on that text's font size. Default is 1.0, but must be :math:`> 0`.
     :param bool doSmarter: if ``False``, then make a plot tailored for small regions (relative to the size of the earth), such as states or MSA_\ s. If ``True``, then make a plot tailored for large regions such as the CONUS_. Default is ``False``.
     :param int rows: the number of rows for axes in the :py:class:`Figure <matplotlib.figure.Figure>` grid. Must be :math:`\ge 1`, and by default is 1.
     :param int cols: the number of columns for axes in the :py:class:`Figure <matplotlib.figure.Figure>` grid. Must be :math:`\ge 1`, and by default is 1.
@@ -283,6 +285,7 @@ def plot_cases_or_deaths_bycounty(
     assert( days_from_beginning >= 0 )
     assert( days_from_beginning <= inc_data[ 'last day' ] )
     assert( maxnum_colorbar > 1 )
+    assert( legend_text_scaling > 0 )
     key = cases_dict[ type_disp ]
     #
     ## NOW CREATE BASEMAP HIGH REZ
@@ -340,7 +343,8 @@ def plot_cases_or_deaths_bycounty(
                 '%d days from 1st case' % days_from_beginning,
                 '%s cumulative %s' % ( type_disp, get_string_commas_num( num_tot ) ) ]),
             color = ( 0.0, 0.0, 0.0, 0.8 ),
-            fontsize = 18, fontweight = 'bold', transform = ax.transAxes,
+            fontsize = int( 18 * legend_text_scaling ),
+            fontweight = 'bold', transform = ax.transAxes,
             horizontalalignment = 'left', verticalalignment = 'bottom' )
         plot_artists[ '%s_text' % key ] = txt
     else:
@@ -355,7 +359,8 @@ def plot_cases_or_deaths_bycounty(
             'in %s after %d / %d days from start' % ( regionName, days_from_beginning, inc_data[ 'last day'] ) ] ),
                     fontsize = 18, fontweight = 'bold' )
         
-def plot_cases_deaths_region( inc_data, regionName, ax, days_from_beginning = 0, doTitle = True ):
+def plot_cases_deaths_region( inc_data, regionName, ax, days_from_beginning = 0, doTitle = True,
+                             legend_text_scaling = 1.0, aspect_ratio_mult = 1.0 ):
     """
     Plots trend lines of cumulative COVID-19 cases *and* deaths for a region. It is easier to show rather than tell. :numref:`viz_plot_cases_deaths_region_nyc` depicts trend lines of cumulative COVID-19 cases and deaths for the NYC metro area, 150 days after this metro's first COVID-19 incident.
 
@@ -374,9 +379,13 @@ def plot_cases_deaths_region( inc_data, regionName, ax, days_from_beginning = 0,
     :param ax: the :py:class:`Axes <matplotlib.axes.Axes>` onto which to make this plot.
     :param int days_from_beginning: days after first incident of COVID-19 in this region. Must be :math:`\ge 0`.
     :param bool doTitle: if ``True``, then display the title over the plot. Default is ``True``.
+    :param float legend_text_scaling: sometimes the legend text for the cumulative COVID-19 cases and deaths is *too large*. This is a multiplier on that text's font size. Default is 1.0, but must be :math:`> 0`.
+    :param float aspect_ratio_mult: in the quad plots created in :py:meth:`create_plots_daysfrombeginning <covid19_stats.engine.viz.create_plots_daysfrombeginning>` or in :py:meth:`create_summary_movie_frombeginning <covid19_stats.engine.viz.create_summary_movie_frombeginning>`, without modification the :py:class:`Axes <matplotlib.axes.Axes>` may look too squashed and inconsistent with the three other :py:class:`Axes <matplotlib.axes.Axes>` or :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>`. This acts as a multiplier on the aspect ratio so that this :py:class:`Axes <matplotlib.axes.Axes>` does not look out of place. Default is 1.0, but must be :math:`> 0`.
     """
     assert( days_from_beginning >= 0 )
     assert( days_from_beginning <= inc_data[ 'last day' ] )
+    assert( legend_text_scaling > 0 )
+    assert( aspect_ratio_mult > 0 )
     df_cases_deaths_region = pandas.DataFrame({
         'date' : inc_data[ 'df' ].date,
         'cases' : inc_data[ 'df' ].cases,
@@ -431,7 +440,8 @@ def plot_cases_deaths_region( inc_data, regionName, ax, days_from_beginning = 0,
     #
     ax.set_xlim(0.0, inc_data[ 'last day' ] )
     ax.set_ylim(1.0, 1.15 * df_cases_deaths_region.cases.max( ) )
-    ax.set_aspect( inc_data[ 'last day' ] / numpy.log10( 1.15 * df_cases_deaths_region.cases.max( ) ) )
+    ax.set_aspect( inc_data[ 'last day' ] / numpy.log10( 1.15 * df_cases_deaths_region.cases.max( ) ) *
+                  aspect_ratio_mult )
     ax.set_xlabel(
         'Days from First COVID-19 CASE (%s)' %
         first_date.strftime( '%d-%m-%Y' ),
@@ -459,7 +469,7 @@ def plot_cases_deaths_region( inc_data, regionName, ax, days_from_beginning = 0,
     ## legend size 24, bold
     leg = ax.legend( )
     for txt in leg.texts:
-        txt.set_fontsize( 18 )
+        txt.set_fontsize( int( 18 * legend_text_scaling ) )
         txt.set_fontweight( 'bold' )
 
 def create_plots_daysfrombeginning(
@@ -545,7 +555,8 @@ def create_plots_daysfrombeginning(
         rows = 2, cols = 2, num = 4 )
     plot_cases_deaths_region(
         inc_data, regionName, ax_cd,
-        days_from_beginning = first_day, doTitle = False )
+        days_from_beginning = first_day, doTitle = False,
+        aspect_ratio_mult = 0.8 * height_units / width_units ) # so not so square
     #
     ## legend plot
     df_cases_deaths_region = inc_data[ 'df' ]
@@ -593,7 +604,8 @@ def create_plots_daysfrombeginning(
             rows = 2, cols = 2, num = 4)
         plot_cases_deaths_region(
             inc_data, regionName, ax_cd,
-            days_from_beginning = day, doTitle = False )
+            days_from_beginning = day, doTitle = False,
+            aspect_ratio_mult = 0.8 * height_units / width_units ) # so not so square
         ax_leg_txt.set_text( '\n'.join([
             regionName,
             'First COVID-19 CASE: %s' % first_date.strftime( '%d-%m-%Y' ),

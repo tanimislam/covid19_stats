@@ -22,12 +22,14 @@ from covid19_stats.engine.viz import (
 def plot_cases_or_deaths_rate_bycounty(
     inc_data, fig, type_disp = 'cases', days_from_beginning = 7,
     maxnum_colorbar = 5000.0, doTitle = True, plot_artists = { },
-    poly_line_width = 1.0, doSmarter = False, rows = 1, cols = 1, num = 1 ):
+    poly_line_width = 1.0, legend_text_scaling = 1.0, doSmarter = False,
+    rows = 1, cols = 1, num = 1 ):
     cases_dict = { 'cases' : 'cases_new', 'deaths' : 'death_new' }
     assert( type_disp in cases_dict )
     assert( days_from_beginning >= inc_data['df_7day']['days_from_beginning'].min( ) )
     assert( days_from_beginning <= inc_data['df_7day']['days_from_beginning'].max( ) )
     assert( maxnum_colorbar > 1 )
+    assert( legend_text_scaling > 0 )
     key = cases_dict[ type_disp ]
     regionName = inc_data[ 'region name' ]
     #
@@ -86,7 +88,8 @@ def plot_cases_or_deaths_rate_bycounty(
                 '%d days from 1st case' % days_from_beginning,
                 '%s 7 day average new: %s' % ( type_disp, get_string_commas_num_float( num_tot ) ) ]),
             color = ( 0.0, 0.0, 0.0, 0.8 ),
-            fontsize = 18, fontweight = 'bold', transform = ax.transAxes,
+            fontsize = int( 18 * legend_text_scaling ),
+            fontweight = 'bold', transform = ax.transAxes,
             horizontalalignment = 'left', verticalalignment = 'bottom' )
         plot_artists[ '%s_text' % key ] = txt
     else:
@@ -102,10 +105,14 @@ def plot_cases_or_deaths_rate_bycounty(
                 regionName, days_from_beginning, inc_data[ 'last day'] ) ] ),
                      fontsize = 18, fontweight = 'bold' )
 
-def plot_cases_deaths_rate_region( inc_data, ax, days_from_beginning = 7, doTitle = True ):
+def plot_cases_deaths_rate_region(
+    inc_data, ax, days_from_beginning = 7,
+    doTitle = True, legend_text_scaling = 1.0, aspect_ratio_mult = 1.0 ):
     assert( 'region name' in inc_data )
     assert( days_from_beginning >= 7 )
     assert( days_from_beginning <= inc_data[ 'last day' ] )
+    assert( legend_text_scaling > 0 )
+    assert( aspect_ratio_mult > 0 )
     regionName = inc_data[ 'region name' ]
     df_cases_deaths_7day_region = pandas.DataFrame({
         'date' : inc_data[ 'df_7day' ].date,
@@ -171,13 +178,18 @@ def plot_cases_deaths_rate_region( inc_data, ax, days_from_beginning = 7, doTitl
     leg = ax.legend( )
     ax.scatter([ days_from_beginning ], [ num_cases_new ], s = 100, color = 'C0' )
     ax.scatter([ days_from_beginning ], [ num_death_new ], s = 100, color = 'C1' )
-    ax.lines[0].set_label( 'new cases/day: %s / %s (max)' % tuple(map(get_string_commas_num_float, (num_cases_new, num_cases_new_max ) ) ) )
-    ax.lines[1].set_label( 'new death/day: %s / %s (max)' % tuple(map(get_string_commas_num_float, (num_death_new, num_death_new_max ) ) ) )
+    ax.lines[0].set_label( '\n'.join([
+        'new cases/day: %s' % get_string_commas_num_float( num_cases_new ),
+        '%s (max)' % get_string_commas_num_float( num_cases_new_max ) ] ) )
+    ax.lines[1].set_label( '\n'.join([
+        'new death/day: %s' % get_string_commas_num_float( num_death_new ),
+        '%s (max)' % get_string_commas_num_float( num_death_new_max ) ] ) )
     #
     ax.set_xlim(7.0, inc_data[ 'last day' ] )
     ax.set_ylim(1.0, 1.15 * df_cases_deaths_7day_region.cases_new.max( ) )
     ax.set_aspect( ( inc_data[ 'last day' ] - 7.0 ) /
-                  numpy.log10( 1.15 * df_cases_deaths_7day_region.cases_new.max( ) ) )
+                  numpy.log10( 1.15 * df_cases_deaths_7day_region.cases_new.max( ) ) *
+                  aspect_ratio_mult )
     ax.set_xlabel(
         'Days from First COVID-19 CASE (%s)' %
         first_date.strftime( '%d-%m-%Y' ),
@@ -205,7 +217,7 @@ def plot_cases_deaths_rate_region( inc_data, ax, days_from_beginning = 7, doTitl
     ## legend size 24, bold
     leg = ax.legend( )
     for txt in leg.texts:
-        txt.set_fontsize( 18 )
+        txt.set_fontsize( int( 18 * legend_text_scaling ) )
         txt.set_fontweight( 'bold' )
 
 def create_plots_rate_daysfrombeginning(
@@ -253,17 +265,19 @@ def create_plots_rate_daysfrombeginning(
     plot_cases_or_deaths_rate_bycounty(
         inc_data, fig, type_disp = 'deaths',
         days_from_beginning = first_day, doTitle = False,
-        maxnum_colorbar = maxnum_colorbar_death,
+        maxnum_colorbar = maxnum_colorbar_death, legend_text_scaling = 0.5,
         plot_artists = death_plot_artists, doSmarter = doSmarter,
         rows = 2, cols = 2, num = 2 )
     plot_cases_or_deaths_rate_bycounty(
         inc_data, fig, type_disp = 'cases',
         days_from_beginning = first_day, doTitle = False,
-        maxnum_colorbar = maxnum_colorbar_cases,
+        maxnum_colorbar = maxnum_colorbar_cases, legend_text_scaling = 0.5,
         plot_artists = cases_plot_artists, doSmarter = doSmarter,
         rows = 2, cols = 2, num = 4 )
     plot_cases_deaths_rate_region(
-        inc_data, ax_cd, days_from_beginning = first_day, doTitle = False )
+        inc_data, ax_cd, days_from_beginning = first_day, doTitle = False,
+        legend_text_scaling = 0.5,
+        aspect_ratio_mult = 0.8 * height_units / width_units ) # so not so square
     #
     ## legend plot
     df_cases_deaths_7day_region = inc_data[ 'df_7day' ]
@@ -311,7 +325,9 @@ def create_plots_rate_daysfrombeginning(
             rows = 2, cols = 2, num = 4 )
         plot_cases_deaths_rate_region(
             inc_data, ax_cd,
-            days_from_beginning = day, doTitle = False )
+            days_from_beginning = day, doTitle = False,
+            legend_text_scaling = 0.5,
+            aspect_ratio_mult = 0.8 * height_units / width_units ) # so not so square
         ax_leg_txt.set_text( '\n'.join([
             regionName,
             'First COVID-19 CASE: %s' % first_date.strftime( '%d-%m-%Y' ),
