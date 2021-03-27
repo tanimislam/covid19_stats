@@ -291,7 +291,7 @@ def create_plots_rate_daysfrombeginning(
     fips_max, cases_rate_max = max_fips_cases_rate
     cs = core.get_county_state( fips_max )
     ax_leg = fig.add_subplot(221)
-    ax_leg.set_aspect( 1.0 )
+    ax_leg.set_aspect( ratio_width_height )
     ax_leg.axis('off')
     ax_leg_txt = ax_leg.text(-0.1, 1.0, '\n'.join([
         regionName,
