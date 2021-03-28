@@ -356,9 +356,9 @@ def create_readme_from_template(
     topN_json = None ):
     
     assert( os.path.isdir( dirname_for_readme_location ) )
-    response = requests.get( mainURL, verify = verify )
-    if response.status_code != 200:
-        raise ValueError("Error, could not access %s." % mainURL )
+    #response = requests.get( mainURL, verify = verify )
+    #if response.status_code != 200:
+    #    raise ValueError("Error, could not access %s." % mainURL )
     #
     ## now see if I can find this entry
     if topN_json is None:
