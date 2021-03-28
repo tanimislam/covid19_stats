@@ -19,7 +19,7 @@ I have made major changes in the functionality and implementation from the origi
   * ``testing/covid19_excuse_viz2_visualizations.ipynb`` shows output for the |engine_viz2| module documentation.
   
 
-Here is some output from using this COVID-19 tracker. The data lives underneath https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies.
+Here is some output from using this COVID-19 tracker. The data lives underneath https://tanimislam.gitlab.io/covid19movies.
 
 * The summary of COVID-19 statistics for the top 50 MSAs by estimated 2019 population.
   
@@ -77,21 +77,21 @@ Here is some output from using this COVID-19 tracker. The data lives underneath 
      * - |anim_gif_nyc|
        - |anim_gif_chicago|
        - |anim_gif_seattle|
-     * - `NYC Metro <https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_LATEST.mp4>`_
-       - `Chicago <https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_chicago_LATEST.mp4>`_
-       - `Seattle <https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_seattle_LATEST.mp4>`_
+     * - `NYC Metro <https://tanimislam.gitlab.io/covid19movies/covid19_nyc_LATEST.mp4>`_
+       - `Chicago <https://tanimislam.gitlab.io/covid19movies/covid19_chicago_LATEST.mp4>`_
+       - `Seattle <https://tanimislam.gitlab.io/covid19movies/covid19_seattle_LATEST.mp4>`_
      * - |anim_gif_bayarea|
        - |anim_gif_dc|
        - |anim_gif_richmond|
-     * - `SF Bay Area <https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_bayarea_LATEST.mp4>`_
-       - `Washington, DC <https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_dc_LATEST.mp4>`_
-       - `Richmond, VA <https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_richmond_LATEST.mp4>`_
+     * - `SF Bay Area <https://tanimislam.gitlab.io/covid19movies/covid19_bayarea_LATEST.mp4>`_
+       - `Washington, DC <https://tanimislam.gitlab.io/covid19movies/covid19_dc_LATEST.mp4>`_
+       - `Richmond, VA <https://tanimislam.gitlab.io/covid19movies/covid19_richmond_LATEST.mp4>`_
      * - |anim_gif_sacramento|
        - |anim_gif_houston|
        - |anim_gif_dallas|
-     * - `Sacramento, CA <https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_sacramento_LATEST.mp4>`_
-       - `Houston, TX <https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_houston_LATEST.mp4>`_
-       - `Dallas, TX <https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_dallas_LATEST.mp4>`_
+     * - `Sacramento, CA <https://tanimislam.gitlab.io/covid19movies/covid19_sacramento_LATEST.mp4>`_
+       - `Houston, TX <https://tanimislam.gitlab.io/covid19movies/covid19_houston_LATEST.mp4>`_
+       - `Dallas, TX <https://tanimislam.gitlab.io/covid19movies/covid19_dallas_LATEST.mp4>`_
 
   And here is the animation for the continental United States as of {{ covid19_stats_data.latest_date_formatted }}
 
@@ -99,7 +99,7 @@ Here is some output from using this COVID-19 tracker. The data lives underneath 
      :widths: auto
 
      * - |anim_gif_conus|
-     * - `Continental United States <https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_conus_LATEST.mp4>`_
+     * - `Continental United States <https://tanimislam.gitlab.io/covid19movies/covid19_conus_LATEST.mp4>`_
 
 * GIF'd video animations of the COVID-19 trends in cases/deaths for California, Texas, Florida, and Virginia, as of {{ covid19_stats_data.latest_date_formatted }}.
 
@@ -108,12 +108,12 @@ Here is some output from using this COVID-19 tracker. The data lives underneath 
 
      * - |anim_gif_california|
        - |anim_gif_texas|
-     * - `California <https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_california_LATEST.mp4>`_
-       - `Texas <https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_texas_LATEST.mp4>`_
+     * - `California <https://tanimislam.gitlab.io/covid19movies/covid19_california_LATEST.mp4>`_
+       - `Texas <https://tanimislam.gitlab.io/covid19movies/covid19_texas_LATEST.mp4>`_
      * - |anim_gif_florida|
        - |anim_gif_virginia|
-     * - `Florida <https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_florida_LATEST.mp4>`_
-       - `Virginia <https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_virginia_LATEST.mp4>`_
+     * - `Florida <https://tanimislam.gitlab.io/covid19movies/covid19_florida_LATEST.mp4>`_
+       - `Virginia <https://tanimislam.gitlab.io/covid19movies/covid19_virginia_LATEST.mp4>`_
 
 The comprehensive documentation lives in HTML created with Sphinx_, and now in the `COVID-19 Stats GitHub Page`_ for this project. To generate the documentation,
 
@@ -131,95 +131,95 @@ The comprehensive documentation lives in HTML created with Sphinx_, and now in t
 .. _`Pandas DataFrame`: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.htm
 .. _MP4: https://en.wikipedia.org/wiki/MPEG-4_Part_14
 .. _Sphinx: https://www.sphinx-doc.org/en/master
-.. _`COVID-19 Stats GitHub Page`: https://tanimislam.sfo3.digitaloceanspaces.com/covid19_stats
+.. _`COVID-19 Stats GitHub Page`: https://tanimislam.gitlab.io/covid19_stats
 
 
 .. STATIC IMAGES
 
-.. |cds_bayarea| image:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_bayarea_cds_LATEST.png
+.. |cds_bayarea| image:: https://tanimislam.gitlab.io/covid19movies/covid19_bayarea_cds_LATEST.png
    :width: 100%
    :align: middle
 
-.. |cds_dc| image:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_dc_cds_LATEST.png
+.. |cds_dc| image:: https://tanimislam.gitlab.io/covid19movies/covid19_dc_cds_LATEST.png
    :width: 100%
    :align: middle
 
-.. |cds_richmond| image:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_richmond_cds_LATEST.png
+.. |cds_richmond| image:: https://tanimislam.gitlab.io/covid19movies/covid19_richmond_cds_LATEST.png
    :width: 100%
    :align: middle
 
-.. |cds_nyc| image:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_cds_LATEST.png
+.. |cds_nyc| image:: https://tanimislam.gitlab.io/covid19movies/covid19_nyc_cds_LATEST.png
    :width: 100%
    :align: middle
 
-.. |cds_losangeles| image:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_losangeles_cds_LATEST.png
+.. |cds_losangeles| image:: https://tanimislam.gitlab.io/covid19movies/covid19_losangeles_cds_LATEST.png
    :width: 100%
    :align: middle
 
-.. |cds_neworleans| image:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_neworleans_cds_LATEST.png
+.. |cds_neworleans| image:: https://tanimislam.gitlab.io/covid19movies/covid19_neworleans_cds_LATEST.png
    :width: 100%
    :align: middle
 	   
 .. GIF ANIMATIONS MSA
 
-.. |anim_gif_nyc| image:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_LATEST.gif
+.. |anim_gif_nyc| image:: https://tanimislam.gitlab.io/covid19movies/covid19_nyc_LATEST.gif
    :width: 100%
    :align: middle
 
-.. |anim_gif_chicago| image:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_chicago_LATEST.gif
+.. |anim_gif_chicago| image:: https://tanimislam.gitlab.io/covid19movies/covid19_chicago_LATEST.gif
    :width: 100%
    :align: middle
 
-.. |anim_gif_seattle| image:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_seattle_LATEST.gif
+.. |anim_gif_seattle| image:: https://tanimislam.gitlab.io/covid19movies/covid19_seattle_LATEST.gif
    :width: 100%
    :align: middle
 
-.. |anim_gif_bayarea| image:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_bayarea_LATEST.gif
+.. |anim_gif_bayarea| image:: https://tanimislam.gitlab.io/covid19movies/covid19_bayarea_LATEST.gif
    :width: 100%
    :align: middle
 
-.. |anim_gif_dc| image:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_dc_LATEST.gif
+.. |anim_gif_dc| image:: https://tanimislam.gitlab.io/covid19movies/covid19_dc_LATEST.gif
    :width: 100%
    :align: middle
 
-.. |anim_gif_richmond| image:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_richmond_LATEST.gif
+.. |anim_gif_richmond| image:: https://tanimislam.gitlab.io/covid19movies/covid19_richmond_LATEST.gif
    :width: 100%
    :align: middle
 
-.. |anim_gif_sacramento| image:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_sacramento_LATEST.gif
+.. |anim_gif_sacramento| image:: https://tanimislam.gitlab.io/covid19movies/covid19_sacramento_LATEST.gif
    :width: 100%
    :align: middle
 
-.. |anim_gif_houston| image:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_houston_LATEST.gif
+.. |anim_gif_houston| image:: https://tanimislam.gitlab.io/covid19movies/covid19_houston_LATEST.gif
    :width: 100%
    :align: middle
 
-.. |anim_gif_dallas| image:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_dallas_LATEST.gif
+.. |anim_gif_dallas| image:: https://tanimislam.gitlab.io/covid19movies/covid19_dallas_LATEST.gif
    :width: 100%
    :align: middle
 
 	   
 .. GIF ANIMATIONS CONUS
 
-.. |anim_gif_conus| image:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_conus_LATEST.gif
+.. |anim_gif_conus| image:: https://tanimislam.gitlab.io/covid19movies/covid19_conus_LATEST.gif
    :width: 100%
    :align: middle
 
 .. GIF ANIMATIONS STATE
 
-.. |anim_gif_california| image:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_california_LATEST.gif
+.. |anim_gif_california| image:: https://tanimislam.gitlab.io/covid19movies/covid19_california_LATEST.gif
    :width: 100%
    :align: middle
 
-.. |anim_gif_texas| image:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_texas_LATEST.gif
+.. |anim_gif_texas| image:: https://tanimislam.gitlab.io/covid19movies/covid19_texas_LATEST.gif
    :width: 100%
    :align: middle
 
-.. |anim_gif_florida| image:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_florida_LATEST.gif
+.. |anim_gif_florida| image:: https://tanimislam.gitlab.io/covid19movies/covid19_florida_LATEST.gif
    :width: 100%
    :align: middle
 
-.. |anim_gif_virginia| image:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_virginia_LATEST.gif
+.. |anim_gif_virginia| image:: https://tanimislam.gitlab.io/covid19movies/covid19_virginia_LATEST.gif
    :width: 100%
    :align: middle
 

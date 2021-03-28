@@ -24,11 +24,11 @@ It uses API level back-ends to create COVID-19 summary movies and figures, of th
 
 This will create *nine* COVID-19 case and death summary movies and figures for each specified region you specify: the CONUS_ (if chosen), MSAs, and US states and territories. For example, for the CONUS_, it creates these figures and movies in the specified output directory,
 
-* `covid19_conus_cds_LATEST.png <https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_conus_cds_LATEST.png>`_ and `covid19_conus_cds_LATEST.pdf <https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_conus_cds_LATEST.pdf>`_ are the PDF and PNG showing the *latest* trend of COVID-19 cases and deaths in the CONUS_.
+* `covid19_conus_cds_LATEST.png <https://tanimislam.gitlab.io/covid19movies/covid19_conus_cds_LATEST.png>`_ and `covid19_conus_cds_LATEST.pdf <https://tanimislam.gitlab.io/covid19movies/covid19_conus_cds_LATEST.pdf>`_ are the PDF and PNG showing the *latest* trend of COVID-19 cases and deaths in the CONUS_.
 
-* `covid19_conus_cases_LATEST.pdf <https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_conus_cases_LATEST.pdf>`_ and `covid19_conus_cases_LATEST.png <https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_conus_cases_LATEST.png>`_ are the PDF and PNG showing the CONUS_ county map, colored by number of COVID-19 cases, on the *LAST* incident day.
+* `covid19_conus_cases_LATEST.pdf <https://tanimislam.gitlab.io/covid19movies/covid19_conus_cases_LATEST.pdf>`_ and `covid19_conus_cases_LATEST.png <https://tanimislam.gitlab.io/covid19movies/covid19_conus_cases_LATEST.png>`_ are the PDF and PNG showing the CONUS_ county map, colored by number of COVID-19 cases, on the *LAST* incident day.
 
-* `covid19_conus_death_LATEST.pdf <https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_conus_death_LATEST.pdf>`_ and `covid19_conus_death_LATEST.png <https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_conus_death_LATEST.png>`_ are the PDF and PNG showing the CONUS_ county map, colored by number of COVID-19 deaths, on the *LAST* incident day.
+* `covid19_conus_death_LATEST.pdf <https://tanimislam.gitlab.io/covid19movies/covid19_conus_death_LATEST.pdf>`_ and `covid19_conus_death_LATEST.png <https://tanimislam.gitlab.io/covid19movies/covid19_conus_death_LATEST.png>`_ are the PDF and PNG showing the CONUS_ county map, colored by number of COVID-19 deaths, on the *LAST* incident day.
 
 * `covid19_conus_LATEST.mp4`_ is the four-quadrant movie of trends, cumulative cases, and cumulative deaths in the CONUS_. See :numref:`fig_covid19_nyc_LATEST` for an example of its format, but for the NYC metropolitan area.
 
