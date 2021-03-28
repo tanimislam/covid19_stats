@@ -18,7 +18,7 @@ The final three CLIs, :ref:`covid19_movie_updates`, :ref:`covid19_post2server`, 
 
 3. Creates animated GIFs of 14 regions, described in the `README <https://tanimislam.github.io/covid19_stats>`_, using back-end functionality implemented by :py:meth:`mp4togif <nprstuff.core.convert_image.mp4togif>`.
 
-4. *Deploys* the summary COVID-19 cumulative cases and deaths, movies and figures and JSON_ files, into `https://tanimislam.github.io/covid19movies <https://tanimislam.github.io/covid19movies>`_.
+4. *Deploys* the summary COVID-19 cumulative cases and deaths, movies and figures and JSON_ files, into https://tanimislam.gitlab.io/covid19movies.
 
 5. Updates the `covid19_stats repo <https://github.com/tanimislam/covid19_stats>`_ ``README`` using :ref:`covid19_update_readme`.
 
