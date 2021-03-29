@@ -256,18 +256,20 @@
 <dd><dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p><p>the <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> of US state and territory information, for states and territories <em>not</em> in the <a class="reference external" href="https://en.wikipedia.org/wiki/Contiguous_United_States">CONUS</a>. It returns the <em>same</em> type of data structure as what <a class="reference internal" href="covid19_stats_engine_gis_api.html#covid19_stats.engine.gis.create_and_store_msas_and_fips_2019" title="covid19_stats.engine.gis.create_and_store_msas_and_fips_2019"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_and_store_msas_and_fips_2019</span></code></a> returns. But better show-than-tell, here is the data for the state of <a class="reference external" href="https://en.wikipedia.org/wiki/Hawaii">Hawaii</a>.</p>
-<blockquote>
-<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;hawaii&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;RNAME&#39;</span><span class="p">:</span> <span class="s1">&#39;Hawaii&#39;</span><span class="p">,</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;hawaii&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;RNAME&#39;</span><span class="p">:</span> <span class="s1">&#39;Hawaii&#39;</span><span class="p">,</span>
   <span class="s1">&#39;region name&#39;</span><span class="p">:</span> <span class="s1">&#39;Hawaii&#39;</span><span class="p">,</span>
   <span class="s1">&#39;prefix&#39;</span><span class="p">:</span> <span class="s1">&#39;hawaii&#39;</span><span class="p">,</span>
   <span class="s1">&#39;fips&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;15009&#39;</span><span class="p">,</span> <span class="s1">&#39;15003&#39;</span><span class="p">,</span> <span class="s1">&#39;15001&#39;</span><span class="p">,</span> <span class="s1">&#39;15007&#39;</span><span class="p">,</span> <span class="s1">&#39;15005&#39;</span><span class="p">],</span>
   <span class="s1">&#39;population&#39;</span><span class="p">:</span> <span class="mi">1415786</span><span class="p">}}</span>
 </pre></div>
 </div>
-</div></blockquote>
-<p>The identifying key is the lowercase, no-spaced version of the state’s name. Look at the values of the <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> that <a class="reference internal" href="#covid19_stats.COVID19Database.mapping_state_rname_nonconus" title="covid19_stats.COVID19Database.mapping_state_rname_nonconus"><code class="xref py py-meth docutils literal notranslate"><span class="pre">mapping_state_rname_nonconus</span></code></a> returns.
-:rtype: dict</p>
 </p>
+</dd>
+</dl>
+<p>The identifying key is the lowercase, no-spaced version of the state’s name. Look at the values of the <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> that <a class="reference internal" href="#covid19_stats.COVID19Database.mapping_state_rname_nonconus" title="covid19_stats.COVID19Database.mapping_state_rname_nonconus"><code class="xref py py-meth docutils literal notranslate"><span class="pre">mapping_state_rname_nonconus</span></code></a> returns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)">dict</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -288,8 +290,12 @@
 </p>
 </dd>
 </dl>
-<p>The identifying key is the lowercase, no-spaced version of the state’s name. Look at the values of the <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> that <a class="reference internal" href="#covid19_stats.COVID19Database.mapping_state_rname_conus" title="covid19_stats.COVID19Database.mapping_state_rname_conus"><code class="xref py py-meth docutils literal notranslate"><span class="pre">mapping_state_rname_conus</span></code></a> returns.
-:rtype: dict</p>
+<p>The identifying key is the lowercase, no-spaced version of the state’s name. Look at the values of the <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> that <a class="reference internal" href="#covid19_stats.COVID19Database.mapping_state_rname_conus" title="covid19_stats.COVID19Database.mapping_state_rname_conus"><code class="xref py py-meth docutils literal notranslate"><span class="pre">mapping_state_rname_conus</span></code></a> returns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)">dict</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">

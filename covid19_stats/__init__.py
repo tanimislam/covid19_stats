@@ -419,6 +419,7 @@ class COVID19Database( object ):
                 'population': 1059361}}
 
         The identifying key is the lowercase, no-spaced version of the state's name. Look at the values of the :py:class:`dict` that :py:meth:`mapping_state_rname_conus <covid19_stats.COVID19Database.mapping_state_rname_conus>` returns.
+        
         :rtype: dict
         """
         inst = COVID19Database._getInstance( )
@@ -427,7 +428,7 @@ class COVID19Database( object ):
     @classmethod
     def data_nonconus_states_territories( cls ):
         """
-    :returns: the :py:class:`dict` of US state and territory information, for states and territories *not* in the CONUS_. It returns the *same* type of data structure as what :py:meth:`create_and_store_msas_and_fips_2019 <covid19_stats.engine.gis.create_and_store_msas_and_fips_2019>` returns. But better show-than-tell, here is the data for the state of `Hawaii <https://en.wikipedia.org/wiki/Hawaii>`_.
+        :returns: the :py:class:`dict` of US state and territory information, for states and territories *not* in the CONUS_. It returns the *same* type of data structure as what :py:meth:`create_and_store_msas_and_fips_2019 <covid19_stats.engine.gis.create_and_store_msas_and_fips_2019>` returns. But better show-than-tell, here is the data for the state of `Hawaii <https://en.wikipedia.org/wiki/Hawaii>`_.
 
            .. code-block:: python
 
@@ -438,6 +439,7 @@ class COVID19Database( object ):
                 'population': 1415786}}
 
         The identifying key is the lowercase, no-spaced version of the state's name. Look at the values of the :py:class:`dict` that :py:meth:`mapping_state_rname_nonconus <covid19_stats.COVID19Database.mapping_state_rname_nonconus>` returns.
+        
         :rtype: dict
         """
         inst = COVID19Database._getInstance( )        
