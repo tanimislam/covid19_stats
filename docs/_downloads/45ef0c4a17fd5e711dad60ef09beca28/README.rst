@@ -714,6 +714,7 @@ The comprehensive documentation lives in HTML created with Sphinx_, and now in t
    :align: middle
 
 .. |anim_gif_virginia| raw:: html
+   
    <video controls width="100%">
      <source src="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_virginia_LATEST.mp4">
    </video>
