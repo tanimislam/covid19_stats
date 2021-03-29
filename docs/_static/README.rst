@@ -725,5 +725,5 @@ The comprehensive documentation lives in HTML created with Sphinx_, and now in t
 .. _`covid19_stats.engine`: https://tanimislam.github.io/covid19_stats/api/api.html#covid19-stats-engine-module
 .. _`covid19_stats.engine.core`: https://tanimislam.github.io/covid19_stats/api/api.html#covid19-stats-engine-core-module
 .. _`covid19_stats.engine.viz`: https://tanimislam.github.io/covid19_stats/api/api.html#covid19-stats-engine-viz-module
-.. _`covid19_stats.engine.viz`: https://tanimislam.github.io/covid19_stats/api/api.html#covid19-stats-engine-viz2-module
+.. _`covid19_stats.engine.viz2`: https://tanimislam.github.io/covid19_stats/api/api.html#covid19-stats-engine-viz2-module
 .. _`covid19_stats`: https://tanimislam.github.io/covid19_stats/api/api.html#covid19-stats-module
