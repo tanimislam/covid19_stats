@@ -72,7 +72,7 @@ This mode of operation, for example for California, will output seven files:
 
 * ``covid19_california_cds_LATEST.pdf`` and ``covid19_california_cds_LATEST.png`` are the PDF and PNG showing the trend of COVID-19 cases and deaths in California.
 
-  .. figure:: https://tanimislam.gitlab.io/covid19movies/covid19_california_cds_LATEST.png
+  .. figure:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_california_cds_LATEST.png
      :width: 100%
      :align: left
 
@@ -80,7 +80,7 @@ This mode of operation, for example for California, will output seven files:
   
 * ``covid19_california_cases_LATEST.pdf`` and ``covid19_california_cases_LATEST.png`` are the PDF and PNG showing the county map, colored by number of COVID-19 cases, on the *LAST* incident day.
 
-  .. figure:: https://tanimislam.gitlab.io/covid19movies/covid19_california_cases_LATEST.png
+  .. figure:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_california_cases_LATEST.png
      :width: 100%
      :align: left
 
@@ -88,7 +88,7 @@ This mode of operation, for example for California, will output seven files:
 
 * ``covid19_california_death_LATEST.pdf`` and ``covid19_california_death_LATEST.png`` are the PDF and PNG showing the county map, colored by number of COVID-19 deaths, on the *LAST* incident day.
 
-  .. figure:: https://tanimislam.gitlab.io/covid19movies/covid19_california_death_LATEST.png
+  .. figure:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_california_death_LATEST.png
      :width: 100%
      :align: left
 
@@ -110,7 +110,7 @@ will output a quad structured movie of the cumulative COVID-19 cases and deaths 
 
 .. _fig_covid19_california_LATEST:
 
-.. figure:: https://tanimislam.gitlab.io/covid19movies/covid19_california_LATEST.gif
+.. figure:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_california_LATEST.gif
    :width: 100%
    :align: left
 
@@ -162,7 +162,7 @@ This is similar to :ref:`movie_mode_state`, except now we can visualize movies o
 
 .. _fig_covid19_california_cases_LATEST:
 
-.. figure:: https://tanimislam.gitlab.io/covid19movies/covid19_california_cases_LATEST.gif
+.. figure:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_california_cases_LATEST.gif
    :width: 100%
    :align: left
 
@@ -174,7 +174,7 @@ This is similar to :ref:`movie_mode_state`, except now we can visualize movies o
 
 .. _fig_covid19_california_death_LATEST:
 
-.. figure:: https://tanimislam.gitlab.io/covid19movies/covid19_california_deaths_LATEST.gif
+.. figure:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_california_deaths_LATEST.gif
    :width: 100%
    :align: left
 

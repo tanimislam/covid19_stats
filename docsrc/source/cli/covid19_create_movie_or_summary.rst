@@ -159,25 +159,25 @@ This mode of operation, for example for NYC, will output seven files:
 
 * ``covid19_nyc_LATEST.pkl.gz`` is the serialized :py:class:`Pandas DataFrame <pandas.DataFrame>` of the COVID-19 cases and deaths, total and per county, from the date of first incident to the latest incident.
 
-* `covid19_nyc_cds_LATEST.pdf <https://tanimislam.gitlab.io/covid19movies/covid19_nyc_cds_LATEST.pdf>`_ and `covid19_nyc_cds_LATEST.png <https://tanimislam.gitlab.io/covid19movies/covid19_nyc_cds_LATEST.png>`_ are the PDF and PNG showing the trend of COVID-19 cases and deaths in the NYC metro area.
+* `covid19_nyc_cds_LATEST.pdf <https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_cds_LATEST.pdf>`_ and `covid19_nyc_cds_LATEST.png <https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_cds_LATEST.png>`_ are the PDF and PNG showing the trend of COVID-19 cases and deaths in the NYC metro area.
 
-  .. figure:: https://tanimislam.gitlab.io/covid19movies/covid19_nyc_cds_LATEST.png
+  .. figure:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_cds_LATEST.png
      :width: 100%
      :align: left
 
      The *latest* trend lines of cumulative cases and deaths in the NYC metropolitan area.
   
-* `covid19_nyc_cases_LATEST.pdf <https://tanimislam.gitlab.io/covid19movies/covid19_nyc_cases_LATEST.pdf>`_ and `covid19_nyc_cases_LATEST.png <plots showing the <https://tanimislam.gitlab.io/covid19movies/covid19_nyc_cases_LATEST.png>`_ are the PDF and PNG showing the county map, colored by number of COVID-19 cases, on the *LAST* incident day.
+* `covid19_nyc_cases_LATEST.pdf <https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_cases_LATEST.pdf>`_ and `covid19_nyc_cases_LATEST.png <plots showing the <https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_cases_LATEST.png>`_ are the PDF and PNG showing the county map, colored by number of COVID-19 cases, on the *LAST* incident day.
 
-  .. figure:: https://tanimislam.gitlab.io/covid19movies/covid19_nyc_cases_LATEST.png
+  .. figure:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_cases_LATEST.png
      :width: 100%
      :align: left
 
      The *latest* image of cumulative cases in the NYC metropolitan area.
 
-* `covid19_nyc_death_LATEST.pdf <https://tanimislam.gitlab.io/covid19movies/covid19_nyc_death_LATEST.pdf>`_ and `covid19_nyc_death_LATEST.png <https://tanimislam.gitlab.io/covid19movies/covid19_nyc_death_LATEST.png>`_ are the PDF and PNG showing the county map, colored by number of COVID-19 deaths, on the *LAST* incident day.
+* `covid19_nyc_death_LATEST.pdf <https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_death_LATEST.pdf>`_ and `covid19_nyc_death_LATEST.png <https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_death_LATEST.png>`_ are the PDF and PNG showing the county map, colored by number of COVID-19 deaths, on the *LAST* incident day.
 
-  .. figure:: https://tanimislam.gitlab.io/covid19movies/covid19_nyc_death_LATEST.png
+  .. figure:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_death_LATEST.png
      :width: 100%
      :align: left
 
@@ -218,7 +218,7 @@ will output a quad structured movie of the cumulative COVID-19 cases and deaths 
 
 .. _fig_covid19_nyc_LATEST:
 
-.. figure:: https://tanimislam.gitlab.io/covid19movies/covid19_nyc_LATEST.gif
+.. figure:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_LATEST.gif
    :width: 100%
    :align: left
 
@@ -300,7 +300,7 @@ The usage of four flags -- ``-n``, ``-M`` or ``--maxnum``, ``--conus``, and ``-y
 
 .. _fig_covid19_nyc_cases_LATEST:
 
-.. figure:: https://tanimislam.gitlab.io/covid19movies/covid19_nyc_cases_LATEST.gif
+.. figure:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_cases_LATEST.gif
    :width: 100%
    :align: left
 
@@ -312,7 +312,7 @@ The usage of four flags -- ``-n``, ``-M`` or ``--maxnum``, ``--conus``, and ``-y
 
 .. _fig_covid19_nyc_death_LATEST:
 
-.. figure:: https://tanimislam.gitlab.io/covid19movies/covid19_nyc_deaths_LATEST.gif
+.. figure:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_deaths_LATEST.gif
    :width: 100%
    :align: left
 
@@ -330,7 +330,7 @@ Finally, :numref:`fig_covid19_conus_cases_LATEST` demonstrates the latest trend 
 
 .. _fig_covid19_conus_cases_LATEST:
 
-.. figure:: https://tanimislam.gitlab.io/covid19movies/covid19_conus_cases_LATEST.gif
+.. figure:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_conus_cases_LATEST.gif
    :width: 100%
    :align: left
 
