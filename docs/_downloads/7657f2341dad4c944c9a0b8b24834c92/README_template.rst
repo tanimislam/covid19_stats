@@ -223,7 +223,7 @@ The comprehensive documentation lives in HTML created with Sphinx_, and now in t
    :width: 100%
    :align: middle
 
-.. _`covid19_update_database`: https://tanimislam.github.io/covid19_stats/cli/covid19_update_database.html#covid19-update-database
+.. _`covid19_update_database`: https://tanimislam.github.io/covid19_stats/cli/covid19_update_database.html
 
 .. |engine_gis|  replace:: `covid19_stats.engine.gis`_
 .. |engine_main| replace:: `covid19_stats.engine`_
@@ -231,9 +231,9 @@ The comprehensive documentation lives in HTML created with Sphinx_, and now in t
 .. |engine_viz|  replace:: `covid19_stats.engine.viz`_
 .. |engine_viz2|  replace:: `covid19_stats.engine.viz2`_
 .. |engine_top|  replace:: `covid19_stats`_
-.. _`covid19_stats.engine.gis`: https://tanimislam.github.io/covid19_stats/api/api.html#covid19-stats-engine-gis-module
-.. _`covid19_stats.engine`: https://tanimislam.github.io/covid19_stats/api/api.html#covid19-stats-engine-module
-.. _`covid19_stats.engine.core`: https://tanimislam.github.io/covid19_stats/api/api.html#covid19-stats-engine-core-module
-.. _`covid19_stats.engine.viz`: https://tanimislam.github.io/covid19_stats/api/api.html#covid19-stats-engine-viz-module
-.. _`covid19_stats.engine.viz2`: https://tanimislam.github.io/covid19_stats/api/api.html#covid19-stats-engine-viz2-module
-.. _`covid19_stats`: https://tanimislam.github.io/covid19_stats/api/api.html#covid19-stats-module
+.. _`covid19_stats.engine.gis`: https://tanimislam.github.io/covid19_stats/api/covid19_stats_engine_gis_api.html
+.. _`covid19_stats.engine`: https://tanimislam.github.io/covid19_stats/api/covid19_stats_engine_api.html 
+.. _`covid19_stats.engine.core`: https://tanimislam.github.io/covid19_stats/api/covid19_stats_engine_core_api.html
+.. _`covid19_stats.engine.viz`: https://tanimislam.github.io/covid19_stats/api/covid19_stats_engine_viz_api.html
+.. _`covid19_stats.engine.viz2`: https://tanimislam.github.io/covid19_stats/api/covid19_stats_engine_viz2_api.html
+.. _`covid19_stats`: https://tanimislam.github.io/covid19_stats/api/covid19_stats_api.html
