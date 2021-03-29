@@ -354,6 +354,14 @@ def create_readme_from_template(
     mainURL = 'https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies',
     dirname_for_readme_location = os.getcwd( ), verify = True,
     topN_json = None ):
+    """
+    This recreates the :download:`README.rst </_static/README.rst>` to reflect the latest COVID-19 data, using the Jinja2_ templated :download:`README_template.rst </_static/README_template.rst>`. This is the back-end method to :ref:`covid19_update_readme`.
+
+    :param str mainURL: the URL directory for which to look for a manifest JSON_ file of cumulative COVID-19 cases and deaths for the top population MSA_\ s, ``covid19_topN_LATEST.json``. This manifest file's location is ``<mainURL>/covid19_topN_LATEST.json``. By default, this is https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies.
+    :param str dirname_for_readme_location: the location, on disk, where the covid19_stats downloaded repository lives. By default this is the current working directory.
+    :param bool verify: optional argument, whether to verify SSL connections. Default is ``True``.
+    :param str topN_json: optional argument, the location of the manifest JSON_ file on disk. If specified, then this method ignores the online location, ``<mainURL>/covid19_topN_LATEST.json``.
+    """
     
     assert( os.path.isdir( dirname_for_readme_location ) )
     #response = requests.get( mainURL, verify = verify )
