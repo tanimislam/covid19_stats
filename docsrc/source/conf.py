@@ -12,10 +12,9 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
-# import sys
-# sys.path.insert(0, os.path.abspath('.'))
-
+import os, sys, numpy
+sys.path.append( os.path.abspath( '_sphinxextra' ) )
+import utility_functions
 
 # -- Project information -----------------------------------------------------
 
@@ -46,6 +45,7 @@ extensions = [
     'sphinx.ext.todo',
     'sphinx.ext.mathjax',
     'sphinx.ext.githubpages',
+    'rstjinja',
 ]
 
 
@@ -110,3 +110,14 @@ pygments_style = 'sphinx'
 
 # icon file
 html_favicon = 'covid19_stats.ico'
+
+#
+## put variables into html_context dictionary
+## follow advice from https://www.ericholscher.com/blog/2016/jul/25/integrating-jinja-rst-sphinx/
+## beginning use case: how much data lies in the 
+html_context = {
+    'dataset_size_formatted' : utility_functions.get_dataset_size_formatted(
+        mainURL = 'https://tanimislam.sfo3.digitaloceanspaces.com', verify = False ),
+    'topN_json' : utility_functions.get_topN_json(
+        mainURL = 'https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_topN_LATEST.json', verify = False ),
+    }
