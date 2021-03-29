@@ -7,6 +7,8 @@ from argparse import ArgumentParser
 from covid19_stats.engine import core, viz, viz2, find_plausible_maxnum
 from covid19_stats import COVID19Database
 
+os.environ[ 'NUMEXPR_MAX_THREADS' ] = '%d' % ( max(1, divmod( cpu_count( ), 2 )[0] ) )
+
 warnings.filterwarnings("ignore") # suppress all warnings
 
 """

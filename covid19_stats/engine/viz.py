@@ -15,7 +15,7 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 from distutils.spawn import find_executable
 from nprstuff.core import autocrop_image
 #
-from covid19_stats.engine import gis, core, get_string_commas_num
+from covid19_stats.engine import gis, core, get_string_commas_num, find_plausible_maxnum
 
 def my_colorbar( mappable, ax, **kwargs ):
     """
@@ -235,7 +235,7 @@ def display_msa( msaname, fig, doShow = False, **kwargs ):
 
 def plot_cases_or_deaths_bycounty(
     inc_data, regionName, fig, type_disp = 'cases', days_from_beginning = 0,
-    maxnum_colorbar = 5000.0, doTitle = True, plot_artists = { },
+    doTitle = True, plot_artists = { },
     poly_line_width = 1.0, legend_text_scaling = 1.0,
     doSmarter = False, rows = 1, cols = 1, num = 1 ):
     """
@@ -267,7 +267,6 @@ def plot_cases_or_deaths_bycounty(
     :param fig: the :py:class:`Figure <matplotlib.figure.Figure>` onto which to create a :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>` (stored into the ``plot_artists`` :py:class:`dict`) containing geographic features. Last three arguments -- ``rows``, ``cols``, and ``num`` -- describe the relative placement of the created :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>`. See :py:meth:`add_subplot <matplotlib.figure.Figure.add_subplot>` for those three arguments' meanings.
     :param str type_disp: if ``cases``, then show cumulative COVID-19 cases. If ``deaths``, then show cumulative COVID-19 deaths. Can only be ``cases`` or ``deaths``.
     :param int days_from_beginning: days after first incident of COVID-19 in this region. Must be :math:`\ge 0`.
-    :param float maxnum_colorbar: the coloring limits for the plot. Must be :math:`\ge 1`.
     :param bool doTitle: if ``True``, then display the title over the plot. Default is ``True``.
     :param dict plot_artists: this contains the essential plotting objects for quicker re-display when plotting different days. Look at :ref:`this description <plot_artists_dict_discussion>`.
     :param float poly_line_width: the line width of the counties to draw in the plot.
@@ -284,7 +283,6 @@ def plot_cases_or_deaths_bycounty(
     assert( type_disp in cases_dict )
     assert( days_from_beginning >= 0 )
     assert( days_from_beginning <= inc_data[ 'last day' ] )
-    assert( maxnum_colorbar > 1 )
     assert( legend_text_scaling > 0 )
     key = cases_dict[ type_disp ]
     #
@@ -299,6 +297,10 @@ def plot_cases_or_deaths_bycounty(
             river_linewidth = 1.0, river_alpha = 0.15,
             coast_linewidth = 1.0, coast_alpha = 0.25, mult_bounds_lat = 1.25,
             rows = rows, cols = cols, num = num )
+        maxnum = max(
+            list(map(lambda fips: inc_data[ 'df' ][ '%s_%s' % ( type_disp, fips ) ].max( ),
+                     inc_data[ 'fips' ] ) ) )
+        maxnum_colorbar = max(1.0, find_plausible_maxnum( maxnum ) )
         plot_artists[ 'axes' ] = ax
         plot_artists[ 'sm' ] = ScalarMappable( norm = LogNorm( 1.0, maxnum_colorbar ), cmap = 'jet' )
     #
@@ -474,7 +476,7 @@ def plot_cases_deaths_region( inc_data, regionName, ax, days_from_beginning = 0,
 
 def create_plots_daysfrombeginning(
     inc_data, regionName, prefix, days_from_beginning = [ 0 ],
-    dirname = os.getcwd( ), maxnum_colorbar = 5000 ):
+    dirname = os.getcwd( ) ):
     """
     Creates a collection of quad PNG_ images (see :numref:`movie_mode` or :numref:`movie_mode_state`) representing state of cumulative COVID-19 cases and deaths for a geographical region. Like :ref:`movie mode <movie_mode>` in :ref:`covid19_create_movie_or_summary` or :ref:`state movie mode <movie_mode_state>`, the four quadrants are,
 
@@ -500,7 +502,6 @@ def create_plots_daysfrombeginning(
     :param str prefix: the identifying name to put into the output PNG_ files. For example, in :numref:`viz_create_plots_daysfrombeginning_nyc`, the ``prefix`` is ``nyc``, and the name of the file is ``covid19_nyc_LATEST.0150.png``. If the prefix is ``conus``, then this module creates plots appropriate for geographic regions (such as CONUS_) that cover significant areas of the earth's surface.
     :param list days_from_beginning: the :py:class:`list` of days to create quad PNG_ images. Must be nonempty, and every element must be :math:`\ge 0`. Default is ``[ 0, ]``.
     :param str dirname: the directory into which to save the quad PNG_ images. The default is the current working directory.
-    :param float maxnum_colorbar: the coloring limits for the plots of cumulative cases (lower right) and cumulative deaths (upper right). Must be :math:`\ge 1`.
     :returns: the :py:class:`list` of filenames of PNG_ quad images that this method creates, into ``dirname``. For example, in the method invocation shown in :numref:`viz_create_plots_daysfrombeginning_nyc`, ``days_from_beginning = [ 150, ]``, and the list this method returns is ``[ '<dirname>/covid19_nyc_LATEST.0150.png', ]``.
     :rtype: list
 
@@ -511,7 +512,6 @@ def create_plots_daysfrombeginning(
     assert( os.path.isdir( dirname ) )
     #assert(all(filter(lambda day: day >= 0, days_from_beginning ) ) )
     #assert(all(filter(lambda day: day <= inc_data[ 'last day' ], days_from_beginning ) ) )
-    assert( maxnum_colorbar > 1 )
     doSmarter = False
     if prefix == 'conus': doSmarter = True
     fig = Figure( )
@@ -523,7 +523,6 @@ def create_plots_daysfrombeginning(
     plot_cases_or_deaths_bycounty(
         inc_data, regionName, fig, type_disp = 'deaths',
         days_from_beginning = first_day, doTitle = False,
-        maxnum_colorbar = maxnum_colorbar,
         plot_artists = plot_artists, doSmarter = doSmarter )
     ax_deaths = plot_artists[ 'axes' ]
     ratio_width_height = ax_deaths.get_xlim( )[1] / ax_deaths.get_ylim( )[1]
@@ -544,13 +543,11 @@ def create_plots_daysfrombeginning(
     plot_cases_or_deaths_bycounty(
         inc_data, regionName, fig, type_disp = 'deaths',
         days_from_beginning = first_day, doTitle = False,
-        maxnum_colorbar = maxnum_colorbar,
         plot_artists = death_plot_artists, doSmarter = doSmarter,
         rows = 2, cols = 2, num = 2 )
     plot_cases_or_deaths_bycounty(
         inc_data, regionName, fig, type_disp = 'cases',
         days_from_beginning = first_day, doTitle = False,
-        maxnum_colorbar = maxnum_colorbar,
         plot_artists = cases_plot_artists, doSmarter = doSmarter,
         rows = 2, cols = 2, num = 4 )
     plot_cases_deaths_region(
@@ -593,13 +590,11 @@ def create_plots_daysfrombeginning(
         plot_cases_or_deaths_bycounty(
             inc_data, regionName, fig, type_disp = 'deaths',
             days_from_beginning = day, doTitle = False,
-            maxnum_colorbar = maxnum_colorbar,
             plot_artists = death_plot_artists,
             rows = 2, cols = 2, num = 2 )
         plot_cases_or_deaths_bycounty(
             inc_data, regionName, fig, type_disp = 'cases',
             days_from_beginning = day, doTitle = False,
-            maxnum_colorbar = maxnum_colorbar,
             plot_artists = cases_plot_artists,
             rows = 2, cols = 2, num = 4)
         plot_cases_deaths_region(
@@ -622,8 +617,7 @@ def create_plots_daysfrombeginning(
     return fnames
 
 def create_summary_cases_or_deaths_movie_frombeginning(
-    inc_data, maxnum_colorbar = 5000.0,
-    type_disp = 'cases', dirname = os.getcwd( ), save_imgfiles = False ):
+    inc_data, type_disp = 'cases', dirname = os.getcwd( ), save_imgfiles = False ):
     """
     This is the back-end method for :ref:`movie cases deaths mode <movie_cases_deaths_mode>` for :ref:`covid19_create_movie_or_summary`, and :ref:`state movie cases deaths mode <movie_cases_deaths_mode_state>` for :ref:`covid19_state_summary`. This creates an MP4_ movie file of cumulative COVID-19 cases *or* deaths, with identifying metadata, for a given geographical region. :numref:`viz_create_summary_cases_or_deaths_movie_frombeginning_table` shows the *resulting* MP4_ movie files, of cumulative COVID-19 cases and deaths, for the NYC metro area (top row), and the state of Virginia_ (bottom row).
 
@@ -644,7 +638,6 @@ def create_summary_cases_or_deaths_movie_frombeginning(
     Here are the arguments,
 
     :param dict inc_data: the data for incidence of COVID-19 cases and deaths for a given geographical region. See :py:meth:`get_incident_data <covid19_stats.engine.core.get_incident_data>` for the format of the output data.
-    :param float maxnum_colorbar: the coloring limits for the plot. Must be :math:`\ge 1`.
     :param type_disp: if ``cases``, then show cumulative COVID-19 cases. If ``deaths``, then show cumulative COVID-19 deaths. Can only be ``cases`` or ``deaths``.
     :param str dirname: the directory into which to save the MP4_ movie file, and optionally a `zip archive`_ of the PNG_ image files used to create the MP4_ movie. The default is the current working directory.
     :param bool save_imgfiles: if ``True``, then will create a `zip archive`_ of the PNG_ image files used to create the MP4_ movie. Its full name is ``<dirname>/covid19_<prefix>_<type_disp>_LATEST_imagefiles.zip``. ``<dirname>`` is the directory to save the MP4_ file, ``<prefix>`` is the region name prefix (for example ``nyc`` for the NYC metro area) located in ``inc_data['prefix']``, and ``<type_disp>`` is either ``cases`` or ``death``. The default is ``False``.
@@ -777,7 +770,7 @@ def create_summary_cases_or_deaths_movie_frombeginning(
     return os.path.basename( movie_name ) # for now return basename        
 
 def create_summary_movie_frombeginning(
-    inc_data, maxnum_colorbar = 5000.0, dirname = os.getcwd( ), save_imgfiles = False ):
+    inc_data, dirname = os.getcwd( ), save_imgfiles = False ):
     """
     This is the back-end method for :ref:`movie mode <movie_mode>` for :ref:`covid19_create_movie_or_summary`, and :ref:`state movie mode <movie_mode_state>` for :ref:`covid19_state_summary`. This creates an MP4_ quad movie file of both cumulative COVID-19 cases and deaths for a geographical region, and *optionally* a `zip archive`_ of PNG_ images used to create the MP4_ file. This uses :py:meth:`create_plots_daysfrombeginning <covid19_stats.engine.viz.create_plots_daysfrombeginning>` in a multiprocessing fashion, to create sub-collections of PNG_ quad images, and then collate them into an MP4_ file using FFmpeg_. :numref:`viz_create_summary_movie_frombeginning_table` shows the *resulting* MP4_ movie files, of cumulative COVID-19 cases and deaths, for the NYC metro area and the state of Virginia_.
 
@@ -794,7 +787,6 @@ def create_summary_movie_frombeginning(
     Here are the arguments,
 
     :param dict inc_data: the data for incidence of COVID-19 cases and deaths for a given geographical region. See :py:meth:`get_incident_data <covid19_stats.engine.core.get_incident_data>` for the format of the output data.
-    :param float maxnum_colorbar: the coloring limits for the plots of cumulative cases (lower right) and cumulative deaths (upper right) in the quad movie. Must be :math:`\ge 1`.
     :param str dirname: the directory into which to save the MP4_ movie file, and optionally a `zip archive`_ of the PNG_ image files used to create the MP4_ movie. The default is the current working directory.
     :param bool save_imgfiles: if ``True``, then will create a `zip archive`_ of the PNG_ image files used to create the MP4_ movie. Its full name is ``<dirname>/covid19_<prefix>_LATEST_imagefiles.zip``. ``<dirname>`` is the directory to save the MP4_ file, and ``<prefix>`` is the region name prefix (for example ``nyc`` for the NYC metro area) located in ``inc_data['prefix']``. The default is ``False``.
     :returns: the base name of the MP4_ movie file it creates. For example, if ``inc_data['prefix']`` is ``nyc``, this method returns ``covid19_nyc_LATEST.mp4``. This method also saves the MP4_ file as ``<dirname>/covid19_nyc_LATEST.mp4``, where ``<dirname>`` is the directory to save the MP4_ file.
@@ -837,8 +829,7 @@ def create_summary_movie_frombeginning(
         numprocs = i_status[ 'numprocs' ]
         fnames = create_plots_daysfrombeginning(
             inc_data, regionName, dirname = tmp_dirname,
-            days_from_beginning = days_collection, prefix = prefix,
-            maxnum_colorbar = maxnum_colorbar )
+            days_from_beginning = days_collection, prefix = prefix )
         logging.info( 'took %0.3f seconds to process all %d days owned by process %d / %d.' % (
             time.time( ) - time00, len( fnames ), procno, numprocs ) )
         return fnames
@@ -898,8 +889,7 @@ def create_summary_movie_frombeginning(
     return os.path.basename( movie_name )
 
 def get_summary_demo_data(
-    inc_data, maxnum_colorbar = 5000.0,
-    dirname = os.getcwd( ), store_data = True ):
+    inc_data, dirname = os.getcwd( ), store_data = True ):
     """
     This is the back-end method for :ref:`show mode <show_mode>` for :ref:`covid19_create_movie_or_summary`, and :ref:`state show mode <show_mode_state>` for :ref:`covid19_state_summary`. This creates *six* or *seven* files for a given geographical region. Given an input ``inc_data`` :py:class:`dict`, it produces six files by default. Here ``prefix`` is the value of ``inc_data['prefix']`` (for example ``nyc`` for the NYC metro area).
 
@@ -940,7 +930,6 @@ def get_summary_demo_data(
     Here are the arguments.
 
     :param dict inc_data: the data for incidence of COVID-19 cases and deaths for a given geographical region. See :py:meth:`get_incident_data <covid19_stats.engine.core.get_incident_data>` for the format of the output data.
-    :param float maxnum_colorbar: the coloring limits for the cumulative COVID-19 cases and deaths plots. Must be :math:`\ge 1`.
     :param str dirname: the directory into which to save the six or seven files. The default is the current working directory.
     :param bool store_data: if ``True``, then create the serialized :py:class:`Pandas DataFrame <pandas.DataFrame>` of the COVID-19 cases and deaths, total and per county, from the date of first incident to the latest incident. Default is ``True``.
 
@@ -1029,8 +1018,7 @@ def get_summary_demo_data(
         plot_cases_or_deaths_bycounty(
             inc_data, regionName, fig_mine, type_disp = case,
             days_from_beginning = inc_data[ 'last day' ],
-            maxnum_colorbar = maxnum_colorbar, doTitle = True,
-            doSmarter = doSmarter )
+            doTitle = True, doSmarter = doSmarter )
         canvas_mine = FigureCanvasAgg( fig_mine )
         pngfile = os.path.abspath( os.path.join( dirname, '%s.png' % file_prefix ) )
         pdffile = os.path.abspath( os.path.join( dirname, '%s.pdf' % file_prefix ) )

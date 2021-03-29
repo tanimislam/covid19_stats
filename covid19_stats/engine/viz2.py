@@ -21,7 +21,7 @@ from covid19_stats.engine.viz import (
     
 def plot_cases_or_deaths_rate_bycounty(
     inc_data, fig, type_disp = 'cases', days_from_beginning = 7,
-    maxnum_colorbar = 5000.0, doTitle = True, plot_artists = { },
+    doTitle = True, plot_artists = { },
     poly_line_width = 1.0, legend_text_scaling = 1.0, doSmarter = False,
     rows = 1, cols = 1, num = 1 ):
     """
@@ -78,7 +78,6 @@ def plot_cases_or_deaths_rate_bycounty(
     assert( type_disp in cases_dict )
     assert( days_from_beginning >= inc_data['df_7day']['days_from_beginning'].min( ) )
     assert( days_from_beginning <= inc_data['df_7day']['days_from_beginning'].max( ) )
-    assert( maxnum_colorbar > 1 )
     assert( legend_text_scaling > 0 )
     key = cases_dict[ type_disp ]
     regionName = inc_data[ 'region name' ]
@@ -94,6 +93,9 @@ def plot_cases_or_deaths_rate_bycounty(
             river_linewidth = 1.0, river_alpha = 0.15,
             coast_linewidth = 1.0, coast_alpha = 0.25, mult_bounds_lat = 1.25,
             rows = rows, cols = cols, num = num )
+        maxnum_7day_rate = max(
+            list(map(lambda fips: inc_data[ 'df_7day' ][ '%s_%s_7day_new' % ( type_disp, fips ) ].max( ), inc_data[ 'fips' ] ) ) )
+        maxnum_colorbar = find_plausible_maxnum( maxnum_7day_rate )
         plot_artists[ 'axes' ] = ax
         plot_artists[ 'sm' ] = ScalarMappable( norm = LogNorm( 0.1, maxnum_colorbar ), cmap = 'CMRmap_r' )
     #
@@ -338,7 +340,6 @@ def create_plots_rate_daysfrombeginning(
     plot_cases_or_deaths_rate_bycounty(
         inc_data, fig, type_disp = 'deaths',
         days_from_beginning = first_day, doTitle = False,
-        maxnum_colorbar = 5000.0,
         plot_artists = plot_artists, doSmarter = doSmarter )
     ax_deaths = plot_artists[ 'axes' ]
     ratio_width_height = ax_deaths.get_xlim( )[1] / ax_deaths.get_ylim( )[1]
@@ -356,22 +357,16 @@ def create_plots_rate_daysfrombeginning(
     ## now plots
     death_plot_artists = { }
     cases_plot_artists = { }
-    maxnum_death_7day_rate = max(
-        list(map(lambda fips: inc_data[ 'df_7day' ][ 'deaths_%s_7day_new' % fips ].max( ), inc_data[ 'fips' ] ) ) )
-    maxnum_cases_7day_rate = max(
-        list(map(lambda fips: inc_data[ 'df_7day'][ 'cases_%s_7day_new' % fips ].max( ), inc_data[ 'fips' ] ) ) )
-    maxnum_colorbar_death = find_plausible_maxnum( maxnum_death_7day_rate )
-    maxnum_colorbar_cases = find_plausible_maxnum( maxnum_cases_7day_rate )
     plot_cases_or_deaths_rate_bycounty(
         inc_data, fig, type_disp = 'deaths',
         days_from_beginning = first_day, doTitle = False,
-        maxnum_colorbar = maxnum_colorbar_death, legend_text_scaling = 0.5,
+        legend_text_scaling = 0.5,
         plot_artists = death_plot_artists, doSmarter = doSmarter,
         rows = 2, cols = 2, num = 2 )
     plot_cases_or_deaths_rate_bycounty(
         inc_data, fig, type_disp = 'cases',
         days_from_beginning = first_day, doTitle = False,
-        maxnum_colorbar = maxnum_colorbar_cases, legend_text_scaling = 0.5,
+        legend_text_scaling = 0.5,
         plot_artists = cases_plot_artists, doSmarter = doSmarter,
         rows = 2, cols = 2, num = 4 )
     plot_cases_deaths_rate_region(
@@ -414,13 +409,11 @@ def create_plots_rate_daysfrombeginning(
         plot_cases_or_deaths_rate_bycounty(
             inc_data, fig, type_disp = 'deaths',
             days_from_beginning = day, doTitle = False,
-            maxnum_colorbar = maxnum_colorbar_death,
             plot_artists = death_plot_artists,
             rows = 2, cols = 2, num = 2 )
         plot_cases_or_deaths_rate_bycounty(
             inc_data, fig, type_disp = 'cases',
             days_from_beginning = day, doTitle = False,
-            maxnum_colorbar = maxnum_colorbar_cases,
             plot_artists = cases_plot_artists,
             rows = 2, cols = 2, num = 4 )
         plot_cases_deaths_rate_region(
@@ -859,14 +852,10 @@ def get_summary_demo_rate_data(
         file_prefix = 'covid19_7day_%s_%s_LATEST' % ( prefix, prefix_dict[ case ] )
         fig_mine = Figure( )
         fig_mine.set_size_inches([ 12.0, 12.0 ])
-        maxnum_7day_rate = max(
-            list(map(lambda fips: inc_data[ 'df_7day' ][ '%s_%s_7day_new' % ( case, fips ) ].max( ),
-                     inc_data[ 'fips' ] ) ) )
-        maxnum_colorbar = find_plausible_maxnum( maxnum_7day_rate )
         plot_cases_or_deaths_rate_bycounty(
             inc_data, fig_mine, type_disp = case,
             days_from_beginning = inc_data[ 'last day' ],
-            maxnum_colorbar = maxnum_colorbar, doTitle = True, doSmarter = doSmarter )
+            doTitle = True, doSmarter = doSmarter )
         canvas = FigureCanvasAgg( fig_mine )
         pngfile = os.path.abspath( os.path.join( dirname, '%s.png' % file_prefix ) )
         pdffile = os.path.abspath( os.path.join( dirname, '%s.pdf' % file_prefix ) )

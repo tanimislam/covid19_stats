@@ -4,11 +4,14 @@ def signal_handler( signal, frame ):
     sys.exit( 0 )
 signal.signal( signal.SIGINT, signal_handler )
 import os, numpy, tempfile, warnings, tabulate, logging, json
+from multiprocessing import cpu_count
 from covid19_stats import COVID19Database
 from covid19_stats.engine import (
     core, viz, get_string_commas_num,
     find_plausible_maxnum )
 from argparse import ArgumentParser
+
+os.environ[ 'NUMEXPR_MAX_THREADS' ] = '%d' % ( max(1, divmod( cpu_count( ), 2 )[0] ) )
 
 #
 ## suppress warnings
@@ -188,8 +191,7 @@ def main( ):
         else: status = _try_continue( )
         if status:
             movie_name = viz.create_summary_movie_frombeginning(
-                inc_data, maxnum_colorbar = maxnum,
-                dirname = args.dirname )
+                inc_data, dirname = args.dirname )
             return
         
     elif args.choose_option == 's':
@@ -215,7 +217,7 @@ def main( ):
         if args.do_yes_summmetro: status = args.do_yes_summmetro
         else: status = _try_continue( )
         if status:
-            viz.get_summary_demo_data( inc_data, maxnum_colorbar = maxnum, dirname = args.dirname )
+            viz.get_summary_demo_data( inc_data, dirname = args.dirname )
             return
     elif args.choose_option == 'mcd':
         #
@@ -241,7 +243,6 @@ def main( ):
         else: status = _try_continue( )
         if status:
             viz.create_summary_cases_or_deaths_movie_frombeginning(
-                inc_data, maxnum_colorbar = args.movcasedeath_maxnum,
-                type_disp = args.movcasedeath_display, dirname = args.dirname,
+                inc_data, type_disp = args.movcasedeath_display, dirname = args.dirname,
                 save_imgfiles = args.movcasedeath_saveimages )
             return

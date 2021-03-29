@@ -4,10 +4,13 @@ def signal_handler( signal, frame ):
     sys.exit( 0 )
 signal.signal( signal.SIGINT, signal_handler )
 import os, numpy, warnings, logging, time
+from multiprocessing import cpu_count
 from argparse import ArgumentParser
 #
 from covid19_stats.engine import core, viz2
 from covid19_stats import COVID19Database
+
+os.environ[ 'NUMEXPR_MAX_THREADS' ] = '%d' % ( max(1, divmod( cpu_count( ), 2 )[0] ) )
 
 #
 ## suppress warnings
