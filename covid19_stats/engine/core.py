@@ -361,6 +361,9 @@ def create_readme_from_template(
     :param str dirname_for_readme_location: the location, on disk, where the covid19_stats downloaded repository lives. By default this is the current working directory.
     :param bool verify: optional argument, whether to verify SSL connections. Default is ``True``.
     :param str topN_json: optional argument, the location of the manifest JSON_ file on disk. If specified, then this method ignores the online location, ``<mainURL>/covid19_topN_LATEST.json``.
+
+    .. _JSON: https://en.wikipedia.org/wiki/JSON
+    .. _Jinja2: https://jinja.palletsprojects.com
     """
     
     assert( os.path.isdir( dirname_for_readme_location ) )
