@@ -24,6 +24,56 @@ def plot_cases_or_deaths_rate_bycounty(
     maxnum_colorbar = 5000.0, doTitle = True, plot_artists = { },
     poly_line_width = 1.0, legend_text_scaling = 1.0, doSmarter = False,
     rows = 1, cols = 1, num = 1 ):
+    """
+    This method is similar to :py:meth:`plot_cases_or_deaths_bycounty <covid19_stats.engine.viz.plot_cases_or_deaths_bycounty>` in the :py:mod:`viz <covid19_stats.engine.viz>` module. This displays the status of *seven-day averaged* COVID-19 new cases/day or deaths/days given an incidident data :py:class:`dict`, ``inc_data``. It displays the status of *seven-day averaged* COVID-19 new cases/day or deaths/day, a specific number of days from the beginning, coloring the counties in that region according to the legend maximum, and places the resulting :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>` at a specific location in a :py:class:`Figure <matplotlib.figure.Figure>` grid of :py:class:`Axes <matplotlib.axes.Axes>` or :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>`.
+
+    Instead of returning a :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>`, this initializes a :py:class:`dict` of matplotlib objects, ``plot_artists``. In this way, subsequent plots, e.g. for different days after the beginnning, do not have to perform the relatively costly operation of recreating the :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>` and fully painting in the :py:class:`Polygon <matplotlib.patches.Polygon>` patches; instead, these :py:class:`Polygon <matplotlib.patches.Polygon>` patches are re-colored and necessary :py:class:`Text <matplotlib.text.Text>` artists' strings are changed.
+
+    .. _plot_artists_dict_discussion_viz2:
+
+    This :py:class:`dict`, ``plot_artists``, has the following keys, identical to those in :py:meth:`plot_cases_or_deaths_bycounty <covid19_stats.engine.viz.plot_cases_or_deaths_bycounty>`,
+
+    * ``axes``: when initialized, the :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>` that consists of all counties, with COVID-19 cases or deaths, to display.
+    * ``sm``: the :py:class:`ScalarMappable <matplotlib.cm.ScalarMappable>` describing the coloration by value for each county.
+
+    Furthermore, it is easier to show rather than tell. :numref:`viz2_plot_cases_or_deaths_rate_bycounty_nyc` depicts both *seven-day averaged* COVID-19 new cases/day and deaths/day for the NYC metro area, 150 days after this metro's first COVID-19 incident.
+
+    .. _viz2_plot_cases_or_deaths_rate_bycounty_nyc:
+
+    .. figure:: /_static/viz2/viz2_plot_cases_or_deaths_rate_bycounty_nyc.png
+       :width: 100%
+       :align: left
+
+       On the left, is the *seven-day averaged* COVID-19 new cases/day, and on the right, is the COVID-19 new deaths/day, for the NYC metro area, 150 days after its first COVID-19 incident. The color limits for cases (left) is :math:`10^4` cases/day, while the color limits for death (right) is :math:`1.7\\times 10^3` deaths/day. We have chosen to display the titles over both plots. Color scaling is logarithmic.
+
+    :numref:`viz2_plot_cases_or_deaths_rate_bycounty_conus` depicts both *seven day averaged* COVID-19 new cases/day and deaths/day for the CONUS_, 150 days after its first COVID-19 incident.
+
+    
+    .. _viz2_plot_cases_or_deaths_rate_bycounty_conus:
+
+    .. figure:: /_static/viz2/viz2_plot_cases_or_deaths_rate_bycounty_conus.png
+       :width: 100%
+       :align: left
+
+       On the left, is the *seven-day averaged* COVID-19 new cases/day, and on the right, is the COVID-19 new deaths/day, for the CONUS_, 150 days after its first COVID-19 incident. The color limits for cases (left) is :math:`3.2\\times 10^4` cases/day, while the color limits for death (right) is :math:`1.7\\times 10^3` deaths/day. We have chosen to display the titles over both plots. Color scaling is logarithmic.
+
+    Here are the arguments.
+    
+    :param dict inc_data: the data for incidence of COVID-19 cases and deaths for a given geographical region. See :py:meth:`get_incident_data <covid19_stats.engine.core.get_incident_data>` for the format of the output data.
+    :param fig: the :py:class:`Figure <matplotlib.figure.Figure>` onto which to create a :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>` (stored into the ``plot_artists`` :py:class:`dict`) containing geographic features. Last three arguments -- ``rows``, ``cols``, and ``num`` -- describe the relative placement of the created :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>`. See :py:meth:`add_subplot <matplotlib.figure.Figure.add_subplot>` for those three arguments' meanings.
+    :param str type_disp: if ``cases``, then show cumulative COVID-19 cases. If ``deaths``, then show cumulative COVID-19 deaths. Can only be ``cases`` or ``deaths``.
+    :param int days_from_beginning: days after first incident of COVID-19 in this region. Must be :math:`\ge 7`, due to the seven-day rolling average.
+    :param bool doTitle: if ``True``, then display the title over the plot. Default is ``True``.
+    :param dict plot_artists: this contains the essential plotting objects for quicker re-display when plotting different days. Look at :ref:`this description <plot_artists_dict_discussion_viz2>`.
+    :param float poly_line_width: the line width of the counties to draw in the plot.
+    :param float legend_text_scaling: sometimes the text annotations showing the date, number of incident days, and cumulative deaths or cases is *too large*. This is a multiplier on that text's font size. Default is 1.0, but must be :math:`> 0`.
+    :param bool doSmarter: if ``False``, then make a plot tailored for small regions (relative to the size of the earth), such as states or MSA_\ s. If ``True``, then make a plot tailored for large regions such as the CONUS_. Default is ``False``.
+    :param int rows: the number of rows for axes in the :py:class:`Figure <matplotlib.figure.Figure>` grid. Must be :math:`\ge 1`, and by default is 1.
+    :param int cols: the number of columns for axes in the :py:class:`Figure <matplotlib.figure.Figure>` grid. Must be :math:`\ge 1`, and by default is 1.
+    :param int num: the plot number of the :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>` in this :py:class:`Figure <matplotlib.figure.Figure>` grid. Must be :math:`\ge 1` and :math:`\le`\ ``rows`` times ``columns``. Its default is 1. Look at :py:meth:`add_subplot <matplotlib.figure.Figure.add_subplot>` for its  meaning.
+
+    .. _CONUS: https://en.wikipedia.org/wiki/Contiguous_United_States
+    """
     cases_dict = { 'cases' : 'cases_new', 'deaths' : 'death_new' }
     assert( type_disp in cases_dict )
     assert( days_from_beginning >= inc_data['df_7day']['days_from_beginning'].min( ) )
@@ -108,6 +158,26 @@ def plot_cases_or_deaths_rate_bycounty(
 def plot_cases_deaths_rate_region(
     inc_data, ax, days_from_beginning = 7,
     doTitle = True, legend_text_scaling = 1.0, aspect_ratio_mult = 1.0 ):
+    """
+    This method is similar to :py:meth:`plot_cases_deaths_region <covid19_stats.engine.viz.plot_cases_deaths_region>` in the :py:mod:`viz <covid19_stats.engine.viz>` module. Plots trend lines of *seven day averaged* COVID-19 new cases/day *and* new deaths/day for a region. It is easier to show rather than tell. :numref:`viz2_plot_cases_deaths_rate_region_nyc` depicts trend lines of COVID-19 new cases/day and deaths/day for the NYC metro area, 150 days after this metro's first COVID-19 incident.
+
+    .. _viz2_plot_cases_deaths_rate_region_nyc:
+
+    .. figure:: /_static/viz2/viz2_plot_cases_deaths_rate_region_nyc.png
+       :width: 100%
+       :align: left
+
+       Plot of *seven day averaged* COVID-19 new cases/day and deaths/day for the NYC metro area, 150 days after its first incident. Plot scaling is logarithmic, and dots accentuate the state of the new cases/day and deaths/day 150 days after first incident. We have chosen to display the title. The lower-alpha and more jagged lines depict the *one-day averaged* new cases/day and deaths/day.
+
+    Here are the arguments.
+    
+    :param dict inc_data: the data for incidence of COVID-19 cases and deaths for a given geographical region. See :py:meth:`get_incident_data <covid19_stats.engine.core.get_incident_data>` for the format of the output data.
+    :param ax: the :py:class:`Axes <matplotlib.axes.Axes>` onto which to make this plot.
+    :param int days_from_beginning: days after first incident of COVID-19 in this region. Must be :math:`\ge 7` because of the seven day average.
+    :param bool doTitle: if ``True``, then display the title over the plot. Default is ``True``.
+    :param float legend_text_scaling: sometimes the legend text for the cumulative COVID-19 cases and deaths is *too large*. This is a multiplier on that text's font size. Default is 1.0, but must be :math:`> 0`.
+    :param float aspect_ratio_mult: in the quad plots created in :py:meth:`create_plots_daysfrombeginning <covid19_stats.engine.viz.create_plots_daysfrombeginning>` or in :py:meth:`create_summary_movie_frombeginning <covid19_stats.engine.viz.create_summary_movie_frombeginning>`, without modification the :py:class:`Axes <matplotlib.axes.Axes>` may look too squashed and inconsistent with the three other :py:class:`Axes <matplotlib.axes.Axes>` or :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>`. This acts as a multiplier on the aspect ratio so that this :py:class:`Axes <matplotlib.axes.Axes>` does not look out of place. Default is 1.0, but must be :math:`> 0`.
+    """
     assert( 'region name' in inc_data )
     assert( days_from_beginning >= 7 )
     assert( days_from_beginning <= inc_data[ 'last day' ] )
@@ -222,6 +292,36 @@ def plot_cases_deaths_rate_region(
 
 def create_plots_rate_daysfrombeginning(
     inc_data, days_from_beginning = [ 7 ], dirname = os.getcwd( ) ):
+    """
+    This method is similar to :py:meth:`create_plots_daysfrombeginning <covid19_stats.engine.viz.create_plots_daysfrombeginning>` in the :py:mod:`viz <covid19_stats.engine.viz>` module. Creates a collection of quad PNG_ images (see :numref:`movie_mode_region_rate`) representing state of *seven day averaged* COVID-19 new cases/day and deaths/day for a geographical region. Like :ref:`movie mode <movie_mode_region_rate>` in :ref:`covid19_region_summary_rate`, the four quadrants are,
+
+    * ``upper left`` is the summary information for the geographical region.
+    * ``lower left`` is the running tally of *seven-day averaged* new cases/day and deaths/day, by day from first incident.
+    * ``upper right`` is the *logarithmic* coloration of new deaths/day, by day from first incident.
+    * ``lower right`` is the *logarithmic* coloration of new cases/day, by day from first incident.
+
+    :py:meth:`create_summary_rate_movie_frombeginning <covid19_stats.engine.viz2.create_summary_rate_movie_frombeginning>` uses this functionality in a multiprocessing fashion to create MP4_ movie files for geographical regions. It is easier to show rather than tell. :numref:`viz2_create_plots_rate_daysfrombeginning_nyc` is a quad plot of COVID-19 new cases/day and deaths/day for the NYC metro area, 150 days after this metro's first COVID-19 incident, that is created by this function.
+
+    .. _viz2_create_plots_rate_daysfrombeginning_nyc:
+    
+    .. figure:: /_static/viz2/covid19_7day_nyc_LATEST.0143.png
+       :width: 100%
+       :align: left
+
+       Quad plot of *seven day averaged* COVID-19 new cases/day and deaths/day for the NYC metro area, 150 days after its first incident. The name of the file is ``covid19_nyc_LATEST.0143.png`` (150 days minus 7 days), so that FFmpeg_ can easily create movies; frames must start from *all zeros* in the file name, so day 7 would be ``0000``.
+
+    The collection of PNG_ images that this method creates are auto-cropped and, where needed, *resized* so that their widths and heights are even numbers. FFmpeg_, run through :py:meth:`create_summary_rate_movie_frombeginning <covid19_stats.engine.viz2.create_summary_rate_movie_frombeginning>`, cannot create an MP4_ from PNG_\ s unless the images' widths and heights are divisible by 2.
+
+    :param dict inc_data: the data for incidence of COVID-19 cases and deaths for a given geographical region. See :py:meth:`get_incident_data <covid19_stats.engine.core.get_incident_data>` for the format of the output data.
+    :param list days_from_beginning: the :py:class:`list` of days to create quad PNG_ images. Must be nonempty, and every element must be :math:`\ge 0`. Default is ``[ 0, ]``.
+    :param str dirname: the directory into which to save the quad PNG_ images. The default is the current working directory.
+    :returns: the :py:class:`list` of filenames of PNG_ quad images that this method creates, into ``dirname``. For example, in the method invocation shown in :numref:`viz2_create_plots_rate_daysfrombeginning_nyc`, ``days_from_beginning = [ 150, ]``, and the list this method returns is ``[ '<dirname>/covid19_nyc_LATEST.0143.png', ]``.
+    :rtype: list
+
+    .. _PNG: https://en.wikipedia.org/wiki/Portable_Network_Graphics
+    .. _MP4: https://en.wikipedia.org/wiki/MPEG-4_Part_14
+    .. _FFmpeg: https://en.wikipedia.org/wiki/FFmpeg
+    """
     assert( 'region name' in inc_data )
     assert( 'prefix' in inc_data )
     assert( os.path.isdir( dirname ) )
@@ -345,6 +445,59 @@ def create_plots_rate_daysfrombeginning(
 
 def create_summary_cases_or_deaths_rate_movie_frombeginning(
     inc_data, type_disp = 'cases', dirname = os.getcwd( ), save_imgfiles = False ):
+    """
+    This method is similar to :py:meth:`create_summary_cases_or_deaths_movie_frombeginning <covid19_stats.engine.viz.create_summary_cases_or_deaths_movie_frombeginning>` in the :py:mod:`viz <covid19_stats.engine.viz>` module. This is the back-end method for :ref:`movie cases deaths mode <movie_cases_deaths_mode_region_rate>` for :ref:`covid19_region_summary_rate`. This creates an MP4_ movie file of *seven-day averaged* COVID-19 new cases/day *or* deaths/day, with identifying metadata, for a given geographical region. :numref:`viz2_create_summary_cases_or_deaths_rate_movie_frombeginning_table` shows the *resulting* MP4_ movie files, of cumulative COVID-19 cases and deaths, for the NYC metro area (top row), and the state of Virginia_ (bottom row).
+
+    .. _viz2_create_summary_cases_or_deaths_rate_movie_frombeginning_table:
+
+    .. list-table:: Latest *seven-day averaged* COVID-19 new cases/day, and deaths/day, for the NYC metro area and Virginia_
+       :widths: auto
+
+       * - |covid19_7day_nyc_cases|
+         - |covid19_7day_nyc_deaths|
+       * - NYC metro area, latest movie of COVID-19 new cases/day
+         - NYC metro area, latest movie of COVID-19 new deaths/day
+       * - |covid19_7day_virginia_cases|
+         - |covid19_7day_virginia_deaths|
+       * - Virginia_, latest movie of COVID-19 new cases/day
+         - Virginia_, latest movie of COVID-19 new deaths/day
+
+    Here are the arguments,
+
+    :param dict inc_data: the data for incidence of COVID-19 cases and deaths for a given geographical region. See :py:meth:`get_incident_data <covid19_stats.engine.core.get_incident_data>` for the format of the output data.
+    :param type_disp: if ``cases``, then show cumulative COVID-19 cases. If ``deaths``, then show cumulative COVID-19 deaths. Can only be ``cases`` or ``deaths``.
+    :param str dirname: the directory into which to save the MP4_ movie file, and optionally a `zip archive`_ of the PNG_ image files used to create the MP4_ movie. The default is the current working directory.
+    :param bool save_imgfiles: if ``True``, then will create a `zip archive`_ of the PNG_ image files used to create the MP4_ movie. Its full name is ``<dirname>/covid19_7day_<prefix>_<type_disp>_LATEST_imagefiles.zip``. ``<dirname>`` is the directory to save the MP4_ file, ``<prefix>`` is the region name prefix (for example ``nyc`` for the NYC metro area) located in ``inc_data['prefix']``, and ``<type_disp>`` is either ``cases`` or ``death``. The default is ``False``.
+    :returns: the base name of the MP4_ movie file it creates. For example, if ``inc_data['prefix']`` is ``nyc`` and ``type_disp`` is ``cases``, this method returns ``covid19_7day_nyc_cases_LATEST.mp4``. This method also saves the MP4_ file as ``<dirname>/covid19_7day_nyc_cases_LATEST.mp4``, where ``<dirname>`` is the directory to save the MP4_ file.
+    :rtype: str
+
+    .. |covid19_7day_nyc_cases| raw:: html
+       
+       <video controls width="100%">
+       <source src="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_7day_nyc_cases_LATEST.mp4">
+       </video>
+
+    .. |covid19_7day_nyc_deaths| raw:: html
+       
+       <video controls width="100%">
+       <source src="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_7day_nyc_deaths_LATEST.mp4">
+       </video>
+
+    .. |covid19_7day_virginia_cases| raw:: html
+       
+       <video controls width="100%">
+       <source src="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_7day_virginia_cases_LATEST.mp4">
+       </video>
+
+    .. |covid19_7day_virginia_deaths| raw:: html
+       
+       <video controls width="100%">
+       <source src="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_7day_virginia_deaths_LATEST.mp4">
+       </video>
+
+    .. _Virginia: https://en.wikipedia.org/wiki/Virginia
+    .. _`zip archive`: https://en.wikipedia.org/wiki/ZIP_(file_format)
+    """
     assert( type_disp in ( 'cases', 'deaths' ) )
     assert( os.path.isdir( dirname ) )
     #
@@ -445,6 +598,39 @@ def create_summary_cases_or_deaths_rate_movie_frombeginning(
 
 def create_summary_rate_movie_frombeginning(
     inc_data, dirname = os.getcwd( ), save_imgfiles = False ):
+    """
+    This method is similar to :py:meth:`create_summary_rate_movie_frombeginning <covid19_stats.engine.viz.create_summary_rate_movie_frombeginning>` in the :py:mod:`viz <covid19_stats.engine.viz>` module. This is the back-end method for :ref:`movie mode <movie_mode_region_rate>` for :ref:`covid19_region_summary_rate`. This creates an MP4_ quad movie file of both *seven day averaged* COVID-19 new cases/day and deaths/day for a geographical region, and *optionally* a `zip archive`_ of PNG_ images used to create the MP4_ file. This uses :py:meth:`create_plots_rate_daysfrombeginning <covid19_stats.engine.viz2.create_plots_rate_daysfrombeginning>` in a multiprocessing fashion, to create sub-collections of PNG_ quad images, and then collate them into an MP4_ file using FFmpeg_. :numref:`viz2_create_summary_rate_movie_frombeginning_table` shows the *resulting* MP4_ movie files, of *seven day averged* COVID-19 new cases/day and deaths/day, for the NYC metro area and the state of Virginia_.
+
+    .. _viz2_create_summary_rate_movie_frombeginning_table:
+
+    .. list-table:: Latest quad movies of COVID-19 for the NYC metro area and Virginia_
+       :widths: auto
+
+       * - |covid19_7day_nyc_quad|
+         - |covid19_7day_virginia_quad|
+       * - NYC metro area, latest quad movie of COVID-19 new cases/day and deaths/day
+         - Virginia_, latest quad movie of COVID-19 new cases/day and deaths/day
+
+    Here are the arguments,
+
+    :param dict inc_data: the data for incidence of COVID-19 cases and deaths for a given geographical region. See :py:meth:`get_incident_data <covid19_stats.engine.core.get_incident_data>` for the format of the output data.
+    :param str dirname: the directory into which to save the MP4_ movie file, and optionally a `zip archive`_ of the PNG_ image files used to create the MP4_ movie. The default is the current working directory.
+    :param bool save_imgfiles: if ``True``, then will create a `zip archive`_ of the PNG_ image files used to create the MP4_ movie. Its full name is ``<dirname>/covid19_7day_<prefix>_LATEST_imagefiles.zip``. ``<dirname>`` is the directory to save the MP4_ file, and ``<prefix>`` is the region name prefix (for example ``nyc`` for the NYC metro area) located in ``inc_data['prefix']``. The default is ``False``.
+    :returns: the base name of the MP4_ movie file it creates. For example, if ``inc_data['prefix']`` is ``nyc``, this method returns ``covid19_7day_nyc_LATEST.mp4``. This method also saves the MP4_ file as ``<dirname>/covid19_7day_nyc_LATEST.mp4``, where ``<dirname>`` is the directory to save the MP4_ file.
+    :rtype: str
+
+    .. |covid19_7day_nyc_quad| raw:: html
+       
+       <video controls width="100%">
+       <source src="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_7day_nyc_LATEST.mp4">
+       </video>
+
+    .. |covid19_7day_virginia_quad| raw:: html
+       
+       <video controls width="100%">
+       <source src="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_7day_virginia_LATEST.mp4">
+       </video>
+    """
     #
     ## make sure dirname is a directory
     assert( os.path.isdir( dirname ) )
@@ -533,6 +719,55 @@ def create_summary_rate_movie_frombeginning(
 
 def get_summary_demo_rate_data(
     inc_data, dirname = os.getcwd( ), store_data = True ):
+    """
+    This method is similar to :py:meth:`get_summary_demo_data <covid19_stats.engine.viz.get_summary_demo_data>` in the :py:mod:`viz <covid19_stats.engine.viz>` module. This is the back-end method for :ref:`show mode <show_mode_region_rate>` for :ref:`covid19_region_summary_rate`. This creates *six* or *eight* files for a given geographical region. Given an input ``inc_data`` :py:class:`dict`, it produces six files by default. Here ``prefix`` is the value of ``inc_data['prefix']`` (for example ``nyc`` for the NYC metro area).
+
+    * ``covid19_7day_<prefix>_cases_LATEST.pdf`` and ``covid19_7day_<prefix>_cases_LATEST.png``: a PDF_ and PNG_ plot of the *latest* *seven day averaged* COVID-19 new cases/day for the geographical region.
+    
+    * ``covid19_7day_<prefix>_death_LATEST.pdf`` and ``covid19_7day_<prefix>_death_LATEST.png``: a PDF_ and PNG_ plot of the *latest* *seven day averaged* COVID-19 new deaths/day for the geographical region.
+
+    * ``covid19_7day_<prefix>_cds_LATEST.pdf`` and ``covid19_7day_<prefix>_cds_LATEST.png``: a PDF_ and PNG_ plot of the *latest* *seven day averaged* COVID-19 new cases/day and deaths/day trend lines for the geographical region.
+
+    Optionally, one can choose to dump out two serialized :py:class:`Pandas DataFrames <pandas.DataFrame>` of the new COVID-19 cases/day and deaths/day, total and per county.
+
+    * ``covid19_7day_<prefix>_LATEST.pkl.gz`` is the *seven day averaged* serialized :py:class:`Pandas DataFrame <pandas.DataFrame>` for the region. This runs from the seventh day after first incident to the last day. An example for the NYC metro area is :download:`covid19_7day_nyc_LATEST.pkl.gz </_static/viz2/covid19_7day_nyc_LATEST.pkl.gz>`.
+
+    * ``covid19_7day_<prefix>_LATEST.pkl.gz`` is the *one day averaged* serialized :py:class:`Pandas DataFrame <pandas.DataFrame>` for the region. This runs from the first day after the first incident to the last day. An example for the NYC metro area is :download:`covid19_1day_nyc_LATEST.pkl.gz </_static/viz2/covid19_1day_nyc_LATEST.pkl.gz>`.
+
+    :numref:`viz2_get_summary_demo_rate_data_nyc` displays the *latest* output for the NYC metro area.
+
+    .. _viz2_get_summary_demo_rate_data_nyc:
+
+    .. list-table:: Latest plots of cumulative COVID-19 cases, deaths, and trend lines for the NYC metro area
+       :widths: auto
+
+       * - |covid19_7day_nyc_cases_latest|
+         - |covid19_7day_nyc_death_latest|
+         - |covid19_7day_nyc_cds_latest|
+       * - NYC metro area, plot of latest COVID-19 new cases/day
+         - NYC metro area, plot of latest COVID-19 new deaths/day
+         - NYC metro area, plot of latest trend lines of COVID-19 new cases/day and deaths/day
+
+    .. |covid19_7day_nyc_cases_latest| image:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_7day_nyc_cases_LATEST.png
+       :width: 100%
+       :align: middle
+       
+    .. |covid19_7day_nyc_death_latest| image:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_7day_nyc_death_LATEST.png
+       :width: 100%
+       :align: middle
+
+    .. |covid19_7day_nyc_cds_latest| image:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_7day_nyc_cds_LATEST.png
+       :width: 100%
+       :align: middle
+
+    Here are the arguments.
+
+    :param dict inc_data: the data for incidence of COVID-19 cases and deaths for a given geographical region. See :py:meth:`get_incident_data <covid19_stats.engine.core.get_incident_data>` for the format of the output data.
+    :param str dirname: the directory into which to save the six or seven files. The default is the current working directory.
+    :param bool store_data: if ``True``, then create two serialized :py:class:`Pandas DataFrames <pandas.DataFrame>` of the COVID-19 cases and deaths, total and per county, up to the latest incident. Default is ``True``.
+
+    .. _PDF: https://en.wikipedia.org/wiki/PDF
+    """
     #
     ## now is dirname a directory
     assert( os.path.isdir( dirname ) )

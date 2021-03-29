@@ -239,7 +239,7 @@ def plot_cases_or_deaths_bycounty(
     poly_line_width = 1.0, legend_text_scaling = 1.0,
     doSmarter = False, rows = 1, cols = 1, num = 1 ):
     """
-    The lower-level function that displays the status of COVID-19 cases or deaths given an incidident data :py:class:`dict`, ``inc_data``. It displays the status of cumulative COVID-19 cases or deaths, a specific number of days from the beginning, coloring the counties in that region according to the legend maximum, and places the resulting :py:class:`GeoAxes <cartopy.mpl.GeoAxes>` at a specific location in a :py:class:`Figure <matplotlib.figure.Figure>` grid of :py:class:`Axes <matplotlib.axes.Axes>` or :py:class:`GeoAxes <cartopy.mpl.GeoAxes>.
+    The lower-level function that displays the status of COVID-19 cases or deaths given an incidident data :py:class:`dict`, ``inc_data``. It displays the status of cumulative COVID-19 cases or deaths, a specific number of days from the beginning, coloring the counties in that region according to the legend maximum, and places the resulting :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>` at a specific location in a :py:class:`Figure <matplotlib.figure.Figure>` grid of :py:class:`Axes <matplotlib.axes.Axes>` or :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>`.
 
     Instead of returning a :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>`, this initializes a :py:class:`dict` of matplotlib objects, ``plot_artists``. In this way, subsequent plots, e.g. for different days after the beginnning, do not have to perform the relatively costly operation of recreating the :py:class:`GeoAxes <cartopy.mpl.geoaxes.GeoAxes>` and fully painting in the :py:class:`Polygon <matplotlib.patches.Polygon>` patches; instead, these :py:class:`Polygon <matplotlib.patches.Polygon>` patches are re-colored and necessary :py:class:`Text <matplotlib.text.Text>` artists' strings are changed.
 
@@ -483,7 +483,7 @@ def create_plots_daysfrombeginning(
     * ``upper right`` is the *logarithmic* coloration of cumulative deaths, by day from first incident.
     * ``lower right`` is the *logarithmic* coloration of cumulative cases, by day from first incident.
 
-    :py:meth:`create_summary_movie_frombeginning <covid19_stats.engine.viz.create_summary_movie_frombeginning>` uses this functionality in a multiprocessing fashion to create MP4_ movie files geographical regions. It is easier to show rather than tell. :numref:`viz_create_plots_daysfrombeginning_nyc` is a quad plot of cumulative COVID-19 cases and deaths NYC metro area, 150 days after this metro's first COVID-19 incident, that is created by this function.
+    :py:meth:`create_summary_movie_frombeginning <covid19_stats.engine.viz.create_summary_movie_frombeginning>` uses this functionality in a multiprocessing fashion to create MP4_ movie files for geographical regions. It is easier to show rather than tell. :numref:`viz_create_plots_daysfrombeginning_nyc` is a quad plot of cumulative COVID-19 cases and deaths for the NYC metro area, 150 days after this metro's first COVID-19 incident, that is created by this function.
 
     .. _viz_create_plots_daysfrombeginning_nyc:
     
@@ -779,7 +779,7 @@ def create_summary_cases_or_deaths_movie_frombeginning(
 def create_summary_movie_frombeginning(
     inc_data, maxnum_colorbar = 5000.0, dirname = os.getcwd( ), save_imgfiles = False ):
     """
-    This is the back-end method for :ref:`movie mode <movie_mode>` for :ref:`covid19_create_movie_or_summary`, and :ref:`state movie mode <movie_mode_state>` for :ref:`covid19_state_summary`. This creates an MP4_ quad movie file of both cumulative COVID-19 cases and deaths for a geographical region, and *optionally* a `zip archive`_ of PNG_ images used to create the MP4_ file. This uses :py:meth:`create_plots_daysfrombeginning <covid19_stats.engine.viz.create_plots_daysfrombeginning>` in a multiprocessing function, to create sub-collections of PNG_ quad images, and then collate them into an MP4_ file using FFmpeg_. :numref:`viz_create_summary_movie_frombeginning_table` shows the *resulting* MP4_ movie files, of cumulative COVID-19 cases and deaths, for the NYC metro area and the state of Virginia_.
+    This is the back-end method for :ref:`movie mode <movie_mode>` for :ref:`covid19_create_movie_or_summary`, and :ref:`state movie mode <movie_mode_state>` for :ref:`covid19_state_summary`. This creates an MP4_ quad movie file of both cumulative COVID-19 cases and deaths for a geographical region, and *optionally* a `zip archive`_ of PNG_ images used to create the MP4_ file. This uses :py:meth:`create_plots_daysfrombeginning <covid19_stats.engine.viz.create_plots_daysfrombeginning>` in a multiprocessing fashion, to create sub-collections of PNG_ quad images, and then collate them into an MP4_ file using FFmpeg_. :numref:`viz_create_summary_movie_frombeginning_table` shows the *resulting* MP4_ movie files, of cumulative COVID-19 cases and deaths, for the NYC metro area and the state of Virginia_.
 
     .. _viz_create_summary_movie_frombeginning_table:
 

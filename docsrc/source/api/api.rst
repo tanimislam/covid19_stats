@@ -16,37 +16,12 @@ The API provides a much richer base of functionality than the :ref:`CLI tools <u
 
 Subsequent subsections describe each of the main modules, with special emphasis given to :py:class:`COVID19Database <covid19_stats.COVID19Database>` due to its integral role.
 
-covid19_stats module
-----------------------
-This is the top-level module for this repository. It defines the location of the resource directory relative to the module's installation location (see :numref:`resources_directory`), and the main COVID-19 database singleton_ object.
+.. toctree::
+   :maxdepth: 3
 
-.. automodule:: covid19_stats
-   :members:
-
-covid19_stats.engine module
-------------------------------
-This contains all the back-end functionality used by the CLI programs (see :numref:`using_the_cli`), and two fairly simple utility functions.
-
-.. automodule:: covid19_stats.engine
-   :members:
-
-covid19_stats.engine.gis module
------------------------------------------
-The meat of the functionality, that generates post-processed GIS_ data describing the territorial units (counties, etc.) of the United States. Territorial unit information includes their identifiers, latitude and longitude boundary arrays as of 2018, and their estimated population in 2019.
-
-.. automodule:: covid19_stats.engine.gis
-   :members:
-
-covid19_stats.engine.core module
-----------------------------------
-This module provides the core functionality that the ``covid19_stats`` command line tools use to summarize and visualize COVID-19 case and death statistics. Here are utility methods to identify data on geographical regions such as MSA_\ s, states, or the CONUS_; to create cumulative case and death data for geographical data; and to print out summary reports of COVID-19 cases and deaths for MSA_\ s in different formats.
-
-.. automodule:: covid19_stats.engine.core
-   :members:
-
-covid19_stats.engine.viz module
---------------------------------
-This module provides visualization methods for COVID-19 cumulative cases and deaths for MSA_\ s, states, and the CONUS_.  These command line interfaces -- :ref:`covid19_create_movie_or_summary`, :ref:`covid19_state_summary`, and :ref:`covid19_movie_updates` -- are front-ends to the methods in this module.
-
-.. automodule:: covid19_stats.engine.viz
-   :members:
+   covid19_stats_api
+   covid19_stats_engine_api
+   covid19_stats_engine_gis_api
+   covid19_stats_engine_core_api
+   covid19_stats_engine_viz_api
+   covid19_stats_engine_viz2_api
