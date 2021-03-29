@@ -100,7 +100,7 @@ When we run the SHOW flag on the NYC metro area, with the command, ``covid19_reg
 
 * ``covid19_7day_nyc_cds_LATEST.pdf`` and ``covid19_7day_nyc_cds_LATEST.png`` are the PDF and PNG showing the trend of 7-day averaged COVID-19 new cases/day and deaths/day in the NYC metro area.
 
-  .. figure:: https://tanimislam.gitlab.io/covid19movies/covid19_7day_nyc_cds_LATEST.png
+  .. figure:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_7day_nyc_cds_LATEST.png
      :width: 100%
      :align: left
 
@@ -108,7 +108,7 @@ When we run the SHOW flag on the NYC metro area, with the command, ``covid19_reg
   
 * ``covid19_7day_nyc_cases_LATEST.pdf`` and ``covid19_nyc_cases_LATEST.png`` are the PDF_ and PNG_ showing the county map, colored by 7-day averaged number of COVID-19 new cases/day, on the *LAST* incident day.
 
-  .. figure:: https://tanimislam.gitlab.io/covid19movies/covid19_7day_nyc_cases_LATEST.png
+  .. figure:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_7day_nyc_cases_LATEST.png
      :width: 100%
      :align: left
 
@@ -116,7 +116,7 @@ When we run the SHOW flag on the NYC metro area, with the command, ``covid19_reg
 
 * ``covid19_7day_nyc_death_LATEST.pdf`` and ``covid19_7day_nyc_death_LATEST.png`` are the PDF_ and PNG_ showing the county map, colored by 7-day averaged number of COVID-19 new deaths/day, on the *LAST* incident day.
 
-  .. figure:: https://tanimislam.gitlab.io/covid19movies/covid19_7day_nyc_death_LATEST.png
+  .. figure:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_7day_nyc_death_LATEST.png
      :width: 100%
      :align: left
 
@@ -126,7 +126,7 @@ When we run the SHOW flag on California, with the command, ``covid19_region_summ
 
 * ``covid19_7day_california_cds_LATEST.pdf`` and ``covid19_7day_california_cds_LATEST.png`` are the PDF and PNG showing the trend of 7-day averaged COVID-19 new cases/day and deaths/day in California.
 
-  .. figure:: https://tanimislam.gitlab.io/covid19movies/covid19_7day_california_cds_LATEST.png
+  .. figure:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_7day_california_cds_LATEST.png
      :width: 100%
      :align: left
 
@@ -134,7 +134,7 @@ When we run the SHOW flag on California, with the command, ``covid19_region_summ
   
 * ``covid19_7day_california_cases_LATEST.pdf`` and ``covid19_california_cases_LATEST.png`` are the PDF_ and PNG_ showing the county map, colored by 7-day averaged number of COVID-19 new cases/day, on the *LAST* incident day.
 
-  .. figure:: https://tanimislam.gitlab.io/covid19movies/covid19_7day_california_cases_LATEST.png
+  .. figure:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_7day_california_cases_LATEST.png
      :width: 100%
      :align: left
 
@@ -142,7 +142,7 @@ When we run the SHOW flag on California, with the command, ``covid19_region_summ
 
 * ``covid19_7day_california_death_LATEST.pdf`` and ``covid19_7day_california_death_LATEST.png`` are the PDF_ and PNG_ showing the county map, colored by 7-day averaged number of COVID-19 new deaths/day, on the *LAST* incident day.
 
-  .. figure:: https://tanimislam.gitlab.io/covid19movies/covid19_7day_california_death_LATEST.png
+  .. figure:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_7day_california_death_LATEST.png
      :width: 100%
      :align: left
 
@@ -152,7 +152,7 @@ Finally, when we run the SHOW flag on the CONUS_, with the command, ``covid19_re
 
 * ``covid19_7day_conus_cds_LATEST.pdf`` and ``covid19_7day_conus_cds_LATEST.png`` are the PDF and PNG showing the trend of 7-day averaged COVID-19 new cases/day and deaths/day in the CONUS_.
 
-  .. figure:: https://tanimislam.gitlab.io/covid19movies/covid19_7day_conus_cds_LATEST.png
+  .. figure:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_7day_conus_cds_LATEST.png
      :width: 100%
      :align: left
 
@@ -160,7 +160,7 @@ Finally, when we run the SHOW flag on the CONUS_, with the command, ``covid19_re
   
 * ``covid19_7day_conus_cases_LATEST.pdf`` and ``covid19_conus_cases_LATEST.png`` are the PDF_ and PNG_ showing the county map, colored by 7-day averaged number of COVID-19 new cases/day, on the *LAST* incident day.
 
-  .. figure:: https://tanimislam.gitlab.io/covid19movies/covid19_7day_conus_cases_LATEST.png
+  .. figure:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_7day_conus_cases_LATEST.png
      :width: 100%
      :align: left
 
@@ -168,7 +168,7 @@ Finally, when we run the SHOW flag on the CONUS_, with the command, ``covid19_re
 
 * ``covid19_7day_conus_death_LATEST.pdf`` and ``covid19_7day_conus_death_LATEST.png`` are the PDF_ and PNG_ showing the county map, colored by 7-day averaged number of COVID-19 new deaths/day, on the *LAST* incident day.
 
-  .. figure:: https://tanimislam.gitlab.io/covid19movies/covid19_7day_conus_death_LATEST.png
+  .. figure:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_7day_conus_death_LATEST.png
      :width: 100%
      :align: left
 
@@ -194,7 +194,7 @@ This mode of operation for the NYC metro area, ``covid19_region_summary_rate -R 
 
 .. _fig_covid19_7day_nyc_LATEST:
 
-.. figure:: https://tanimislam.gitlab.io/covid19movies/covid19_7day_nyc_LATEST.gif
+.. figure:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_7day_nyc_LATEST.gif
    :width: 100%
    :align: left
 
@@ -204,7 +204,7 @@ This mode of operation for California, ``covid19_region_summary_rate -R Californ
 
 .. _fig_covid19_7day_california_LATEST:
 
-.. figure:: https://tanimislam.gitlab.io/covid19movies/covid19_7day_california_LATEST.gif
+.. figure:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_7day_california_LATEST.gif
    :width: 100%
    :align: left
 
@@ -214,7 +214,7 @@ This mode of operation for the CONUS_, ``covid19_region_summary_rate -R conus m`
 
 .. _fig_covid19_7day_conus_LATEST:
 
-.. figure:: https://tanimislam.gitlab.io/covid19movies/covid19_7day_conus_LATEST.gif
+.. figure:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_7day_conus_LATEST.gif
    :width: 100%
    :align: left
 
@@ -304,7 +304,7 @@ This is similar to :numref:`movie_mode_region_rate`, except we visualize movies 
 
 .. _fig_covid19_7day_california_cases_LATEST:
 
-.. figure:: https://tanimislam.gitlab.io/covid19movies/covid19_7day_california_cases_LATEST.gif
+.. figure:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_7day_california_cases_LATEST.gif
    :width: 100%
    :align: left
 
@@ -316,7 +316,7 @@ This is similar to :numref:`movie_mode_region_rate`, except we visualize movies 
 
 .. _fig_covid19_7day_california_death_LATEST:
 
-.. figure:: https://tanimislam.gitlab.io/covid19movies/covid19_7day_california_deaths_LATEST.gif
+.. figure:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_7day_california_deaths_LATEST.gif
    :width: 100%
    :align: left
 
