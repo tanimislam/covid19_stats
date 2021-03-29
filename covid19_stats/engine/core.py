@@ -351,7 +351,7 @@ def get_maximum_cases( inc_data ):
     return max_case_tup
 
 def create_readme_from_template(
-    mainURL = 'https://tanimislam.github.io/covid19movies',
+    mainURL = 'https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies',
     dirname_for_readme_location = os.getcwd( ), verify = True,
     topN_json = None ):
     

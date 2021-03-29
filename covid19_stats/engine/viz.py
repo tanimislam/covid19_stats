@@ -654,25 +654,25 @@ def create_summary_cases_or_deaths_movie_frombeginning(
     .. |covid19_nyc_cases| raw:: html
        
        <video controls width="100%">
-       <source src="https://tanimislam.github.io/covid19movies/covid19_nyc_cases_LATEST.mp4">
+       <source src="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_cases_LATEST.mp4">
        </video>
 
     .. |covid19_nyc_deaths| raw:: html
        
        <video controls width="100%">
-       <source src="https://tanimislam.github.io/covid19movies/covid19_nyc_deaths_LATEST.mp4">
+       <source src="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_deaths_LATEST.mp4">
        </video>
 
     .. |covid19_virginia_cases| raw:: html
        
        <video controls width="100%">
-       <source src="https://tanimislam.github.io/covid19movies/covid19_virginia_cases_LATEST.mp4">
+       <source src="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_virginia_cases_LATEST.mp4">
        </video>
 
     .. |covid19_virginia_deaths| raw:: html
        
        <video controls width="100%">
-       <source src="https://tanimislam.github.io/covid19movies/covid19_virginia_deaths_LATEST.mp4">
+       <source src="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_virginia_deaths_LATEST.mp4">
        </video>
 
     .. _Virginia: https://en.wikipedia.org/wiki/Virginia
@@ -803,13 +803,13 @@ def create_summary_movie_frombeginning(
     .. |covid19_nyc_quad| raw:: html
        
        <video controls width="100%">
-       <source src="https://tanimislam.github.io/covid19movies/covid19_nyc_LATEST.mp4">
+       <source src="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_LATEST.mp4">
        </video>
 
     .. |covid19_virginia_quad| raw:: html
        
        <video controls width="100%">
-       <source src="https://tanimislam.github.io/covid19movies/covid19_virginia_LATEST.mp4">
+       <source src="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_virginia_LATEST.mp4">
        </video>
     """
     #
@@ -925,15 +925,15 @@ def get_summary_demo_data(
          - NYC metro area, plot of latest COVID-19 cumulative deaths
          - NYC metro area, plot of latest trend lines of COVID-19 cumulative cases and deaths
 
-    .. |covid19_nyc_cases_latest| image:: https://tanimislam.github.io/covid19movies/covid19_nyc_cases_LATEST.png
+    .. |covid19_nyc_cases_latest| image:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_cases_LATEST.png
        :width: 100%
        :align: middle
        
-    .. |covid19_nyc_death_latest| image:: https://tanimislam.github.io/covid19movies/covid19_nyc_death_LATEST.png
+    .. |covid19_nyc_death_latest| image:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_death_LATEST.png
        :width: 100%
        :align: middle
 
-    .. |covid19_nyc_cds_latest| image:: https://tanimislam.github.io/covid19movies/covid19_nyc_cds_LATEST.png
+    .. |covid19_nyc_cds_latest| image:: https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_cds_LATEST.png
        :width: 100%
        :align: middle
 
