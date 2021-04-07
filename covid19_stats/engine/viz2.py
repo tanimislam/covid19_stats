@@ -519,7 +519,6 @@ def create_summary_cases_or_deaths_rate_movie_frombeginning(
         days_coll_sorted = sorted( days_collection )
         fig = Figure( )
         fig.set_size_inches([24,18])
-        ax = fig.add_subplot(111)
         plot_artists = { }
         fnames = [ ]
         for day in sorted( set( days_collection ) ):
