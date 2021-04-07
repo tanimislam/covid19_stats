@@ -14,7 +14,7 @@ from covid19_stats.engine import gis, get_string_commas_num
 
 def get_boundary_dict( fips_collection ):
     """
-    Returns a :py:class:`dict` of `FIPS code`_ to the collection of geographic areas for that county. The geographic data comes from :py:meth:`fips_data_2018 <covid19_stats.COVID19Database.fips_data_2018>`.
+    Returns a :py:class:`dict` of `FIPS code`_ to the collection of geographic areas for that county. The geographic data comes from :py:meth:`fips_data_2019 <covid19_stats.COVID19Database.fips_data_2019>`.
     
     :param set fips_collection: the :py:class:`set` of `FIPS code`_\ s of counties or US territorial units for which to get geographic information.
     :returns: a :py:class:`dict`. The key is the `FIPS code`_ of a county or territorial unit, and the value is the :py:class:`list` of geographic regions for that county or unit.
@@ -22,9 +22,9 @@ def get_boundary_dict( fips_collection ):
 
     .. _`FIPS code`: https://en.wikipedia.org/wiki/FIPS_county_code
     """
-    fips_data_2018 = COVID19Database.fips_data_2018( )
+    fips_data_2019 = COVID19Database.fips_data_2019( )
     boundary_dict = dict(map(lambda fips: (
-        fips, fips_data_2018[ fips ][ 'points' ] ), fips_collection ) )
+        fips, fips_data_2019[ fips ][ 'points' ] ), fips_collection ) )
     return boundary_dict
 
 def get_mp4_album_name( inc_data ):
@@ -601,10 +601,10 @@ def display_tabulated_metros( form = 'simple', selected_metros = None ):
 ## from a collection of FIPS, find the clusterings -- which set are adjacent to each other, which aren't
 def get_clustering_fips( collection_of_fips, adj = None ):
     """
-    Finds the *separate* clusters of counties or territorial units that are clustered together. This is used to identify possibly *different* clusters of counties that may be separate from each other. If one does not supply an adjacency :py:class:`dict`, it uses the adjacency dictionary that :py:meth:`fips_adj_2018 <covid19_stats.COVID19Database.fips_adj_2018>` returns. Look at :download:`fips_2018_adj.pkl.gz </_static/gis/fips_2018_adj.pkl.gz>` to see what this dictionary looks like.
+    Finds the *separate* clusters of counties or territorial units that are clustered together. This is used to identify possibly *different* clusters of counties that may be separate from each other. If one does not supply an adjacency :py:class:`dict`, it uses the adjacency dictionary that :py:meth:`fips_adj_2018 <covid19_stats.COVID19Database.fips_adj_2018>` returns. Look at :download:`fips_2019_adj.pkl.gz </_static/gis/fips_2019_adj.pkl.gz>` to see what this dictionary looks like.
 
     :param list collection_of_fips: the :py:class:`list` of counties or territorial units, each identified by its `FIPS code`_.
-    :param dict adj: optionally specified adjacency dictionary. Otherwise it uses the :py:meth:`fips_adj_2018 <covid19_stats.COVID19Database.fips_adj_2018>` returned dictionary. Look at :download:`fips_2018_adj.pkl.gz </_static/gis/fips_2018_adj.pkl.gz>` to see what this dictionary looks like.
+    :param dict adj: optionally specified adjacency dictionary. Otherwise it uses the :py:meth:`fips_adj_2018 <covid19_stats.COVID19Database.fips_adj_2018>` returned dictionary. Look at :download:`fips_2019_adj.pkl.gz </_static/gis/fips_2019_adj.pkl.gz>` to see what this dictionary looks like.
     :returns: a :py:class:`list` of counties clustered together. Each cluster is a :py:class:`set` of `FIPS code`_\ s of counties grouped together.
     :rtype: list
     """

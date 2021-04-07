@@ -109,7 +109,7 @@ class COVID19Database( object ):
     
             #
             ## FIPS data for county shapes 2018
-            self.fips_data_2018 = gis.create_and_store_fips_2018( )
+            self.fips_data_2019 = gis.create_and_store_fips_2019( )
             
             #
             ## now population data for fips found from MSAs
@@ -117,7 +117,7 @@ class COVID19Database( object ):
             
             #
             ## FIPS data for county adjacency 2018
-            self.fips_adj_2018 = gis.construct_adjacency( self.fips_data_2018 )
+            self.fips_adj_2019 = gis.construct_adjacency( self.fips_data_2019 )
             
             #
             ## CENSUS dictionary of FIPS to COUNTY/STATE
@@ -133,7 +133,7 @@ class COVID19Database( object ):
             ## SHOULD WE ALSO DELETE THE FIVE BOROUGHS FIPS??
             def _get_boundary_dict( fips_collection ):
                 boundary_dict = dict(map(lambda fips: (
-                    fips, self.fips_data_2018[ fips ][ 'points' ] ), fips_collection ) )
+                    fips, self.fips_data_2019[ fips ][ 'points' ] ), fips_collection ) )
                 return boundary_dict
                 
             _fips_missing_2019 = set( self.fips_msas_2019 ) - set( self.all_counties_nytimes_covid19_data.fips )
@@ -141,10 +141,10 @@ class COVID19Database( object ):
             _fips_five_boroughs = _fips_missing_2019 & self.data_msas_2019['nyc']['fips']
             #
             nyc_fips = '00001'
-            self.fips_data_2018[ nyc_fips ] = self.create_nyc_custom_fips(
+            self.fips_data_2019[ nyc_fips ] = self.create_nyc_custom_fips(
                 _get_boundary_dict( _fips_five_boroughs ) )
             ## DELETE
-            for fips in _fips_five_boroughs: self.fips_data_2018.pop( fips )
+            for fips in _fips_five_boroughs: self.fips_data_2019.pop( fips )
             #
             self.fips_countystate_dict[ nyc_fips ] = { 'county' : 'New York City', 'state' : 'New York' }
             #
@@ -237,13 +237,13 @@ class COVID19Database( object ):
         return COVID19Database.__instance
 
     @classmethod
-    def fips_data_2018( cls ):
+    def fips_data_2019( cls ):
         """
-        :returns: the :py:class:`dict` of county geographical information. It returns the *same* data structure as what :py:meth:`create_and_store_fips_2018 <covid19_stats.engine.gis.create_and_store_fips_2018>` returns.
+        :returns: the :py:class:`dict` of county geographical information. It returns the *same* data structure as what :py:meth:`create_and_store_fips_2019 <covid19_stats.engine.gis.create_and_store_fips_2019>` returns.
         :rtype: dict
         """
         inst = COVID19Database._getInstance( )
-        return inst.fips_data_2018
+        return inst.fips_data_2019
 
     @classmethod
     def fips_adj_2018( cls ):

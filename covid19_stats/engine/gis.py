@@ -54,34 +54,34 @@ def _get_record_shapefile_astup( rec, shape ):
     data = { 'bbox' : shape.bbox, 'points' : points }
     return ( fips_code, data )
 
-def create_and_store_fips_2018( ):
+def create_and_store_fips_2019( ):
     """
-    Utility function that loads in the US CENSUS 2018 county information, located in :download:`cb_2018_us_county_500k.shp </_static/gis/cb_2018_us_county_500k.shp>` as a collection of `Shapefiles <https://en.wikipedia.org/wiki/Shapefile>`_, and returns a :py:class:`dict` of county information.
+    Utility function that loads in the US CENSUS 2018 county information, located in :download:`cb_2019_us_county_500k.shp </_static/gis/cb_2019_us_county_500k.shp>` as a collection of `Shapefiles <https://en.wikipedia.org/wiki/Shapefile>`_, and returns a :py:class:`dict` of county information.
 
-    If there is no serialized version of this dictionary, this method *also* serializes the data structure, :download:`fips_2018_data.pkl.gz </_static/gis/fips_2018_data.pkl.gz>`, for easy reloading.
+    If there is no serialized version of this dictionary, this method *also* serializes the data structure, :download:`fips_2019_data.pkl.gz </_static/gis/fips_2019_data.pkl.gz>`, for easy reloading.
 
-    Subsequently, if :download:`fips_2018_data.pkl.gz </_static/gis/fips_2018_data.pkl.gz>` exists, then loads that file and returns that object.
+    Subsequently, if :download:`fips_2019_data.pkl.gz </_static/gis/fips_2019_data.pkl.gz>` exists, then loads that file and returns that object.
 
     :returns: a :py:class:`dict` of US county geographic data. The key is the `FIPS code`_ for the county. Each value is a :py:class:`dict`
 
       * ``bbox`` is the lat/lng bounding box for that county.
       * ``points`` is a list of shapes for that county. Each shape is an :math:`N \\times 2` shaped :py:class:`array <numpy.array>`, with :math:`N` points describing the boundary. Each row is the latitude and longitude of a point -- first is the latitude, and second is the longitude
 
-    This method uses `shapefile.Reader <https://github.com/GeospatialPython/pyshp>`_ to load in :download:`cb_2018_us_county_500k.shp </_static/gis/cb_2018_us_county_500k.shp>` if :download:`fips_2018_data.pkl.gz </_static/gis/fips_2018_data.pkl.gz>` does not exist.
+    This method uses `shapefile.Reader <https://github.com/GeospatialPython/pyshp>`_ to load in :download:`cb_2019_us_county_500k.shp </_static/gis/cb_2019_us_county_500k.shp>` if :download:`fips_2019_data.pkl.gz </_static/gis/fips_2019_data.pkl.gz>` does not exist.
 
     .. _`FIPS code`: https://en.wikipedia.org/wiki/FIPS_county_code
     """
     if os.path.isfile( os.path.join(
-        resourceDir, 'fips_2018_data.pkl.gz' ) ):
+        resourceDir, 'fips_2019_data.pkl.gz' ) ):
         return pickle.load( gzip.open( os.path.join(
-            resourceDir, 'fips_2018_data.pkl.gz' ), 'rb' ) )
+            resourceDir, 'fips_2019_data.pkl.gz' ), 'rb' ) )
     #
-    sf = shapefile.Reader( os.path.join( resourceDir, 'cb_2018_us_county_500k.shp' ) )
-    fips_2018_data = dict(map(lambda rec_shape: _get_record_shapefile_astup(
+    sf = shapefile.Reader( os.path.join( resourceDir, 'cb_2019_us_county_500k.shp' ) )
+    fips_2019_data = dict(map(lambda rec_shape: _get_record_shapefile_astup(
         rec_shape[0], rec_shape[1] ), zip( sf.records(), sf.shapes())))
-    pickle.dump( fips_2018_data, gzip.open( os.path.join(
-        resourceDir, 'fips_2018_data.pkl.gz' ), 'wb'))
-    return fips_2018_data
+    pickle.dump( fips_2019_data, gzip.open( os.path.join(
+        resourceDir, 'fips_2019_data.pkl.gz' ), 'wb'))
+    return fips_2019_data
 
 def do_bbox_intersect( bbox1, bbox2 ):
     """
@@ -113,7 +113,7 @@ def get_fips_adjacency( fips, fips_data ):
     Now here is the API description.
 
     :param str fips: the `FIPS code`_ of the US county or territorial unit.
-    :param dict fips_data: the US county :py:class:`dict` produced by, for example, :py:meth:`create_and_store_fips_2018 <covid19_stats.engine.gis.create_and_store_fips_2018>`.
+    :param dict fips_data: the US county :py:class:`dict` produced by, for example, :py:meth:`create_and_store_fips_2019 <covid19_stats.engine.gis.create_and_store_fips_2019>`.
     :returns: a :py:class:`set` of `FIPS code`_\ s of counties adjacent to ``fips``.
     :rtype: set
     """
@@ -134,12 +134,12 @@ def get_fips_adjacency( fips, fips_data ):
     return set( actual_adj )
 
 def construct_adjacency( fips_data, filename = os.path.join(
-            resourceDir, 'fips_2018_adj.pkl.gz' ) ):
+            resourceDir, 'fips_2019_adj.pkl.gz' ) ):
     """
-    Creates, and then stores (or loads) the adjacency dictionary of all US counties and territorial units. If the storage file, which is by default :download:`fips_2018_adj.pkl.gz </_static/gis/fips_2018_adj.pkl.gz>`, does not exist, then will create and store this data into the storage file. Will return the data in the end.
+    Creates, and then stores (or loads) the adjacency dictionary of all US counties and territorial units. If the storage file, which is by default :download:`fips_2019_adj.pkl.gz </_static/gis/fips_2019_adj.pkl.gz>`, does not exist, then will create and store this data into the storage file. Will return the data in the end.
 
     :param dict fips_data: the US county :py:class:`dict` produced by, for example, :py:meth:`create_and_store_fips_2018 <covid19_stats.engine.gis.create_and_store_fips_2018>`.
-    :param str filename: the location of the adjacency dictionary file, which is by default :download:`fips_2018_adj.pkl.gz </_static/gis/fips_2018_adj.pkl.gz>` located in the ``covid19_stats`` resource directory.
+    :param str filename: the location of the adjacency dictionary file, which is by default :download:`fips_2019_adj.pkl.gz </_static/gis/fips_2019_adj.pkl.gz>` located in the ``covid19_stats`` resource directory.
     :returns: a :py:class:`dict` of adjacency. Each key is a `FIPS code`_ of a county, and each value is a :py:class:`set` of counties and other territories adjacent to it. See :py:meth:`get_fips_adjacency <covid19_stats.engine.gis.get_fips_adjacency>` to see an example of this adjacency information for a single county.
     :rtype: dict
     """
@@ -277,9 +277,9 @@ def create_fips_popmap_2019( ):
 def create_msa_2019( ):
     """
     Creates and returns *raw and unnormalized* :py:class:`list` of `Metropolitan statistical area`_\ s initially recorded in :download:`msa_2019.csv </_static/gis/msa_2019.csv>`, sorted by population from smallest to largest, and stores the object into :download:`msa_2019.pkl.gz </_static/gis/msa_2019.pkl.gz>` if it does not exist. If :download:`msa_2019.pkl.gz </_static/gis/msa_2019.pkl.gz>`, then loads this files and returns the subsequent object.
-
+    
     Each entry in the :py:class:`list` looks like this. For example, for `St. Louis, MO MSA <stlouis_>`_,
-
+    
     .. code-block:: python
 
        {'msa': 41180,
