@@ -53,7 +53,7 @@ extensions = [
 ## following instructions here (https://github.com/svenevs/exhale/tree/master/docs/_intersphinx) to fix beautifulsoup doc.
 intersphinx_mapping = {
     'python': ('https://docs.python.org/3', None),
-    'requests': ( 'https://requests.readthedocs.io/en/master/', None),
+    'requests': ( 'https://docs.python-requests.org/en/master', None),
     'beautifulsoup' : ( 'https://www.crummy.com/software/BeautifulSoup/bs4/doc/', '_intersphinx/bs4_objects.inv' ),
     'cartopy'  : ( 'https://scitools.org.uk/cartopy/docs/latest', None ),
     'selenium' : ( 'https://selenium-python.readthedocs.io', None ),
@@ -70,6 +70,8 @@ intersphinx_mapping = {
     'nprstuff' : ( 'https://tanimislam.github.io/nprstuff', None ),
 }
 
+#
+## number figures and tables
 numfig = True
 
 # Add any paths that contain templates here, relative to this directory.
@@ -120,4 +122,5 @@ html_context = {
         mainURL = 'https://tanimislam.sfo3.digitaloceanspaces.com', verify = False ),
     'topN_json' : utility_functions.get_topN_json(
         mainURL = 'https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_topN_LATEST.json', verify = False ),
+    'created_readme_template' : utility_functions.create_readme_from_template( verify = False ),
     }

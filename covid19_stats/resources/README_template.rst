@@ -1,4 +1,4 @@
-Hello world! This is my COVID-19 tracker. This is not nearly as sophisticated as what’s in `ncov2019.live`_, and described in `this New Yorker article`_.
+Hello world! This is my COVID-19 tracker. This is not nearly as sophisticated as what's in `ncov2019.live`_, and described in `this New Yorker article`_.
 
 I have made major changes in the functionality and implementation from the original commits, since commit `#78917`_ for instance.
 
@@ -10,7 +10,7 @@ I have made major changes in the functionality and implementation from the origi
 
      git -C covid19_stats/covid-19-data pull origin master
   
-* The ``testing`` subdirectory contains `Jupyter Notebooks`_ that illuminate bits and pieces of this COVID-19 tracker’s functionality. It also consists of `Jupyter Notebooks <https://jupyter.org>`_ that create output for the API documentation.
+* The ``testing`` subdirectory contains `Jupyter Notebooks`_ that illuminate bits and pieces of this COVID-19 tracker's functionality. It also consists of `Jupyter Notebooks <https://jupyter.org>`_ that create output for the API documentation.
 
   * ``testing/covid19_excuse_gis_visualizations.ipynb`` shows output for the |engine_gis| module documentation.
   * ``testing/covid19_excuse_core_visualizations.ipynb`` shows output for the |engine_core| module documentation.

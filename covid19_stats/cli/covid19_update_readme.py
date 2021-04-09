@@ -12,8 +12,8 @@ from argparse import ArgumentParser
 ## suppress warnings
 warnings.simplefilter( 'ignore' )
 
-#_default_covid19_url = 'https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies'
-_default_covid19_url = 'https://tanimislam.gitlab.com/covid19movies'
+_default_covid19_url = 'https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies'
+#_default_covid19_url = 'https://tanimislam.gitlab.com/covid19movies'
 
 def main( ):
     parser = ArgumentParser( )
