@@ -1,6 +1,5 @@
-import os, sys, logging, subprocess, time
+import os, sys, logging, time, git
 from covid19_stats import covid19ResDir
-from distutils.spawn import find_executable
 from argparse import ArgumentParser
 
 def main( ):
@@ -12,14 +11,9 @@ def main( ):
     args = parser.parse_args( )
     logger = logging.getLogger( )
     if args.do_info: logger.setLevel( logging.INFO )
-    #
-    git_exec = find_executable( 'git' )
-    assert( git_exec is not None )
     assert( os.path.isdir( covid19ResDir ) )
-    logging.info( 'GIT EXEC = %s.' % git_exec )
     logging.info( 'COVID 19 DATABASE = %s.' % covid19ResDir )
-    proc = subprocess.Popen([ git_exec, '-C', covid19ResDir, 'pull', 'origin', 'master' ],
-                            stdout = subprocess.PIPE, stderr = subprocess.STDOUT )
-    stdout_val, stderr_val = proc.communicate( )
+    repo_nytimes = git.Repo( covid19ResDir )
+    f = repo_nytimes.remote( ).pull( 'master' )
     print( 'took %0.3f seconds to update COVID 19 DATABASE.' % (
         time.time( ) - time0 ) )

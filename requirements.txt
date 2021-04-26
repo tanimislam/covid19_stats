@@ -1,4 +1,5 @@
 cartopy
+gitpython
 mpi4py
 mutagen
 networkx
