@@ -123,8 +123,10 @@ html_favicon = 'covid19_stats.ico'
 ## use the topN_json that exists right now. Not a stateless solution.
 ## extremely stateful, but oh hell oh well...
 html_context = {
-    #'dataset_size_formatted' : utility_functions.get_dataset_size_formatted(
-    #    mainURL = 'https://tanimislam.sfo3.digitaloceanspaces.com', verify = False ),
+    'dataset_size_formatted' : utility_functions.get_dataset_size_formatted(
+        mainURL = 'https://tanimislam.sfo3.digitaloceanspaces.com',
+        verify = False,
+        dataset_dir = '/g/g12/islam5/ws-islam5/covid19movies/docs' ),
     'topN_json' : utility_functions.get_topN_json(
         mainURL = 'https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_topN_LATEST.json',
         verify = False,

@@ -1,4 +1,4 @@
-import requests, urllib3, json, os, logging, time
+import requests, urllib3, json, os, logging, time, pathlib
 from bs4 import BeautifulSoup
 #
 ## disable insecure connection warnings
@@ -25,13 +25,22 @@ def _format_size( fsize_b ):
     fsize_gb = fsize_mb / 1024.0
     return "%.2f GiB" % fsize_gb
 
-def get_dataset_size_formatted( mainURL = 'https://tanimislam.sfo3.digitaloceanspaces.com', verify = True ):
+def get_dataset_size_formatted(
+    mainURL = 'https://tanimislam.sfo3.digitaloceanspaces.com',
+    verify = True,
+    dataset_dir = None ):
     """
     Gets the size of the dataset in our default CDN: https://tanimislam.sfo3.digitaloceanspaces.com
 
     :param str mainURL: the location where the COVID-19 movies and figures live. These movies and figures are meant to live under ``<mainURL>/covid19movies/``.
     :param bool verify: whether to verify SSL connections to ``mainURL``. Default is ``True``.
     """
+    if dataset_dir is not None:
+        assert( os.path.isdir( dataset_dir ) )
+        fpaths = list(filter(lambda pth: pth.is_file( ), pathlib.Path( dataset_dir ).rglob('*') ) )
+        total_size = sum(list(map(lambda pth: pth.stat( ).st_size, fpaths ) ) )
+        return _format_size( total_size )
+        
     response = requests.get( mainURL, verify = verify )
     if response.status_code != 200:
         raise ValueError("Error, could not access URL = %s." % mainURL )
