@@ -116,11 +116,20 @@ html_favicon = 'covid19_stats.ico'
 #
 ## put variables into html_context dictionary
 ## follow advice from https://www.ericholscher.com/blog/2016/jul/25/integrating-jinja-rst-sphinx/
-## beginning use case: how much data lies in the 
+## beginning use case: how much data lies in the covid19 analysis dataset
+
+##
+## because current where-this-lives is being EXTRA difficult
+## use the topN_json that exists right now. Not a stateless solution.
+## extremely stateful, but oh hell oh well...
 html_context = {
-    'dataset_size_formatted' : utility_functions.get_dataset_size_formatted(
-        mainURL = 'https://tanimislam.sfo3.digitaloceanspaces.com', verify = False ),
+    #'dataset_size_formatted' : utility_functions.get_dataset_size_formatted(
+    #    mainURL = 'https://tanimislam.sfo3.digitaloceanspaces.com', verify = False ),
     'topN_json' : utility_functions.get_topN_json(
-        mainURL = 'https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_topN_LATEST.json', verify = False ),
-    'created_readme_template' : utility_functions.create_readme_from_template( verify = False ),
+        mainURL = 'https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_topN_LATEST.json',
+        verify = False,
+        topN_json = '/g/g12/islam5/ws-islam5/covid19movies/docs/covid19_topN_LATEST.json' ),
+    'created_readme_template' : utility_functions.create_readme_from_template(
+        verify = False,
+        topN_json = '/g/g12/islam5/ws-islam5/covid19movies/docs/covid19_topN_LATEST.json' )
     }

@@ -43,7 +43,9 @@ def get_dataset_size_formatted( mainURL = 'https://tanimislam.sfo3.digitaloceans
     total_size = sum(list(map( lambda elem: float( elem.Size.text ), filter(None, contents_entries ) ) ) )
     return _format_size( total_size )
 
-def get_topN_json( mainURL = 'https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_topN_LATEST.json', verify = True ):
+def get_topN_json( mainURL = 'https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_topN_LATEST.json',
+                  verify = True,
+                  topN_json = None ):
     """
     Gets the summary COVID-19 cumulative cases and deaths for the top :math:`N > 1` (by population) MSA_\ s in the United States.
     
@@ -52,15 +54,19 @@ def get_topN_json( mainURL = 'https://tanimislam.sfo3.digitaloceanspaces.com/cov
 
     .. _MSA: https://en.wikipedia.org/wiki/Metropolitan_statistical_area
     """
-    response = requests.get( mainURL, verify = verify )
-    if response.status_code != 200:
-        raise ValueError( "Error, could not access %s." % mainURL )
-    json_data = json.loads( response.content )
+    if topN_json is None:
+        response = requests.get( mainURL, verify = verify )
+        if response.status_code != 200:
+            raise ValueError( "Error, could not access %s." % mainURL )
+        json_data = json.loads( response.content )
+    else:
+        assert( os.path.isfile( topN_json ) )
+        json_data = json.load( open( topN_json, 'r' ) )
     def _reformat_entry( entry ):
         return dict(map(lambda tup: ( '_'.join( tup[0].split()).replace(".",""), tup[1] ), entry.items()))
     return list(map(_reformat_entry, json_data))
 
-def create_readme_from_template( verify = True ):
+def create_readme_from_template( verify = True, topN_json = None ):
     time0 = time.time( )
     from covid19_stats.engine.core import create_readme_from_template
     from covid19_stats import resourceDir
@@ -69,6 +75,6 @@ def create_readme_from_template( verify = True ):
     create_readme_from_template(
         mainURL = 'https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies',
         dirname_for_readme_location = os.path.dirname( resourceDir ),
-        verify = verify )
+        verify = verify, topN_json = topN_json )
     logging.info( 'created a template in %0.3f seconds.' % ( time.time( ) - time0 ) )
     return True
