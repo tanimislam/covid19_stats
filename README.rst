@@ -322,7 +322,7 @@ Here is some output from using this COVID-19 tracker. The data lives underneath 
        - 2,221,208
        - 14 March 2020
        - 424
-       - 220,403
+       - 220,405
        - 3,021
        - 80,230
        - Hamilton County, Ohio
@@ -472,8 +472,8 @@ Here is some output from using this COVID-19 tracker. The data lives underneath 
        - 1,265,108
        - 08 March 2020
        - 430
-       - 131,810
-       - 1,937
+       - 131,832
+       - 1,939
        - 81,762
        - Jefferson County, Kentucky
      * - 45
