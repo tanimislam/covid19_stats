@@ -62,7 +62,7 @@ Here is some output from using this COVID-19 tracker. The data lives underneath 
        - 9,458,539
        - 24 January 2020
        - 489
-       - 1,004,169
+       - 1,004,273
        - 17,605
        - 552,466
        - Cook County, Illinois
