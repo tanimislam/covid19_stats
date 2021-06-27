@@ -125,13 +125,13 @@ html_favicon = 'covid19_stats.ico'
 html_context = {
     'dataset_size_formatted' : utility_functions.get_dataset_size_formatted(
         mainURL = 'https://tanimislam.sfo3.digitaloceanspaces.com',
-        verify = False,
-        dataset_dir = '/g/g12/islam5/ws-islam5/covid19movies/docs' ),
+        verify = False ),
+    #dataset_dir = '/g/g12/islam5/ws-islam5/covid19movies/docs' ),
     'topN_json' : utility_functions.get_topN_json(
         mainURL = 'https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_topN_LATEST.json',
-        verify = False,
-        topN_json = '/g/g12/islam5/ws-islam5/covid19movies/docs/covid19_topN_LATEST.json' ),
+        verify = False ),
+    #topN_json = '/g/g12/islam5/ws-islam5/covid19movies/docs/covid19_topN_LATEST.json' ),
     'created_readme_template' : utility_functions.create_readme_from_template(
-        verify = False,
-        topN_json = '/g/g12/islam5/ws-islam5/covid19movies/docs/covid19_topN_LATEST.json' )
+        verify = False ),
+    # topN_json = '/g/g12/islam5/ws-islam5/covid19movies/docs/covid19_topN_LATEST.json' )
     }
