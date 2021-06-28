@@ -18,6 +18,8 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
 
   
   
@@ -36,6 +38,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
@@ -179,8 +182,8 @@
 <h1><span class="section-number">4.2. </span>covid19_stats.engine module<a class="headerlink" href="#covid19-stats-engine-module" title="Permalink to this headline">¶</a></h1>
 <p>This contains all the back-end functionality used by the CLI programs (see <a class="reference internal" href="../cli/cli.html#using-the-cli"><span class="std std-numref">Section 3</span></a>), and two fairly simple utility functions.</p>
 <span class="target" id="module-covid19_stats.engine"></span><dl class="py function">
-<dt id="covid19_stats.engine.find_plausible_maxnum">
-<code class="sig-prename descclassname"><span class="pre">covid19_stats.engine.</span></code><code class="sig-name descname"><span class="pre">find_plausible_maxnum</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maxnum</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.engine.find_plausible_maxnum" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="covid19_stats.engine.find_plausible_maxnum">
+<span class="sig-prename descclassname"><span class="pre">covid19_stats.engine.</span></span><span class="sig-name descname"><span class="pre">find_plausible_maxnum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maxnum</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.engine.find_plausible_maxnum" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a default plausible limit, for the plotting of COVID-19 cumulative cases and deaths located in <a class="reference internal" href="covid19_stats_engine_viz_api.html#module-covid19_stats.engine.viz" title="covid19_stats.engine.viz"><code class="xref py py-mod docutils literal notranslate"><span class="pre">viz</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -196,8 +199,8 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="covid19_stats.engine.get_string_commas_num">
-<code class="sig-prename descclassname"><span class="pre">covid19_stats.engine.</span></code><code class="sig-name descname"><span class="pre">get_string_commas_num</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.engine.get_string_commas_num" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="covid19_stats.engine.get_string_commas_num">
+<span class="sig-prename descclassname"><span class="pre">covid19_stats.engine.</span></span><span class="sig-name descname"><span class="pre">get_string_commas_num</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.engine.get_string_commas_num" title="Permalink to this definition">¶</a></dt>
 <dd><p>This is the secret-sauce of formatting integers as strings with commas for every 3 digits. For example, <code class="docutils literal notranslate"><span class="pre">1234</span></code> becomes “1,234”. I copied code from <a class="reference external" href="https://intellipaat.com/community/2447/how-to-print-number-with-commas-as-thousands-separators">this location</a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -213,8 +216,8 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="covid19_stats.engine.get_string_commas_num_float">
-<code class="sig-prename descclassname"><span class="pre">covid19_stats.engine.</span></code><code class="sig-name descname"><span class="pre">get_string_commas_num_float</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.engine.get_string_commas_num_float" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="covid19_stats.engine.get_string_commas_num_float">
+<span class="sig-prename descclassname"><span class="pre">covid19_stats.engine.</span></span><span class="sig-name descname"><span class="pre">get_string_commas_num_float</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.engine.get_string_commas_num_float" title="Permalink to this definition">¶</a></dt>
 <dd><p>This is the secret-sauce of formatting floats as strings with commas for every 3 digits. For example, <code class="docutils literal notranslate"><span class="pre">1234.56</span></code> becomes “1,234.56”. I copied code from <a class="reference external" href="https://stackoverflow.com/questions/10677350/convert-float-to-comma-separated-string/10677386">this other location</a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
