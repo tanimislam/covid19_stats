@@ -39,6 +39,8 @@
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -168,15 +170,18 @@
   <div class="section" id="getting-started">
 <span id="id1"></span><h1><span class="section-number">1. </span>GETTING STARTED<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
 <p>Here’s how to install this repository, and to create COVID-19 case and death movies and figures for the United States as a whole, and specific regions inside it. Mentions of <code class="docutils literal notranslate"><span class="pre">python3.7</span></code> are specific to the installation environment of one of <a class="reference external" href="https://tanimislam.github.io">Tanim Islam’s</a> machines, <em>and should not be taken as universal</em>.</p>
-<p>First clone this repo using the command,</p>
+<ol class="arabic">
+<li><p>First clone this repo using the command,</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git clone https://github.com/tanimislam/covid19_stats.git</span>
 </pre></div>
 </div>
-<p>You will get the main directory structure, but you will notice that the <code class="docutils literal notranslate"><span class="pre">covid19_stats/covid-19-data</span></code> submodule is empty. To populate it, run</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git submodule update --init --recursive</span>
+</li>
+<li><p>You will get the main directory structure, but you will notice that the <code class="docutils literal notranslate"><span class="pre">covid19_stats/covid-19-data</span></code> submodule is empty. To populate it, run</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git submodule update --init --recursive --progress</span>
 </pre></div>
 </div>
-<p>The requirements are in the <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code>. You should be able to install these Python packages into your <em>user</em> Python library (typically at <code class="docutils literal notranslate"><span class="pre">~/.local/lib/python3.X/site-packages</span></code>) by running,</p>
+</li>
+<li><p>The requirements are in the <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code>. You should be able to install these Python packages into your <em>user</em> Python library (typically at <code class="docutils literal notranslate"><span class="pre">~/.local/lib/python3.X/site-packages</span></code>) by running,</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install -r requirements.txt</span>
 <span class="go">pip install --user -e .</span>
 </pre></div>
@@ -184,6 +189,16 @@
 <p>Of course, if you feel adventurous, you can install all-in-one-go by doing this,</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install --user git+https://github.com/tanimislam/covid19_stats.git#egginfo=covid19_stats</span>
 </pre></div>
+</div>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you are running the <a class="reference external" href="https://www.anaconda.com">Anaconda</a> Python distribution, I suggest you do this before step #3.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">conda install --channel conda-forge cartopy mpi4mpy openmpi</span>
+</pre></div>
+</div>
+<p>These will install not only those Python modules, Cartopy and mpi4py, but also the lower-level libraries on which those module</p>
 </div>
 </div>
 
