@@ -149,7 +149,7 @@ def get_incident_data( data = None, multiprocess = True ):
     * ``df`` is the :py:class:`DataFrame <pandas.DataFrame>` that contains COVID-19 cumulative case and death data for all counties or territorial units in that region.
     * ``df_1day`` is the :py:class:`DataFrame <pandas.DataFrame>` that contains the 1-day averaged COVID-19 *new* case and death data for all counties or territorial units in that region.
     * ``df_7day`` is the :py:class:`DataFrame <pandas.DataFrame>` that contains the 7-day averaged COVID-19 *new* case and death data for all counties or territorial units in that region.
-    * ``prefix` is the :py:class:`string <str>` inherited from the input ``prefix`` key in the ``data`` :py:class:`dict`.
+    * ``prefix`` is the :py:class:`string <str>` inherited from the input ``prefix`` key in the ``data`` :py:class:`dict`.
     * ``region name`` is the :py:class:`string <str>` inherited from the input ``region name`` key in the ``data`` :py:class:`dict`.
     * ``population`` is the :py:class:`int` inherited from the input ``population`` key in the ``data`` :py:class:`dict`.
     * ``fips`` is the :py:class:`set` inherited from the input ``fips`` key in the ``data`` :py:class:`dict`.
