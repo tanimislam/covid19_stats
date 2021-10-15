@@ -6,46 +6,41 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>2. RESOURCES &mdash; COVID19_STATS 1.0 documentation</title>
   
 
   
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-
-  
   
     <link rel="shortcut icon" href="_static/covid19_stats.ico"/>
   
-
   
   
 
   
-
-  
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="3. USING THE CLI" href="cli/cli.html" />
@@ -88,7 +83,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -106,7 +100,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -141,20 +134,18 @@
 
 
 
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li><span class="section-number">2. </span>RESOURCES</li>
+      <li>2. RESOURCES</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="_sources/resources.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -169,7 +160,7 @@
            <div itemprop="articleBody">
             
   <div class="section" id="resources">
-<span id="resources-directory"></span><h1><span class="section-number">2. </span>RESOURCES<a class="headerlink" href="#resources" title="Permalink to this headline">¶</a></h1>
+<span id="resources-directory"></span><h1>2. RESOURCES<a class="headerlink" href="#resources" title="Permalink to this headline">¶</a></h1>
 <p>The <code class="docutils literal notranslate"><span class="pre">resources</span></code> subfolder consists of US census shapefile data, taken from <a class="reference external" href="https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.html">this URL</a>. The exploded ZIP archive of US counties was downloaded on 7 APRIL 2021 from <a class="reference external" href="https://www2.census.gov/geo/tiger/GENZ2019/shp/cb_2019_us_county_500k.zip">cb_2019_us_county_500k.zip</a>. The FIPS data processed from the SHP files is stored in <a class="reference download internal" download="" href="_downloads/1d937896310f32617fa823a5255073f8/fips_2019_data.pkl.gz"><code class="xref download docutils literal notranslate"><span class="pre">resources/fips_2019_data.pkl.gz</span></code></a>.</p>
 <p>I also want to find <em>recent</em> data that organizes counties (by FIPS code) into metropolitan areas. I was able to find the Excel spreadsheet of the <a class="reference external" href="https://www2.census.gov/programs-surveys/popest/datasets/2010-2019/metro/totals/cbsa-est2019-alldata.csv">2019 metropolitan statistical areas</a>. I have downloaded this Excel spreadsheet in <a class="reference download internal" download="" href="_downloads/6bab345e984828163a66bd8a8d90ff57/msa_2019.csv"><code class="xref download docutils literal notranslate"><span class="pre">resources/msa_2019.csv</span></code></a>, and the Excel spreadsheet version <a class="reference download internal" download="" href="_downloads/ced8b703c41e5da4ab5d82865167e50d/msa_2019.xlsx"><code class="xref download docutils literal notranslate"><span class="pre">resources/msa_2019.xlsx</span></code></a>.</p>
 <p>Finally, <a class="reference download internal" download="" href="_downloads/7657f2341dad4c944c9a0b8b24834c92/README_template.rst"><code class="xref download docutils literal notranslate"><span class="pre">resources/README_template.rst</span></code></a> is a template file that <a class="reference internal" href="cli/covid19_update_readme.html#covid19-update-readme"><span class="std std-ref">covid19_update_readme</span></a> or the <a class="reference download internal" download="" href="_downloads/5c420456f4d5a3eae13379e10bc763f3/Makefile"><code class="xref download docutils literal notranslate"><span class="pre">Sphinx</span> <span class="pre">makefile</span></code></a> uses to <em>regenerate</em> the top-level <a class="reference download internal" download="" href="_downloads/45ef0c4a17fd5e711dad60ef09beca28/README.rst"><code class="xref download docutils literal notranslate"><span class="pre">README.rst</span></code></a>.</p>
@@ -180,29 +171,29 @@
            
           </div>
           <footer>
+  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="cli/cli.html" class="btn btn-neutral float-right" title="3. USING THE CLI" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="installation.html" class="btn btn-neutral float-left" title="1. GETTING STARTED" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+      
+        <a href="cli/cli.html" class="btn btn-neutral float-right" title="3. USING THE CLI" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="installation.html" class="btn btn-neutral float-left" title="1. GETTING STARTED" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, Tanim Islam.
+        &copy; Copyright 2021, Tanim Islam
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
+
         </div>
       </div>
 
@@ -210,6 +201,7 @@
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {
