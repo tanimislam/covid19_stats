@@ -9,6 +9,7 @@ pyshp
 pathos
 proj
 PyPDF2
+rapidfuzz
 scipy
 shapely
 tabulate

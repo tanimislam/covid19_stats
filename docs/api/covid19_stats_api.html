@@ -331,11 +331,30 @@
 </dd></dl>
 
 <dl class="method">
+<dt id="covid19_stats.COVID19Database.fips_dataframe_2019">
+<em class="property">classmethod </em><code class="sig-name descname">fips_dataframe_2019</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.COVID19Database.fips_dataframe_2019" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></a> with following columns: FIPS, county name, state or territory, and population. Data comes from <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> vomited out by <a class="reference internal" href="#covid19_stats.COVID19Database.fips_popdict_2019" title="covid19_stats.COVID19Database.fips_popdict_2019"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fips_popdict_2019</span></code></a> and <code class="xref py py-meth docutils literal notranslate"><span class="pre">fips_countystate_dict</span></code>.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="covid19_stats.COVID19Database.fips_msas_2019">
 <em class="property">classmethod </em><code class="sig-name descname">fips_msas_2019</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.COVID19Database.fips_msas_2019" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>the <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> of county <a class="reference external" href="https://en.wikipedia.org/wiki/FIPS_county_code">FIPS code</a> to the <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a>, identified by its prefix (for example, <code class="docutils literal notranslate"><span class="pre">nyc</span></code> is the New York City metropolitan area). <em>Implictly</em>, this <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> only contains the counties that lie within an <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a>.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.10)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="covid19_stats.COVID19Database.fips_popdict_2019">
+<em class="property">classmethod </em><code class="sig-name descname">fips_popdict_2019</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.COVID19Database.fips_popdict_2019" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> of county population data. It returns the <em>same</em> data structure as what <a class="reference internal" href="covid19_stats_engine_gis_api.html#covid19_stats.engine.gis.create_fips_popmap_2019" title="covid19_stats.engine.gis.create_fips_popmap_2019"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_and_store_fips_2019</span></code></a> returns.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.10)">dict</a></p>

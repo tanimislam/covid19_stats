@@ -49,6 +49,7 @@ setup(
     ## the executables I am creating
     entry_points = {
         'console_scripts' : [
+            'covid19_create_region = covid19_stats.cli.covid19_create_region:main',
             'covid19_create_movie_or_summary = covid19_stats.cli.covid19_create_movie_or_summary:main',
             'covid19_state_summary = covid19_stats.cli.covid19_state_summary:main',
             'covid19_region_summary_rate = covid19_stats.cli.covid19_region_summary_rate:main',

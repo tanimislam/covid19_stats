@@ -226,6 +226,12 @@ class COVID19Database( object ):
                 map(lambda rname: ( self.data_nonconus_states_territories[ rname ][ 'region name' ], rname ),
                     self.data_nonconus_states_territories ) )
 
+            #
+            ## now modify the fips_popdict_2019. Any county NOT in there has a population of zero!
+            remaining_fips = set(self.fips_countystate_dict) - set(self.fips_popdict_2019)
+            for fips in remaining_fips:
+                self.fips_popdict_2019[ fips ] = 0
+
     #
     ## hidden singleton instance
     __instance = None
@@ -245,6 +251,29 @@ class COVID19Database( object ):
         inst = COVID19Database._getInstance( )
         return inst.fips_data_2019
 
+    @classmethod
+    def fips_popdict_2019( cls ):
+        """
+        :returns: the :py:class:`dict` of county population data. It returns the *same* data structure as what :py:meth:`create_and_store_fips_2019  <covid19_stats.engine.gis.create_fips_popmap_2019>` returns.
+        :rtype: dict
+        """
+        inst = COVID19Database._getInstance( )
+        return inst.fips_popdict_2019
+
+    @classmethod
+    def fips_dataframe_2019( cls ):
+        """
+        Returns a :py:class:`DataFrame <pandas.DataFrame>` with following columns: FIPS, county name, state or territory, and population. Data comes from :py:class:`dict` vomited out by :py:meth:`fips_popdict_2019 <covid19_stats.COVID19Database.fips_popdict_2019>` and :py:meth:`fips_countystate_dict <<covid19_stats.COVID19Database.fips_countystate_dict>`.
+        """
+        inst = COVID19Database._getInstance( )
+        
+        fips_in_order = sorted( inst.fips_countystate_dict )
+        county_in_order = list(map(lambda fips: inst.fips_countystate_dict[ fips ][ 'county' ], fips_in_order ) )
+        state_in_order = list(map(lambda fips: inst.fips_countystate_dict[ fips ][ 'state' ], fips_in_order ) )
+        pop_in_order = numpy.array(list(map(lambda fips: inst.fips_popdict_2019[ fips ], fips_in_order ) ), dtype=int )
+        return pandas.DataFrame({
+            'fips' : fips_in_order, 'county' : county_in_order, 'state_or_territory' : state_in_order, 'population' : pop_in_order })
+    
     @classmethod
     def fips_adj_2018( cls ):
         """
