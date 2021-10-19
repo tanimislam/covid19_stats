@@ -31,7 +31,7 @@ def get_mp4_album_name( inc_data ):
     """
     This method operates on MP4_ movie output from command line tools that produce COVID-19 case and death summary movies -- such as :ref:`covid19_create_movie_or_summary`, :ref:`covid19_state_summary`, or :ref:`covid19_movie_updates` -- or methods that create MP4_ files -- such as :py:meth:`create_summary_cases_or_deaths_movie_frombeginning <covid19_stats.engine.viz.create_summary_cases_or_deaths_movie_frombeginning>` or :py:meth:`create_summary_movie_frombeginning <covid19_stats.engine.viz.create_summary_movie_frombeginning>`.
 
-    It determines whether the geographic region is classified as a ``STATE``, ``CONUS``, or a ``METROPOLITAN STATISTICAL AREA``. It is used in four CLI functionalities:
+    It determines whether the geographic region is classified as a ``STATE``, ``CONUS``, ``METROPOLITAN STATISTICAL AREA``, or ``CUSTOM REGION``. It is used in four CLI functionalities:
 
     * :ref:`movie mode functionality for covid19_create_movie_or_summary <movie_mode>`.
     * :ref:`movie cases death mode functionality for covid19_create_movie_or_summary <movie_cases_deaths_mode>`.
@@ -55,11 +55,14 @@ def get_mp4_album_name( inc_data ):
     """
     data_states_territories_names = set( COVID19Database.data_states( ) ) | set(
         COVID19Database.data_nonconus_states_territories())
+    data_msas_names = set( COVID19Database.data_msas_2019( ) )
     if inc_data['prefix'] in data_states_territories_names:
         return 'STATE'
     if inc_data['prefix'].lower( ) == 'conus':
         return 'CONUS'
-    return 'METROPOLITAN STATISTICAL AREA'
+    if inc_data['prefix'] in data_msas_names:
+        return 'METROPOLITAN STATISTICAL AREA'
+    return 'CUSTOM REGION'
 
 #
 ## now stuff associated with the fips : county/state mapping
