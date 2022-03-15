@@ -23,7 +23,7 @@ Here is some output from using this COVID-19 tracker. The data lives underneath 
 
 * The summary of COVID-19 statistics for the top 50 MSAs by estimated 2019 population.
   
-  .. list-table:: COVID-19 STATS FOR 50 METROS AS OF 13 MARCH 2022
+  .. list-table:: COVID-19 STATS FOR 50 METROS AS OF 14 MARCH 2022
      :widths: auto
 
      * - RANK
@@ -41,77 +41,77 @@ Here is some output from using this COVID-19 tracker. The data lives underneath 
        - NYC Metro Area
        - 19,216,182
        - 01 March 2020
-       - 742
-       - 5,123,745
-       - 77,404
-       - 2,286,771
+       - 743
+       - 5,124,826
+       - 77,410
+       - 2,287,334
        - New York City, New York
      * - 2
        - losangeles
        - LA Metro Area
        - 18,711,436
        - 25 January 2020
-       - 778
-       - 4,776,357
-       - 52,567
-       - 2,812,568
+       - 779
+       - 4,779,914
+       - 52,693
+       - 2,814,393
        - Los Angeles County, California
      * - 3
        - chicago
        - Chicago Metro Area
        - 9,458,539
        - 24 January 2020
-       - 779
-       - 2,097,491
-       - 24,827
-       - 1,117,364
+       - 780
+       - 2,099,367
+       - 24,850
+       - 1,118,357
        - Cook County, Illinois
      * - 4
        - dallas
        - Dallas Metro Area
        - 7,573,136
        - 09 March 2020
-       - 734
-       - 1,730,437
-       - 18,292
-       - 567,346
+       - 735
+       - 1,730,898
+       - 18,300
+       - 567,392
        - Dallas County, Texas
      * - 5
        - houston
        - Houston Metro Area
        - 7,066,141
        - 04 March 2020
-       - 739
-       - 1,543,141
-       - 15,761
-       - 996,362
+       - 740
+       - 1,543,360
+       - 15,763
+       - 996,527
        - Harris County, Texas
      * - 6
        - bayarea
        - Bay Area
        - 6,860,207
        - 31 January 2020
-       - 772
-       - 1,121,186
-       - 7,329
-       - 321,232
+       - 773
+       - 1,122,795
+       - 7,360
+       - 321,736
        - Santa Clara County, California
      * - 7
        - dc
        - DC Metro Area
        - 6,280,487
        - 05 March 2020
-       - 738
-       - 1,089,879
-       - 10,721
-       - 173,981
+       - 739
+       - 1,090,577
+       - 10,745
+       - 174,218
        - Fairfax County, Virginia
      * - 8
        - miami
        - Miami Metro Area
        - 6,166,488
        - 06 March 2020
-       - 737
+       - 738
        - 2,135,420
        - 21,113
        - 1,173,564
@@ -121,27 +121,27 @@ Here is some output from using this COVID-19 tracker. The data lives underneath 
        - Philadelphia Metro Area
        - 6,102,434
        - 06 March 2020
-       - 737
-       - 1,250,060
-       - 17,914
-       - 306,006
+       - 738
+       - 1,250,327
+       - 17,919
+       - 306,134
        - Philadelphia County, Pennsylvania
      * - 10
        - atlanta
        - Atlanta Metro Area
        - 6,020,364
        - 02 March 2020
-       - 741
-       - 1,308,147
-       - 15,208
-       - 213,411
+       - 742
+       - 1,308,708
+       - 15,232
+       - 213,519
        - Fulton County, Georgia
      * - 11
        - phoenix
        - Phoenix Metro Area
        - 4,948,203
        - 26 January 2020
-       - 777
+       - 778
        - 1,382,526
        - 17,404
        - 1,253,285
@@ -151,57 +151,57 @@ Here is some output from using this COVID-19 tracker. The data lives underneath 
        - Boston Metro Area
        - 4,873,019
        - 01 February 2020
-       - 771
-       - 1,068,847
+       - 772
+       - 1,069,981
        - 15,154
-       - 319,742
+       - 320,163
        - Middlesex County, Massachusetts
      * - 13
        - detroit
        - Detroit Metro Area
        - 4,319,629
        - 10 March 2020
-       - 733
-       - 1,011,252
-       - 17,088
-       - 394,546
+       - 734
+       - 1,012,040
+       - 17,099
+       - 394,898
        - Wayne County, Michigan
      * - 14
        - seattle
        - Seattle Metro Area
        - 3,979,845
        - 21 January 2020
-       - 782
-       - 705,961
-       - 5,057
-       - 369,046
+       - 783
+       - 707,226
+       - 5,072
+       - 369,599
        - King County, Washington
      * - 15
        - minneapolis
        - Minneapolis Metro Area
        - 3,640,043
        - 06 March 2020
-       - 737
-       - 895,285
-       - 7,314
-       - 295,599
+       - 738
+       - 895,614
+       - 7,326
+       - 295,722
        - Hennepin County, Minnesota
      * - 16
        - sandiego
        - San Diego Metro Area
        - 3,338,330
        - 10 February 2020
-       - 762
-       - 794,049
-       - 5,090
-       - 794,049
+       - 763
+       - 795,178
+       - 5,108
+       - 795,178
        - San Diego County, California
      * - 17
        - tampa
        - Tampa Metro Area
        - 3,194,831
        - 01 March 2020
-       - 742
+       - 743
        - 743,535
        - 9,641
        - 372,580
@@ -211,47 +211,47 @@ Here is some output from using this COVID-19 tracker. The data lives underneath 
        - Denver Metro Area
        - 2,967,239
        - 05 March 2020
-       - 738
-       - 666,265
-       - 5,741
-       - 165,670
+       - 739
+       - 666,575
+       - 5,747
+       - 165,862
        - Denver County, Colorado
      * - 19
        - stlouis
        - St. Louis Metro Area
        - 2,803,228
        - 07 March 2020
-       - 736
-       - 660,217
-       - 8,210
-       - 218,669
+       - 737
+       - 660,598
+       - 8,213
+       - 218,819
        - St. Louis County, Missouri
      * - 20
        - baltimore
        - Baltimore Metro Area
        - 2,800,053
        - 08 March 2020
-       - 735
-       - 440,048
-       - 6,679
-       - 131,032
+       - 736
+       - 440,116
+       - 6,680
+       - 131,047
        - Baltimore County, Maryland
      * - 21
        - charlotte
        - Charlotte Metro Area
        - 2,636,883
        - 11 March 2020
-       - 732
-       - 689,323
-       - 5,590
-       - 276,029
+       - 733
+       - 689,805
+       - 5,595
+       - 276,304
        - Mecklenburg County, North Carolina
      * - 22
        - orlando
        - Orlando Metro Area
        - 2,608,147
        - 12 March 2020
-       - 731
+       - 732
        - 673,590
        - 6,322
        - 373,631
@@ -261,47 +261,47 @@ Here is some output from using this COVID-19 tracker. The data lives underneath 
        - San Antonio Metro Area
        - 2,550,960
        - 12 February 2020
-       - 760
-       - 666,569
+       - 761
+       - 666,644
        - 7,708
-       - 550,078
+       - 550,137
        - Bexar County, Texas
      * - 24
        - portland
        - Portland Metro Area
        - 2,492,412
        - 28 February 2020
-       - 744
-       - 368,804
-       - 3,237
-       - 111,747
+       - 745
+       - 369,374
+       - 3,246
+       - 111,911
        - Multnomah County, Oregon
      * - 25
        - sacramento
        - Sacramento Metro Area
        - 2,363,730
        - 21 February 2020
-       - 751
-       - 439,774
-       - 4,118
-       - 301,316
+       - 752
+       - 440,122
+       - 4,121
+       - 301,512
        - Sacramento County, California
      * - 26
        - pittsburgh
        - Pittsburgh Metro Area
        - 2,317,600
        - 13 March 2020
-       - 730
-       - 522,110
-       - 7,676
-       - 262,010
+       - 731
+       - 522,160
+       - 7,679
+       - 262,042
        - Allegheny County, Pennsylvania
      * - 27
        - lasvegas
        - Las Vegas Metro Area
        - 2,266,715
        - 05 March 2020
-       - 738
+       - 739
        - 514,620
        - 7,653
        - 514,620
@@ -311,19 +311,19 @@ Here is some output from using this COVID-19 tracker. The data lives underneath 
        - Austin Metro Area
        - 2,227,083
        - 13 March 2020
-       - 730
-       - 446,976
-       - 3,453
-       - 219,648
+       - 731
+       - 447,081
+       - 3,459
+       - 219,688
        - Travis County, Texas
      * - 29
        - cincinnati
        - Cincinnati Metro Area
        - 2,221,208
        - 14 March 2020
-       - 729
-       - 542,640
-       - 5,589
+       - 730
+       - 542,814
+       - 5,609
        - 186,546
        - Hamilton County, Ohio
      * - 30
@@ -331,17 +331,17 @@ Here is some output from using this COVID-19 tracker. The data lives underneath 
        - Kansas City Metro Area
        - 2,157,990
        - 07 March 2020
-       - 736
-       - 402,029
+       - 737
+       - 402,148
        - 4,317
-       - 144,643
+       - 144,708
        - Johnson County, Kansas
      * - 31
        - columbus
        - Columbus Metro Area
        - 2,122,271
        - 14 March 2020
-       - 729
+       - 730
        - 476,106
        - 4,457
        - 287,149
@@ -351,17 +351,17 @@ Here is some output from using this COVID-19 tracker. The data lives underneath 
        - Indianapolis Metro Area
        - 2,074,537
        - 06 March 2020
-       - 737
-       - 500,172
-       - 6,464
-       - 224,393
+       - 738
+       - 500,337
+       - 6,470
+       - 224,463
        - Marion County, Indiana
      * - 33
        - cleveland
        - Cleveland Metro Area
        - 2,048,449
        - 09 March 2020
-       - 734
+       - 735
        - 438,050
        - 6,124
        - 267,251
@@ -371,28 +371,28 @@ Here is some output from using this COVID-19 tracker. The data lives underneath 
        - Nashville Metro Area
        - 1,934,317
        - 05 March 2020
-       - 738
-       - 557,732
+       - 739
+       - 557,813
        - 5,283
-       - 206,359
+       - 206,440
        - Davidson County, Tennessee
      * - 35
        - virginiabeach
        - Virginia Beach Metro Area
        - 1,768,901
        - 09 March 2020
-       - 734
-       - 340,866
-       - 3,724
-       - 88,681
+       - 735
+       - 341,161
+       - 3,735
+       - 88,721
        - Virginia Beach city, Virginia
      * - 36
        - providence
        - Providence Metro Area
        - 1,624,578
        - 14 March 2020
-       - 729
-       - 478,147
+       - 730
+       - 478,235
        - 5,900
        - 217,616
        - Providence County, Rhode Island
@@ -401,17 +401,17 @@ Here is some output from using this COVID-19 tracker. The data lives underneath 
        - Milwaukee Metro Area
        - 1,575,179
        - 11 March 2020
-       - 732
-       - 438,271
-       - 3,675
-       - 267,071
+       - 733
+       - 438,444
+       - 3,697
+       - 267,176
        - Milwaukee County, Wisconsin
      * - 38
        - jacksonville
        - Jacksonville Metro Area
        - 1,559,514
        - 10 March 2020
-       - 733
+       - 734
        - 397,519
        - 5,036
        - 251,525
@@ -421,7 +421,7 @@ Here is some output from using this COVID-19 tracker. The data lives underneath 
        - Oklahoma City Metro Area
        - 1,408,950
        - 13 March 2020
-       - 730
+       - 731
        - 357,223
        - 4,094
        - 195,855
@@ -431,115 +431,115 @@ Here is some output from using this COVID-19 tracker. The data lives underneath 
        - Raleigh Metro Area
        - 1,390,785
        - 03 March 2020
-       - 740
-       - 366,526
+       - 741
+       - 366,998
        - 1,528
-       - 287,831
+       - 288,199
        - Wake County, North Carolina
      * - 41
        - memphis
        - Memphis Metro Area
        - 1,346,045
        - 08 March 2020
-       - 735
-       - 349,752
-       - 4,703
-       - 237,254
+       - 736
+       - 349,822
+       - 4,711
+       - 237,265
        - Shelby County, Tennessee
      * - 42
        - richmond
        - Richmond Metro Area
        - 1,291,900
        - 12 March 2020
-       - 731
-       - 257,487
-       - 3,161
-       - 71,502
+       - 732
+       - 257,718
+       - 3,177
+       - 71,630
        - Chesterfield County, Virginia
      * - 43
        - neworleans
        - New Orleans Metro Area
        - 1,270,530
        - 09 March 2020
-       - 734
-       - 319,458
-       - 3,806
-       - 113,182
+       - 735
+       - 319,683
+       - 3,810
+       - 113,253
        - Jefferson Parish, Louisiana
      * - 44
        - louisville
        - Louisville/Jefferson County Metro Area
        - 1,265,108
        - 08 March 2020
-       - 735
-       - 354,605
-       - 3,664
-       - 225,916
+       - 736
+       - 354,990
+       - 3,671
+       - 225,989
        - Jefferson County, Kentucky
      * - 45
        - saltlakecity
        - Salt Lake City Metro Area
        - 1,232,696
        - 25 February 2020
-       - 747
-       - 361,477
-       - 1,675
-       - 340,203
+       - 748
+       - 361,646
+       - 1,679
+       - 340,366
        - Salt Lake County, Utah
      * - 46
        - hartford
        - Hartford Metro Area
        - 1,204,877
        - 14 March 2020
-       - 729
-       - 223,144
-       - 3,822
-       - 175,283
+       - 730
+       - 223,320
+       - 3,827
+       - 175,398
        - Hartford County, Connecticut
      * - 47
        - buffalo
        - Buffalo Metro Area
        - 1,127,983
        - 15 March 2020
-       - 728
-       - 254,020
-       - 3,165
-       - 206,602
+       - 729
+       - 254,067
+       - 3,166
+       - 206,636
        - Erie County, New York
      * - 48
        - birmingham
        - Birmingham Metro Area
        - 1,090,435
        - 13 March 2020
-       - 730
-       - 301,087
-       - 3,625
-       - 183,787
+       - 731
+       - 301,182
+       - 3,636
+       - 183,834
        - Jefferson County, Alabama
      * - 49
        - grandrapids
        - Grand Rapids Metro Area
        - 1,077,370
        - 12 March 2020
-       - 731
-       - 276,245
+       - 732
+       - 276,390
        - 2,658
-       - 165,490
+       - 165,595
        - Kent County, Michigan
      * - 50
        - rochester
        - Rochester Metro Area
        - 1,069,644
        - 11 March 2020
-       - 732
-       - 209,867
+       - 733
+       - 209,920
        - 2,151
-       - 149,850
+       - 149,891
        - Monroe County, New York
 
 .. _png_figures:
 	 
-* The COVID-19 trends in cases and deaths for these 6 metropolitan areas as of 13 MARCH 2022: SF Bay Area; Washington, DC; Richmond, VA; NYC; Los Angeles; and New Orleans.
+* The COVID-19 trends in cases and deaths for these 6 metropolitan areas as of 14 MARCH 2022: SF Bay Area; Washington, DC; Richmond, VA; NYC; Los Angeles; and New Orleans.
 
   .. list-table::
      :widths: auto
@@ -559,7 +559,7 @@ Here is some output from using this COVID-19 tracker. The data lives underneath 
 
 .. _gif_animations:
   
-* GIF'd video animations of the COVID-19 trends in cases/deaths for NYC, Chicago, Seattle, SF Bay Area, DC, and Richmond, as of 13 MARCH 2022.	  
+* GIF'd video animations of the COVID-19 trends in cases/deaths for NYC, Chicago, Seattle, SF Bay Area, DC, and Richmond, as of 14 MARCH 2022.	  
 
   .. list-table::
      :widths: auto
@@ -583,7 +583,7 @@ Here is some output from using this COVID-19 tracker. The data lives underneath 
        - `Houston, TX <https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_houston_LATEST.mp4>`_
        - `Dallas, TX <https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_dallas_LATEST.mp4>`_
 
-  And here is the animation for the continental United States as of 13 MARCH 2022
+  And here is the animation for the continental United States as of 14 MARCH 2022
 
   .. list-table::
      :widths: auto
@@ -591,7 +591,7 @@ Here is some output from using this COVID-19 tracker. The data lives underneath 
      * - |anim_gif_conus|
      * - `Continental United States <https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_conus_LATEST.mp4>`_
 
-* GIF'd video animations of the COVID-19 trends in cases/deaths for California, Texas, Florida, and Virginia, as of 13 MARCH 2022.
+* GIF'd video animations of the COVID-19 trends in cases/deaths for California, Texas, Florida, and Virginia, as of 14 MARCH 2022.
 
   .. list-table::
      :widths: auto
