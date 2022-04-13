@@ -212,8 +212,8 @@ Here is some output from using this COVID-19 tracker. The data lives underneath 
        - 2,967,239
        - 05 March 2020
        - 767
-       - 681,687
-       - 5,778
+       - 682,281
+       - 5,780
        - 169,686
        - Denver County, Colorado
      * - 19
