@@ -1,0 +1,172 @@
+<!-- 
+     Follow instructions from https://stackoverflow.com/questions/23211695/modifying-content-width-of-the-sphinx-theme-read-the-docs/33626140#33626140 on wideness in sphinx rtd_theme
+     This is for layout.html
+*/
+--> 
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.8. covid19_create_region &mdash; COVID19_STATS 1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/covid19_stats.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3.9. covid19_region_updates" href="covid19_region_updates.html" />
+    <link rel="prev" title="3.7. covid19_update_readme" href="covid19_update_readme.html" />
+    <link href="../_static/style.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> COVID19_STATS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">1. GETTING STARTED</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resources.html">2. RESOURCES</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="cli.html">3. USING THE CLI</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="covid19_update_database.html">3.1. covid19_update_database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_create_movie_or_summary.html">3.2. covid19_create_movie_or_summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_state_summary.html">3.3. covid19_state_summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_region_summary_rate.html">3.4. covid19_region_summary_rate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_movie_updates.html">3.5. covid19_movie_updates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_post2server.html">3.6. covid19_post2server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_update_readme.html">3.7. covid19_update_readme</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3.8. covid19_create_region</a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_region_updates.html">3.9. covid19_region_updates</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/api.html">4. THE COVID19_STATS API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">COVID19_STATS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="cli.html"><span class="section-number">3. </span>USING THE CLI</a> &raquo;</li>
+      <li><span class="section-number">3.8. </span>covid19_create_region</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/cli/covid19_create_region.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="covid19-create-region">
+<span id="id3"></span><h1><span class="section-number">3.8. </span>covid19_create_region<a class="headerlink" href="#covid19-create-region" title="Permalink to this headline"></a></h1>
+<p>This CLI is designed to create a custom geographical region, consisting of multiple counties, in a single state or US territory.</p>
+<p>It has an associated CLI front-end, <a class="reference internal" href="covid19_region_updates.html#covid19-region-updates"><span class="std std-ref">covid19_region_updates</span></a>, that creates the latest COVID-19 summary of that region. Its help output, when running <code class="docutils literal notranslate"><span class="pre">covid19_create_region</span> <span class="pre">-h</span></code>, is the following,</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: covid19_create_region [-h] -c [COUNTIES [COUNTIES ...]] -s STATE -p PREFIX -n NAME</span>
+
+<span class="go">optional arguments:</span>
+<span class="go">  -h, --help            show this help message and exit</span>
+<span class="go">  -c [COUNTIES [COUNTIES ...]], --counties [COUNTIES [COUNTIES ...]]</span>
+<span class="go">                        List of counties (all in a single state) out of which to create a geographical region.</span>
+<span class="go">  -s STATE, --state STATE</span>
+<span class="go">                        The single state from which to create a geographical region.</span>
+<span class="go">  -p PREFIX, --prefix PREFIX</span>
+<span class="go">                        The prefix of the geographical region. Must be a single word.</span>
+<span class="go">  -n NAME, --name NAME  Name of the geographical region.</span>
+</pre></div>
+</div>
+<p>Given a list of counties, the state, and the name of the geographical region, it spits out a <a class="reference external" href="https://en.wikipedia.org/wiki/JSON">JSON</a> region file that <a class="reference internal" href="covid19_region_updates.html#covid19-region-updates"><span class="std std-ref">covid19_region_updates</span></a> can understand. Here are what the separate flags mean:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-c</span></code> or <code class="docutils literal notranslate"><span class="pre">--counties</span></code> specify the separate counties in this region.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-s</span></code> of <code class="docutils literal notranslate"><span class="pre">--state</span></code> specifies the state in which these counties reside.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-p</span></code> or <code class="docutils literal notranslate"><span class="pre">--prefix</span></code> is the prefix name of the underlying <a class="reference external" href="https://en.wikipedia.org/wiki/JSON">JSON</a> file.</p></li>
+</ul>
+<p>Best to show-by-example, where I am creating the <a class="reference external" href="https://www.vdh.virginia.gov/blue-ridge">Blue Ridge Health District</a> (consisting of six counties) geographical region like so,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">covid19_create_region</span> \
+  <span class="o">-</span><span class="n">c</span> <span class="n">Charlottesville</span> <span class="n">Albemarle</span> <span class="n">Nelson</span> <span class="n">Greene</span> <span class="n">Louisa</span> <span class="n">Fluvanna</span> \
+  <span class="o">-</span><span class="n">s</span> <span class="n">Virginia</span> <span class="o">-</span><span class="n">p</span> <span class="n">brhd</span> \
+  <span class="o">-</span><span class="n">n</span> <span class="s2">&quot;Blue Ridge Health District&quot;</span>
+</pre></div>
+</div>
+<p>Here’s the flow of the CLI with confirmation prompt.</p>
+<p>It prompts for whether the list of counties look acceptable. If you chose <code class="docutils literal notranslate"><span class="pre">y</span></code> to the list of counties, this creates a geographical region file, <a class="reference download internal" download="" href="../_downloads/e4c1ff05ee9c9748fd576e725142e019/brhd.json"><code class="xref download docutils literal notranslate"><span class="pre">brhd.json</span></code></a>.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+ <span class="nt">&quot;prefix&quot;</span><span class="p">:</span> <span class="s2">&quot;brhd&quot;</span><span class="p">,</span>
+ <span class="nt">&quot;region name&quot;</span><span class="p">:</span> <span class="s2">&quot;Blue Ridge Health District&quot;</span><span class="p">,</span>
+ <span class="nt">&quot;fips&quot;</span><span class="p">:</span> <span class="p">[</span>
+  <span class="s2">&quot;51003&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;51065&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;51079&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;51109&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;51125&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;51540&quot;</span>
+ <span class="p">],</span>
+ <span class="nt">&quot;population&quot;</span><span class="p">:</span> <span class="mi">218615</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This should look pretty similar to the Python dictionary of geographical data for <a class="reference external" href="https://en.wikipedia.org/wiki/Greater_St._Louis">St. Louis</a> I show in <a class="reference internal" href="../api/covid19_stats_engine_gis_api.html#covid19_stats.engine.gis.create_and_store_msas_and_fips_2019" title="covid19_stats.engine.gis.create_and_store_msas_and_fips_2019"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_and_store_msas_and_fips_2019</span></code></a>. In the <a class="reference download internal" download="" href="../_downloads/e4c1ff05ee9c9748fd576e725142e019/brhd.json"><code class="xref download docutils literal notranslate"><span class="pre">brhd.json</span></code></a> dictionary are keys for the <code class="docutils literal notranslate"><span class="pre">prefix</span></code>, the <code class="docutils literal notranslate"><span class="pre">region</span> <span class="pre">name</span></code>, <code class="docutils literal notranslate"><span class="pre">fips</span></code> is a list of FIPS codes for its six counties, and <code class="docutils literal notranslate"><span class="pre">population</span></code> is its census-d population.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="covid19_update_readme.html" class="btn btn-neutral float-left" title="3.7. covid19_update_readme" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="covid19_region_updates.html" class="btn btn-neutral float-right" title="3.9. covid19_region_updates" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Tanim Islam.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

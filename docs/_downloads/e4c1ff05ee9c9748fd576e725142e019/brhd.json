@@ -1,0 +1,13 @@
+{
+ "prefix": "brhd",
+ "region name": "Blue Ridge Health District",
+ "fips": [
+  "51003",
+  "51065",
+  "51079",
+  "51109",
+  "51125",
+  "51540"
+ ],
+ "population": 218615
+}
