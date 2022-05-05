@@ -24,6 +24,7 @@
 .. _JSON: https://en.wikipedia.org/wiki/JSON
 .. _MSA: https://en.wikipedia.org/wiki/Metropolitan_statistical_area
 .. _CONUS: https://en.wikipedia.org/wiki/Contiguous_United_States
+.. _brhd: https://www.vdh.virginia.gov/blue-ridge
 
 .. stuff for covid19_movie_updates
    

@@ -29,8 +29,12 @@ This tooling updates the COVID-19 summary data, and the `covid19_stats repo <htt
    :align: left
 
    Diagram taken from a presentation given at the 4 March 2021 Sacramento Python meetup, depicting the *five* steps needed to update COVID-19 summary data for 26 regions in the United States. As of 4 March 2021, the data takes up nearly 1 GB of space and takes roughly 45 minutes to generate.
+
+.. note::
+
+   I gave a talk to the `Python Charlottesville Meetup <pycho_>`_ on ``21 OCTOBER 2021``, and developed two new command line tools, :ref:`covid19_create_region` and :ref:`covid19_region_updates`
    
-Here are the seven command line tools.
+Here are the nine command line tools.
 
 .. toctree::
    :maxdepth: 3
@@ -42,3 +46,6 @@ Here are the seven command line tools.
    covid19_movie_updates
    covid19_post2server
    covid19_update_readme
+
+   covid19_create_region
+   covid19_region_updates

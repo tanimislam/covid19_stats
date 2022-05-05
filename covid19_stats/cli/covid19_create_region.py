@@ -13,6 +13,19 @@ from argparse import ArgumentParser
 ## suppress warnings
 warnings.simplefilter( 'ignore' )
 
+#
+## the because-vanilla-python-JSON-encoder-is-shit problem
+## do this instead, following SO advice: https://stackoverflow.com/a/57915246
+class NpEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, numpy.integer):
+            return int(obj)
+        if isinstance(obj, numpy.floating):
+            return float(obj)
+        if isinstance(obj, numpy.ndarray):
+            return obj.tolist()
+        return super(NpEncoder, self).default(obj)
+
 def get_closest_region_match(
     df_fips, county_name, state_name,
     minimum_partial = 0.9, county_names_dict = { } ):
@@ -69,7 +82,7 @@ def create_region_json_file( df_fips, act_county_names, state_name, prefix, regi
         'region name' : region_name,
         'fips' : list_fips,
         'population' : tot_pop }
-    json.dump( region_data, open( '%s.json' % prefix, 'w' ), indent = 1 )
+    json.dump( region_data, open( '%s.json' % prefix, 'w' ), indent = 1, cls = NpEncoder )
 
 def yesno( ):
     """Simple Yes/No Function."""

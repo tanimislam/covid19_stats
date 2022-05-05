@@ -29,3 +29,21 @@ Given a list of counties, the state, and the name of the geographical region, it
 * ``-s`` of ``--state`` specifies the state in which these counties reside.
 
 * ``-p`` or ``--prefix`` is the prefix name of the underlying JSON_ file.
+
+Best to show-by-example, where I am creating the `Blue Ridge Health District <brhd_>`_ (consisting of six counties) geographical region like so,
+
+.. code-block::
+
+  covid19_create_region \
+    -c Charlottesville Albemarle Nelson Greene Louisa Fluvanna \
+    -s Virginia -p brhd \
+    -n "Blue Ridge Health District"
+
+Here's the flow of the CLI with confirmation prompt.
+    
+It prompts for whether the list of counties look acceptable. If you chose ``y`` to the list of counties, this creates a geographical region file, :download:`brhd.json <examples/brhd.json>`.
+
+.. literalinclude:: examples/brhd.json
+   :language: json
+
+This should look pretty similar to the Python dictionary of geographical data for `St. Louis <https://en.wikipedia.org/wiki/Greater_St._Louis>`_ I show in :py:meth:`create_and_store_msas_and_fips_2019 <covid19_stats.engine.gis.create_and_store_msas_and_fips_2019>`. In the :download:`brhd.json <examples/brhd.json>` dictionary are keys for the ``prefix``, the ``region name``, ``fips`` is a list of FIPS codes for its six counties, and ``population`` is its census-d population.
