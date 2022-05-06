@@ -1,0 +1,285 @@
+<!-- 
+     Follow instructions from https://stackoverflow.com/questions/23211695/modifying-content-width-of-the-sphinx-theme-read-the-docs/33626140#33626140 on wideness in sphinx rtd_theme
+     This is for layout.html
+*/
+--> 
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>covid19_post2server &mdash; COVID19_STATS 1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/covid19_stats.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link href="../../_static/style.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> COVID19_STATS
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">1. GETTING STARTED</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../resources.html">2. RESOURCES</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">3. USING THE CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/api.html">4. THE COVID19_STATS API</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">COVID19_STATS</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+      <li>covid19_post2server</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/cli/cli/covid19_post2server.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="covid19-post2server">
+<span id="id3"></span><h1>covid19_post2server<a class="headerlink" href="#covid19-post2server" title="Permalink to this headline">¶</a></h1>
+<p>This CLI is designed to be used by an external service to upload data sets created by <a class="reference internal" href="../covid19_movie_updates.html#covid19-movie-updates"><span class="std std-ref">covid19_movie_updates</span></a> to an external location. I (<a class="reference external" href="https://tanimislam.sfo3.digitaloceanspaces.com">Tanim Islam</a>) have tested it, but stopped using it, because the data set I currently have is impractically large; instead I have a private repository with a public <a class="reference external" href="https://pages.github.com">GitHub Page</a> to which I push my latest COVID-19 summary data updates. This CLI is a front-end to functionality that lives in <code class="docutils literal notranslate"><span class="pre">covid19_stats.engine.pushpull</span></code>.</p>
+<p>Its help output, when running <code class="docutils literal notranslate"><span class="pre">covid19_post2server</span> <span class="pre">-h</span></code>, is the following,</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: covid19_post2server [-h] [-d DIRNAME] -D REMOTE_DIRNAME [--pe PROCESS_ENDPOINT] [--ve VERIFY_ENDPOINT] [--info] {ssh,http} ...</span>
+
+<span class="go">positional arguments:</span>
+<span class="go">  {ssh,http}            Here, we choose the form of the connection. ssh: perform an SSH tunnel to the RESTful server. http: direct HTTP(S) connection to the RESTful server.</span>
+<span class="go">    ssh                 Use SSH tunneling to RESTful server.</span>
+<span class="go">    http                Direct HTTP or HTTPS connection to RESTful server.</span>
+
+<span class="go">optional arguments:</span>
+<span class="go">  -h, --help            show this help message and exit</span>
+<span class="go">  -d DIRNAME, --dirname DIRNAME</span>
+<span class="go">                        Name of the directory that contains the COVID-19 movies and figures to send off to the external RESTful endpoint. Default is /usr/WS2/islam5/covid19movies.</span>
+<span class="go">  -D REMOTE_DIRNAME, --remote REMOTE_DIRNAME</span>
+<span class="go">                        Name of the REMOTE (on server) directory into which to store the COVID-19 movies and figures.</span>
+<span class="go">  --pe PROCESS_ENDPOINT</span>
+<span class="go">                        The name of the PROCESSING RESTful endpoint on the remote HTTP server. Default is /api/covid19/processresults.</span>
+<span class="go">  --ve VERIFY_ENDPOINT  The name of the PROCESSING RESTful endpoint on the remote HTTP server. Default is /api/covid19/verifyprocessedresults.</span>
+<span class="go">  --info                If chosen, then print out INFO level logging statements.</span>
+</pre></div>
+</div>
+<p>Here are its top-level common arguments.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-d</span></code> or <code class="docutils literal notranslate"><span class="pre">--dirname</span></code> is the directory that contains the COVID-19 movies and figures.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-D</span></code> or <code class="docutils literal notranslate"><span class="pre">-remote</span></code> is the directory on the <em>remote</em> server into which to store the COVID-19 movies and figures.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--ve</span></code> is the <em>verification endpoint</em> for the <a class="reference external" href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST</a> server.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--pe</span></code> is the <em>processing endpoint</em> for the <a class="reference external" href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST</a> server.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--info</span></code> if chosen, then run with INFO level debugging to screen.</p></li>
+</ul>
+<p id="restful-absolute-locations">If <code class="docutils literal notranslate"><span class="pre">https://remote_http_server</span></code> is the remote HTTP(S) server, then the verification endpoint is at <code class="docutils literal notranslate"><span class="pre">https://remote_http_server/VERIFY_ENDPOINT</span></code>, and the processing endpoint is at <code class="docutils literal notranslate"><span class="pre">https://remote_http_server/PROCESSING_ENDPOINT</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">covid19_post2server</span></code> has two modes of operation, either connection through an SSH tunnel (via the <code class="docutils literal notranslate"><span class="pre">ssh</span></code> keyword as described in <a class="reference internal" href="../covid19_post2server.html#ssh-operation"><span class="std std-numref">Section 3.6.2</span></a>) or through the standard un-tunnelled connection (via the <code class="docutils literal notranslate"><span class="pre">http</span></code> keyword as described in <a class="reference internal" href="../covid19_post2server.html#http-operation"><span class="std std-numref">Section 3.6.1</span></a>). However, this construction is <em>incomplete</em>. The client <a class="reference external" href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST</a> commands that this CLI emits requires a <a class="reference external" href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST</a> server to consume those commands and <em>transfer</em> that data.</p>
+<ul class="simple">
+<li><p>The server must have a remote directory, specified by <code class="docutils literal notranslate"><span class="pre">REMOTE_DIRNAME</span></code>, that is owned by the server process.</p></li>
+<li><p>The accessible server <a class="reference external" href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST</a> remote prefix address, with the name <code class="docutils literal notranslate"><span class="pre">HTTP_SERVER</span></code> specified when running <code class="docutils literal notranslate"><span class="pre">covid19_post2server</span> <span class="pre">http</span></code>.</p></li>
+<li><p>The server <a class="reference external" href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST</a> endpoint, by default <code class="docutils literal notranslate"><span class="pre">/api/covid19/verifyprocessedresults</span></code>, used for <em>verifying</em> that the client can upload data to the server into the server’s remote directory.</p></li>
+<li><p>The server <a class="reference external" href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST</a> endpoint, by default <code class="docutils literal notranslate"><span class="pre">/api/covid19/processedresults</span></code>, used to upload data to the server’s remote directory.</p></li>
+<li><p><em>Implicitly</em>, the <a class="reference external" href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST</a> server must be able to authenticate an user by their email address and password in <a class="reference internal" href="../covid19_post2server.html#http-operation"><span class="std std-ref">http mode</span></a>, or must be able to login an user remotely through <a class="reference external" href="https://en.wikipedia.org/wiki/SSH_(Secure_Shell)">SSH</a> with their username and password in <a class="reference internal" href="../covid19_post2server.html#ssh-operation"><span class="std std-ref">ssh mode</span></a>. Also, as described in <a class="reference internal" href="../covid19_post2server.html#ssh-operation"><span class="std std-ref">ssh mode</span></a>, the <a class="reference external" href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST</a> server must <em>also</em> be able to authenticate with <a class="reference external" href="https://en.wikipedia.org/wiki/SSH_(Secure_Shell)">SSH</a> username and password.</p></li>
+</ul>
+<div class="section" id="http-operation">
+<span id="id4"></span><h2>http operation<a class="headerlink" href="#http-operation" title="Permalink to this headline">¶</a></h2>
+<p>In this mode, one specifies a <em>valid</em> email address and password, to the <a class="reference external" href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST</a> server, to upload the COVID-19 data.</p>
+<p>Its help screen, when running <code class="docutils literal notranslate"><span class="pre">covid19_post2server</span> <span class="pre">http</span> <span class="pre">-h</span></code>, is,</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: covid19_post2server http [-h] -e HTTP_EMAIL -p HTTP_PASSWORD -s HTTP_SERVER [--noverify]</span>
+
+<span class="go">optional arguments:</span>
+<span class="go">  -h, --help            show this help message and exit</span>
+<span class="go">  -e HTTP_EMAIL, --email HTTP_EMAIL</span>
+<span class="go">                        This RESTful server email address to authenticate for pulling in COVID-19 summary data.</span>
+<span class="go">  -p HTTP_PASSWORD, --password HTTP_PASSWORD</span>
+<span class="go">                        This RESTful server PASSWORD to authenticate for pulling in COVID-19 summary data.</span>
+<span class="go">  -s HTTP_SERVER, --server HTTP_SERVER</span>
+<span class="go">                        The URL of the HTTPS server that contains the RESTful COVID-19 processing endpoints.</span>
+<span class="go">  --noverify            If chosen, then do not verify SSL connections.</span>
+</pre></div>
+</div>
+<p>Use <code class="docutils literal notranslate"><span class="pre">-e</span></code> or <code class="docutils literal notranslate"><span class="pre">--email</span></code> to specify the user’s email address, and <code class="docutils literal notranslate"><span class="pre">-p</span></code> or <code class="docutils literal notranslate"><span class="pre">--password</span></code> to specify their password. Use <code class="docutils literal notranslate"><span class="pre">-s</span></code> or <code class="docutils literal notranslate"><span class="pre">--server</span></code> to specify the remote <a class="reference external" href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST</a> server’s accessible URL. This URL must have an <code class="docutils literal notranslate"><span class="pre">http</span></code> or <code class="docutils literal notranslate"><span class="pre">https</span></code> prefix in front of it.</p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">--noverify</span></code> to optionally disable SSL verification.</p>
+</div>
+<div class="section" id="ssh-operation">
+<span id="id5"></span><h2>ssh operation<a class="headerlink" href="#ssh-operation" title="Permalink to this headline">¶</a></h2>
+<p>In this mode, one specifies the remote name of the <a class="reference external" href="https://en.wikipedia.org/wiki/SSH_(Secure_Shell)">SSH</a> server, and the username and password to login to the server.</p>
+<p><em>In actuality</em>, <code class="docutils literal notranslate"><span class="pre">covid19_post2server</span></code> performs an <a class="reference external" href="https://en.wikipedia.org/wiki/SSH_(Secure_Shell)">SSH</a> tunnel from port 31999 on the local machine, to port 443 on the remote server machine. At that point, <a class="reference external" href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST</a> operations occur as described in <a class="reference internal" href="../covid19_post2server.html#http-operation"><span class="std std-ref">http mode</span></a>. <em>Implicitly</em>, the <a class="reference external" href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST</a> server must also be able to authenticate a <a class="reference external" href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST</a> client with the <a class="reference external" href="https://en.wikipedia.org/wiki/SSH_(Secure_Shell)">SSH</a> login username and password.</p>
+<ul class="simple">
+<li><p>Its verification endpoint is locally at <code class="docutils literal notranslate"><span class="pre">http://localhost:31999/VERIFY_ENDPOINT</span></code>.</p></li>
+<li><p>Its processing endpoint is locally at <code class="docutils literal notranslate"><span class="pre">http://localhost:31999/PROCESSING_ENDPOINT</span></code>.</p></li>
+</ul>
+<p>Its help screen, when running <code class="docutils literal notranslate"><span class="pre">covid19_post2server</span> <span class="pre">ssh</span> <span class="pre">-h</span></code>, is,</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: covid19_post2server ssh [-h] -u SSH_USERNAME -p SSH_PASSWORD -s SSH_SERVER</span>
+
+<span class="go">optional arguments:</span>
+<span class="go">  -h, --help            show this help message and exit</span>
+<span class="go">  -u SSH_USERNAME, --username SSH_USERNAME</span>
+<span class="go">                        The SSH server username.</span>
+<span class="go">  -p SSH_PASSWORD, --password SSH_PASSWORD</span>
+<span class="go">                        The SSH server password associated with the username.</span>
+<span class="go">  -s SSH_SERVER, --server SSH_SERVER</span>
+<span class="go">                        The SSH server into which to tunnel.</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">-u</span></code> or <code class="docutils literal notranslate"><span class="pre">--username</span></code> is the <a class="reference external" href="https://en.wikipedia.org/wiki/SSH_(Secure_Shell)">SSH</a> login username, <code class="docutils literal notranslate"><span class="pre">-p</span></code> or <code class="docutils literal notranslate"><span class="pre">--password</span></code> is the <a class="reference external" href="https://en.wikipedia.org/wiki/SSH_(Secure_Shell)">SSH</a> login password, and <code class="docutils literal notranslate"><span class="pre">-s</span></code> or <code class="docutils literal notranslate"><span class="pre">--server</span></code> is the <a class="reference external" href="https://en.wikipedia.org/wiki/SSH_(Secure_Shell)">SSH</a> server’s address.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, Tanim Islam
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
