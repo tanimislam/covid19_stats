@@ -6,41 +6,47 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>4.2. covid19_stats.engine module &mdash; COVID19_STATS 1.0 documentation</title>
   
 
   
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+
+  
   
     <link rel="shortcut icon" href="../_static/covid19_stats.ico"/>
   
+
   
   
 
   
-  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="4.3. covid19_stats.engine.gis module" href="covid19_stats_engine_gis_api.html" />
@@ -83,6 +89,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -108,6 +115,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -142,20 +150,22 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../index.html">Docs</a> &raquo;</li>
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
-          <li><a href="api.html">4. THE COVID19_STATS API</a> &raquo;</li>
+          <li><a href="api.html"><span class="section-number">4. </span>THE COVID19_STATS API</a> &raquo;</li>
         
-      <li>4.2. covid19_stats.engine module</li>
+      <li><span class="section-number">4.2. </span>covid19_stats.engine module</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="../_sources/api/covid19_stats_engine_api.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -170,11 +180,11 @@
            <div itemprop="articleBody">
             
   <div class="section" id="covid19-stats-engine-module">
-<h1>4.2. covid19_stats.engine module<a class="headerlink" href="#covid19-stats-engine-module" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">4.2. </span>covid19_stats.engine module<a class="headerlink" href="#covid19-stats-engine-module" title="Permalink to this heading">¶</a></h1>
 <p>This contains all the back-end functionality used by the CLI programs (see <code class="xref std std-numref docutils literal notranslate"><span class="pre">using_the_cli</span></code>), and two fairly simple utility functions.</p>
-<span class="target" id="module-covid19_stats.engine"></span><dl class="function">
-<dt id="covid19_stats.engine.find_plausible_maxnum">
-<code class="sig-prename descclassname">covid19_stats.engine.</code><code class="sig-name descname">find_plausible_maxnum</code><span class="sig-paren">(</span><em class="sig-param">maxnum</em><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.engine.find_plausible_maxnum" title="Permalink to this definition">¶</a></dt>
+<span class="target" id="module-covid19_stats.engine"></span><dl class="py function">
+<dt class="sig sig-object py" id="covid19_stats.engine.find_plausible_maxnum">
+<span class="sig-prename descclassname"><span class="pre">covid19_stats.engine.</span></span><span class="sig-name descname"><span class="pre">find_plausible_maxnum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maxnum</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.engine.find_plausible_maxnum" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a default plausible limit, for the plotting of COVID-19 cumulative cases and deaths located in <a class="reference internal" href="covid19_stats_engine_viz_api.html#module-covid19_stats.engine.viz" title="covid19_stats.engine.viz"><code class="xref py py-mod docutils literal notranslate"><span class="pre">viz</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -189,9 +199,9 @@
 </dl>
 </dd></dl>
 
-<dl class="function">
-<dt id="covid19_stats.engine.get_string_commas_num">
-<code class="sig-prename descclassname">covid19_stats.engine.</code><code class="sig-name descname">get_string_commas_num</code><span class="sig-paren">(</span><em class="sig-param">num</em><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.engine.get_string_commas_num" title="Permalink to this definition">¶</a></dt>
+<dl class="py function">
+<dt class="sig sig-object py" id="covid19_stats.engine.get_string_commas_num">
+<span class="sig-prename descclassname"><span class="pre">covid19_stats.engine.</span></span><span class="sig-name descname"><span class="pre">get_string_commas_num</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.engine.get_string_commas_num" title="Permalink to this definition">¶</a></dt>
 <dd><p>This is the secret-sauce of formatting integers as strings with commas for every 3 digits. For example, <code class="docutils literal notranslate"><span class="pre">1234</span></code> becomes “1,234”. I copied code from <a class="reference external" href="https://intellipaat.com/community/2447/how-to-print-number-with-commas-as-thousands-separators">this location</a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -206,9 +216,9 @@
 </dl>
 </dd></dl>
 
-<dl class="function">
-<dt id="covid19_stats.engine.get_string_commas_num_float">
-<code class="sig-prename descclassname">covid19_stats.engine.</code><code class="sig-name descname">get_string_commas_num_float</code><span class="sig-paren">(</span><em class="sig-param">num</em><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.engine.get_string_commas_num_float" title="Permalink to this definition">¶</a></dt>
+<dl class="py function">
+<dt class="sig sig-object py" id="covid19_stats.engine.get_string_commas_num_float">
+<span class="sig-prename descclassname"><span class="pre">covid19_stats.engine.</span></span><span class="sig-name descname"><span class="pre">get_string_commas_num_float</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.engine.get_string_commas_num_float" title="Permalink to this definition">¶</a></dt>
 <dd><p>This is the secret-sauce of formatting floats as strings with commas for every 3 digits. For example, <code class="docutils literal notranslate"><span class="pre">1234.56</span></code> becomes “1,234.56”. I copied code from <a class="reference external" href="https://stackoverflow.com/questions/10677350/convert-float-to-comma-separated-string/10677386">this other location</a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -230,29 +240,29 @@
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="covid19_stats_engine_gis_api.html" class="btn btn-neutral float-right" title="4.3. covid19_stats.engine.gis module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="covid19_stats_api.html" class="btn btn-neutral float-left" title="4.1. covid19_stats module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="covid19_stats_engine_gis_api.html" class="btn btn-neutral float-right" title="4.3. covid19_stats.engine.gis module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="covid19_stats_api.html" class="btn btn-neutral float-left" title="4.1. covid19_stats module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2021, Tanim Islam
+        &#169; Copyright 2021, Tanim Islam.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
@@ -260,7 +270,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

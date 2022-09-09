@@ -6,41 +6,48 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>3.5. covid19_movie_updates &mdash; COVID19_STATS 1.0 documentation</title>
   
 
   
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+
+  
   
     <link rel="shortcut icon" href="../_static/covid19_stats.ico"/>
   
+
   
   
 
   
-  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="3.6. covid19_post2server" href="covid19_post2server.html" />
@@ -83,6 +90,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -111,6 +119,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -145,20 +154,22 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../index.html">Docs</a> &raquo;</li>
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
-          <li><a href="cli.html">3. USING THE CLI</a> &raquo;</li>
+          <li><a href="cli.html"><span class="section-number">3. </span>USING THE CLI</a> &raquo;</li>
         
-      <li>3.5. covid19_movie_updates</li>
+      <li><span class="section-number">3.5. </span>covid19_movie_updates</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="../_sources/cli/covid19_movie_updates.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -173,7 +184,7 @@
            <div itemprop="articleBody">
             
   <div class="section" id="covid19-movie-updates">
-<span id="id3"></span><h1>3.5. covid19_movie_updates<a class="headerlink" href="#covid19-movie-updates" title="Permalink to this headline">¶</a></h1>
+<span id="id3"></span><h1><span class="section-number">3.5. </span>covid19_movie_updates<a class="headerlink" href="#covid19-movie-updates" title="Permalink to this heading">¶</a></h1>
 <p>This CLI is designed to be used by an external service to update the COVID-19 cumulative case and death summary movies and figures for the <a class="reference external" href="https://en.wikipedia.org/wiki/Contiguous_United_States">CONUS</a>, MSAs, and US states or territories. It uses <a class="reference external" href="https://en.wikipedia.org/wiki/Message_Passing_Interface">MPI</a> through the <a class="reference external" href="https://mpi4py.readthedocs.io/en/stable">mpi4py</a> Python module to parallelize the process of creating summary movies and figures; thus, it can leverage running on a supercomputer to parallelize individually long and high-memory tasks.</p>
 <p>It uses API level back-ends to create COVID-19 summary movies and figures, of the CLI front-ends <a class="reference internal" href="covid19_create_movie_or_summary.html#covid19-create-movie-or-summary"><span class="std std-ref">covid19_create_movie_or_summary</span></a> and <a class="reference internal" href="covid19_state_summary.html#covid19-state-summary"><span class="std std-ref">covid19_state_summary</span></a>. Its help output, when running <code class="docutils literal notranslate"><span class="pre">covid19_movie_updates</span> <span class="pre">-h</span></code>, is the following,</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: covid19_movie_updates [-h] [--region [region [region ...]]] [--state [state [state ...]]] [--dirname DIRNAME] [--topN TOPN] [--info]</span>
@@ -210,1313 +221,661 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">--region</span></code> specifies the MSAs or <a class="reference external" href="https://en.wikipedia.org/wiki/Contiguous_United_States">CONUS</a>. Thus, <code class="docutils literal notranslate"><span class="pre">--region</span> <span class="pre">nyc</span> <span class="pre">conus</span></code> means to create summary data for the NYC metropolitan area and the <a class="reference external" href="https://en.wikipedia.org/wiki/Contiguous_United_States">CONUS</a>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--state</span></code> specifies the US states or territories. Thus, <code class="docutils literal notranslate"><span class="pre">--state</span> <span class="pre">California</span> <span class="pre">Texas</span> <span class="pre">Virginia</span></code> means to create summary data for the states of California, Texas, and Virginia.</p></li>
 <li><p>In addition, the <code class="docutils literal notranslate"><span class="pre">--topN</span></code> flag specifies the <span class="math notranslate nohighlight">\(N \ge 1\)</span> top MSAs for which to create and store COVID-19 summary data into a <a class="reference external" href="https://en.wikipedia.org/wiki/JSON">JSON</a> file. This <a class="reference external" href="https://en.wikipedia.org/wiki/JSON">JSON</a> file lives in the speciified directory. Its name is <a class="reference download external" download="" href="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_topN_LATEST.json"><code class="xref download docutils literal notranslate"><span class="pre">covid19_topN_LATEST.json</span></code></a>. This example file has the data for the top 50 MSAs, and I include it below,</p>
-<div class="highlight-JSON notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>  1
-  2
-  3
-  4
-  5
-  6
-  7
-  8
-  9
- 10
- 11
- 12
- 13
- 14
- 15
- 16
- 17
- 18
- 19
- 20
- 21
- 22
- 23
- 24
- 25
- 26
- 27
- 28
- 29
- 30
- 31
- 32
- 33
- 34
- 35
- 36
- 37
- 38
- 39
- 40
- 41
- 42
- 43
- 44
- 45
- 46
- 47
- 48
- 49
- 50
- 51
- 52
- 53
- 54
- 55
- 56
- 57
- 58
- 59
- 60
- 61
- 62
- 63
- 64
- 65
- 66
- 67
- 68
- 69
- 70
- 71
- 72
- 73
- 74
- 75
- 76
- 77
- 78
- 79
- 80
- 81
- 82
- 83
- 84
- 85
- 86
- 87
- 88
- 89
- 90
- 91
- 92
- 93
- 94
- 95
- 96
- 97
- 98
- 99
-100
-101
-102
-103
-104
-105
-106
-107
-108
-109
-110
-111
-112
-113
-114
-115
-116
-117
-118
-119
-120
-121
-122
-123
-124
-125
-126
-127
-128
-129
-130
-131
-132
-133
-134
-135
-136
-137
-138
-139
-140
-141
-142
-143
-144
-145
-146
-147
-148
-149
-150
-151
-152
-153
-154
-155
-156
-157
-158
-159
-160
-161
-162
-163
-164
-165
-166
-167
-168
-169
-170
-171
-172
-173
-174
-175
-176
-177
-178
-179
-180
-181
-182
-183
-184
-185
-186
-187
-188
-189
-190
-191
-192
-193
-194
-195
-196
-197
-198
-199
-200
-201
-202
-203
-204
-205
-206
-207
-208
-209
-210
-211
-212
-213
-214
-215
-216
-217
-218
-219
-220
-221
-222
-223
-224
-225
-226
-227
-228
-229
-230
-231
-232
-233
-234
-235
-236
-237
-238
-239
-240
-241
-242
-243
-244
-245
-246
-247
-248
-249
-250
-251
-252
-253
-254
-255
-256
-257
-258
-259
-260
-261
-262
-263
-264
-265
-266
-267
-268
-269
-270
-271
-272
-273
-274
-275
-276
-277
-278
-279
-280
-281
-282
-283
-284
-285
-286
-287
-288
-289
-290
-291
-292
-293
-294
-295
-296
-297
-298
-299
-300
-301
-302
-303
-304
-305
-306
-307
-308
-309
-310
-311
-312
-313
-314
-315
-316
-317
-318
-319
-320
-321
-322
-323
-324
-325
-326
-327
-328
-329
-330
-331
-332
-333
-334
-335
-336
-337
-338
-339
-340
-341
-342
-343
-344
-345
-346
-347
-348
-349
-350
-351
-352
-353
-354
-355
-356
-357
-358
-359
-360
-361
-362
-363
-364
-365
-366
-367
-368
-369
-370
-371
-372
-373
-374
-375
-376
-377
-378
-379
-380
-381
-382
-383
-384
-385
-386
-387
-388
-389
-390
-391
-392
-393
-394
-395
-396
-397
-398
-399
-400
-401
-402
-403
-404
-405
-406
-407
-408
-409
-410
-411
-412
-413
-414
-415
-416
-417
-418
-419
-420
-421
-422
-423
-424
-425
-426
-427
-428
-429
-430
-431
-432
-433
-434
-435
-436
-437
-438
-439
-440
-441
-442
-443
-444
-445
-446
-447
-448
-449
-450
-451
-452
-453
-454
-455
-456
-457
-458
-459
-460
-461
-462
-463
-464
-465
-466
-467
-468
-469
-470
-471
-472
-473
-474
-475
-476
-477
-478
-479
-480
-481
-482
-483
-484
-485
-486
-487
-488
-489
-490
-491
-492
-493
-494
-495
-496
-497
-498
-499
-500
-501
-502
-503
-504
-505
-506
-507
-508
-509
-510
-511
-512
-513
-514
-515
-516
-517
-518
-519
-520
-521
-522
-523
-524
-525
-526
-527
-528
-529
-530
-531
-532
-533
-534
-535
-536
-537
-538
-539
-540
-541
-542
-543
-544
-545
-546
-547
-548
-549
-550
-551
-552
-553
-554
-555
-556
-557
-558
-559
-560
-561
-562
-563
-564
-565
-566
-567
-568
-569
-570
-571
-572
-573
-574
-575
-576
-577
-578
-579
-580
-581
-582
-583
-584
-585
-586
-587
-588
-589
-590
-591
-592
-593
-594
-595
-596
-597
-598
-599
-600
-601
-602
-603
-604
-605
-606
-607
-608
-609
-610
-611
-612
-613
-614
-615
-616
-617
-618
-619
-620
-621
-622
-623
-624
-625
-626
-627
-628
-629
-630
-631
-632
-633
-634
-635
-636
-637
-638
-639
-640
-641
-642
-643
-644
-645
-646
-647
-648
-649
-650
-651
-652
-653</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">[</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;nyc&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;NYC Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">19216182</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;01 March 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">795</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">5355994</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">78034</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;2387684&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;New York City, New York&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;losangeles&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;LA Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">18711436</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;25 January 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">831</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">4883920</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">54245</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;2885879&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Los Angeles County, California&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;chicago&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Chicago Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">9458539</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;24 January 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">832</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">2192592</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">25225</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;1171884&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Cook County, Illinois&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;dallas&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Dallas Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">7573136</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;09 March 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">787</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">1758316</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">18743</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;572120&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Dallas County, Texas&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;houston&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Houston Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">7066141</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;04 March 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">792</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">1592013</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">16042</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;1027743&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Harris County, Texas&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;bayarea&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Bay Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">6860207</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;31 January 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">825</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">1173838</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">7626</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;335661&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Santa Clara County, California&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;dc&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;DC Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">6280487</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;05 March 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">791</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">1139300</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">10999</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;184210&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Fairfax County, Virginia&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;miami&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Miami Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">6166488</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;06 March 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">790</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">2170340</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">21810</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;1192800&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Miami-Dade County, Florida&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;philadelphia&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Philadelphia Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">6102434</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;06 March 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">790</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">1287434</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">18259</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;315226&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Philadelphia County, Pennsylvania&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;atlanta&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Atlanta Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">6020364</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;02 March 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">794</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">1338417</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">16016</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;220920&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Fulton County, Georgia&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;phoenix&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Phoenix Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">4948203</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;26 January 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">830</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">1412402</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">18970</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;1279872&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Maricopa County, Arizona&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;boston&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Boston Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">4873019</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;01 February 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">824</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">1134227</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">15154</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;344393&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Middlesex County, Massachusetts&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;detroit&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Detroit Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">4319629</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;10 March 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">786</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">1052287</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">17473</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;410946&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Wayne County, Michigan&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;seattle&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Seattle Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">3979845</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;21 January 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">835</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">753840</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">5291</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;400290&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;King County, Washington&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;minneapolis&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Minneapolis Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">3640043</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;06 March 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">790</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">923191</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">7460</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;307781&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Hennepin County, Minnesota&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;sandiego&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;San Diego Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">3338330</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;10 February 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">815</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">816555</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">5239</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;816555&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;San Diego County, California&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">17</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;tampa&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Tampa Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">3194831</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;01 March 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">795</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">752261</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">10123</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;376898&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Hillsborough County, Florida&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">18</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;denver&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Denver Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">2967239</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;05 March 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">791</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">699292</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">6015</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;174393&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Denver County, Colorado&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">19</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;stlouis&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;St. Louis Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">2803228</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;07 March 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">789</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">676423</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">8515</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;225179&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;St. Louis County, Missouri&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;baltimore&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Baltimore Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">2800053</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;08 March 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">788</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">453984</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">6795</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;134485&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Baltimore County, Maryland&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">21</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;charlotte&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Charlotte Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">2636883</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;11 March 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">785</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">701308</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">5886</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;282622&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Mecklenburg County, North Carolina&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">22</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;orlando&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Orlando Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">2608147</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;12 March 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">784</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">682881</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">6574</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;378919&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Orange County, Florida&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">23</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;sanantonio&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;San Antonio Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">2550960</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;12 February 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">813</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">682321</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">7854</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;562708&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Bexar County, Texas&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;portland&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Portland Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">2492412</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;28 February 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">797</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">390517</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">3546</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;121078&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Multnomah County, Oregon&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;sacramento&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Sacramento Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">2363730</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;21 February 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">804</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">453332</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">4308</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;311588&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Sacramento County, California&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">26</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;pittsburgh&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Pittsburgh Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">2317600</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;13 March 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">783</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">532680</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">7849</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;268725&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Allegheny County, Pennsylvania&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">27</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;lasvegas&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Las Vegas Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">2266715</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;05 March 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">791</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">541302</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">8445</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;541302&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Clark County, Nevada&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">28</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;austin&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Austin Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">2227083</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;13 March 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">783</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">456843</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">3580</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;225351&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Travis County, Texas&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">29</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;cincinnati&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Cincinnati Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">2221208</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;14 March 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">782</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">552530</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">5839</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;190031&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Hamilton County, Ohio&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;kansascity&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Kansas City Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">2157990</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;07 March 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">789</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">406516</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">4469</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;146955&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Johnson County, Kansas&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">31</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;columbus&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Columbus Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">2122271</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;14 March 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">782</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">485610</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">4600</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;293524&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Franklin County, Ohio&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;indianapolis&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Indianapolis Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">2074537</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;06 March 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">790</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">503871</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">6579</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;226560&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Marion County, Indiana&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">33</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;cleveland&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Cleveland Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">2048449</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;09 March 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">787</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">447992</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">6271</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;273845&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Cuyahoga County, Ohio&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">34</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;nashville&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Nashville Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">1934317</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;05 March 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">791</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">563841</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">5545</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;209324&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Davidson County, Tennessee&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">35</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;virginiabeach&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Virginia Beach Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">1768901</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;09 March 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">787</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">349520</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">3904</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;90741&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Virginia Beach city, Virginia&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">36</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;providence&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Providence Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">1624578</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;14 March 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">782</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">498891</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">5900</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;226876&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Providence County, Rhode Island&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">37</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;milwaukee&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Milwaukee Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">1575179</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;11 March 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">785</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">450071</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">3908</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;274254&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Milwaukee County, Wisconsin&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">38</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;jacksonville&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Jacksonville Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">1559514</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;10 March 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">786</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">400261</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">5262</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;253519&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Duval County, Florida&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">39</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;oklahomacity&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Oklahoma City Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">1408950</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;13 March 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">783</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">362958</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">4350</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;199453&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Oklahoma County, Oklahoma&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">40</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;raleigh&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Raleigh Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">1390785</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;03 March 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">793</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">377267</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">1648</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;296709&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Wake County, North Carolina&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">41</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;memphis&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Memphis Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">1346045</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;08 March 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">788</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">352739</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">4868</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;239299&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Shelby County, Tennessee&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;richmond&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Richmond Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">1291900</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;12 March 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">784</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">267393</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">3341</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;74556&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Chesterfield County, Virginia&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">43</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;neworleans&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;New Orleans Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">1270530</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;09 March 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">787</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">324511</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">3861</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;114645&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Jefferson Parish, Louisiana&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">44</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;louisville&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Louisville/Jefferson County Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">1265108</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;08 March 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">788</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">363331</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">3905</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;232332&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Jefferson County, Kentucky&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">45</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;saltlakecity&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Salt Lake City Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">1232696</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;25 February 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">800</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">366604</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">1740</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;345101&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Salt Lake County, Utah&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">46</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;hartford&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Hartford Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">1204877</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;14 March 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">782</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">233825</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">3889</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;183216&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Hartford County, Connecticut&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">47</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;buffalo&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Buffalo Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">1127983</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;15 March 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">781</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">272626</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">3214</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;222464&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Erie County, New York&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">48</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;birmingham&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Birmingham Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">1090435</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;13 March 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">783</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">304451</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">3792</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;185461&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Jefferson County, Alabama&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">49</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;grandrapids&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Grand Rapids Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">1077370</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;12 March 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">784</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">281501</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">2712</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;168797&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Kent County, Michigan&quot;</span>
-
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>
-    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;rochester&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Rochester Metro Area&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">1069644</span><span class="p">,</span>
-    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;11 March 2020&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">785</span><span class="p">,</span>
-    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">225455</span><span class="p">,</span>
-    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">2199</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;161152&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Monroe County, New York&quot;</span>
-
-  <span class="p">}</span>
-
-<span class="p">]</span>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="linenos">  1</span><span class="p">[</span>
+<span class="linenos">  2</span>  <span class="p">{</span>
+<span class="linenos">  3</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+<span class="linenos">  4</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;nyc&quot;</span><span class="p">,</span>
+<span class="linenos">  5</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;NYC Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">  6</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">19216182</span><span class="p">,</span>
+<span class="linenos">  7</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;01 March 2020&quot;</span><span class="p">,</span>
+<span class="linenos">  8</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">803</span><span class="p">,</span>
+<span class="linenos">  9</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">5435431</span><span class="p">,</span>
+<span class="linenos"> 10</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">78152</span><span class="p">,</span>
+<span class="linenos"> 11</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;2422658&quot;</span><span class="p">,</span>
+<span class="linenos"> 12</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;New York City, New York&quot;</span>
+<span class="linenos"> 13</span>
+<span class="linenos"> 14</span>  <span class="p">},</span>
+<span class="linenos"> 15</span>  <span class="p">{</span>
+<span class="linenos"> 16</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+<span class="linenos"> 17</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;losangeles&quot;</span><span class="p">,</span>
+<span class="linenos"> 18</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;LA Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos"> 19</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">18711436</span><span class="p">,</span>
+<span class="linenos"> 20</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;25 January 2020&quot;</span><span class="p">,</span>
+<span class="linenos"> 21</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">839</span><span class="p">,</span>
+<span class="linenos"> 22</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">4918943</span><span class="p">,</span>
+<span class="linenos"> 23</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">54493</span><span class="p">,</span>
+<span class="linenos"> 24</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;2908425&quot;</span><span class="p">,</span>
+<span class="linenos"> 25</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Los Angeles County, California&quot;</span>
+<span class="linenos"> 26</span>
+<span class="linenos"> 27</span>  <span class="p">},</span>
+<span class="linenos"> 28</span>  <span class="p">{</span>
+<span class="linenos"> 29</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+<span class="linenos"> 30</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;chicago&quot;</span><span class="p">,</span>
+<span class="linenos"> 31</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Chicago Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos"> 32</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">9458539</span><span class="p">,</span>
+<span class="linenos"> 33</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;24 January 2020&quot;</span><span class="p">,</span>
+<span class="linenos"> 34</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">840</span><span class="p">,</span>
+<span class="linenos"> 35</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">2232512</span><span class="p">,</span>
+<span class="linenos"> 36</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">25268</span><span class="p">,</span>
+<span class="linenos"> 37</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;1193914&quot;</span><span class="p">,</span>
+<span class="linenos"> 38</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Cook County, Illinois&quot;</span>
+<span class="linenos"> 39</span>
+<span class="linenos"> 40</span>  <span class="p">},</span>
+<span class="linenos"> 41</span>  <span class="p">{</span>
+<span class="linenos"> 42</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+<span class="linenos"> 43</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;dallas&quot;</span><span class="p">,</span>
+<span class="linenos"> 44</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Dallas Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos"> 45</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">7573136</span><span class="p">,</span>
+<span class="linenos"> 46</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;09 March 2020&quot;</span><span class="p">,</span>
+<span class="linenos"> 47</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">795</span><span class="p">,</span>
+<span class="linenos"> 48</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">1763129</span><span class="p">,</span>
+<span class="linenos"> 49</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">18760</span><span class="p">,</span>
+<span class="linenos"> 50</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;573644&quot;</span><span class="p">,</span>
+<span class="linenos"> 51</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Dallas County, Texas&quot;</span>
+<span class="linenos"> 52</span>
+<span class="linenos"> 53</span>  <span class="p">},</span>
+<span class="linenos"> 54</span>  <span class="p">{</span>
+<span class="linenos"> 55</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+<span class="linenos"> 56</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;houston&quot;</span><span class="p">,</span>
+<span class="linenos"> 57</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Houston Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos"> 58</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">7066141</span><span class="p">,</span>
+<span class="linenos"> 59</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;04 March 2020&quot;</span><span class="p">,</span>
+<span class="linenos"> 60</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">800</span><span class="p">,</span>
+<span class="linenos"> 61</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">1600200</span><span class="p">,</span>
+<span class="linenos"> 62</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">16056</span><span class="p">,</span>
+<span class="linenos"> 63</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;1032781&quot;</span><span class="p">,</span>
+<span class="linenos"> 64</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Harris County, Texas&quot;</span>
+<span class="linenos"> 65</span>
+<span class="linenos"> 66</span>  <span class="p">},</span>
+<span class="linenos"> 67</span>  <span class="p">{</span>
+<span class="linenos"> 68</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+<span class="linenos"> 69</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;bayarea&quot;</span><span class="p">,</span>
+<span class="linenos"> 70</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Bay Area&quot;</span><span class="p">,</span>
+<span class="linenos"> 71</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">6860207</span><span class="p">,</span>
+<span class="linenos"> 72</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;31 January 2020&quot;</span><span class="p">,</span>
+<span class="linenos"> 73</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">833</span><span class="p">,</span>
+<span class="linenos"> 74</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">1197310</span><span class="p">,</span>
+<span class="linenos"> 75</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">7645</span><span class="p">,</span>
+<span class="linenos"> 76</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;342015&quot;</span><span class="p">,</span>
+<span class="linenos"> 77</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Santa Clara County, California&quot;</span>
+<span class="linenos"> 78</span>
+<span class="linenos"> 79</span>  <span class="p">},</span>
+<span class="linenos"> 80</span>  <span class="p">{</span>
+<span class="linenos"> 81</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+<span class="linenos"> 82</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;dc&quot;</span><span class="p">,</span>
+<span class="linenos"> 83</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;DC Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos"> 84</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">6280487</span><span class="p">,</span>
+<span class="linenos"> 85</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;05 March 2020&quot;</span><span class="p">,</span>
+<span class="linenos"> 86</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">799</span><span class="p">,</span>
+<span class="linenos"> 87</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">1157534</span><span class="p">,</span>
+<span class="linenos"> 88</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">11018</span><span class="p">,</span>
+<span class="linenos"> 89</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;188156&quot;</span><span class="p">,</span>
+<span class="linenos"> 90</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Fairfax County, Virginia&quot;</span>
+<span class="linenos"> 91</span>
+<span class="linenos"> 92</span>  <span class="p">},</span>
+<span class="linenos"> 93</span>  <span class="p">{</span>
+<span class="linenos"> 94</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+<span class="linenos"> 95</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;miami&quot;</span><span class="p">,</span>
+<span class="linenos"> 96</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Miami Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos"> 97</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">6166488</span><span class="p">,</span>
+<span class="linenos"> 98</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;06 March 2020&quot;</span><span class="p">,</span>
+<span class="linenos"> 99</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">798</span><span class="p">,</span>
+<span class="linenos">100</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">2198922</span><span class="p">,</span>
+<span class="linenos">101</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">21832</span><span class="p">,</span>
+<span class="linenos">102</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;1209302&quot;</span><span class="p">,</span>
+<span class="linenos">103</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Miami-Dade County, Florida&quot;</span>
+<span class="linenos">104</span>
+<span class="linenos">105</span>  <span class="p">},</span>
+<span class="linenos">106</span>  <span class="p">{</span>
+<span class="linenos">107</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span>
+<span class="linenos">108</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;philadelphia&quot;</span><span class="p">,</span>
+<span class="linenos">109</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Philadelphia Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">110</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">6102434</span><span class="p">,</span>
+<span class="linenos">111</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;06 March 2020&quot;</span><span class="p">,</span>
+<span class="linenos">112</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">798</span><span class="p">,</span>
+<span class="linenos">113</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">1301899</span><span class="p">,</span>
+<span class="linenos">114</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">18301</span><span class="p">,</span>
+<span class="linenos">115</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;317808&quot;</span><span class="p">,</span>
+<span class="linenos">116</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Philadelphia County, Pennsylvania&quot;</span>
+<span class="linenos">117</span>
+<span class="linenos">118</span>  <span class="p">},</span>
+<span class="linenos">119</span>  <span class="p">{</span>
+<span class="linenos">120</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+<span class="linenos">121</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;atlanta&quot;</span><span class="p">,</span>
+<span class="linenos">122</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Atlanta Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">123</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">6020364</span><span class="p">,</span>
+<span class="linenos">124</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;02 March 2020&quot;</span><span class="p">,</span>
+<span class="linenos">125</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">802</span><span class="p">,</span>
+<span class="linenos">126</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">1344751</span><span class="p">,</span>
+<span class="linenos">127</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">16082</span><span class="p">,</span>
+<span class="linenos">128</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;222488&quot;</span><span class="p">,</span>
+<span class="linenos">129</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Fulton County, Georgia&quot;</span>
+<span class="linenos">130</span>
+<span class="linenos">131</span>  <span class="p">},</span>
+<span class="linenos">132</span>  <span class="p">{</span>
+<span class="linenos">133</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span>
+<span class="linenos">134</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;phoenix&quot;</span><span class="p">,</span>
+<span class="linenos">135</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Phoenix Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">136</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">4948203</span><span class="p">,</span>
+<span class="linenos">137</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;26 January 2020&quot;</span><span class="p">,</span>
+<span class="linenos">138</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">838</span><span class="p">,</span>
+<span class="linenos">139</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">1416338</span><span class="p">,</span>
+<span class="linenos">140</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">18992</span><span class="p">,</span>
+<span class="linenos">141</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;1283590&quot;</span><span class="p">,</span>
+<span class="linenos">142</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Maricopa County, Arizona&quot;</span>
+<span class="linenos">143</span>
+<span class="linenos">144</span>  <span class="p">},</span>
+<span class="linenos">145</span>  <span class="p">{</span>
+<span class="linenos">146</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+<span class="linenos">147</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;boston&quot;</span><span class="p">,</span>
+<span class="linenos">148</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Boston Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">149</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">4873019</span><span class="p">,</span>
+<span class="linenos">150</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;01 February 2020&quot;</span><span class="p">,</span>
+<span class="linenos">151</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">832</span><span class="p">,</span>
+<span class="linenos">152</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">1154973</span><span class="p">,</span>
+<span class="linenos">153</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">15154</span><span class="p">,</span>
+<span class="linenos">154</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;352032&quot;</span><span class="p">,</span>
+<span class="linenos">155</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Middlesex County, Massachusetts&quot;</span>
+<span class="linenos">156</span>
+<span class="linenos">157</span>  <span class="p">},</span>
+<span class="linenos">158</span>  <span class="p">{</span>
+<span class="linenos">159</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span>
+<span class="linenos">160</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;detroit&quot;</span><span class="p">,</span>
+<span class="linenos">161</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Detroit Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">162</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">4319629</span><span class="p">,</span>
+<span class="linenos">163</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;10 March 2020&quot;</span><span class="p">,</span>
+<span class="linenos">164</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">794</span><span class="p">,</span>
+<span class="linenos">165</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">1066716</span><span class="p">,</span>
+<span class="linenos">166</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">17509</span><span class="p">,</span>
+<span class="linenos">167</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;416604&quot;</span><span class="p">,</span>
+<span class="linenos">168</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Wayne County, Michigan&quot;</span>
+<span class="linenos">169</span>
+<span class="linenos">170</span>  <span class="p">},</span>
+<span class="linenos">171</span>  <span class="p">{</span>
+<span class="linenos">172</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span>
+<span class="linenos">173</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;seattle&quot;</span><span class="p">,</span>
+<span class="linenos">174</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Seattle Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">175</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">3979845</span><span class="p">,</span>
+<span class="linenos">176</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;21 January 2020&quot;</span><span class="p">,</span>
+<span class="linenos">177</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">843</span><span class="p">,</span>
+<span class="linenos">178</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">767943</span><span class="p">,</span>
+<span class="linenos">179</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">5328</span><span class="p">,</span>
+<span class="linenos">180</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;410322&quot;</span><span class="p">,</span>
+<span class="linenos">181</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;King County, Washington&quot;</span>
+<span class="linenos">182</span>
+<span class="linenos">183</span>  <span class="p">},</span>
+<span class="linenos">184</span>  <span class="p">{</span>
+<span class="linenos">185</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+<span class="linenos">186</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;minneapolis&quot;</span><span class="p">,</span>
+<span class="linenos">187</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Minneapolis Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">188</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">3640043</span><span class="p">,</span>
+<span class="linenos">189</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;06 March 2020&quot;</span><span class="p">,</span>
+<span class="linenos">190</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">798</span><span class="p">,</span>
+<span class="linenos">191</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">935601</span><span class="p">,</span>
+<span class="linenos">192</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">7482</span><span class="p">,</span>
+<span class="linenos">193</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;312909&quot;</span><span class="p">,</span>
+<span class="linenos">194</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Hennepin County, Minnesota&quot;</span>
+<span class="linenos">195</span>
+<span class="linenos">196</span>  <span class="p">},</span>
+<span class="linenos">197</span>  <span class="p">{</span>
+<span class="linenos">198</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span>
+<span class="linenos">199</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;sandiego&quot;</span><span class="p">,</span>
+<span class="linenos">200</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;San Diego Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">201</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">3338330</span><span class="p">,</span>
+<span class="linenos">202</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;10 February 2020&quot;</span><span class="p">,</span>
+<span class="linenos">203</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">823</span><span class="p">,</span>
+<span class="linenos">204</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">824586</span><span class="p">,</span>
+<span class="linenos">205</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">5271</span><span class="p">,</span>
+<span class="linenos">206</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;824586&quot;</span><span class="p">,</span>
+<span class="linenos">207</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;San Diego County, California&quot;</span>
+<span class="linenos">208</span>
+<span class="linenos">209</span>  <span class="p">},</span>
+<span class="linenos">210</span>  <span class="p">{</span>
+<span class="linenos">211</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">17</span><span class="p">,</span>
+<span class="linenos">212</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;tampa&quot;</span><span class="p">,</span>
+<span class="linenos">213</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Tampa Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">214</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">3194831</span><span class="p">,</span>
+<span class="linenos">215</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;01 March 2020&quot;</span><span class="p">,</span>
+<span class="linenos">216</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">803</span><span class="p">,</span>
+<span class="linenos">217</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">759129</span><span class="p">,</span>
+<span class="linenos">218</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">10144</span><span class="p">,</span>
+<span class="linenos">219</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;379994&quot;</span><span class="p">,</span>
+<span class="linenos">220</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Hillsborough County, Florida&quot;</span>
+<span class="linenos">221</span>
+<span class="linenos">222</span>  <span class="p">},</span>
+<span class="linenos">223</span>  <span class="p">{</span>
+<span class="linenos">224</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">18</span><span class="p">,</span>
+<span class="linenos">225</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;denver&quot;</span><span class="p">,</span>
+<span class="linenos">226</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Denver Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">227</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">2967239</span><span class="p">,</span>
+<span class="linenos">228</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;05 March 2020&quot;</span><span class="p">,</span>
+<span class="linenos">229</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">799</span><span class="p">,</span>
+<span class="linenos">230</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">707149</span><span class="p">,</span>
+<span class="linenos">231</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">6032</span><span class="p">,</span>
+<span class="linenos">232</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;177033&quot;</span><span class="p">,</span>
+<span class="linenos">233</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Denver County, Colorado&quot;</span>
+<span class="linenos">234</span>
+<span class="linenos">235</span>  <span class="p">},</span>
+<span class="linenos">236</span>  <span class="p">{</span>
+<span class="linenos">237</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">19</span><span class="p">,</span>
+<span class="linenos">238</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;stlouis&quot;</span><span class="p">,</span>
+<span class="linenos">239</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;St. Louis Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">240</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">2803228</span><span class="p">,</span>
+<span class="linenos">241</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;07 March 2020&quot;</span><span class="p">,</span>
+<span class="linenos">242</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">797</span><span class="p">,</span>
+<span class="linenos">243</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">682255</span><span class="p">,</span>
+<span class="linenos">244</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">8524</span><span class="p">,</span>
+<span class="linenos">245</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;227453&quot;</span><span class="p">,</span>
+<span class="linenos">246</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;St. Louis County, Missouri&quot;</span>
+<span class="linenos">247</span>
+<span class="linenos">248</span>  <span class="p">},</span>
+<span class="linenos">249</span>  <span class="p">{</span>
+<span class="linenos">250</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+<span class="linenos">251</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;baltimore&quot;</span><span class="p">,</span>
+<span class="linenos">252</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Baltimore Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">253</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">2800053</span><span class="p">,</span>
+<span class="linenos">254</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;08 March 2020&quot;</span><span class="p">,</span>
+<span class="linenos">255</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">796</span><span class="p">,</span>
+<span class="linenos">256</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">460783</span><span class="p">,</span>
+<span class="linenos">257</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">6818</span><span class="p">,</span>
+<span class="linenos">258</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;136295&quot;</span><span class="p">,</span>
+<span class="linenos">259</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Baltimore County, Maryland&quot;</span>
+<span class="linenos">260</span>
+<span class="linenos">261</span>  <span class="p">},</span>
+<span class="linenos">262</span>  <span class="p">{</span>
+<span class="linenos">263</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">21</span><span class="p">,</span>
+<span class="linenos">264</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;charlotte&quot;</span><span class="p">,</span>
+<span class="linenos">265</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Charlotte Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">266</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">2636883</span><span class="p">,</span>
+<span class="linenos">267</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;11 March 2020&quot;</span><span class="p">,</span>
+<span class="linenos">268</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">793</span><span class="p">,</span>
+<span class="linenos">269</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">705538</span><span class="p">,</span>
+<span class="linenos">270</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">5889</span><span class="p">,</span>
+<span class="linenos">271</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;284986&quot;</span><span class="p">,</span>
+<span class="linenos">272</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Mecklenburg County, North Carolina&quot;</span>
+<span class="linenos">273</span>
+<span class="linenos">274</span>  <span class="p">},</span>
+<span class="linenos">275</span>  <span class="p">{</span>
+<span class="linenos">276</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">22</span><span class="p">,</span>
+<span class="linenos">277</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;orlando&quot;</span><span class="p">,</span>
+<span class="linenos">278</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Orlando Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">279</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">2608147</span><span class="p">,</span>
+<span class="linenos">280</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;12 March 2020&quot;</span><span class="p">,</span>
+<span class="linenos">281</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">792</span><span class="p">,</span>
+<span class="linenos">282</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">689885</span><span class="p">,</span>
+<span class="linenos">283</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">6579</span><span class="p">,</span>
+<span class="linenos">284</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;383010&quot;</span><span class="p">,</span>
+<span class="linenos">285</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Orange County, Florida&quot;</span>
+<span class="linenos">286</span>
+<span class="linenos">287</span>  <span class="p">},</span>
+<span class="linenos">288</span>  <span class="p">{</span>
+<span class="linenos">289</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">23</span><span class="p">,</span>
+<span class="linenos">290</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;sanantonio&quot;</span><span class="p">,</span>
+<span class="linenos">291</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;San Antonio Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">292</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">2550960</span><span class="p">,</span>
+<span class="linenos">293</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;12 February 2020&quot;</span><span class="p">,</span>
+<span class="linenos">294</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">821</span><span class="p">,</span>
+<span class="linenos">295</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">685131</span><span class="p">,</span>
+<span class="linenos">296</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">7863</span><span class="p">,</span>
+<span class="linenos">297</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;565111&quot;</span><span class="p">,</span>
+<span class="linenos">298</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Bexar County, Texas&quot;</span>
+<span class="linenos">299</span>
+<span class="linenos">300</span>  <span class="p">},</span>
+<span class="linenos">301</span>  <span class="p">{</span>
+<span class="linenos">302</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span>
+<span class="linenos">303</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;portland&quot;</span><span class="p">,</span>
+<span class="linenos">304</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Portland Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">305</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">2492412</span><span class="p">,</span>
+<span class="linenos">306</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;28 February 2020&quot;</span><span class="p">,</span>
+<span class="linenos">307</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">805</span><span class="p">,</span>
+<span class="linenos">308</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">398043</span><span class="p">,</span>
+<span class="linenos">309</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">3566</span><span class="p">,</span>
+<span class="linenos">310</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;123906&quot;</span><span class="p">,</span>
+<span class="linenos">311</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Multnomah County, Oregon&quot;</span>
+<span class="linenos">312</span>
+<span class="linenos">313</span>  <span class="p">},</span>
+<span class="linenos">314</span>  <span class="p">{</span>
+<span class="linenos">315</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>
+<span class="linenos">316</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;sacramento&quot;</span><span class="p">,</span>
+<span class="linenos">317</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Sacramento Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">318</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">2363730</span><span class="p">,</span>
+<span class="linenos">319</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;21 February 2020&quot;</span><span class="p">,</span>
+<span class="linenos">320</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">812</span><span class="p">,</span>
+<span class="linenos">321</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">457503</span><span class="p">,</span>
+<span class="linenos">322</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">4315</span><span class="p">,</span>
+<span class="linenos">323</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;314407&quot;</span><span class="p">,</span>
+<span class="linenos">324</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Sacramento County, California&quot;</span>
+<span class="linenos">325</span>
+<span class="linenos">326</span>  <span class="p">},</span>
+<span class="linenos">327</span>  <span class="p">{</span>
+<span class="linenos">328</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">26</span><span class="p">,</span>
+<span class="linenos">329</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;pittsburgh&quot;</span><span class="p">,</span>
+<span class="linenos">330</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Pittsburgh Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">331</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">2317600</span><span class="p">,</span>
+<span class="linenos">332</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;13 March 2020&quot;</span><span class="p">,</span>
+<span class="linenos">333</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">791</span><span class="p">,</span>
+<span class="linenos">334</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">536826</span><span class="p">,</span>
+<span class="linenos">335</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">7860</span><span class="p">,</span>
+<span class="linenos">336</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;271427&quot;</span><span class="p">,</span>
+<span class="linenos">337</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Allegheny County, Pennsylvania&quot;</span>
+<span class="linenos">338</span>
+<span class="linenos">339</span>  <span class="p">},</span>
+<span class="linenos">340</span>  <span class="p">{</span>
+<span class="linenos">341</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">27</span><span class="p">,</span>
+<span class="linenos">342</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;lasvegas&quot;</span><span class="p">,</span>
+<span class="linenos">343</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Las Vegas Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">344</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">2266715</span><span class="p">,</span>
+<span class="linenos">345</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;05 March 2020&quot;</span><span class="p">,</span>
+<span class="linenos">346</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">799</span><span class="p">,</span>
+<span class="linenos">347</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">543811</span><span class="p">,</span>
+<span class="linenos">348</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">8458</span><span class="p">,</span>
+<span class="linenos">349</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;543811&quot;</span><span class="p">,</span>
+<span class="linenos">350</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Clark County, Nevada&quot;</span>
+<span class="linenos">351</span>
+<span class="linenos">352</span>  <span class="p">},</span>
+<span class="linenos">353</span>  <span class="p">{</span>
+<span class="linenos">354</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">28</span><span class="p">,</span>
+<span class="linenos">355</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;austin&quot;</span><span class="p">,</span>
+<span class="linenos">356</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Austin Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">357</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">2227083</span><span class="p">,</span>
+<span class="linenos">358</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;13 March 2020&quot;</span><span class="p">,</span>
+<span class="linenos">359</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">791</span><span class="p">,</span>
+<span class="linenos">360</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">459952</span><span class="p">,</span>
+<span class="linenos">361</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">3583</span><span class="p">,</span>
+<span class="linenos">362</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;227227&quot;</span><span class="p">,</span>
+<span class="linenos">363</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Travis County, Texas&quot;</span>
+<span class="linenos">364</span>
+<span class="linenos">365</span>  <span class="p">},</span>
+<span class="linenos">366</span>  <span class="p">{</span>
+<span class="linenos">367</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">29</span><span class="p">,</span>
+<span class="linenos">368</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;cincinnati&quot;</span><span class="p">,</span>
+<span class="linenos">369</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Cincinnati Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">370</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">2221208</span><span class="p">,</span>
+<span class="linenos">371</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;14 March 2020&quot;</span><span class="p">,</span>
+<span class="linenos">372</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">790</span><span class="p">,</span>
+<span class="linenos">373</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">555374</span><span class="p">,</span>
+<span class="linenos">374</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">5862</span><span class="p">,</span>
+<span class="linenos">375</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;191030&quot;</span><span class="p">,</span>
+<span class="linenos">376</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Hamilton County, Ohio&quot;</span>
+<span class="linenos">377</span>
+<span class="linenos">378</span>  <span class="p">},</span>
+<span class="linenos">379</span>  <span class="p">{</span>
+<span class="linenos">380</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span>
+<span class="linenos">381</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;kansascity&quot;</span><span class="p">,</span>
+<span class="linenos">382</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Kansas City Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">383</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">2157990</span><span class="p">,</span>
+<span class="linenos">384</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;07 March 2020&quot;</span><span class="p">,</span>
+<span class="linenos">385</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">797</span><span class="p">,</span>
+<span class="linenos">386</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">410297</span><span class="p">,</span>
+<span class="linenos">387</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">4510</span><span class="p">,</span>
+<span class="linenos">388</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;148890&quot;</span><span class="p">,</span>
+<span class="linenos">389</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Johnson County, Kansas&quot;</span>
+<span class="linenos">390</span>
+<span class="linenos">391</span>  <span class="p">},</span>
+<span class="linenos">392</span>  <span class="p">{</span>
+<span class="linenos">393</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">31</span><span class="p">,</span>
+<span class="linenos">394</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;columbus&quot;</span><span class="p">,</span>
+<span class="linenos">395</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Columbus Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">396</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">2122271</span><span class="p">,</span>
+<span class="linenos">397</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;14 March 2020&quot;</span><span class="p">,</span>
+<span class="linenos">398</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">790</span><span class="p">,</span>
+<span class="linenos">399</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">489250</span><span class="p">,</span>
+<span class="linenos">400</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">4606</span><span class="p">,</span>
+<span class="linenos">401</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;296037&quot;</span><span class="p">,</span>
+<span class="linenos">402</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Franklin County, Ohio&quot;</span>
+<span class="linenos">403</span>
+<span class="linenos">404</span>  <span class="p">},</span>
+<span class="linenos">405</span>  <span class="p">{</span>
+<span class="linenos">406</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span>
+<span class="linenos">407</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;indianapolis&quot;</span><span class="p">,</span>
+<span class="linenos">408</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Indianapolis Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">409</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">2074537</span><span class="p">,</span>
+<span class="linenos">410</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;06 March 2020&quot;</span><span class="p">,</span>
+<span class="linenos">411</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">798</span><span class="p">,</span>
+<span class="linenos">412</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">506275</span><span class="p">,</span>
+<span class="linenos">413</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">6587</span><span class="p">,</span>
+<span class="linenos">414</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;227486&quot;</span><span class="p">,</span>
+<span class="linenos">415</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Marion County, Indiana&quot;</span>
+<span class="linenos">416</span>
+<span class="linenos">417</span>  <span class="p">},</span>
+<span class="linenos">418</span>  <span class="p">{</span>
+<span class="linenos">419</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">33</span><span class="p">,</span>
+<span class="linenos">420</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;cleveland&quot;</span><span class="p">,</span>
+<span class="linenos">421</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Cleveland Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">422</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">2048449</span><span class="p">,</span>
+<span class="linenos">423</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;09 March 2020&quot;</span><span class="p">,</span>
+<span class="linenos">424</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">795</span><span class="p">,</span>
+<span class="linenos">425</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">451756</span><span class="p">,</span>
+<span class="linenos">426</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">6284</span><span class="p">,</span>
+<span class="linenos">427</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;276160&quot;</span><span class="p">,</span>
+<span class="linenos">428</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Cuyahoga County, Ohio&quot;</span>
+<span class="linenos">429</span>
+<span class="linenos">430</span>  <span class="p">},</span>
+<span class="linenos">431</span>  <span class="p">{</span>
+<span class="linenos">432</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">34</span><span class="p">,</span>
+<span class="linenos">433</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;nashville&quot;</span><span class="p">,</span>
+<span class="linenos">434</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Nashville Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">435</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">1934317</span><span class="p">,</span>
+<span class="linenos">436</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;05 March 2020&quot;</span><span class="p">,</span>
+<span class="linenos">437</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">799</span><span class="p">,</span>
+<span class="linenos">438</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">566390</span><span class="p">,</span>
+<span class="linenos">439</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">5551</span><span class="p">,</span>
+<span class="linenos">440</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;210855&quot;</span><span class="p">,</span>
+<span class="linenos">441</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Davidson County, Tennessee&quot;</span>
+<span class="linenos">442</span>
+<span class="linenos">443</span>  <span class="p">},</span>
+<span class="linenos">444</span>  <span class="p">{</span>
+<span class="linenos">445</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">35</span><span class="p">,</span>
+<span class="linenos">446</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;virginiabeach&quot;</span><span class="p">,</span>
+<span class="linenos">447</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Virginia Beach Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">448</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">1768901</span><span class="p">,</span>
+<span class="linenos">449</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;09 March 2020&quot;</span><span class="p">,</span>
+<span class="linenos">450</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">795</span><span class="p">,</span>
+<span class="linenos">451</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">352443</span><span class="p">,</span>
+<span class="linenos">452</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">3913</span><span class="p">,</span>
+<span class="linenos">453</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;91483&quot;</span><span class="p">,</span>
+<span class="linenos">454</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Virginia Beach city, Virginia&quot;</span>
+<span class="linenos">455</span>
+<span class="linenos">456</span>  <span class="p">},</span>
+<span class="linenos">457</span>  <span class="p">{</span>
+<span class="linenos">458</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">36</span><span class="p">,</span>
+<span class="linenos">459</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;providence&quot;</span><span class="p">,</span>
+<span class="linenos">460</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Providence Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">461</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">1624578</span><span class="p">,</span>
+<span class="linenos">462</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;14 March 2020&quot;</span><span class="p">,</span>
+<span class="linenos">463</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">790</span><span class="p">,</span>
+<span class="linenos">464</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">504860</span><span class="p">,</span>
+<span class="linenos">465</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">5900</span><span class="p">,</span>
+<span class="linenos">466</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;229262&quot;</span><span class="p">,</span>
+<span class="linenos">467</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Providence County, Rhode Island&quot;</span>
+<span class="linenos">468</span>
+<span class="linenos">469</span>  <span class="p">},</span>
+<span class="linenos">470</span>  <span class="p">{</span>
+<span class="linenos">471</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">37</span><span class="p">,</span>
+<span class="linenos">472</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;milwaukee&quot;</span><span class="p">,</span>
+<span class="linenos">473</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Milwaukee Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">474</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">1575179</span><span class="p">,</span>
+<span class="linenos">475</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;11 March 2020&quot;</span><span class="p">,</span>
+<span class="linenos">476</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">793</span><span class="p">,</span>
+<span class="linenos">477</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">455477</span><span class="p">,</span>
+<span class="linenos">478</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">3914</span><span class="p">,</span>
+<span class="linenos">479</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;277430&quot;</span><span class="p">,</span>
+<span class="linenos">480</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Milwaukee County, Wisconsin&quot;</span>
+<span class="linenos">481</span>
+<span class="linenos">482</span>  <span class="p">},</span>
+<span class="linenos">483</span>  <span class="p">{</span>
+<span class="linenos">484</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">38</span><span class="p">,</span>
+<span class="linenos">485</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;jacksonville&quot;</span><span class="p">,</span>
+<span class="linenos">486</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Jacksonville Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">487</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">1559514</span><span class="p">,</span>
+<span class="linenos">488</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;10 March 2020&quot;</span><span class="p">,</span>
+<span class="linenos">489</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">794</span><span class="p">,</span>
+<span class="linenos">490</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">402818</span><span class="p">,</span>
+<span class="linenos">491</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">5269</span><span class="p">,</span>
+<span class="linenos">492</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;255189&quot;</span><span class="p">,</span>
+<span class="linenos">493</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Duval County, Florida&quot;</span>
+<span class="linenos">494</span>
+<span class="linenos">495</span>  <span class="p">},</span>
+<span class="linenos">496</span>  <span class="p">{</span>
+<span class="linenos">497</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">39</span><span class="p">,</span>
+<span class="linenos">498</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;oklahomacity&quot;</span><span class="p">,</span>
+<span class="linenos">499</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Oklahoma City Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">500</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">1408950</span><span class="p">,</span>
+<span class="linenos">501</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;13 March 2020&quot;</span><span class="p">,</span>
+<span class="linenos">502</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">791</span><span class="p">,</span>
+<span class="linenos">503</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">363946</span><span class="p">,</span>
+<span class="linenos">504</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">4362</span><span class="p">,</span>
+<span class="linenos">505</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;199990&quot;</span><span class="p">,</span>
+<span class="linenos">506</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Oklahoma County, Oklahoma&quot;</span>
+<span class="linenos">507</span>
+<span class="linenos">508</span>  <span class="p">},</span>
+<span class="linenos">509</span>  <span class="p">{</span>
+<span class="linenos">510</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">40</span><span class="p">,</span>
+<span class="linenos">511</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;raleigh&quot;</span><span class="p">,</span>
+<span class="linenos">512</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Raleigh Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">513</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">1390785</span><span class="p">,</span>
+<span class="linenos">514</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;03 March 2020&quot;</span><span class="p">,</span>
+<span class="linenos">515</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">801</span><span class="p">,</span>
+<span class="linenos">516</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">381473</span><span class="p">,</span>
+<span class="linenos">517</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">1650</span><span class="p">,</span>
+<span class="linenos">518</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;300453&quot;</span><span class="p">,</span>
+<span class="linenos">519</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Wake County, North Carolina&quot;</span>
+<span class="linenos">520</span>
+<span class="linenos">521</span>  <span class="p">},</span>
+<span class="linenos">522</span>  <span class="p">{</span>
+<span class="linenos">523</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">41</span><span class="p">,</span>
+<span class="linenos">524</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;memphis&quot;</span><span class="p">,</span>
+<span class="linenos">525</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Memphis Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">526</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">1346045</span><span class="p">,</span>
+<span class="linenos">527</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;08 March 2020&quot;</span><span class="p">,</span>
+<span class="linenos">528</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">796</span><span class="p">,</span>
+<span class="linenos">529</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">354545</span><span class="p">,</span>
+<span class="linenos">530</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">4874</span><span class="p">,</span>
+<span class="linenos">531</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;240841&quot;</span><span class="p">,</span>
+<span class="linenos">532</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Shelby County, Tennessee&quot;</span>
+<span class="linenos">533</span>
+<span class="linenos">534</span>  <span class="p">},</span>
+<span class="linenos">535</span>  <span class="p">{</span>
+<span class="linenos">536</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span>
+<span class="linenos">537</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;richmond&quot;</span><span class="p">,</span>
+<span class="linenos">538</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Richmond Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">539</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">1291900</span><span class="p">,</span>
+<span class="linenos">540</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;12 March 2020&quot;</span><span class="p">,</span>
+<span class="linenos">541</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">792</span><span class="p">,</span>
+<span class="linenos">542</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">270744</span><span class="p">,</span>
+<span class="linenos">543</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">3351</span><span class="p">,</span>
+<span class="linenos">544</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;75487&quot;</span><span class="p">,</span>
+<span class="linenos">545</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Chesterfield County, Virginia&quot;</span>
+<span class="linenos">546</span>
+<span class="linenos">547</span>  <span class="p">},</span>
+<span class="linenos">548</span>  <span class="p">{</span>
+<span class="linenos">549</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">43</span><span class="p">,</span>
+<span class="linenos">550</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;neworleans&quot;</span><span class="p">,</span>
+<span class="linenos">551</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;New Orleans Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">552</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">1270530</span><span class="p">,</span>
+<span class="linenos">553</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;09 March 2020&quot;</span><span class="p">,</span>
+<span class="linenos">554</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">795</span><span class="p">,</span>
+<span class="linenos">555</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">327068</span><span class="p">,</span>
+<span class="linenos">556</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">3863</span><span class="p">,</span>
+<span class="linenos">557</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;115373&quot;</span><span class="p">,</span>
+<span class="linenos">558</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Jefferson Parish, Louisiana&quot;</span>
+<span class="linenos">559</span>
+<span class="linenos">560</span>  <span class="p">},</span>
+<span class="linenos">561</span>  <span class="p">{</span>
+<span class="linenos">562</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">44</span><span class="p">,</span>
+<span class="linenos">563</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;louisville&quot;</span><span class="p">,</span>
+<span class="linenos">564</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Louisville/Jefferson County Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">565</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">1265108</span><span class="p">,</span>
+<span class="linenos">566</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;08 March 2020&quot;</span><span class="p">,</span>
+<span class="linenos">567</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">796</span><span class="p">,</span>
+<span class="linenos">568</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">366519</span><span class="p">,</span>
+<span class="linenos">569</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">3919</span><span class="p">,</span>
+<span class="linenos">570</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;234899&quot;</span><span class="p">,</span>
+<span class="linenos">571</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Jefferson County, Kentucky&quot;</span>
+<span class="linenos">572</span>
+<span class="linenos">573</span>  <span class="p">},</span>
+<span class="linenos">574</span>  <span class="p">{</span>
+<span class="linenos">575</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">45</span><span class="p">,</span>
+<span class="linenos">576</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;saltlakecity&quot;</span><span class="p">,</span>
+<span class="linenos">577</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Salt Lake City Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">578</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">1232696</span><span class="p">,</span>
+<span class="linenos">579</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;25 February 2020&quot;</span><span class="p">,</span>
+<span class="linenos">580</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">808</span><span class="p">,</span>
+<span class="linenos">581</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">368376</span><span class="p">,</span>
+<span class="linenos">582</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">1740</span><span class="p">,</span>
+<span class="linenos">583</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;346815&quot;</span><span class="p">,</span>
+<span class="linenos">584</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Salt Lake County, Utah&quot;</span>
+<span class="linenos">585</span>
+<span class="linenos">586</span>  <span class="p">},</span>
+<span class="linenos">587</span>  <span class="p">{</span>
+<span class="linenos">588</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">46</span><span class="p">,</span>
+<span class="linenos">589</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;hartford&quot;</span><span class="p">,</span>
+<span class="linenos">590</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Hartford Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">591</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">1204877</span><span class="p">,</span>
+<span class="linenos">592</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;14 March 2020&quot;</span><span class="p">,</span>
+<span class="linenos">593</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">790</span><span class="p">,</span>
+<span class="linenos">594</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">239231</span><span class="p">,</span>
+<span class="linenos">595</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">3913</span><span class="p">,</span>
+<span class="linenos">596</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;187284&quot;</span><span class="p">,</span>
+<span class="linenos">597</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Hartford County, Connecticut&quot;</span>
+<span class="linenos">598</span>
+<span class="linenos">599</span>  <span class="p">},</span>
+<span class="linenos">600</span>  <span class="p">{</span>
+<span class="linenos">601</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">47</span><span class="p">,</span>
+<span class="linenos">602</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;buffalo&quot;</span><span class="p">,</span>
+<span class="linenos">603</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Buffalo Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">604</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">1127983</span><span class="p">,</span>
+<span class="linenos">605</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;15 March 2020&quot;</span><span class="p">,</span>
+<span class="linenos">606</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">789</span><span class="p">,</span>
+<span class="linenos">607</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">278128</span><span class="p">,</span>
+<span class="linenos">608</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">3236</span><span class="p">,</span>
+<span class="linenos">609</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;227059&quot;</span><span class="p">,</span>
+<span class="linenos">610</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Erie County, New York&quot;</span>
+<span class="linenos">611</span>
+<span class="linenos">612</span>  <span class="p">},</span>
+<span class="linenos">613</span>  <span class="p">{</span>
+<span class="linenos">614</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">48</span><span class="p">,</span>
+<span class="linenos">615</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;birmingham&quot;</span><span class="p">,</span>
+<span class="linenos">616</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Birmingham Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">617</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">1090435</span><span class="p">,</span>
+<span class="linenos">618</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;13 March 2020&quot;</span><span class="p">,</span>
+<span class="linenos">619</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">791</span><span class="p">,</span>
+<span class="linenos">620</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">305191</span><span class="p">,</span>
+<span class="linenos">621</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">3796</span><span class="p">,</span>
+<span class="linenos">622</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;185930&quot;</span><span class="p">,</span>
+<span class="linenos">623</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Jefferson County, Alabama&quot;</span>
+<span class="linenos">624</span>
+<span class="linenos">625</span>  <span class="p">},</span>
+<span class="linenos">626</span>  <span class="p">{</span>
+<span class="linenos">627</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">49</span><span class="p">,</span>
+<span class="linenos">628</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;grandrapids&quot;</span><span class="p">,</span>
+<span class="linenos">629</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Grand Rapids Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">630</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">1077370</span><span class="p">,</span>
+<span class="linenos">631</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;12 March 2020&quot;</span><span class="p">,</span>
+<span class="linenos">632</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">792</span><span class="p">,</span>
+<span class="linenos">633</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">283721</span><span class="p">,</span>
+<span class="linenos">634</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">2715</span><span class="p">,</span>
+<span class="linenos">635</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;170251&quot;</span><span class="p">,</span>
+<span class="linenos">636</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Kent County, Michigan&quot;</span>
+<span class="linenos">637</span>
+<span class="linenos">638</span>  <span class="p">},</span>
+<span class="linenos">639</span>  <span class="p">{</span>
+<span class="linenos">640</span>    <span class="nt">&quot;RANK&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>
+<span class="linenos">641</span>    <span class="nt">&quot;PREFIX&quot;</span> <span class="p">:</span> <span class="s2">&quot;rochester&quot;</span><span class="p">,</span>
+<span class="linenos">642</span>    <span class="nt">&quot;NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Rochester Metro Area&quot;</span><span class="p">,</span>
+<span class="linenos">643</span>    <span class="nt">&quot;POPULATION&quot;</span> <span class="p">:</span> <span class="mi">1069644</span><span class="p">,</span>
+<span class="linenos">644</span>    <span class="nt">&quot;FIRST INC.&quot;</span> <span class="p">:</span> <span class="s2">&quot;11 March 2020&quot;</span><span class="p">,</span>
+<span class="linenos">645</span>    <span class="nt">&quot;NUM DAYS&quot;</span> <span class="p">:</span> <span class="mi">793</span><span class="p">,</span>
+<span class="linenos">646</span>    <span class="nt">&quot;NUM CASES&quot;</span> <span class="p">:</span> <span class="mi">228697</span><span class="p">,</span>
+<span class="linenos">647</span>    <span class="nt">&quot;NUM DEATHS&quot;</span> <span class="p">:</span> <span class="mi">2221</span><span class="p">,</span>
+<span class="linenos">648</span>    <span class="nt">&quot;MAX CASE COUNTY&quot;</span> <span class="p">:</span> <span class="s2">&quot;163464&quot;</span><span class="p">,</span>
+<span class="linenos">649</span>    <span class="nt">&quot;MAX CASE COUNTY NAME&quot;</span> <span class="p">:</span> <span class="s2">&quot;Monroe County, New York&quot;</span>
+<span class="linenos">650</span>
+<span class="linenos">651</span>  <span class="p">}</span>
+<span class="linenos">652</span>
+<span class="linenos">653</span><span class="p">]</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </li>
 </ul>
 <ul class="simple">
@@ -1524,7 +883,7 @@
 </ul>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>This data set can get extremely large even with a few regions. Currently, my (<a class="reference external" href="https://tanimislam.sfo3.digitaloceanspaces.com">Tanim Islam</a>) data set is over 749.88 MiB in size.</p>
+<p>This data set can get extremely large even with a few regions. Currently, my (<a class="reference external" href="https://tanimislam.sfo3.digitaloceanspaces.com">Tanim Islam</a>) data set is over 754.63 MiB in size.</p>
 </div>
 <p id="covid19-movie-updates-illuminating">A hopefully illuminating example is shown in <a class="reference download internal" download="" href="../_downloads/00f126e9a2abe7bc433abaf73dec0c6a/covid19_movie_updates_example.bash"><code class="xref download docutils literal notranslate"><span class="pre">covid19_movie_updates_example.bash</span></code></a>, where I run a <a class="reference external" href="https://en.wikipedia.org/wiki/Slurm_Workload_Manager">SLURM</a> scheduled job to farm out the creation of COVID-19 summary data among <em>nine</em> processors to 26 different regions,</p>
 <ul class="simple">
@@ -1532,41 +891,25 @@
 <li><p>13 MSAs: nyc, bayarea, dc, richmond, losangeles, neworleans, chicago, seattle, houston, dallas, albuquerque, newhaven, sacramento.</p></li>
 <li><p>12 US states or territories: California, Virginia, Texas, Florida, New York, Pennsylvania, Indiana, Michigan, Hawaii, New Mexico, New Jersey, Connecticut.</p></li>
 </ul>
-<div class="highlight-bash notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
-<span class="c1">#SBATCH --nodes=9</span>
-<span class="c1">#SBATCH --partition=XXXXX</span>
-<span class="c1">#SBATCH --account=YYYYYY</span>
-<span class="c1">#SBATCH --time=23:00:00</span>
-<span class="c1">#SBATCH --job-name=&quot;COVID_MOVIE_UPDATES&quot;</span>
-<span class="c1">#SBATCH --output=&quot;COVID_MOVIE_UPDATES.out&quot;</span>
-<span class="c1">#SBATCH --error=&quot;COVID_MOVIE_UPDATES.err&quot;</span>
-<span class="c1">#SBATCH --comment &quot;just run the problem, see description&quot;</span>
-
-<span class="nv">update_date</span><span class="o">=</span><span class="k">$(</span>date +<span class="s2">&quot;%d-%m-%Y&quot;</span><span class="k">)</span>
-<span class="c1">#</span>
-<span class="c1">## first update database</span>
-covid19_update_database
-<span class="c1">#</span>
-<span class="c1">## now generate the COVID-19 cases and deaths, movies and figures, for regions (MSAs, CONUS, states)</span>
-srun -N9 covid19_movie_updates --region nyc bayarea dc richmond losangeles neworleans chicago seattle houston dallas albuquerque newhaven conus --state California Virginia Texas Florida <span class="s2">&quot;New York&quot;</span> Pennsylvania Indiana Michigan Hawaii <span class="s2">&quot;New Mexico&quot;</span> <span class="s2">&quot;New Jersey&quot;</span> Connecticut --topN<span class="o">=</span><span class="m">50</span> --dirname<span class="o">=</span>docs --info
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="ch">#!/bin/bash</span>
+<span class="linenos"> 2</span><span class="c1">#SBATCH --nodes=9</span>
+<span class="linenos"> 3</span><span class="c1">#SBATCH --partition=XXXXX</span>
+<span class="linenos"> 4</span><span class="c1">#SBATCH --account=YYYYYY</span>
+<span class="linenos"> 5</span><span class="c1">#SBATCH --time=23:00:00</span>
+<span class="linenos"> 6</span><span class="c1">#SBATCH --job-name=&quot;COVID_MOVIE_UPDATES&quot;</span>
+<span class="linenos"> 7</span><span class="c1">#SBATCH --output=&quot;COVID_MOVIE_UPDATES.out&quot;</span>
+<span class="linenos"> 8</span><span class="c1">#SBATCH --error=&quot;COVID_MOVIE_UPDATES.err&quot;</span>
+<span class="linenos"> 9</span><span class="c1">#SBATCH --comment &quot;just run the problem, see description&quot;</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="nv">update_date</span><span class="o">=</span><span class="k">$(</span>date +<span class="s2">&quot;%d-%m-%Y&quot;</span><span class="k">)</span>
+<span class="linenos">12</span><span class="c1">#</span>
+<span class="linenos">13</span><span class="c1">## first update database</span>
+<span class="linenos">14</span>covid19_update_database
+<span class="linenos">15</span><span class="c1">#</span>
+<span class="linenos">16</span><span class="c1">## now generate the COVID-19 cases and deaths, movies and figures, for regions (MSAs, CONUS, states)</span>
+<span class="linenos">17</span>srun -N9 covid19_movie_updates --region nyc bayarea dc richmond losangeles neworleans chicago seattle houston dallas albuquerque newhaven conus --state California Virginia Texas Florida <span class="s2">&quot;New York&quot;</span> Pennsylvania Indiana Michigan Hawaii <span class="s2">&quot;New Mexico&quot;</span> <span class="s2">&quot;New Jersey&quot;</span> Connecticut --topN<span class="o">=</span><span class="m">50</span> --dirname<span class="o">=</span>docs --info
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 
 
@@ -1574,29 +917,29 @@ srun -N9 covid19_movie_updates --region nyc bayarea dc richmond losangeles newor
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="covid19_post2server.html" class="btn btn-neutral float-right" title="3.6. covid19_post2server" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="covid19_region_summary_rate.html" class="btn btn-neutral float-left" title="3.4. covid19_region_summary_rate" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="covid19_post2server.html" class="btn btn-neutral float-right" title="3.6. covid19_post2server" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="covid19_region_summary_rate.html" class="btn btn-neutral float-left" title="3.4. covid19_region_summary_rate" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2021, Tanim Islam
+        &#169; Copyright 2021, Tanim Islam.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
@@ -1604,7 +947,6 @@ srun -N9 covid19_movie_updates --region nyc bayarea dc richmond losangeles newor
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

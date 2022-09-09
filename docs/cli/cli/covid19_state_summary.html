@@ -6,41 +6,47 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>covid19_state_summary &mdash; COVID19_STATS 1.0 documentation</title>
   
 
   
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
   
     <link rel="shortcut icon" href="../../_static/covid19_stats.ico"/>
   
+
   
   
 
   
-  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link href="../../_static/style.css" rel="stylesheet" type="text/css">
@@ -81,6 +87,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -98,6 +105,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -132,18 +140,20 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>covid19_state_summary</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="../../_sources/cli/cli/covid19_state_summary.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -158,7 +168,7 @@
            <div itemprop="articleBody">
             
   <div class="section" id="covid19-state-summary">
-<span id="id3"></span><h1>covid19_state_summary<a class="headerlink" href="#covid19-state-summary" title="Permalink to this headline">¶</a></h1>
+<span id="id3"></span><h1>covid19_state_summary<a class="headerlink" href="#covid19-state-summary" title="Permalink to this heading">¶</a></h1>
 <p>This CLI behaves <em>very</em> similarly to <a class="reference internal" href="../covid19_create_movie_or_summary.html#covid19-create-movie-or-summary"><span class="std std-ref">covid19_create_movie_or_summary</span></a>, except it operates on US states or territories instead of the <a class="reference external" href="https://en.wikipedia.org/wiki/Contiguous_United_States">CONUS</a> or US MSAs. It has <em>three</em> modes of operation. Its help output, when running <code class="docutils literal notranslate"><span class="pre">covid19_state_summary</span> <span class="pre">-h</span></code>, produces the following hard-to-read output,</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: covid19_state_summary [-h] [-d DIRNAME] [--info]</span>
 <span class="go">                             [-n {Alabama,Alaska,Arizona,Arkansas,California,Colorado,Connecticut,Delaware,District of Columbia,Florida,Georgia,Hawaii,Idaho,Illinois,Indiana,Iowa,Kansas,Kentucky,Louisiana,Maine,Maryland,Massachusetts,Michigan,Minnesota,Mississippi,Missouri,Montana,Nebraska,Nevada,New Hampshire,New Jersey,New Mexico,New York,North Carolina,North Dakota,Ohio,Oklahoma,Oregon,Pennsylvania,Puerto Rico,Rhode Island,South Carolina,South Dakota,Tennessee,Texas,Utah,Vermont,Virginia,Washington,West Virginia,Wisconsin,Wyoming}]</span>
@@ -195,7 +205,7 @@
 <p>before moving to the three operations. The functionality of <code class="docutils literal notranslate"><span class="pre">-M</span></code> or <code class="docutils literal notranslate"><span class="pre">--maxnum</span></code>, <code class="docutils literal notranslate"><span class="pre">-d</span></code> or <code class="docutils literal notranslate"><span class="pre">--directory</span></code>, and <code class="docutils literal notranslate"><span class="pre">-y</span></code> or <code class="docutils literal notranslate"><span class="pre">--yes</span></code>, is identical to what <a class="reference internal" href="../covid19_create_movie_or_summary.html#covid19-create-movie-or-summary"><span class="std std-ref">covid19_create_movie_or_summary</span></a> does.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">--info</span></code> flag prints out <code class="docutils literal notranslate"><span class="pre">INFO</span></code> level debugging statements.</p>
 <div class="section" id="show-mode">
-<span id="show-mode-state"></span><h2>show mode<a class="headerlink" href="#show-mode" title="Permalink to this headline">¶</a></h2>
+<span id="show-mode-state"></span><h2>show mode<a class="headerlink" href="#show-mode" title="Permalink to this heading">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">covid19_state_summary</span> <span class="pre">s</span></code> (SHOW flag) summarizes the latest COVID-19 statistics for a specified US state or territory. Here is what happens when we run the SHOW flag on California,</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">bash$ covid19_state_summary -n California s</span>
 
@@ -236,7 +246,7 @@
 </ul>
 </div>
 <div class="section" id="movie-mode">
-<span id="movie-mode-state"></span><h2>movie mode<a class="headerlink" href="#movie-mode" title="Permalink to this headline">¶</a></h2>
+<span id="movie-mode-state"></span><h2>movie mode<a class="headerlink" href="#movie-mode" title="Permalink to this heading">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">covid19_state_summary</span> <span class="pre">m</span></code> (MOVIE flag) creates an <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> movie of COVID-19 cases and deaths for the US state or territory you specify. Its functionality is very similar to <a class="reference internal" href="../covid19_create_movie_or_summary.html#movie-mode"><span class="std std-ref">movie mode in covid19_create_movie_or_summary</span></a>.</p>
 <p>This mode of operation for California,</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">covid19_state_summary -n California -y m</span>
@@ -268,7 +278,7 @@
 </ul>
 </div>
 <div class="section" id="movie-cases-deaths-mode">
-<span id="movie-cases-deaths-mode-state"></span><h2>movie cases deaths mode<a class="headerlink" href="#movie-cases-deaths-mode" title="Permalink to this headline">¶</a></h2>
+<span id="movie-cases-deaths-mode-state"></span><h2>movie cases deaths mode<a class="headerlink" href="#movie-cases-deaths-mode" title="Permalink to this heading">¶</a></h2>
 <p>This is similar to <a class="reference internal" href="../covid19_state_summary.html#movie-mode-state"><span class="std std-ref">movie mode</span></a>, except now we can visualize movies of cases or deaths. The help output, while running <code class="docutils literal notranslate"><span class="pre">covid19_state_summary</span> <span class="pre">mcd</span> <span class="pre">-h</span></code>, is shown below,</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: covid19_state_summary mcd [-h] [-d DISP]</span>
 
@@ -322,20 +332,25 @@
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2021, Tanim Islam
+        &#169; Copyright 2021, Tanim Islam.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
@@ -343,7 +358,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {
