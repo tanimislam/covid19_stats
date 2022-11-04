@@ -53,7 +53,7 @@ extensions = [
 ## following instructions here (https://github.com/svenevs/exhale/tree/master/docs/_intersphinx) to fix beautifulsoup doc.
 intersphinx_mapping = {
     'python': ('https://docs.python.org/3', None),
-    'requests': ( 'https://docs.python-requests.org/en/master', None),
+    'requests': ( 'https://requests.kennethreitz.org/en/latest/', None),
     'beautifulsoup' : ( 'https://www.crummy.com/software/BeautifulSoup/bs4/doc/', '_intersphinx/bs4_objects.inv' ),
     'cartopy'  : ( 'https://scitools.org.uk/cartopy/docs/latest', None ),
     'selenium' : ( 'https://selenium-python.readthedocs.io', None ),
@@ -61,13 +61,13 @@ intersphinx_mapping = {
     'requests_oauthlib' : ( 'https://requests-oauthlib.readthedocs.io/en/latest', None ),
     'google-auth-oauthlib' : ( 'https://google-auth-oauthlib.readthedocs.io/en/latest', None ),
     'google-auth' : ( 'https://google-auth.readthedocs.io/en/latest', None ),
-    'PyPDF2' : ( 'https://pythonhosted.org/PyPDF2', None ),
+    'PyPDF2' : ( 'https://pypdf2.readthedocs.io/en/latest/', None ),
     'Pillow' : ( 'https://pillow.readthedocs.io/en/stable', None ),
     'docutils' : ( 'https://www.sphinx-doc.org/en/master', None ),
     'matplotlib' : ( 'https://matplotlib.org/stable', None ),
     'mutagen'  : ( 'https://mutagen.readthedocs.io/en/latest', None ),
     'pandas'   : ( 'https://pandas.pydata.org/docs', None ),
-    'nprstuff' : ( 'https://tanimislam.github.io/nprstuff', None ),
+    'iv_tanim' : ( 'https://tanimislam.github.io/iv_tanim', None ),
 }
 
 #

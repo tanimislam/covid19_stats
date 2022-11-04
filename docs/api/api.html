@@ -22,6 +22,7 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -97,12 +98,83 @@
 <p>Subsequent subsections describe each of the main modules, with special emphasis given to <a class="reference internal" href="covid19_stats_api.html#covid19_stats.COVID19Database" title="covid19_stats.COVID19Database"><code class="xref py py-class docutils literal notranslate"><span class="pre">COVID19Database</span></code></a> due to its integral role.</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="covid19_stats_api.html">4.1. covid19_stats module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="covid19_stats_engine_api.html">4.2. covid19_stats.engine module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="covid19_stats_engine_gis_api.html">4.3. covid19_stats.engine.gis module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="covid19_stats_engine_core_api.html">4.4. covid19_stats.engine.core module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="covid19_stats_engine_viz_api.html">4.5. covid19_stats.engine.viz module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="covid19_stats_engine_viz2_api.html">4.6. covid19_stats.engine.viz2 module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="covid19_stats_api.html">4.1. covid19_stats module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_api.html#covid19_stats.COVID19Database"><code class="docutils literal notranslate"><span class="pre">COVID19Database</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="covid19_stats_api.html#covid19_stats.COVID19Database.all_counties_nytimes_covid19_data"><code class="docutils literal notranslate"><span class="pre">COVID19Database.all_counties_nytimes_covid19_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="covid19_stats_api.html#covid19_stats.COVID19Database.data_conus"><code class="docutils literal notranslate"><span class="pre">COVID19Database.data_conus()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="covid19_stats_api.html#covid19_stats.COVID19Database.data_msas_2019"><code class="docutils literal notranslate"><span class="pre">COVID19Database.data_msas_2019()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="covid19_stats_api.html#covid19_stats.COVID19Database.data_nonconus_states_territories"><code class="docutils literal notranslate"><span class="pre">COVID19Database.data_nonconus_states_territories()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="covid19_stats_api.html#covid19_stats.COVID19Database.data_states"><code class="docutils literal notranslate"><span class="pre">COVID19Database.data_states()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="covid19_stats_api.html#covid19_stats.COVID19Database.fips_adj_2018"><code class="docutils literal notranslate"><span class="pre">COVID19Database.fips_adj_2018()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="covid19_stats_api.html#covid19_stats.COVID19Database.fips_countystate_dict"><code class="docutils literal notranslate"><span class="pre">COVID19Database.fips_countystate_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="covid19_stats_api.html#covid19_stats.COVID19Database.fips_data_2019"><code class="docutils literal notranslate"><span class="pre">COVID19Database.fips_data_2019()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="covid19_stats_api.html#covid19_stats.COVID19Database.fips_dataframe_2019"><code class="docutils literal notranslate"><span class="pre">COVID19Database.fips_dataframe_2019()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="covid19_stats_api.html#covid19_stats.COVID19Database.fips_msas_2019"><code class="docutils literal notranslate"><span class="pre">COVID19Database.fips_msas_2019()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="covid19_stats_api.html#covid19_stats.COVID19Database.fips_popdict_2019"><code class="docutils literal notranslate"><span class="pre">COVID19Database.fips_popdict_2019()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="covid19_stats_api.html#covid19_stats.COVID19Database.mapping_state_rname_conus"><code class="docutils literal notranslate"><span class="pre">COVID19Database.mapping_state_rname_conus()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="covid19_stats_api.html#covid19_stats.COVID19Database.mapping_state_rname_nonconus"><code class="docutils literal notranslate"><span class="pre">COVID19Database.mapping_state_rname_nonconus()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="covid19_stats_engine_api.html">4.2. covid19_stats.engine module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_api.html#covid19_stats.engine.find_plausible_maxnum"><code class="docutils literal notranslate"><span class="pre">find_plausible_maxnum()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_api.html#covid19_stats.engine.get_string_commas_num"><code class="docutils literal notranslate"><span class="pre">get_string_commas_num()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_api.html#covid19_stats.engine.get_string_commas_num_float"><code class="docutils literal notranslate"><span class="pre">get_string_commas_num_float()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="covid19_stats_engine_gis_api.html">4.3. covid19_stats.engine.gis module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_gis_api.html#covid19_stats.engine.gis.calculate_total_bbox"><code class="docutils literal notranslate"><span class="pre">calculate_total_bbox()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_gis_api.html#covid19_stats.engine.gis.construct_adjacency"><code class="docutils literal notranslate"><span class="pre">construct_adjacency()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_gis_api.html#covid19_stats.engine.gis.create_and_store_fips_2019"><code class="docutils literal notranslate"><span class="pre">create_and_store_fips_2019()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_gis_api.html#covid19_stats.engine.gis.create_and_store_fips_counties_2019"><code class="docutils literal notranslate"><span class="pre">create_and_store_fips_counties_2019()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_gis_api.html#covid19_stats.engine.gis.create_and_store_msas_and_fips_2019"><code class="docutils literal notranslate"><span class="pre">create_and_store_msas_and_fips_2019()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_gis_api.html#covid19_stats.engine.gis.create_fips_popmap_2019"><code class="docutils literal notranslate"><span class="pre">create_fips_popmap_2019()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_gis_api.html#covid19_stats.engine.gis.create_msa_2019"><code class="docutils literal notranslate"><span class="pre">create_msa_2019()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_gis_api.html#covid19_stats.engine.gis.do_bbox_intersect"><code class="docutils literal notranslate"><span class="pre">do_bbox_intersect()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_gis_api.html#covid19_stats.engine.gis.get_fips_adjacency"><code class="docutils literal notranslate"><span class="pre">get_fips_adjacency()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_gis_api.html#covid19_stats.engine.gis.merge_msas"><code class="docutils literal notranslate"><span class="pre">merge_msas()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="covid19_stats_engine_core_api.html">4.4. covid19_stats.engine.core module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_core_api.html#covid19_stats.engine.core.create_readme_from_template"><code class="docutils literal notranslate"><span class="pre">create_readme_from_template()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_core_api.html#covid19_stats.engine.core.display_tabulated_metros"><code class="docutils literal notranslate"><span class="pre">display_tabulated_metros()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_core_api.html#covid19_stats.engine.core.display_tabulated_metros_fromjson"><code class="docutils literal notranslate"><span class="pre">display_tabulated_metros_fromjson()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_core_api.html#covid19_stats.engine.core.get_boundary_dict"><code class="docutils literal notranslate"><span class="pre">get_boundary_dict()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_core_api.html#covid19_stats.engine.core.get_clustering_fips"><code class="docutils literal notranslate"><span class="pre">get_clustering_fips()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_core_api.html#covid19_stats.engine.core.get_county_state"><code class="docutils literal notranslate"><span class="pre">get_county_state()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_core_api.html#covid19_stats.engine.core.get_data_fips"><code class="docutils literal notranslate"><span class="pre">get_data_fips()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_core_api.html#covid19_stats.engine.core.get_fips_msa"><code class="docutils literal notranslate"><span class="pre">get_fips_msa()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_core_api.html#covid19_stats.engine.core.get_incident_data"><code class="docutils literal notranslate"><span class="pre">get_incident_data()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_core_api.html#covid19_stats.engine.core.get_max_cases_county"><code class="docutils literal notranslate"><span class="pre">get_max_cases_county()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_core_api.html#covid19_stats.engine.core.get_maximum_cases"><code class="docutils literal notranslate"><span class="pre">get_maximum_cases()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_core_api.html#covid19_stats.engine.core.get_mp4_album_name"><code class="docutils literal notranslate"><span class="pre">get_mp4_album_name()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_core_api.html#covid19_stats.engine.core.get_msa_data"><code class="docutils literal notranslate"><span class="pre">get_msa_data()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="covid19_stats_engine_viz_api.html">4.5. covid19_stats.engine.viz module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_viz_api.html#covid19_stats.engine.viz.create_and_draw_fromfig"><code class="docutils literal notranslate"><span class="pre">create_and_draw_fromfig()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_viz_api.html#covid19_stats.engine.viz.create_plots_daysfrombeginning"><code class="docutils literal notranslate"><span class="pre">create_plots_daysfrombeginning()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_viz_api.html#covid19_stats.engine.viz.create_summary_cases_or_deaths_movie_frombeginning"><code class="docutils literal notranslate"><span class="pre">create_summary_cases_or_deaths_movie_frombeginning()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_viz_api.html#covid19_stats.engine.viz.create_summary_movie_frombeginning"><code class="docutils literal notranslate"><span class="pre">create_summary_movie_frombeginning()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_viz_api.html#covid19_stats.engine.viz.display_fips"><code class="docutils literal notranslate"><span class="pre">display_fips()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_viz_api.html#covid19_stats.engine.viz.display_fips_geom"><code class="docutils literal notranslate"><span class="pre">display_fips_geom()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_viz_api.html#covid19_stats.engine.viz.display_msa"><code class="docutils literal notranslate"><span class="pre">display_msa()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_viz_api.html#covid19_stats.engine.viz.get_summary_demo_data"><code class="docutils literal notranslate"><span class="pre">get_summary_demo_data()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_viz_api.html#covid19_stats.engine.viz.my_colorbar"><code class="docutils literal notranslate"><span class="pre">my_colorbar()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_viz_api.html#covid19_stats.engine.viz.plot_cases_deaths_region"><code class="docutils literal notranslate"><span class="pre">plot_cases_deaths_region()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_viz_api.html#covid19_stats.engine.viz.plot_cases_or_deaths_bycounty"><code class="docutils literal notranslate"><span class="pre">plot_cases_or_deaths_bycounty()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="covid19_stats_engine_viz2_api.html">4.6. covid19_stats.engine.viz2 module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_viz2_api.html#covid19_stats.engine.viz2.create_plots_rate_daysfrombeginning"><code class="docutils literal notranslate"><span class="pre">create_plots_rate_daysfrombeginning()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_viz2_api.html#covid19_stats.engine.viz2.create_summary_cases_or_deaths_rate_movie_frombeginning"><code class="docutils literal notranslate"><span class="pre">create_summary_cases_or_deaths_rate_movie_frombeginning()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_viz2_api.html#covid19_stats.engine.viz2.create_summary_rate_movie_frombeginning"><code class="docutils literal notranslate"><span class="pre">create_summary_rate_movie_frombeginning()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_viz2_api.html#covid19_stats.engine.viz2.get_summary_demo_rate_data"><code class="docutils literal notranslate"><span class="pre">get_summary_demo_rate_data()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_viz2_api.html#covid19_stats.engine.viz2.plot_cases_deaths_rate_region"><code class="docutils literal notranslate"><span class="pre">plot_cases_deaths_rate_region()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_viz2_api.html#covid19_stats.engine.viz2.plot_cases_or_deaths_rate_bycounty"><code class="docutils literal notranslate"><span class="pre">plot_cases_or_deaths_rate_bycounty()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </div>
 </section>

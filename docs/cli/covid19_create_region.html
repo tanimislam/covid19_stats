@@ -22,6 +22,7 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -121,19 +122,19 @@
 </div>
 <p>Here’s the flow of the CLI with confirmation prompt.</p>
 <p>It prompts for whether the list of counties look acceptable. If you chose <code class="docutils literal notranslate"><span class="pre">y</span></code> to the list of counties, this creates a geographical region file, <a class="reference download internal" download="" href="../_downloads/e4c1ff05ee9c9748fd576e725142e019/brhd.json"><code class="xref download docutils literal notranslate"><span class="pre">brhd.json</span></code></a>.</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
- <span class="nt">&quot;prefix&quot;</span><span class="p">:</span> <span class="s2">&quot;brhd&quot;</span><span class="p">,</span>
- <span class="nt">&quot;region name&quot;</span><span class="p">:</span> <span class="s2">&quot;Blue Ridge Health District&quot;</span><span class="p">,</span>
- <span class="nt">&quot;fips&quot;</span><span class="p">:</span> <span class="p">[</span>
-  <span class="s2">&quot;51003&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;51065&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;51079&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;51109&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;51125&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;51540&quot;</span>
- <span class="p">],</span>
- <span class="nt">&quot;population&quot;</span><span class="p">:</span> <span class="mi">218615</span>
-<span class="p">}</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w"> </span><span class="nt">&quot;prefix&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;brhd&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w"> </span><span class="nt">&quot;region name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Blue Ridge Health District&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w"> </span><span class="nt">&quot;fips&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">  </span><span class="s2">&quot;51003&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="s2">&quot;51065&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="s2">&quot;51079&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="s2">&quot;51109&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="s2">&quot;51125&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="s2">&quot;51540&quot;</span><span class="w"></span>
+<span class="w"> </span><span class="p">],</span><span class="w"></span>
+<span class="w"> </span><span class="nt">&quot;population&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">218615</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 <p>This should look pretty similar to the Python dictionary of geographical data for <a class="reference external" href="https://en.wikipedia.org/wiki/Greater_St._Louis">St. Louis</a> I show in <a class="reference internal" href="../api/covid19_stats_engine_gis_api.html#covid19_stats.engine.gis.create_and_store_msas_and_fips_2019" title="covid19_stats.engine.gis.create_and_store_msas_and_fips_2019"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_and_store_msas_and_fips_2019</span></code></a>. In the <a class="reference download internal" download="" href="../_downloads/e4c1ff05ee9c9748fd576e725142e019/brhd.json"><code class="xref download docutils literal notranslate"><span class="pre">brhd.json</span></code></a> dictionary are keys for the <code class="docutils literal notranslate"><span class="pre">prefix</span></code>, the <code class="docutils literal notranslate"><span class="pre">region</span> <span class="pre">name</span></code>, <code class="docutils literal notranslate"><span class="pre">fips</span></code> is a list of FIPS codes for its six counties, and <code class="docutils literal notranslate"><span class="pre">population</span></code> is its census-d population.</p>

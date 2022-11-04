@@ -22,6 +22,7 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
         <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -54,7 +55,19 @@
 <li class="toctree-l1 current"><a class="reference internal" href="api.html">4. THE COVID19_STATS API</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="covid19_stats_api.html">4.1. covid19_stats module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_api.html">4.2. covid19_stats.engine module</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">4.3. covid19_stats.engine.gis module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.3. covid19_stats.engine.gis module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#covid19_stats.engine.gis.calculate_total_bbox"><code class="docutils literal notranslate"><span class="pre">calculate_total_bbox()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#covid19_stats.engine.gis.construct_adjacency"><code class="docutils literal notranslate"><span class="pre">construct_adjacency()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#covid19_stats.engine.gis.create_and_store_fips_2019"><code class="docutils literal notranslate"><span class="pre">create_and_store_fips_2019()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#covid19_stats.engine.gis.create_and_store_fips_counties_2019"><code class="docutils literal notranslate"><span class="pre">create_and_store_fips_counties_2019()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#covid19_stats.engine.gis.create_and_store_msas_and_fips_2019"><code class="docutils literal notranslate"><span class="pre">create_and_store_msas_and_fips_2019()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#covid19_stats.engine.gis.create_fips_popmap_2019"><code class="docutils literal notranslate"><span class="pre">create_fips_popmap_2019()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#covid19_stats.engine.gis.create_msa_2019"><code class="docutils literal notranslate"><span class="pre">create_msa_2019()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#covid19_stats.engine.gis.do_bbox_intersect"><code class="docutils literal notranslate"><span class="pre">do_bbox_intersect()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#covid19_stats.engine.gis.get_fips_adjacency"><code class="docutils literal notranslate"><span class="pre">get_fips_adjacency()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#covid19_stats.engine.gis.merge_msas"><code class="docutils literal notranslate"><span class="pre">merge_msas()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_core_api.html">4.4. covid19_stats.engine.core module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_viz_api.html">4.5. covid19_stats.engine.viz module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_viz2_api.html">4.6. covid19_stats.engine.viz2 module</a></li>

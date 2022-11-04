@@ -22,6 +22,7 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
         <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -52,7 +53,25 @@
 <li class="toctree-l1"><a class="reference internal" href="../resources.html">2. RESOURCES</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cli/cli.html">3. USING THE CLI</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="api.html">4. THE COVID19_STATS API</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">4.1. covid19_stats module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.1. covid19_stats module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#covid19_stats.COVID19Database"><code class="docutils literal notranslate"><span class="pre">COVID19Database</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#covid19_stats.COVID19Database.all_counties_nytimes_covid19_data"><code class="docutils literal notranslate"><span class="pre">COVID19Database.all_counties_nytimes_covid19_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#covid19_stats.COVID19Database.data_conus"><code class="docutils literal notranslate"><span class="pre">COVID19Database.data_conus()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#covid19_stats.COVID19Database.data_msas_2019"><code class="docutils literal notranslate"><span class="pre">COVID19Database.data_msas_2019()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#covid19_stats.COVID19Database.data_nonconus_states_territories"><code class="docutils literal notranslate"><span class="pre">COVID19Database.data_nonconus_states_territories()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#covid19_stats.COVID19Database.data_states"><code class="docutils literal notranslate"><span class="pre">COVID19Database.data_states()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#covid19_stats.COVID19Database.fips_adj_2018"><code class="docutils literal notranslate"><span class="pre">COVID19Database.fips_adj_2018()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#covid19_stats.COVID19Database.fips_countystate_dict"><code class="docutils literal notranslate"><span class="pre">COVID19Database.fips_countystate_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#covid19_stats.COVID19Database.fips_data_2019"><code class="docutils literal notranslate"><span class="pre">COVID19Database.fips_data_2019()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#covid19_stats.COVID19Database.fips_dataframe_2019"><code class="docutils literal notranslate"><span class="pre">COVID19Database.fips_dataframe_2019()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#covid19_stats.COVID19Database.fips_msas_2019"><code class="docutils literal notranslate"><span class="pre">COVID19Database.fips_msas_2019()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#covid19_stats.COVID19Database.fips_popdict_2019"><code class="docutils literal notranslate"><span class="pre">COVID19Database.fips_popdict_2019()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#covid19_stats.COVID19Database.mapping_state_rname_conus"><code class="docutils literal notranslate"><span class="pre">COVID19Database.mapping_state_rname_conus()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#covid19_stats.COVID19Database.mapping_state_rname_nonconus"><code class="docutils literal notranslate"><span class="pre">COVID19Database.mapping_state_rname_nonconus()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_api.html">4.2. covid19_stats.engine module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_gis_api.html">4.3. covid19_stats.engine.gis module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_core_api.html">4.4. covid19_stats.engine.core module</a></li>
