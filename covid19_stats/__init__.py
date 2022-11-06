@@ -20,7 +20,7 @@ def get_stat_line( line ):
     This is a low level function that consumes each line os the CSV file, ``us-counties.csv`` or ``us-counties-2022.csv``, and returns a :py:class:`dict` of useful information used by :py:class:`COVID19Database <covid19_stats.COVID19Database>`.
 
     :param str line: line from valid row of ``us-counties.csv`` or ``us-counties-2022.csv``, which contains information on running tally of cumulative deaths and cases of the county at a given date.
-    :returns: a :py:class:`dict` with the following keys: ``date`` which is a :py:class:`date <datetime.date>` of that county; ``county`` which is county name, ``state`` which is name of the state or US territory, ``fips`` which is the FIPS_ code of the county; ``cumulative cases`` which is the cumulative number of cases by that :py:class:`date <datetime.date>`; and ``cumulative death`` which is the cumulative number of COVID-19 deaths by that :py:class:`date <datetime.date>`.
+    :returns: a :py:class:`dict` with the following keys: ``date`` which is a :py:class:`date <datetime.date>` of that county; ``county`` which is county name, ``state`` which is name of the state or US territory, ``fips`` which is the `FIPS code`_ code of the county; ``cumulative cases`` which is the cumulative number of cases by that :py:class:`date <datetime.date>`; and ``cumulative death`` which is the cumulative number of COVID-19 deaths by that :py:class:`date <datetime.date>`.
     :rtype: dict
     """
     line_split = list(map(lambda tok: tok.strip(), line.split(',')))
