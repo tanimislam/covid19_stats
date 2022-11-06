@@ -40,7 +40,7 @@ def _summarize_state_or_territory( statename, dirname, time0 ):
         inc_data, dirname = dirname, store_data = False )
     viz2.get_summary_demo_rate_data( inc_data, dirname = dirname, store_data = False )
     logging.info( 'at %0.3f seconds to create summary of %s.' % (
-        time.time( ) - time0, statename ) )
+        time.perf_counter( ) - time0, statename ) )
 
 def _movie_state_or_territory( statename, dirname, time0 ):
     assert( os.path.isdir( dirname ) )
@@ -50,7 +50,7 @@ def _movie_state_or_territory( statename, dirname, time0 ):
     movie_7day_name = viz2.create_summary_rate_movie_frombeginning(
         inc_data, dirname = dirname )
     logging.info( 'at %0.3f seconds to create movie of %s.' % (
-        time.time( ) - time0, statename ) )
+        time.perf_counter( ) - time0, statename ) )
 
 def _movie_casedeaths_state_or_territory( statename, dirname, time0, type_disp = 'cases' ):
     assert( os.path.isdir( dirname ) )
@@ -63,7 +63,7 @@ def _movie_casedeaths_state_or_territory( statename, dirname, time0, type_disp =
         inc_data, dirname = dirname, type_disp = type_disp.lower( ),
         save_imgfiles = False )
     logging.info( 'at %0.3f seconds to create %s movie of %s.' % (
-        time.time( ) - time0, type_disp.upper( ), statename ) )
+        time.perf_counter( ) - time0, type_disp.upper( ), statename ) )
 
 def _get_data( msa_or_conus_name ):
     if msa_or_conus_name.lower( ) == 'conus':
@@ -81,7 +81,7 @@ def _summarize_metro_or_conus( msa_or_conus_name, dirname, time0 ):
     viz.get_summary_demo_data( inc_data, dirname = dirname, store_data = False )
     viz2.get_summary_demo_rate_data( inc_data, dirname = dirname, store_data = False )
     logging.info( 'at %0.3f seconds to create summary of %s.' % (
-        time.time( ) - time0, msa_or_conus_name.lower( ) ) )
+        time.perf_counter( ) - time0, msa_or_conus_name.lower( ) ) )
 
 def _summarize( msas_or_conus, dirname, time0 ):
     all_msas = set(map(lambda msa_or_conus: msa_or_conus.lower( ), msas_or_conus))
@@ -89,7 +89,7 @@ def _summarize( msas_or_conus, dirname, time0 ):
         _ = list(pool.map(lambda msa_or_conus: _summarize_metro_or_conus(
             msa_or_conus, dirname, time0 ), all_msas ) )
     logging.info( 'at %0.3f seconds to create all %d summaries.' % (
-        time.time( ) - time0, len( all_msas ) ) )
+        time.perf_counter( ) - time0, len( all_msas ) ) )
 
 def _movie_metro_or_conus( msa_or_conus_name, dirname, time0 ):
     assert( os.path.isdir( dirname ) )
@@ -99,7 +99,7 @@ def _movie_metro_or_conus( msa_or_conus_name, dirname, time0 ):
     movie_7day_name = viz2.create_summary_rate_movie_frombeginning(
         inc_data, dirname = dirname )
     logging.info( 'at %0.3f seconds to create movie of %s.' % (
-        time.time( ) - time0, msa_or_conus_name.lower( ) ) )
+        time.perf_counter( ) - time0, msa_or_conus_name.lower( ) ) )
 
 def _movie( msas_or_conus, dirname, time0 ):
     all_msas = set(map(lambda msa_or_conus: msa_or_conus.lower( ), msas_or_conus))
@@ -107,7 +107,7 @@ def _movie( msas_or_conus, dirname, time0 ):
         _ = list(pool.map(lambda msa_or_conus: _movie_metro_or_conus(
             msa_or_conus, dirname, time0 ), all_msas ) )
     logging.info( 'at %0.3f seconds to create all %d movies.' % (
-        time.time( ) - time0, len( all_msas ) ) )
+        time.perf_counter( ) - time0, len( all_msas ) ) )
 
 def _movie_casedeaths_metro_or_conus( msa_or_conus_name, dirname, time0, type_disp = 'cases' ):
     assert( os.path.isdir( dirname ) )
@@ -120,7 +120,7 @@ def _movie_casedeaths_metro_or_conus( msa_or_conus_name, dirname, time0, type_di
         inc_data, type_disp = type_disp.lower( ), dirname = dirname,
         save_imgfiles = False )
     logging.info( 'at %0.3f seconds to create %s movies of %s.' % (
-        time.time( ) - time0, type_disp.upper( ), msa_or_conus_name.lower( ) ) )
+        time.perf_counter( ) - time0, type_disp.upper( ), msa_or_conus_name.lower( ) ) )
 
 def _movie_casedeaths( msas_or_conus, dirname, time0, type_disp = 'cases' ):
     all_msas = set(map(lambda msa_or_conus: msa_or_conus.lower( ), msas_or_conus))
@@ -128,10 +128,10 @@ def _movie_casedeaths( msas_or_conus, dirname, time0, type_disp = 'cases' ):
         _ = list(pool.map(lambda msa_or_conus: _movie_casedeaths_metro_or_conus(
             msa_or_conus, dirname, time0, type_disp = type_disp ), all_msas ) )
     logging.info( 'at %0.3f seconds to create all %d movies of %s.' % (
-        time.time( ) - time0, len( all_msas ), type_disp.upper( ) ) )
+        time.perf_counter( ) - time0, len( all_msas ), type_disp.upper( ) ) )
 
 def _get_min_time0( ):
-    time0_arr = numpy.array([ time.time( ) ])
+    time0_arr = numpy.array([ time.perf_counter( ) ])
     time0_min = time0_arr.copy( )
     MPI.COMM_WORLD.Allreduce( time0_arr, time0_min, MPI.MIN )
     return time0_min[ 0 ]
@@ -209,4 +209,4 @@ def main( ):
 
     if rank != 0: return
     logging.info( 'processed all FOUR operations on %d regions or states in %0.3f seconds.' % (
-        len( msas_or_conus ) + len( states_or_territories ), time.time( ) - time0 ) )
+        len( msas_or_conus ) + len( states_or_territories ), time.perf_counter( ) - time0 ) )

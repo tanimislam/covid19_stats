@@ -532,10 +532,10 @@ def create_summary_cases_or_deaths_rate_movie_frombeginning(
             autocrop_image.autocrop_image( fname, fixEven = True )
             fnames.append( fname )
         logging.info( 'took %0.3f seconds to process all %d days owned by process %d / %d.' % (
-            time.time( ) - time00, len( fnames ), procno, numprocs ) )
+            time.perf_counter( ) - time00, len( fnames ), procno, numprocs ) )
         return fnames
 
-    input_status[ 'time00' ] = time.time( )
+    input_status[ 'time00' ] = time.perf_counter( )
     with multiprocessing.Pool( processes = numprocs ) as pool:
         input_tuples = list(zip(map(lambda idx: all_days_from_begin[idx::numprocs], range(numprocs)),
                                 map(lambda idx: {
@@ -550,7 +550,7 @@ def create_summary_cases_or_deaths_rate_movie_frombeginning(
         allfiles = sorted(chain.from_iterable( pool.map(
             myfunc, input_tuples ) ) )
     logging.info( 'took %0.3f seconds to process all %d days.' % (
-        time.time( ) - input_status[ 'time00' ], len( all_days_from_begin ) ) )
+        time.perf_counter( ) - input_status[ 'time00' ], len( all_days_from_begin ) ) )
     #
     ## now make the movie
     allfiles_prefixes = set(map(
@@ -653,11 +653,11 @@ def create_summary_rate_movie_frombeginning(
             inc_data, dirname = tmp_dirname,
             days_from_beginning = days_collection )
         logging.info( 'took %0.3f seconds to process all %d days owned by process %d / %d.' % (
-            time.time( ) - time00, len( fnames ), procno, numprocs ) )
+            time.perf_counter( ) - time00, len( fnames ), procno, numprocs ) )
         return fnames
     #
     ## first make all the plots
-    input_status[ 'time00' ] = time.time( )
+    input_status[ 'time00' ] = time.perf_counter( )
     with multiprocessing.Pool( processes = numprocs ) as pool:
         input_tuples = list(zip(map(lambda idx: all_days_from_begin[idx::numprocs], range(numprocs)),
                                 map(lambda idx: {
@@ -671,7 +671,7 @@ def create_summary_rate_movie_frombeginning(
                 logging.info( 'error days collection: %s.' % days_collection )
         allfiles = sorted(chain.from_iterable( pool.map( myfunc, input_tuples ) ) )
     logging.info( 'took %0.3f seconds to process all %d days.' % (
-        time.time( ) - input_status['time00'], len( all_days_from_begin ) ) )
+        time.perf_counter( ) - input_status['time00'], len( all_days_from_begin ) ) )
     #
     ## now make the movie
     allfiles_prefixes = set(map(

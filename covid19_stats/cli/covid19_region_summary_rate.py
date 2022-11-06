@@ -54,14 +54,14 @@ def _summarize_inc_data_rate( inc_data, dirname, time0 ):
     assert( os.path.isdir( dirname ) )
     viz2.get_summary_demo_rate_data( inc_data, dirname = dirname, store_data = False )
     logging.info( 'at %0.3f seconds to create summary of %s.' % (
-        time.time( ) - time0, inc_data[ 'prefix' ] ) )
+        time.perf_counter( ) - time0, inc_data[ 'prefix' ] ) )
 
 def _movie_inc_data_rate( inc_data, dirname, time0, save_imgfiles = False ):
     assert( os.path.isdir( dirname ) )
     viz2.create_summary_rate_movie_frombeginning(
         inc_data, dirname = dirname, save_imgfiles = save_imgfiles )
     logging.info( 'at %0.3f seconds to create movie of %s.' % (
-        time.time( ) - time0, inc_data[ 'prefix' ] ) )
+        time.perf_counter( ) - time0, inc_data[ 'prefix' ] ) )
 
 def _movie_casedeaths_inc_data_rate(
     inc_data, dirname, time0, type_disp = 'cases',
@@ -72,10 +72,10 @@ def _movie_casedeaths_inc_data_rate(
         inc_data, dirname = dirname, type_disp = type_disp,
         save_imgfiles = save_imgfiles )
     logging.info( 'at %0.3f seconds to create %s movie of %s.' % (
-        time.time( ) - time0, type_disp.upper( ), inc_data[ 'prefix' ] ) )
+        time.perf_counter( ) - time0, type_disp.upper( ), inc_data[ 'prefix' ] ) )
 
 def main( ):
-    time0 = time.time( )
+    time0 = time.perf_counter( )
     state_names = _get_state_names( )
     msa_names = _get_msa_names( )
 

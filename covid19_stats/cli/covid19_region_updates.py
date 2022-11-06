@@ -23,7 +23,7 @@ def _summarize( inc_data, dirname, time0 ):
         inc_data, dirname = dirname, store_data = False )
     viz2.get_summary_demo_rate_data( inc_data, dirname = dirname, store_data = False )
     logging.info( 'at %0.3f seconds to create summary of %s.' % (
-        time.time( ) - time0, inc_data[ 'prefix' ] ) )
+        time.perf_counter( ) - time0, inc_data[ 'prefix' ] ) )
 
 def _movie( inc_data, dirname, time0 ):
     assert( os.path.isdir( dirname ) )
@@ -32,7 +32,7 @@ def _movie( inc_data, dirname, time0 ):
     movie_7day_name = viz2.create_summary_rate_movie_frombeginning(
         inc_data, dirname = dirname )
     logging.info( 'at %0.3f seconds to create movie of %s.' % (
-        time.time( ) - time0, inc_data[ 'prefix' ] ) )
+        time.perf_counter( ) - time0, inc_data[ 'prefix' ] ) )
 
 def _movie_casedeaths( inc_data, dirname, time0, type_disp = 'cases' ):
     assert( os.path.isdir( dirname ) )
@@ -44,10 +44,10 @@ def _movie_casedeaths( inc_data, dirname, time0, type_disp = 'cases' ):
         inc_data, dirname = dirname, type_disp = type_disp.lower( ),
         save_imgfiles = False )
     logging.info( 'at %0.3f seconds to create %s movie of %s.' % (
-        time.time( ) - time0, type_disp.upper( ), inc_data[ 'prefix' ] ) )
+        time.perf_counter( ) - time0, type_disp.upper( ), inc_data[ 'prefix' ] ) )
 
 def _get_min_time0( ):
-    time0_arr = numpy.array([ time.time( ) ])
+    time0_arr = numpy.array([ time.perf_counter( ) ])
     time0_min = time0_arr.copy( )
     MPI.COMM_WORLD.Allreduce( time0_arr, time0_min, MPI.MIN )
     return time0_min[ 0 ]
@@ -101,4 +101,4 @@ def main( ):
 
     if rank != 0: return
     logging.info( 'processed all FOUR operations on %s (%s) in %0.3f seconds.' % (
-        inc_data[ 'prefix' ], inc_data[ 'region name'], time.time( ) - time0 ) )
+        inc_data[ 'prefix' ], inc_data[ 'region name'], time.perf_counter( ) - time0 ) )

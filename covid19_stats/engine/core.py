@@ -178,7 +178,7 @@ def get_incident_data( data = None, multiprocess = True ):
     #
     ## now this creates a dictionary of incidents and deaths per county
     ## make process a LITTLE more efficient, because get_incident_data on CONUS is SLOW....
-    time0 = time.time( )
+    time0 = time.perf_counter( )
     if multiprocess:
         with Pool( processes = cpu_count( ) ) as pool:
             dict_df_all_fips = dict(pool.map(
@@ -187,7 +187,7 @@ def get_incident_data( data = None, multiprocess = True ):
         dict_df_all_fips = dict(map(
             get_data_fips, set( fips_collection ) ) )
     logging.info( 'took %0.3f seconds to get all date-sorted raw incident data for %s.' % (
-        time.time( ) - time0, regionName ) )
+        time.perf_counter( ) - time0, regionName ) )
 
     #
     ## now get UNION of dates

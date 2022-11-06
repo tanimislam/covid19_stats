@@ -39,7 +39,7 @@ def _get_data_dict( dirname ):
         return None
 
 def main( ):
-    time0 = time.time( )
+    time0 = time.perf_counter( )
     parser = ArgumentParser( )
     #
     ## common stuff on whether SSH tunneling or not
