@@ -15,6 +15,35 @@ assert(all(map(lambda dirname: os.path.isdir( dirname ), ( resourceDir, covid19R
 
 from covid19_stats.engine import gis
 
+def get_stat_line( line ):
+    """
+    This is a low level function that consumes each line os the CSV file, ``us-counties.csv`` or ``us-counties-2022.csv``, and returns a :py:class:`dict` of useful information used by :py:class:`COVID19Database <covid19_stats.COVID19Database>`.
+
+    :param str line: line from valid row of ``us-counties.csv`` or ``us-counties-2022.csv``, which contains information on running tally of cumulative deaths and cases of the county at a given date.
+    :returns: a :py:class:`dict` with the following keys: ``date`` which is a :py:class:`date <datetime.date>` of that county; ``county`` which is county name, ``state`` which is name of the state or US territory, ``fips`` which is the FIPS_ code of the county; ``cumulative cases`` which is the cumulative number of cases by that :py:class:`date <datetime.date>`; and ``cumulative death`` which is the cumulative number of COVID-19 deaths by that :py:class:`date <datetime.date>`.
+    :rtype: dict
+    """
+    line_split = list(map(lambda tok: tok.strip(), line.split(',')))
+    dstring = line_split[0]
+    county_name = line_split[1].strip( )
+    state_name = line_split[2].strip( )
+    fips = line_split[-3].strip( )
+    #
+    ## NYC IS SPECIAL!!!
+    if county_name == 'New York City': fips = '00001'
+    if fips == '': return None
+    cases_cumulative = int( line_split[-2] )
+    try: death_cumulative = int( line_split[-1] )
+    except: death_cumulative = 0
+    return {
+        'date' : datetime.datetime.strptime(
+            dstring, '%Y-%m-%d' ).date( ),
+        'county' : county_name,
+        'state' : state_name,
+        'fips' : fips,
+        'cumulative cases' : cases_cumulative,
+        'cumulative death' : death_cumulative }
+
 class COVID19Database( object ):
     """
     This class implements a `singleton pattern`_ with static access methods to US GIS_ data and COVID-19 cumulative summary case and death data, for territorial units within the United States. It lazily instantiates itself via GIS_ loading functionality.
@@ -33,28 +62,6 @@ class COVID19Database( object ):
     """
 
     class __COVID19Database( object ):
-
-        def get_stat_line( self, line ):
-            line_split = list(map(lambda tok: tok.strip(), line.split(',')))
-            dstring = line_split[0]
-            county_name = line_split[1].strip( )
-            state_name = line_split[2].strip( )
-            fips = line_split[-3].strip( )
-            #
-            ## NYC IS SPECIAL!!!
-            if county_name == 'New York City': fips = '00001'
-            if fips == '': return None
-            cases_cumulative = int( line_split[-2] )
-            try: death_cumulative = int( line_split[-1] )
-            except: death_cumulative = 0
-            return {
-                'date' : datetime.datetime.strptime(
-                    dstring, '%Y-%m-%d' ).date( ),
-                'county' : county_name,
-                'state' : state_name,
-                'fips' : fips,
-                'cumulative cases' : cases_cumulative,
-                'cumulative death' : death_cumulative }
 
         def create_nyc_custom_fips( self, bdict ):
             """
@@ -95,10 +102,10 @@ class COVID19Database( object ):
         def __init__( self ):
 
             #
-            ## all COVID-19 data
+            ## all COVID-19 data BEFORE 2022-01-01
             all_counties_nytimes_covid19_data = list(
                 filter(None,
-                       map(self.get_stat_line,
+                       map(get_stat_line,
                            list(
                                map(lambda line: line.strip(), filter(
                                 lambda line: len( line.strip( ) ) != 0,
@@ -106,7 +113,24 @@ class COVID19Database( object ):
             self.all_counties_nytimes_covid19_data = pandas.DataFrame(
                 dict(map(lambda key: ( key, list(map(lambda entry: entry[key], all_counties_nytimes_covid19_data ) ) ),
                          { 'date', 'county', 'state', 'fips', 'cumulative cases', 'cumulative death' } ) ) )
-    
+            self.all_counties_nytimes_covid19_data = self.all_counties_nytimes_covid19_data[
+                self.all_counties_nytimes_covid19_data.date < datetime.date( 2022, 1, 1 ) ]
+            #
+            ## update on 2022-11-06: look at us-counties-2022.csv, and include all cases on dates >= 2022-01-01.
+            all_counties_nytimes_covid19_data_2022 = list(
+                filter(None,
+                       map(get_stat_line,
+                           list(
+                               map(lambda line: line.strip(), filter(
+                                lambda line: len( line.strip( ) ) != 0,
+                                open( os.path.join( covid19ResDir, "us-counties-2022.csv" ), "r" ).readlines())))[1:])))
+            all_counties_nytimes_covid19_data_2022 = pandas.DataFrame(
+                dict(map(lambda key: ( key, list(map(lambda entry: entry[key], all_counties_nytimes_covid19_data_2022 ) ) ),
+                         { 'date', 'county', 'state', 'fips', 'cumulative cases', 'cumulative death' } ) ) )
+            self.all_counties_nytimes_covid19_data = pandas.concat([
+                self.all_counties_nytimes_covid19_data, all_counties_nytimes_covid19_data_2022 ])
+            
+            
             #
             ## FIPS data for county shapes 2018
             self.fips_data_2019 = gis.create_and_store_fips_2019( )
