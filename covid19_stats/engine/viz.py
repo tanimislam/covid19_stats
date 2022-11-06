@@ -12,7 +12,7 @@ from matplotlib.colors import LogNorm, Normalize, to_rgba
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 from mpl_toolkits.axes_grid1 import make_axes_locatable
-from distutils.spawn import find_executable
+from shutil import which
 from iv_tanim.core import autocrop_image
 #
 from covid19_stats.engine import gis, core, get_string_commas_num, find_plausible_maxnum
@@ -675,7 +675,7 @@ def create_summary_cases_or_deaths_movie_frombeginning(
     assert( os.path.isdir( dirname ) )
     #
     ## barf out if cannot find ffmpeg
-    ffmpeg_exec = find_executable( 'ffmpeg' )
+    ffmpeg_exec = which( 'ffmpeg' )
     if ffmpeg_exec is None:
         raise ValueError("Error, ffmpeg could not be found." )
     #
@@ -809,7 +809,7 @@ def create_summary_movie_frombeginning(
     assert( os.path.isdir( dirname ) )
     #
     ## barf out if cannot find ffmpeg
-    ffmpeg_exec = find_executable( 'ffmpeg' )
+    ffmpeg_exec = which( 'ffmpeg' )
     if ffmpeg_exec is None:
         raise ValueError("Error, ffmpeg could not be found." )
     #

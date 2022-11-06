@@ -3,7 +3,7 @@ import json, requests, mimetypes, logging, subprocess
 from itertools import chain
 from urllib.parse import urljoin
 from fabric import Connection
-from distutils.spawn import find_executable
+from shutil import which
 
 def _find_valid_png_files( init_png_files, prefixes = [ 'cds', 'cases', 'death' ] ):
     assert(all(map(os.path.isfile, init_png_files)))
@@ -287,8 +287,8 @@ def post_to_server(
         
     def _setup_ssh_tunnel( ssh_connection_info ):
         assert( ssh_connection_info[ 'type' ] == 'ssh' )
-        sshpass_exec = find_executable( 'sshpass' )
-        ssh_exec = find_executable( 'ssh' )
+        sshpass_exec = which( 'sshpass' )
+        ssh_exec = which( 'ssh' )
         if not all(map(lambda exc: exc is not None, ( sshpass_exec, ssh_exec ) ) ):
             return 'Error, could not find sshpass AND ssh executables.', None
         username = ssh_connection_info[ 'username' ]

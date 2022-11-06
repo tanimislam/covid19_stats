@@ -11,7 +11,7 @@ from matplotlib.cm import ScalarMappable
 from matplotlib.colors import LogNorm, to_rgba, Normalize
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_agg import FigureCanvasAgg
-from distutils.spawn import find_executable
+from shutil import which
 from iv_tanim.core import autocrop_image
 #
 from covid19_stats.engine import core, get_string_commas_num, get_string_commas_num_float, find_plausible_maxnum
@@ -495,7 +495,7 @@ def create_summary_cases_or_deaths_rate_movie_frombeginning(
     assert( os.path.isdir( dirname ) )
     #
     ## barf out if cannot find ffmpeg
-    ffmpeg_exec = find_executable( 'ffmpeg' )
+    ffmpeg_exec = which( 'ffmpeg' )
     if ffmpeg_exec is None:
         raise ValueError("Error, ffmpeg could not be found." )
     #
@@ -628,7 +628,7 @@ def create_summary_rate_movie_frombeginning(
     assert( os.path.isdir( dirname ) )
     #
     ## barf out if cannot find ffmpeg
-    ffmpeg_exec = find_executable( 'ffmpeg' )
+    ffmpeg_exec = which( 'ffmpeg' )
     if ffmpeg_exec is None:
         raise ValueError("Error, ffmpeg could not be found." )
     #
