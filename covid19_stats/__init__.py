@@ -1,8 +1,9 @@
 __author__ = 'Tanim Islam'
 __email__ = 'tanim.islam@gmail.com'
 
-import sys, os, logging, datetime, numpy, pandas
+import sys, os, logging, datetime, numpy, pandas, glob
 from itertools import chain
+from pathos.multiprocessing import Pool
 
 _mainDir = os.path.dirname( os.path.abspath( __file__ ) )
 #
@@ -101,34 +102,52 @@ class COVID19Database( object ):
         
         def __init__( self ):
 
+            def _get_all_counties_data( us_counties_csv_file ):
+                all_counties_data_year = list(
+                    filter(None,
+                           map(get_stat_line,
+                               list(
+                                   map(lambda line: line.strip( ), filter(
+                                       lambda line: len( line.strip( ) ) != 0,
+                                       open( us_counties_csv_file, 'r' ).readlines())))[1:])))
+                return pandas.DataFrame(
+                    dict(map(lambda key: [ key, list(map(lambda entry: entry[key], all_counties_data_year ) ) ],
+                             { 'date', 'county', 'state', 'fips', 'cumulative cases', 'cumulative death' } ) ) )
+            #
+            csv_county_files = sorted(filter(os.path.isfile, glob.glob( os.path.join( covid19ResDir, 'us-counties-2*.csv' ) ) ) )
+            with Pool( processes = len( csv_county_files ) ) as pool:
+                self.all_counties_nytimes_covid19_data = pandas.concat(list(
+                    pool.map( _get_all_counties_data, csv_county_files ) ) )
+            
+            
             #
             ## all COVID-19 data BEFORE 2022-01-01
-            all_counties_nytimes_covid19_data = list(
-                filter(None,
-                       map(get_stat_line,
-                           list(
-                               map(lambda line: line.strip(), filter(
-                                lambda line: len( line.strip( ) ) != 0,
-                                open( os.path.join( covid19ResDir, "us-counties.csv" ), "r" ).readlines())))[1:])))
-            self.all_counties_nytimes_covid19_data = pandas.DataFrame(
-                dict(map(lambda key: ( key, list(map(lambda entry: entry[key], all_counties_nytimes_covid19_data ) ) ),
-                         { 'date', 'county', 'state', 'fips', 'cumulative cases', 'cumulative death' } ) ) )
-            self.all_counties_nytimes_covid19_data = self.all_counties_nytimes_covid19_data[
-                self.all_counties_nytimes_covid19_data.date < datetime.date( 2022, 1, 1 ) ]
-            #
-            ## update on 2022-11-06: look at us-counties-2022.csv, and include all cases on dates >= 2022-01-01.
-            all_counties_nytimes_covid19_data_2022 = list(
-                filter(None,
-                       map(get_stat_line,
-                           list(
-                               map(lambda line: line.strip(), filter(
-                                lambda line: len( line.strip( ) ) != 0,
-                                open( os.path.join( covid19ResDir, "us-counties-2022.csv" ), "r" ).readlines())))[1:])))
-            all_counties_nytimes_covid19_data_2022 = pandas.DataFrame(
-                dict(map(lambda key: ( key, list(map(lambda entry: entry[key], all_counties_nytimes_covid19_data_2022 ) ) ),
-                         { 'date', 'county', 'state', 'fips', 'cumulative cases', 'cumulative death' } ) ) )
-            self.all_counties_nytimes_covid19_data = pandas.concat([
-                self.all_counties_nytimes_covid19_data, all_counties_nytimes_covid19_data_2022 ])
+            # all_counties_nytimes_covid19_data = list(
+            #     filter(None,
+            #            map(get_stat_line,
+            #                list(
+            #                    map(lambda line: line.strip(), filter(
+            #                     lambda line: len( line.strip( ) ) != 0,
+            #                     open( os.path.join( covid19ResDir, "us-counties.csv" ), "r" ).readlines())))[1:])))
+            # self.all_counties_nytimes_covid19_data = pandas.DataFrame(
+            #     dict(map(lambda key: ( key, list(map(lambda entry: entry[key], all_counties_nytimes_covid19_data ) ) ),
+            #              { 'date', 'county', 'state', 'fips', 'cumulative cases', 'cumulative death' } ) ) )
+            # self.all_counties_nytimes_covid19_data = self.all_counties_nytimes_covid19_data[
+            #     self.all_counties_nytimes_covid19_data.date < datetime.date( 2022, 1, 1 ) ]
+            # #
+            # ## update on 2022-11-06: look at us-counties-2022.csv, and include all cases on dates >= 2022-01-01.
+            # all_counties_nytimes_covid19_data_2022 = list(
+            #     filter(None,
+            #            map(get_stat_line,
+            #                list(
+            #                    map(lambda line: line.strip(), filter(
+            #                     lambda line: len( line.strip( ) ) != 0,
+            #                     open( os.path.join( covid19ResDir, "us-counties-2022.csv" ), "r" ).readlines())))[1:])))
+            # all_counties_nytimes_covid19_data_2022 = pandas.DataFrame(
+            #     dict(map(lambda key: ( key, list(map(lambda entry: entry[key], all_counties_nytimes_covid19_data_2022 ) ) ),
+            #              { 'date', 'county', 'state', 'fips', 'cumulative cases', 'cumulative death' } ) ) )
+            # self.all_counties_nytimes_covid19_data = pandas.concat([
+            #     self.all_counties_nytimes_covid19_data, all_counties_nytimes_covid19_data_2022 ])
             
             
             #

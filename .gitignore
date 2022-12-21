@@ -6,3 +6,4 @@ foo.py
 mailmap
 README.html
 *.egg-info
+*.core
