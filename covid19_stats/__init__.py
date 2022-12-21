@@ -3,7 +3,7 @@ __email__ = 'tanim.islam@gmail.com'
 
 import sys, os, logging, datetime, numpy, pandas, glob
 from itertools import chain
-from pathos.multiprocessing import Pool
+from pathos.multiprocessing import Pool, cpu_count
 
 _mainDir = os.path.dirname( os.path.abspath( __file__ ) )
 #
@@ -115,7 +115,7 @@ class COVID19Database( object ):
                              { 'date', 'county', 'state', 'fips', 'cumulative cases', 'cumulative death' } ) ) )
             #
             csv_county_files = sorted(filter(os.path.isfile, glob.glob( os.path.join( covid19ResDir, 'us-counties-2*.csv' ) ) ) )
-            with Pool( processes = len( csv_county_files ) ) as pool:
+            with Pool( processes = min( cpu_count( ), len( csv_county_files ) ) ) as pool:
                 self.all_counties_nytimes_covid19_data = pandas.concat(list(
                     pool.map( _get_all_counties_data, csv_county_files ) ) )
             
