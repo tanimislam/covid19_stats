@@ -1,5 +1,13 @@
 Hello world! This is my COVID-19 tracker. This is not nearly as sophisticated as what's in `ncov2019.live`_, and described in `this New Yorker article`_.
 
+The best example of this repository's functionality lives at this page, `COVID-19 Running Update <https://tanimislam.gitlab.io/blog/covid19-running-update.html>`_.
+
+The comprehensive documentation lives in HTML created with Sphinx_, and now in the `COVID-19 Stats GitHub Page`_ for this project. To generate the documentation,
+
+* Go to the ``docsrc`` subdirectory.
+* In that directory, run ``make html``.
+* Load ``docsrc/build/html/index.html`` into a browser to see the documentation.
+
 I have made major changes in the functionality and implementation from the original commits, since commit `#78917`_ for instance.
 
 * The API code has been refactored into the |engine_main| module, and is divided into three main submodules: |engine_core| provides the higher level API calls for processing the COVID-19 data; |engine_gis| provides the lower-level APIs to write out, read in, and process the raw GIS data provided mainly by the US Census Bureau; and |engine_viz| and |engine_viz2| do the visualization parts.
@@ -115,12 +123,6 @@ Here is some output from using this COVID-19 tracker. The data lives underneath 
      * - `Florida <https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_florida_LATEST.mp4>`_
        - `Virginia <https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_virginia_LATEST.mp4>`_
 
-The comprehensive documentation lives in HTML created with Sphinx_, and now in the `COVID-19 Stats GitHub Page`_ for this project. To generate the documentation,
-
-* Go to the ``docs`` subdirectory.
-* In that directory, run ``make html``.
-* Load ``docs/build/html/index.html`` into a browser to see the documentation.
-  
 .. _`NY Times COVID-19 repository`: https://github.com/nytimes/covid-19-data
 .. _`ncov2019.live`: https://ncov2019.live
 .. _`this New Yorker article`: https://www.newyorker.com/magazine/2020/03/30/the-high-schooler-who-became-a-covid-19-watchdog
@@ -131,7 +133,7 @@ The comprehensive documentation lives in HTML created with Sphinx_, and now in t
 .. _`Pandas DataFrame`: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.htm
 .. _MP4: https://en.wikipedia.org/wiki/MPEG-4_Part_14
 .. _Sphinx: https://www.sphinx-doc.org/en/master
-.. _`COVID-19 Stats GitHub Page`: https://tanimislam.sfo3.digitaloceanspaces.com/covid19_stats
+.. _`COVID-19 Stats GitHub Page`: https://tanimislam.github.io/covid19_stats
 
 
 .. STATIC IMAGES
