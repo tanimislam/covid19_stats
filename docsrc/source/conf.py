@@ -67,7 +67,7 @@ intersphinx_mapping = {
     'matplotlib' : ( 'https://matplotlib.org/stable', None ),
     'mutagen'  : ( 'https://mutagen.readthedocs.io/en/latest', None ),
     'pandas'   : ( 'https://pandas.pydata.org/docs', None ),
-    'iv_tanim' : ( 'https://tanimislam.github.io/iv_tanim', None ),
+    'ive_tanim' : ( 'https://tanimislam.github.io/ive_tanim', None ),
 }
 
 #
