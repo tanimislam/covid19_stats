@@ -80,6 +80,13 @@
   <section id="welcome-to-the-covid19-stats-repository">
 <h1>Welcome to the COVID19_STATS repository<a class="headerlink" href="#welcome-to-the-covid19-stats-repository" title="Permalink to this heading"></a></h1>
 <p>Hello world! This is my COVID-19 tracker. This is not nearly as sophisticated as what’s in <a class="reference external" href="https://ncov2019.live">ncov2019.live</a>, and described in <a class="reference external" href="https://www.newyorker.com/magazine/2020/03/30/the-high-schooler-who-became-a-covid-19-watchdog">this New Yorker article</a>.</p>
+<p>The best example of this repository’s functionality lives at this page, <a class="reference external" href="https://tanimislam.gitlab.io/blog/covid19-running-update.html">COVID-19 Running Update</a>.</p>
+<p>The comprehensive documentation lives in HTML created with <a class="reference external" href="https://www.sphinx-doc.org/en/master">Sphinx</a>, and now in the <a class="reference external" href="https://tanimislam.github.io/covid19_stats">COVID-19 Stats GitHub Page</a> for this project. To generate the documentation,</p>
+<ul class="simple">
+<li><p>Go to the <code class="docutils literal notranslate"><span class="pre">docsrc</span></code> subdirectory.</p></li>
+<li><p>In that directory, run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">html</span></code>.</p></li>
+<li><p>Load <code class="docutils literal notranslate"><span class="pre">docsrc/build/html/index.html</span></code> into a browser to see the documentation.</p></li>
+</ul>
 <p>I have made major changes in the functionality and implementation from the original commits, since commit <a class="reference external" href="https://github.com/tanimislam/covid19_stats/commit/78917dd20c43bd65320cf51958fa481febef4338">#78917</a> for instance.</p>
 <ul>
 <li><p>The API code has been refactored into the <a class="reference external" href="https://tanimislam.github.io/covid19_stats/api/covid19_stats_engine_api.html">covid19_stats.engine</a> module, and is divided into three main submodules: <a class="reference external" href="https://tanimislam.github.io/covid19_stats/api/covid19_stats_engine_core_api.html">covid19_stats.engine.core</a> provides the higher level API calls for processing the COVID-19 data; <a class="reference external" href="https://tanimislam.github.io/covid19_stats/api/covid19_stats_engine_gis_api.html">covid19_stats.engine.gis</a> provides the lower-level APIs to write out, read in, and process the raw GIS data provided mainly by the US Census Bureau; and <a class="reference external" href="https://tanimislam.github.io/covid19_stats/api/covid19_stats_engine_viz_api.html">covid19_stats.engine.viz</a> and <a class="reference external" href="https://tanimislam.github.io/covid19_stats/api/covid19_stats_engine_viz2_api.html">covid19_stats.engine.viz2</a> do the visualization parts.</p></li>
@@ -751,12 +758,6 @@
 </tbody>
 </table>
 </li>
-</ul>
-<p>The comprehensive documentation lives in HTML created with <a class="reference external" href="https://www.sphinx-doc.org/en/master">Sphinx</a>, and now in the <a class="reference external" href="https://tanimislam.sfo3.digitaloceanspaces.com/covid19_stats">COVID-19 Stats GitHub Page</a> for this project. To generate the documentation,</p>
-<ul class="simple">
-<li><p>Go to the <code class="docutils literal notranslate"><span class="pre">docs</span></code> subdirectory.</p></li>
-<li><p>In that directory, run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">html</span></code>.</p></li>
-<li><p>Load <code class="docutils literal notranslate"><span class="pre">docs/build/html/index.html</span></code> into a browser to see the documentation.</p></li>
 </ul>
 <section id="table-of-contents">
 <h2>TABLE OF CONTENTS<a class="headerlink" href="#table-of-contents" title="Permalink to this heading"></a></h2>
