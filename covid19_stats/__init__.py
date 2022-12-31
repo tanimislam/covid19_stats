@@ -18,9 +18,9 @@ from covid19_stats.engine import gis
 
 def get_stat_line( line ):
     """
-    This is a low level function that consumes each line os the CSV file, ``us-counties.csv`` or ``us-counties-2022.csv``, and returns a :py:class:`dict` of useful information used by :py:class:`COVID19Database <covid19_stats.COVID19Database>`.
+    This is a low level function that consumes each line os the CSV files (``us-counties-2020.csv`, ``us-counties-2021.csv`, and ``us-counties-2022.csv``), and returns a :py:class:`dict` of useful information used by :py:class:`COVID19Database <covid19_stats.COVID19Database>`.
 
-    :param str line: line from valid row of ``us-counties.csv`` or ``us-counties-2022.csv``, which contains information on running tally of cumulative deaths and cases of the county at a given date.
+    :param str line: line from valid row of CSV file (``us-counties-2020.csv`, ``us-counties-2021.csv`, or ``us-counties-2022.csv``), which contains information on running tally of cumulative deaths and cases of the county at a given date.
     :returns: a :py:class:`dict` with the following keys: ``date`` which is a :py:class:`date <datetime.date>` of that county; ``county`` which is county name, ``state`` which is name of the state or US territory, ``fips`` which is the `FIPS code`_ code of the county; ``cumulative cases`` which is the cumulative number of cases by that :py:class:`date <datetime.date>`; and ``cumulative death`` which is the cumulative number of COVID-19 deaths by that :py:class:`date <datetime.date>`.
     :rtype: dict
     """
@@ -115,6 +115,7 @@ class COVID19Database( object ):
                              { 'date', 'county', 'state', 'fips', 'cumulative cases', 'cumulative death' } ) ) )
             #
             csv_county_files = sorted(filter(os.path.isfile, glob.glob( os.path.join( covid19ResDir, 'us-counties-2*.csv' ) ) ) )
+            assert( len( csv_county_files ) > 0 )
             with Pool( processes = min( cpu_count( ), len( csv_county_files ) ) ) as pool:
                 self.all_counties_nytimes_covid19_data = pandas.concat(list(
                     pool.map( _get_all_counties_data, csv_county_files ) ) )
