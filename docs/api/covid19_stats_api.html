@@ -3,76 +3,137 @@
      This is for layout.html
 */
 --> 
-<!DOCTYPE html>
-<html class="writer-html5" lang="en" >
-<head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>4.1. covid19_stats module &mdash; COVID19_STATS 1.0 documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-    <link rel="shortcut icon" href="../_static/covid19_stats.ico"/>
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
-        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>4.1. covid19_stats module &#8212; COVID19_STATS 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic_mod.css?v=0.7.0-1" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
+    <script src="../_static/js/petite-vue.js"></script>
+    <link rel="icon" href="../_static/covid19_stats.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="4.2. covid19_stats.engine module" href="covid19_stats_engine_api.html" />
     <link rel="prev" title="4. THE COVID19_STATS API" href="api.html" />
     <link href="../_static/style.css" rel="stylesheet" type="text/css">
 
-</head>
+  </head><body data-dark_mode_code_blocks="true">
 
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> COVID19_STATS
-          </a>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+<div id="top_nav">
+    
+
+    <nav>
+        
+            
+        
+
+        <p id="toggle_sidebar">
+            <a href="#" title="Toggle sidebar">|||</a>
+        </p>
+        <h1><a href="../index.html" title="Go to homepage">COVID19_STATS 1.0 documentation</a></h1>
+
+        <a id="mode_toggle" href="#" @click.prevent="handleClick" :title="mode">
+    <template v-if="mode == 'light'">
+        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_light"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><circle cx="39.311" cy="39.524" r="15.734" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.212,4.901c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901l-0,9.614c-0,2.705 2.196,4.901 4.9,4.901c2.705,0 4.901,-2.196 4.901,-4.901l0,-9.614Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M67.48,18.073c1.913,-1.912 1.913,-5.018 0,-6.931c-1.912,-1.912 -5.018,-1.912 -6.931,0l-6.798,6.799c-1.912,1.912 -1.912,5.018 0,6.931c1.913,1.912 5.018,1.912 6.931,-0l6.798,-6.799Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.728,61.108c1.912,-1.913 1.912,-5.018 -0,-6.931c-1.913,-1.913 -5.019,-1.913 -6.931,-0l-6.799,6.798c-1.912,1.913 -1.912,5.019 0,6.931c1.913,1.913 5.019,1.913 6.931,0l6.799,-6.798Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.682,54.177c-1.913,-1.913 -5.018,-1.913 -6.931,-0c-1.912,1.913 -1.912,5.018 0,6.931l6.798,6.798c1.913,1.913 5.019,1.913 6.931,0c1.913,-1.912 1.913,-5.018 0,-6.931l-6.798,-6.798Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M4.901,34.623c-2.705,0 -4.901,2.196 -4.901,4.901c0,2.705 2.196,4.901 4.901,4.901l9.614,0c2.705,0 4.901,-2.196 4.901,-4.901c0,-2.705 -2.196,-4.901 -4.901,-4.901l-9.614,0Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.212,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901l-0,9.614c-0,2.705 2.196,4.901 4.9,4.901c2.705,-0 4.901,-2.196 4.901,-4.901l0,-9.614Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M18.929,11.142c-1.912,-1.912 -5.018,-1.912 -6.931,0c-1.912,1.913 -1.912,5.019 0,6.931l6.799,6.799c1.912,1.912 5.018,1.912 6.931,-0c1.912,-1.913 1.912,-5.019 -0,-6.931l-6.799,-6.799Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.108,34.623c-2.705,0 -4.901,2.196 -4.901,4.901c-0,2.705 2.196,4.901 4.901,4.901l9.614,0c2.705,0 4.901,-2.196 4.901,-4.901c-0,-2.705 -2.196,-4.901 -4.901,-4.901l-9.614,0Z" style="fill:#fff;"/></g></g></g></svg>
+    </template>
+
+    <template v-if="mode == 'dark'">
+        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_dark"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><circle cx="39.311" cy="39.524" r="15.734" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.212,14.515c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,0 -4.901,2.196 -4.901,4.901c0,2.705 2.197,4.901 4.901,4.901c2.705,0 4.901,-2.196 4.901,-4.901Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M60.662,24.892c1.902,-1.902 1.902,-4.99 0,-6.892l-0.04,-0.039c-1.901,-1.902 -4.989,-1.902 -6.891,-0c-1.901,1.901 -1.901,4.989 0,6.891l0.04,0.04c1.902,1.901 4.989,1.901 6.891,-0Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.732,61.103c1.91,-1.91 1.91,-5.011 0,-6.921l-0.009,-0.01c-1.91,-1.91 -5.012,-1.91 -6.921,-0c-1.91,1.91 -1.91,5.011 -0,6.921l0.01,0.01c1.909,1.91 5.011,1.91 6.92,-0Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.672,54.167c-1.907,-1.907 -5.004,-1.907 -6.911,0l-0.02,0.02c-1.907,1.907 -1.907,5.004 0,6.911c1.907,1.907 5.004,1.907 6.911,-0l0.02,-0.02c1.907,-1.907 1.907,-5.004 0,-6.911Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M14.52,34.623c-2.702,0 -4.896,2.194 -4.896,4.896l0,0.01c0,2.702 2.194,4.896 4.896,4.896c2.702,0 4.896,-2.194 4.896,-4.896l-0,-0.01c-0,-2.702 -2.194,-4.896 -4.896,-4.896Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.212,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.901,2.196 -4.901,4.901c0,2.704 2.197,4.9 4.901,4.9c2.705,0 4.901,-2.196 4.901,-4.9Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M25.73,17.943c-1.911,-1.911 -5.015,-1.911 -6.926,0l-0.005,0.005c-1.911,1.911 -1.911,5.015 0,6.926c1.911,1.911 5.015,1.911 6.926,0l0.005,-0.005c1.911,-1.911 1.911,-5.014 -0,-6.926Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.098,34.623c-2.699,0 -4.891,2.192 -4.891,4.892l-0,0.019c-0,2.699 2.192,4.891 4.891,4.891c2.7,0 4.892,-2.192 4.892,-4.891l0,-0.019c0,-2.7 -2.192,-4.892 -4.892,-4.892Z" style="fill:#fff;"/></g></g></g></svg>
+    </template>
+
+    <template v-if="mode == 'darkest'">
+        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_darkest"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><path d="M39.315,23.791c8.684,-0 15.734,7.05 15.734,15.733c0,8.684 -7.05,15.734 -15.734,15.734c-8.683,0 -15.733,-7.05 -15.733,-15.734c-0,-8.683 7.05,-15.733 15.733,-15.733Zm0,4.737c6.069,0 10.997,4.927 10.997,10.996c-0,6.069 -4.928,10.996 -10.997,10.996c-6.068,0 -10.996,-4.927 -10.996,-10.996c0,-6.069 4.928,-10.996 10.996,-10.996Z" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.216,14.515c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,0 -4.9,2.196 -4.9,4.901c-0,2.705 2.196,4.901 4.9,4.901c2.705,0 4.901,-2.196 4.901,-4.901Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M60.666,24.892c1.902,-1.902 1.902,-4.99 0,-6.892l-0.04,-0.039c-1.901,-1.902 -4.989,-1.902 -6.891,-0c-1.901,1.901 -1.901,4.989 0,6.891l0.04,0.04c1.902,1.901 4.99,1.901 6.891,-0Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.737,61.103c1.909,-1.91 1.909,-5.011 -0,-6.921l-0.01,-0.01c-1.91,-1.91 -5.011,-1.91 -6.921,-0c-1.91,1.91 -1.91,5.011 -0,6.921l0.01,0.01c1.91,1.91 5.011,1.91 6.921,-0Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.676,54.167c-1.907,-1.907 -5.004,-1.907 -6.911,0l-0.02,0.02c-1.907,1.907 -1.907,5.004 0,6.911c1.907,1.907 5.004,1.907 6.911,-0l0.02,-0.02c1.907,-1.907 1.907,-5.004 0,-6.911Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M14.524,34.623c-2.702,0 -4.896,2.194 -4.896,4.896l0,0.01c0,2.702 2.194,4.896 4.896,4.896c2.702,0 4.896,-2.194 4.896,-4.896l0,-0.01c0,-2.702 -2.194,-4.896 -4.896,-4.896Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.216,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901c-0,2.704 2.196,4.9 4.9,4.9c2.705,0 4.901,-2.196 4.901,-4.9Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M25.734,17.943c-1.911,-1.911 -5.015,-1.911 -6.926,0l-0.005,0.005c-1.911,1.911 -1.911,5.015 0,6.926c1.911,1.911 5.015,1.911 6.926,0l0.005,-0.005c1.911,-1.911 1.911,-5.014 0,-6.926Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.103,34.623c-2.7,0 -4.892,2.192 -4.892,4.892l-0,0.019c-0,2.699 2.192,4.891 4.892,4.891c2.699,0 4.891,-2.192 4.891,-4.891l0,-0.019c0,-2.7 -2.192,-4.892 -4.891,-4.892Z" style="fill:#fff;"/></g></g></g></svg>
+    </template>
+</a>
+
+<script>
+(function() {
+    const LOCAL_STORAGE_KEY = 'piccoloThemeMode'
+
+    var initialMode = localStorage.getItem(LOCAL_STORAGE_KEY)
+
+    if (initialMode) {
+        // Make sure the value in local storage is valid
+        if (['light', 'dark', 'darkest'].indexOf(initialMode) == -1) {
+            initialMode = 'light'
+            localStorage.setItem(LOCAL_STORAGE_KEY, initialMode)
+        }
+    } else {
+        // Check if the client prefers dark mode
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            initialMode = 'dark'
+        } else {
+            initialMode = 'light'
+        }
+        localStorage.setItem(LOCAL_STORAGE_KEY, initialMode)
+    }
+
+    document.documentElement.dataset.mode = initialMode
+
+    PetiteVue.createApp({
+        'mode': initialMode,
+        handleClick() {
+            let currentMode = this.mode
+
+            if (currentMode == 'light') {
+                this.mode = 'dark'
+            } else if (currentMode == 'dark') {
+                this.mode = 'darkest'
+            } else if (currentMode == 'darkest') {
+                this.mode = 'light'
+            }
+
+            document.documentElement.dataset.mode = this.mode
+            localStorage.setItem(LOCAL_STORAGE_KEY, this.mode)
+
+            console.log(this.mode)
+        }
+    }).mount('#mode_toggle')
+})()
+</script>
+            <p class="mobile_search_link">
+                <a href="../search.html" title="Search">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 65 64" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2">
+                        <path d="M14.873 40.009c-2.315-3.943-3.642-8.532-3.642-13.429C11.231 11.91 23.141 0 37.811 0s26.58 11.91 26.58 26.58-11.91 26.58-26.58 26.58a26.44 26.44 0 0 1-14.277-4.161L9.739 62.794a3.12 3.12 0 0 1-4.413 0L.913 58.382c-1.217-1.218-1.217-3.196 0-4.413l13.96-13.96zM37.811 8.054c10.225 0 18.526 8.301 18.526 18.526s-8.301 18.526-18.526 18.526-18.526-8.301-18.526-18.526S27.586 8.054 37.811 8.054z" fill="#fff" />
+                    </svg>
+                </a>
+            </p>
+        
+
+        <div class="searchbox_wrapper">
+            
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul class="current">
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+    </nav>
+</div>
+
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">1. GETTING STARTED</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../resources.html">2. RESOURCES</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cli/cli.html">3. USING THE CLI</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="api.html">4. THE COVID19_STATS API</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">4.1. covid19_stats module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#covid19_stats.COVID19Database"><code class="docutils literal notranslate"><span class="pre">COVID19Database</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#covid19_stats.COVID19Database.all_counties_nytimes_covid19_data"><code class="docutils literal notranslate"><span class="pre">COVID19Database.all_counties_nytimes_covid19_data()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#covid19_stats.COVID19Database.data_conus"><code class="docutils literal notranslate"><span class="pre">COVID19Database.data_conus()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#covid19_stats.COVID19Database.data_msas_2019"><code class="docutils literal notranslate"><span class="pre">COVID19Database.data_msas_2019()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#covid19_stats.COVID19Database.data_nonconus_states_territories"><code class="docutils literal notranslate"><span class="pre">COVID19Database.data_nonconus_states_territories()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#covid19_stats.COVID19Database.data_states"><code class="docutils literal notranslate"><span class="pre">COVID19Database.data_states()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#covid19_stats.COVID19Database.fips_adj_2018"><code class="docutils literal notranslate"><span class="pre">COVID19Database.fips_adj_2018()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#covid19_stats.COVID19Database.fips_countystate_dict"><code class="docutils literal notranslate"><span class="pre">COVID19Database.fips_countystate_dict()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#covid19_stats.COVID19Database.fips_data_2019"><code class="docutils literal notranslate"><span class="pre">COVID19Database.fips_data_2019()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#covid19_stats.COVID19Database.fips_dataframe_2019"><code class="docutils literal notranslate"><span class="pre">COVID19Database.fips_dataframe_2019()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#covid19_stats.COVID19Database.fips_msas_2019"><code class="docutils literal notranslate"><span class="pre">COVID19Database.fips_msas_2019()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#covid19_stats.COVID19Database.fips_popdict_2019"><code class="docutils literal notranslate"><span class="pre">COVID19Database.fips_popdict_2019()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#covid19_stats.COVID19Database.mapping_state_rname_conus"><code class="docutils literal notranslate"><span class="pre">COVID19Database.mapping_state_rname_conus()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#covid19_stats.COVID19Database.mapping_state_rname_nonconus"><code class="docutils literal notranslate"><span class="pre">COVID19Database.mapping_state_rname_nonconus()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#covid19_stats.get_stat_line"><code class="docutils literal notranslate"><span class="pre">get_stat_line()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.1. covid19_stats module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_api.html">4.2. covid19_stats.engine module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_gis_api.html">4.3. covid19_stats.engine.gis module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="covid19_stats_engine_core_api.html">4.4. covid19_stats.engine.core module</a></li>
@@ -82,62 +143,63 @@
 </li>
 </ul>
 
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/covid19_stats_api.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
-    </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">COVID19_STATS</a>
-      </nav>
 
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a></li>
-          <li class="breadcrumb-item"><a href="api.html"><span class="section-number">4. </span>THE COVID19_STATS API</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">4.1. </span>covid19_stats module</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/api/covid19_stats_api.rst.txt" rel="nofollow"> View page source</a>
-      </li>
-  </ul>
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
   <section id="covid19-stats-module">
-<h1><span class="section-number">4.1. </span>covid19_stats module<a class="headerlink" href="#covid19-stats-module" title="Permalink to this heading"></a></h1>
+<h1><span class="section-number">4.1. </span>covid19_stats module<a class="headerlink" href="#covid19-stats-module" title="Permalink to this heading">¶</a></h1>
 <p>This is the top-level module for this repository. It defines the location of the resource directory relative to the module’s installation location (see <a class="reference internal" href="../resources.html#resources-directory"><span class="std std-numref">Section 2</span></a>), and the main COVID-19 database <a class="reference external" href="https://en.wikipedia.org/wiki/Singleton_pattern">singleton</a> object.</p>
 <span class="target" id="module-covid19_stats"></span><dl class="py class">
 <dt class="sig sig-object py" id="covid19_stats.COVID19Database">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">covid19_stats.</span></span><span class="sig-name descname"><span class="pre">COVID19Database</span></span><a class="headerlink" href="#covid19_stats.COVID19Database" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">covid19_stats.</span></span><span class="sig-name descname"><span class="pre">COVID19Database</span></span><a class="headerlink" href="#covid19_stats.COVID19Database" title="Permalink to this definition">¶</a></dt>
 <dd><p>This class implements a <a class="reference external" href="https://en.wikipedia.org/wiki/Singleton_pattern">singleton pattern</a> with static access methods to US <a class="reference external" href="https://en.wikipedia.org/wiki/Geographic_information_system">GIS</a> data and COVID-19 cumulative summary case and death data, for territorial units within the United States. It lazily instantiates itself via <a class="reference external" href="https://en.wikipedia.org/wiki/Geographic_information_system">GIS</a> loading functionality.</p>
 <p>The main data this <a class="reference external" href="https://en.wikipedia.org/wiki/Singleton_pattern">singleton</a> object contains is the cumulative COVID-19 cumulative cases and deaths, for US counties, produced by the <a class="reference external" href="https://github.com/nytimes/covid-19-data">NY Times COVID-19 database</a>.</p>
 <p>This creates a custom <a class="reference external" href="https://en.wikipedia.org/wiki/FIPS_county_code">FIPS code</a>, with number <cite>00001</cite>, by melding together the five New York City boroughs (<a class="reference external" href="https://en.wikipedia.org/wiki/Manhattan">Manhattan</a>, <a class="reference external" href="https://en.wikipedia.org/wiki/Brooklyn">Brooklyn</a>, <a class="reference external" href="https://en.wikipedia.org/wiki/Queens">Queens</a>, <a class="reference external" href="https://en.wikipedia.org/wiki/The_Bronx">The Bronx</a>, and <a class="reference external" href="https://en.wikipedia.org/wiki/Staten_Island">Staten Island</a>). This makes the COVID-19 geographic data set consistent with the COVID-19 cumulative cases and deaths data sets of the <a class="reference external" href="https://github.com/nytimes/covid-19-data">NY Times COVID-19 database</a>.</p>
 <p>In addition to a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> of <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a> regions created or loaded by <a class="reference internal" href="covid19_stats_engine_gis_api.html#covid19_stats.engine.gis.create_and_store_msas_and_fips_2019" title="covid19_stats.engine.gis.create_and_store_msas_and_fips_2019"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_and_store_msas_and_fips_2019</span></code></a>, this class also contains <a class="reference external" href="https://en.wikipedia.org/wiki/Contiguous_United_States">CONUS</a> and state and territory regions dictionaries.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="covid19_stats.COVID19Database.all_counties_nytimes_covid19_data">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">all_counties_nytimes_covid19_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.COVID19Database.all_counties_nytimes_covid19_data" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">all_counties_nytimes_covid19_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.COVID19Database.all_counties_nytimes_covid19_data" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>a <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></a> of the big shebang, the <em>reason behind the reason</em>, for the whole data set of COVID-19 cumulative cases and deaths. <em>It is unordered</em>. Here are the keys in this <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></a>: <code class="docutils literal notranslate"><span class="pre">date</span></code> (type <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.date" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">date</span></code></a>), <code class="docutils literal notranslate"><span class="pre">county</span></code> (of type <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">string</span></code></a>), <code class="docutils literal notranslate"><span class="pre">state</span></code> (of type <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">string</span></code></a>), <code class="docutils literal notranslate"><span class="pre">fips</span></code> (the FIPS code of type <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">string</span></code></a>), <code class="docutils literal notranslate"><span class="pre">cumulative</span> <span class="pre">cases</span></code> (of type <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>), and <code class="docutils literal notranslate"><span class="pre">cumulative</span> <span class="pre">death</span></code> (of type <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>).</p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></a> of the big shebang, the <em>reason behind the reason</em>, for the whole data set of COVID-19 cumulative cases and deaths. <em>It is unordered</em>. Here are the keys in this <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></a>: <code class="docutils literal notranslate"><span class="pre">date</span></code> (type <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.date" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">date</span></code></a>), <code class="docutils literal notranslate"><span class="pre">county</span></code> (of type <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">string</span></code></a>), <code class="docutils literal notranslate"><span class="pre">state</span></code> (of type <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">string</span></code></a>), <code class="docutils literal notranslate"><span class="pre">fips</span></code> (the FIPS code of type <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">string</span></code></a>), <code class="docutils literal notranslate"><span class="pre">cumulative</span> <span class="pre">cases</span></code> (of type <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>), and <code class="docutils literal notranslate"><span class="pre">cumulative</span> <span class="pre">death</span></code> (of type <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>).</p>
 </dd>
 </dl>
 <p>As of 25 February 2021, there are almost <span class="math notranslate nohighlight">\(10^6\)</span> records in this <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></a></p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="covid19_stats.COVID19Database.data_conus">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data_conus</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.COVID19Database.data_conus" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data_conus</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.COVID19Database.data_conus" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><p>the same type of region data structure for a specific <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a>. Easier to show rather than describe in words this <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>.</p>
 <span class="target" id="conus-example-data"></span><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;RNAME&#39;</span><span class="p">:</span> <span class="s1">&#39;CONUS&#39;</span><span class="p">,</span>
  <span class="s1">&#39;region name&#39;</span><span class="p">:</span> <span class="s1">&#39;CONUS&#39;</span><span class="p">,</span>
@@ -162,7 +224,7 @@
 </div>
 </p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)">dict</a></p>
 </dd>
 </dl>
@@ -170,12 +232,12 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="covid19_stats.COVID19Database.data_msas_2019">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data_msas_2019</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.COVID19Database.data_msas_2019" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data_msas_2019</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.COVID19Database.data_msas_2019" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>the <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> of <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a> region information. It returns the <em>same</em> data structure as what <a class="reference internal" href="covid19_stats_engine_gis_api.html#covid19_stats.engine.gis.create_and_store_msas_and_fips_2019" title="covid19_stats.engine.gis.create_and_store_msas_and_fips_2019"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_and_store_msas_and_fips_2019</span></code></a> returns.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)">dict</a></p>
 </dd>
 </dl>
@@ -183,9 +245,9 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="covid19_stats.COVID19Database.data_nonconus_states_territories">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data_nonconus_states_territories</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.COVID19Database.data_nonconus_states_territories" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data_nonconus_states_territories</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.COVID19Database.data_nonconus_states_territories" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><p>the <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> of US state and territory information, for states and territories <em>not</em> in the <a class="reference external" href="https://en.wikipedia.org/wiki/Contiguous_United_States">CONUS</a>. It returns the <em>same</em> type of data structure as what <a class="reference internal" href="covid19_stats_engine_gis_api.html#covid19_stats.engine.gis.create_and_store_msas_and_fips_2019" title="covid19_stats.engine.gis.create_and_store_msas_and_fips_2019"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_and_store_msas_and_fips_2019</span></code></a> returns. But better show-than-tell, here is the data for the state of <a class="reference external" href="https://en.wikipedia.org/wiki/Hawaii">Hawaii</a>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;hawaii&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;RNAME&#39;</span><span class="p">:</span> <span class="s1">&#39;Hawaii&#39;</span><span class="p">,</span>
   <span class="s1">&#39;region name&#39;</span><span class="p">:</span> <span class="s1">&#39;Hawaii&#39;</span><span class="p">,</span>
@@ -199,7 +261,7 @@
 </dl>
 <p>The identifying key is the lowercase, no-spaced version of the state’s name. Look at the values of the <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> that <a class="reference internal" href="#covid19_stats.COVID19Database.mapping_state_rname_nonconus" title="covid19_stats.COVID19Database.mapping_state_rname_nonconus"><code class="xref py py-meth docutils literal notranslate"><span class="pre">mapping_state_rname_nonconus</span></code></a> returns.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)">dict</a></p>
 </dd>
 </dl>
@@ -207,9 +269,9 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="covid19_stats.COVID19Database.data_states">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data_states</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.COVID19Database.data_states" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data_states</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.COVID19Database.data_states" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><p>the <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> of US state information, for states in the <a class="reference external" href="https://en.wikipedia.org/wiki/Contiguous_United_States">CONUS</a>. It returns the <em>same</em> type of data structure as what <a class="reference internal" href="covid19_stats_engine_gis_api.html#covid19_stats.engine.gis.create_and_store_msas_and_fips_2019" title="covid19_stats.engine.gis.create_and_store_msas_and_fips_2019"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_and_store_msas_and_fips_2019</span></code></a> returns. But better show-than-tell, here is the data for the state of <a class="reference external" href="https://en.wikipedia.org/wiki/Rhode_Island">Rhode Island</a>.</p>
 <span class="target" id="rhode-island-state-example-data"></span><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;rhode_island&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;RNAME&#39;</span><span class="p">:</span> <span class="s1">&#39;Rhode Island&#39;</span><span class="p">,</span>
   <span class="s1">&#39;region name&#39;</span><span class="p">:</span> <span class="s1">&#39;Rhode Island&#39;</span><span class="p">,</span>
@@ -223,7 +285,7 @@
 </dl>
 <p>The identifying key is the lowercase, no-spaced version of the state’s name. Look at the values of the <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> that <a class="reference internal" href="#covid19_stats.COVID19Database.mapping_state_rname_conus" title="covid19_stats.COVID19Database.mapping_state_rname_conus"><code class="xref py py-meth docutils literal notranslate"><span class="pre">mapping_state_rname_conus</span></code></a> returns.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)">dict</a></p>
 </dd>
 </dl>
@@ -231,12 +293,12 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="covid19_stats.COVID19Database.fips_adj_2018">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fips_adj_2018</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.COVID19Database.fips_adj_2018" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fips_adj_2018</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.COVID19Database.fips_adj_2018" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>the <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> of adjacency information for US counties and territories. It returns the <em>same</em> data structure as what <a class="reference internal" href="covid19_stats_engine_gis_api.html#covid19_stats.engine.gis.construct_adjacency" title="covid19_stats.engine.gis.construct_adjacency"><code class="xref py py-meth docutils literal notranslate"><span class="pre">construct_adjacency</span></code></a> returns.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)">dict</a></p>
 </dd>
 </dl>
@@ -244,12 +306,12 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="covid19_stats.COVID19Database.fips_countystate_dict">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fips_countystate_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.COVID19Database.fips_countystate_dict" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fips_countystate_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.COVID19Database.fips_countystate_dict" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>the <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> of county <a class="reference external" href="https://en.wikipedia.org/wiki/FIPS_county_code">FIPS code</a> to a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> of <code class="docutils literal notranslate"><span class="pre">county</span></code> and <code class="docutils literal notranslate"><span class="pre">state</span></code>. It returns one of the <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>s (mapping of county <a class="reference external" href="https://en.wikipedia.org/wiki/FIPS_county_code">FIPS code</a> to county and state name) that <a class="reference internal" href="covid19_stats_engine_gis_api.html#covid19_stats.engine.gis.create_and_store_fips_counties_2019" title="covid19_stats.engine.gis.create_and_store_fips_counties_2019"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_and_store_fips_counties_2019</span></code></a> returns.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)">dict</a></p>
 </dd>
 </dl>
@@ -257,12 +319,12 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="covid19_stats.COVID19Database.fips_data_2019">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fips_data_2019</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.COVID19Database.fips_data_2019" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fips_data_2019</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.COVID19Database.fips_data_2019" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>the <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> of county geographical information. It returns the <em>same</em> data structure as what <a class="reference internal" href="covid19_stats_engine_gis_api.html#covid19_stats.engine.gis.create_and_store_fips_2019" title="covid19_stats.engine.gis.create_and_store_fips_2019"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_and_store_fips_2019</span></code></a> returns.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)">dict</a></p>
 </dd>
 </dl>
@@ -270,18 +332,18 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="covid19_stats.COVID19Database.fips_dataframe_2019">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fips_dataframe_2019</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.COVID19Database.fips_dataframe_2019" title="Permalink to this definition"></a></dt>
-<dd><p>Returns a <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></a> with following columns: FIPS, county name, state or territory, and population. Data comes from <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> vomited out by <a class="reference internal" href="#covid19_stats.COVID19Database.fips_popdict_2019" title="covid19_stats.COVID19Database.fips_popdict_2019"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fips_popdict_2019</span></code></a> and <code class="xref py py-meth docutils literal notranslate"><span class="pre">fips_countystate_dict</span></code>.</p>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fips_dataframe_2019</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.COVID19Database.fips_dataframe_2019" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></a> with following columns: FIPS, county name, state or territory, and population. Data comes from <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> vomited out by <a class="reference internal" href="#covid19_stats.COVID19Database.fips_popdict_2019" title="covid19_stats.COVID19Database.fips_popdict_2019"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fips_popdict_2019</span></code></a> and <code class="xref py py-meth docutils literal notranslate"><span class="pre">fips_countystate_dict</span></code>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="covid19_stats.COVID19Database.fips_msas_2019">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fips_msas_2019</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.COVID19Database.fips_msas_2019" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fips_msas_2019</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.COVID19Database.fips_msas_2019" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>the <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> of county <a class="reference external" href="https://en.wikipedia.org/wiki/FIPS_county_code">FIPS code</a> to the <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a>, identified by its prefix (for example, <code class="docutils literal notranslate"><span class="pre">nyc</span></code> is the New York City metropolitan area). <em>Implictly</em>, this <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> only contains the counties that lie within an <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a>.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)">dict</a></p>
 </dd>
 </dl>
@@ -289,12 +351,12 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="covid19_stats.COVID19Database.fips_popdict_2019">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fips_popdict_2019</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.COVID19Database.fips_popdict_2019" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fips_popdict_2019</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.COVID19Database.fips_popdict_2019" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>the <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> of county population data. It returns the <em>same</em> data structure as what <a class="reference internal" href="covid19_stats_engine_gis_api.html#covid19_stats.engine.gis.create_fips_popmap_2019" title="covid19_stats.engine.gis.create_fips_popmap_2019"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_and_store_fips_2019</span></code></a> returns.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)">dict</a></p>
 </dd>
 </dl>
@@ -302,9 +364,9 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="covid19_stats.COVID19Database.mapping_state_rname_conus">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mapping_state_rname_conus</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.COVID19Database.mapping_state_rname_conus" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mapping_state_rname_conus</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.COVID19Database.mapping_state_rname_conus" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><p>a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> of state names, for states in the <a class="reference external" href="https://en.wikipedia.org/wiki/Contiguous_United_States">CONUS</a>, to the region identifying name. Here is what it returns,</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;New Mexico&#39;</span><span class="p">:</span> <span class="s1">&#39;new_mexico&#39;</span><span class="p">,</span>
  <span class="s1">&#39;Minnesota&#39;</span><span class="p">:</span> <span class="s1">&#39;minnesota&#39;</span><span class="p">,</span>
@@ -359,7 +421,7 @@
 </div>
 </p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)">dict</a></p>
 </dd>
 </dl>
@@ -367,16 +429,16 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="covid19_stats.COVID19Database.mapping_state_rname_nonconus">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mapping_state_rname_nonconus</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.COVID19Database.mapping_state_rname_nonconus" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mapping_state_rname_nonconus</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.COVID19Database.mapping_state_rname_nonconus" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><p>a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> of state names, for states and territories outside the <a class="reference external" href="https://en.wikipedia.org/wiki/Contiguous_United_States">CONUS</a>, to the region identifying name. Here is what it returns,</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;Alaska&#39;</span><span class="p">:</span> <span class="s1">&#39;alaska&#39;</span><span class="p">,</span> <span class="s1">&#39;Hawaii&#39;</span><span class="p">:</span> <span class="s1">&#39;hawaii&#39;</span><span class="p">,</span> <span class="s1">&#39;Puerto Rico&#39;</span><span class="p">:</span> <span class="s1">&#39;puerto_rico&#39;</span><span class="p">}</span>
 </pre></div>
 </div>
 </p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)">dict</a></p>
 </dd>
 </dl>
@@ -386,16 +448,16 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="covid19_stats.get_stat_line">
-<span class="sig-prename descclassname"><span class="pre">covid19_stats.</span></span><span class="sig-name descname"><span class="pre">get_stat_line</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.get_stat_line" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">covid19_stats.</span></span><span class="sig-name descname"><span class="pre">get_stat_line</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.get_stat_line" title="Permalink to this definition">¶</a></dt>
 <dd><p>This is a low level function that consumes each line os the CSV files (<code class="docutils literal notranslate"><span class="pre">us-counties-2020.csv`,</span> <span class="pre">``us-counties-2021.csv`,</span> <span class="pre">and</span> <span class="pre">``us-counties-2022.csv</span></code>), and returns a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> of useful information used by <a class="reference internal" href="#covid19_stats.COVID19Database" title="covid19_stats.COVID19Database"><code class="xref py py-class docutils literal notranslate"><span class="pre">COVID19Database</span></code></a>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>line</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – line from valid row of CSV file (<code class="docutils literal notranslate"><span class="pre">us-counties-2020.csv`,</span> <span class="pre">``us-counties-2021.csv`,</span> <span class="pre">or</span> <span class="pre">``us-counties-2022.csv</span></code>), which contains information on running tally of cumulative deaths and cases of the county at a given date.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> with the following keys: <code class="docutils literal notranslate"><span class="pre">date</span></code> which is a <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.date" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">date</span></code></a> of that county; <code class="docutils literal notranslate"><span class="pre">county</span></code> which is county name, <code class="docutils literal notranslate"><span class="pre">state</span></code> which is name of the state or US territory, <code class="docutils literal notranslate"><span class="pre">fips</span></code> which is the <a class="reference external" href="https://en.wikipedia.org/wiki/FIPS_county_code">FIPS code</a> code of the county; <code class="docutils literal notranslate"><span class="pre">cumulative</span> <span class="pre">cases</span></code> which is the cumulative number of cases by that <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.date" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">date</span></code></a>; and <code class="docutils literal notranslate"><span class="pre">cumulative</span> <span class="pre">death</span></code> which is the cumulative number of COVID-19 deaths by that <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.date" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">date</span></code></a>.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)">dict</a></p>
 </dd>
 </dl>
@@ -404,34 +466,70 @@
 </section>
 
 
-           </div>
+            <div class="clearer"></div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="api.html" class="btn btn-neutral float-left" title="4. THE COVID19_STATS API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="covid19_stats_engine_api.html" class="btn btn-neutral float-right" title="4.2. covid19_stats.engine module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2021, Tanim Islam.</p>
-  </div>
-
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
-
-</footer>
         </div>
       </div>
-    </section>
-  </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
+    
+        <div id="show_right_sidebar">
+            <p><a class="toggle_right_sidebar" href="#"><span class="icon"><</span><span>Page contents<span></a></p>
+        </div>
 
-</body>
+        <div id="right_sidebar">
+            <p><a class="toggle_right_sidebar" href="#"><span class="icon">></span><span>Page contents:<span></a></p>
+            <div class="page_toc">
+                <ul>
+<li><a class="reference internal" href="#">4.1. covid19_stats module</a><ul>
+<li><a class="reference internal" href="#covid19_stats.COVID19Database"><code class="docutils literal notranslate"><span class="pre">COVID19Database</span></code></a><ul>
+<li><a class="reference internal" href="#covid19_stats.COVID19Database.all_counties_nytimes_covid19_data"><code class="docutils literal notranslate"><span class="pre">COVID19Database.all_counties_nytimes_covid19_data()</span></code></a></li>
+<li><a class="reference internal" href="#covid19_stats.COVID19Database.data_conus"><code class="docutils literal notranslate"><span class="pre">COVID19Database.data_conus()</span></code></a></li>
+<li><a class="reference internal" href="#covid19_stats.COVID19Database.data_msas_2019"><code class="docutils literal notranslate"><span class="pre">COVID19Database.data_msas_2019()</span></code></a></li>
+<li><a class="reference internal" href="#covid19_stats.COVID19Database.data_nonconus_states_territories"><code class="docutils literal notranslate"><span class="pre">COVID19Database.data_nonconus_states_territories()</span></code></a></li>
+<li><a class="reference internal" href="#covid19_stats.COVID19Database.data_states"><code class="docutils literal notranslate"><span class="pre">COVID19Database.data_states()</span></code></a></li>
+<li><a class="reference internal" href="#covid19_stats.COVID19Database.fips_adj_2018"><code class="docutils literal notranslate"><span class="pre">COVID19Database.fips_adj_2018()</span></code></a></li>
+<li><a class="reference internal" href="#covid19_stats.COVID19Database.fips_countystate_dict"><code class="docutils literal notranslate"><span class="pre">COVID19Database.fips_countystate_dict()</span></code></a></li>
+<li><a class="reference internal" href="#covid19_stats.COVID19Database.fips_data_2019"><code class="docutils literal notranslate"><span class="pre">COVID19Database.fips_data_2019()</span></code></a></li>
+<li><a class="reference internal" href="#covid19_stats.COVID19Database.fips_dataframe_2019"><code class="docutils literal notranslate"><span class="pre">COVID19Database.fips_dataframe_2019()</span></code></a></li>
+<li><a class="reference internal" href="#covid19_stats.COVID19Database.fips_msas_2019"><code class="docutils literal notranslate"><span class="pre">COVID19Database.fips_msas_2019()</span></code></a></li>
+<li><a class="reference internal" href="#covid19_stats.COVID19Database.fips_popdict_2019"><code class="docutils literal notranslate"><span class="pre">COVID19Database.fips_popdict_2019()</span></code></a></li>
+<li><a class="reference internal" href="#covid19_stats.COVID19Database.mapping_state_rname_conus"><code class="docutils literal notranslate"><span class="pre">COVID19Database.mapping_state_rname_conus()</span></code></a></li>
+<li><a class="reference internal" href="#covid19_stats.COVID19Database.mapping_state_rname_nonconus"><code class="docutils literal notranslate"><span class="pre">COVID19Database.mapping_state_rname_nonconus()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#covid19_stats.get_stat_line"><code class="docutils literal notranslate"><span class="pre">get_stat_line()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+            </div>
+        </div>
+    
+
+      <div class="clearer"></div>
+    </div>
+    <div class="button_nav_wrapper">
+        <div class="button_nav">
+            <div class="left">
+                
+                <a href="api.html">
+                    <span class="icon"><</span><span><span class="section-number">4. </span>THE COVID19_STATS API</span></a>
+                
+            </div>
+
+            <div class="right">
+                
+                    <a href="covid19_stats_engine_api.html"><span><span class="section-number">4.2. </span>covid19_stats.engine module</span><span class="icon">></span></a>
+                
+            </div>
+        </div>
+    </div>
+
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Tanim Islam.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    </div>
+
+<p id="theme_credit">Styled using the <a href="https://github.com/piccolo-orm/piccolo_theme">Piccolo Theme</a></p>
+  </body>
 </html>

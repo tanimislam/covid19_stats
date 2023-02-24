@@ -3,63 +3,137 @@
      This is for layout.html
 */
 --> 
-<!DOCTYPE html>
-<html class="writer-html5" lang="en" >
-<head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>3.2. covid19_create_movie_or_summary &mdash; COVID19_STATS 1.0 documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-    <link rel="shortcut icon" href="../_static/covid19_stats.ico"/>
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
-        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>3.2. covid19_create_movie_or_summary &#8212; COVID19_STATS 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic_mod.css?v=0.7.0-1" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
+    <script src="../_static/js/petite-vue.js"></script>
+    <link rel="icon" href="../_static/covid19_stats.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="3.3. covid19_state_summary" href="covid19_state_summary.html" />
     <link rel="prev" title="3.1. covid19_update_database" href="covid19_update_database.html" />
     <link href="../_static/style.css" rel="stylesheet" type="text/css">
 
-</head>
+  </head><body data-dark_mode_code_blocks="true">
 
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> COVID19_STATS
-          </a>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+<div id="top_nav">
+    
+
+    <nav>
+        
+            
+        
+
+        <p id="toggle_sidebar">
+            <a href="#" title="Toggle sidebar">|||</a>
+        </p>
+        <h1><a href="../index.html" title="Go to homepage">COVID19_STATS 1.0 documentation</a></h1>
+
+        <a id="mode_toggle" href="#" @click.prevent="handleClick" :title="mode">
+    <template v-if="mode == 'light'">
+        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_light"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><circle cx="39.311" cy="39.524" r="15.734" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.212,4.901c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901l-0,9.614c-0,2.705 2.196,4.901 4.9,4.901c2.705,0 4.901,-2.196 4.901,-4.901l0,-9.614Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M67.48,18.073c1.913,-1.912 1.913,-5.018 0,-6.931c-1.912,-1.912 -5.018,-1.912 -6.931,0l-6.798,6.799c-1.912,1.912 -1.912,5.018 0,6.931c1.913,1.912 5.018,1.912 6.931,-0l6.798,-6.799Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.728,61.108c1.912,-1.913 1.912,-5.018 -0,-6.931c-1.913,-1.913 -5.019,-1.913 -6.931,-0l-6.799,6.798c-1.912,1.913 -1.912,5.019 0,6.931c1.913,1.913 5.019,1.913 6.931,0l6.799,-6.798Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.682,54.177c-1.913,-1.913 -5.018,-1.913 -6.931,-0c-1.912,1.913 -1.912,5.018 0,6.931l6.798,6.798c1.913,1.913 5.019,1.913 6.931,0c1.913,-1.912 1.913,-5.018 0,-6.931l-6.798,-6.798Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M4.901,34.623c-2.705,0 -4.901,2.196 -4.901,4.901c0,2.705 2.196,4.901 4.901,4.901l9.614,0c2.705,0 4.901,-2.196 4.901,-4.901c0,-2.705 -2.196,-4.901 -4.901,-4.901l-9.614,0Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.212,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901l-0,9.614c-0,2.705 2.196,4.901 4.9,4.901c2.705,-0 4.901,-2.196 4.901,-4.901l0,-9.614Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M18.929,11.142c-1.912,-1.912 -5.018,-1.912 -6.931,0c-1.912,1.913 -1.912,5.019 0,6.931l6.799,6.799c1.912,1.912 5.018,1.912 6.931,-0c1.912,-1.913 1.912,-5.019 -0,-6.931l-6.799,-6.799Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.108,34.623c-2.705,0 -4.901,2.196 -4.901,4.901c-0,2.705 2.196,4.901 4.901,4.901l9.614,0c2.705,0 4.901,-2.196 4.901,-4.901c-0,-2.705 -2.196,-4.901 -4.901,-4.901l-9.614,0Z" style="fill:#fff;"/></g></g></g></svg>
+    </template>
+
+    <template v-if="mode == 'dark'">
+        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_dark"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><circle cx="39.311" cy="39.524" r="15.734" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.212,14.515c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,0 -4.901,2.196 -4.901,4.901c0,2.705 2.197,4.901 4.901,4.901c2.705,0 4.901,-2.196 4.901,-4.901Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M60.662,24.892c1.902,-1.902 1.902,-4.99 0,-6.892l-0.04,-0.039c-1.901,-1.902 -4.989,-1.902 -6.891,-0c-1.901,1.901 -1.901,4.989 0,6.891l0.04,0.04c1.902,1.901 4.989,1.901 6.891,-0Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.732,61.103c1.91,-1.91 1.91,-5.011 0,-6.921l-0.009,-0.01c-1.91,-1.91 -5.012,-1.91 -6.921,-0c-1.91,1.91 -1.91,5.011 -0,6.921l0.01,0.01c1.909,1.91 5.011,1.91 6.92,-0Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.672,54.167c-1.907,-1.907 -5.004,-1.907 -6.911,0l-0.02,0.02c-1.907,1.907 -1.907,5.004 0,6.911c1.907,1.907 5.004,1.907 6.911,-0l0.02,-0.02c1.907,-1.907 1.907,-5.004 0,-6.911Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M14.52,34.623c-2.702,0 -4.896,2.194 -4.896,4.896l0,0.01c0,2.702 2.194,4.896 4.896,4.896c2.702,0 4.896,-2.194 4.896,-4.896l-0,-0.01c-0,-2.702 -2.194,-4.896 -4.896,-4.896Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.212,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.901,2.196 -4.901,4.901c0,2.704 2.197,4.9 4.901,4.9c2.705,0 4.901,-2.196 4.901,-4.9Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M25.73,17.943c-1.911,-1.911 -5.015,-1.911 -6.926,0l-0.005,0.005c-1.911,1.911 -1.911,5.015 0,6.926c1.911,1.911 5.015,1.911 6.926,0l0.005,-0.005c1.911,-1.911 1.911,-5.014 -0,-6.926Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.098,34.623c-2.699,0 -4.891,2.192 -4.891,4.892l-0,0.019c-0,2.699 2.192,4.891 4.891,4.891c2.7,0 4.892,-2.192 4.892,-4.891l0,-0.019c0,-2.7 -2.192,-4.892 -4.892,-4.892Z" style="fill:#fff;"/></g></g></g></svg>
+    </template>
+
+    <template v-if="mode == 'darkest'">
+        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_darkest"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><path d="M39.315,23.791c8.684,-0 15.734,7.05 15.734,15.733c0,8.684 -7.05,15.734 -15.734,15.734c-8.683,0 -15.733,-7.05 -15.733,-15.734c-0,-8.683 7.05,-15.733 15.733,-15.733Zm0,4.737c6.069,0 10.997,4.927 10.997,10.996c-0,6.069 -4.928,10.996 -10.997,10.996c-6.068,0 -10.996,-4.927 -10.996,-10.996c0,-6.069 4.928,-10.996 10.996,-10.996Z" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.216,14.515c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,0 -4.9,2.196 -4.9,4.901c-0,2.705 2.196,4.901 4.9,4.901c2.705,0 4.901,-2.196 4.901,-4.901Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M60.666,24.892c1.902,-1.902 1.902,-4.99 0,-6.892l-0.04,-0.039c-1.901,-1.902 -4.989,-1.902 -6.891,-0c-1.901,1.901 -1.901,4.989 0,6.891l0.04,0.04c1.902,1.901 4.99,1.901 6.891,-0Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.737,61.103c1.909,-1.91 1.909,-5.011 -0,-6.921l-0.01,-0.01c-1.91,-1.91 -5.011,-1.91 -6.921,-0c-1.91,1.91 -1.91,5.011 -0,6.921l0.01,0.01c1.91,1.91 5.011,1.91 6.921,-0Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.676,54.167c-1.907,-1.907 -5.004,-1.907 -6.911,0l-0.02,0.02c-1.907,1.907 -1.907,5.004 0,6.911c1.907,1.907 5.004,1.907 6.911,-0l0.02,-0.02c1.907,-1.907 1.907,-5.004 0,-6.911Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M14.524,34.623c-2.702,0 -4.896,2.194 -4.896,4.896l0,0.01c0,2.702 2.194,4.896 4.896,4.896c2.702,0 4.896,-2.194 4.896,-4.896l0,-0.01c0,-2.702 -2.194,-4.896 -4.896,-4.896Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.216,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901c-0,2.704 2.196,4.9 4.9,4.9c2.705,0 4.901,-2.196 4.901,-4.9Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M25.734,17.943c-1.911,-1.911 -5.015,-1.911 -6.926,0l-0.005,0.005c-1.911,1.911 -1.911,5.015 0,6.926c1.911,1.911 5.015,1.911 6.926,0l0.005,-0.005c1.911,-1.911 1.911,-5.014 0,-6.926Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.103,34.623c-2.7,0 -4.892,2.192 -4.892,4.892l-0,0.019c-0,2.699 2.192,4.891 4.892,4.891c2.699,0 4.891,-2.192 4.891,-4.891l0,-0.019c0,-2.7 -2.192,-4.892 -4.891,-4.892Z" style="fill:#fff;"/></g></g></g></svg>
+    </template>
+</a>
+
+<script>
+(function() {
+    const LOCAL_STORAGE_KEY = 'piccoloThemeMode'
+
+    var initialMode = localStorage.getItem(LOCAL_STORAGE_KEY)
+
+    if (initialMode) {
+        // Make sure the value in local storage is valid
+        if (['light', 'dark', 'darkest'].indexOf(initialMode) == -1) {
+            initialMode = 'light'
+            localStorage.setItem(LOCAL_STORAGE_KEY, initialMode)
+        }
+    } else {
+        // Check if the client prefers dark mode
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            initialMode = 'dark'
+        } else {
+            initialMode = 'light'
+        }
+        localStorage.setItem(LOCAL_STORAGE_KEY, initialMode)
+    }
+
+    document.documentElement.dataset.mode = initialMode
+
+    PetiteVue.createApp({
+        'mode': initialMode,
+        handleClick() {
+            let currentMode = this.mode
+
+            if (currentMode == 'light') {
+                this.mode = 'dark'
+            } else if (currentMode == 'dark') {
+                this.mode = 'darkest'
+            } else if (currentMode == 'darkest') {
+                this.mode = 'light'
+            }
+
+            document.documentElement.dataset.mode = this.mode
+            localStorage.setItem(LOCAL_STORAGE_KEY, this.mode)
+
+            console.log(this.mode)
+        }
+    }).mount('#mode_toggle')
+})()
+</script>
+            <p class="mobile_search_link">
+                <a href="../search.html" title="Search">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 65 64" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2">
+                        <path d="M14.873 40.009c-2.315-3.943-3.642-8.532-3.642-13.429C11.231 11.91 23.141 0 37.811 0s26.58 11.91 26.58 26.58-11.91 26.58-26.58 26.58a26.44 26.44 0 0 1-14.277-4.161L9.739 62.794a3.12 3.12 0 0 1-4.413 0L.913 58.382c-1.217-1.218-1.217-3.196 0-4.413l13.96-13.96zM37.811 8.054c10.225 0 18.526 8.301 18.526 18.526s-8.301 18.526-18.526 18.526-18.526-8.301-18.526-18.526S27.586 8.054 37.811 8.054z" fill="#fff" />
+                    </svg>
+                </a>
+            </p>
+        
+
+        <div class="searchbox_wrapper">
+            
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul class="current">
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+    </nav>
+</div>
+
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">1. GETTING STARTED</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../resources.html">2. RESOURCES</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="cli.html">3. USING THE CLI</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="covid19_update_database.html">3.1. covid19_update_database</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">3.2. covid19_create_movie_or_summary</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#summarize-msas">3.2.1. summarize MSAs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#show-mode">3.2.2. show mode</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#movie-mode">3.2.3. movie mode</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#movie-cases-deaths-mode">3.2.4. movie cases deaths mode</a></li>
-</ul>
-</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3.2. covid19_create_movie_or_summary</a></li>
 <li class="toctree-l2"><a class="reference internal" href="covid19_state_summary.html">3.3. covid19_state_summary</a></li>
 <li class="toctree-l2"><a class="reference internal" href="covid19_region_summary_rate.html">3.4. covid19_region_summary_rate</a></li>
 <li class="toctree-l2"><a class="reference internal" href="covid19_movie_updates.html">3.5. covid19_movie_updates</a></li>
@@ -72,33 +146,34 @@
 <li class="toctree-l1"><a class="reference internal" href="../api/api.html">4. THE COVID19_STATS API</a></li>
 </ul>
 
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/cli/covid19_create_movie_or_summary.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
-    </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">COVID19_STATS</a>
-      </nav>
 
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a></li>
-          <li class="breadcrumb-item"><a href="cli.html"><span class="section-number">3. </span>USING THE CLI</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">3.2. </span>covid19_create_movie_or_summary</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/cli/covid19_create_movie_or_summary.rst.txt" rel="nofollow"> View page source</a>
-      </li>
-  </ul>
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
   <section id="covid19-create-movie-or-summary">
-<span id="id3"></span><h1><span class="section-number">3.2. </span>covid19_create_movie_or_summary<a class="headerlink" href="#covid19-create-movie-or-summary" title="Permalink to this heading"></a></h1>
+<span id="id3"></span><h1><span class="section-number">3.2. </span>covid19_create_movie_or_summary<a class="headerlink" href="#covid19-create-movie-or-summary" title="Permalink to this heading">¶</a></h1>
 <p>This CLI is the <em>main</em> top-level CLI currently in the repository. Its purpose is to <em>individually</em> create COVID-19 summary movies and figures, of cumulative cases and deaths, in the <a class="reference external" href="https://en.wikipedia.org/wiki/Contiguous_United_States">Contiguous United States (CONUS)</a> or one of the 380 defined MSAs.</p>
 <p>It has four modes of operation. Its help output, when running <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">-h</span></code>, produces the following,</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: covid19_create_movie_or_summary [-h] [-d DIRNAME] [--info] {M,m,s,mcd} ...</span>
@@ -127,7 +202,7 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">--info</span></code> says to show <code class="docutils literal notranslate"><span class="pre">INFO</span></code> logging output.</p></li>
 </ul>
 <section id="summarize-msas">
-<span id="metro-mode"></span><h2><span class="section-number">3.2.1. </span>summarize MSAs<a class="headerlink" href="#summarize-msas" title="Permalink to this heading"></a></h2>
+<span id="metro-mode"></span><h2><span class="section-number">3.2.1. </span>summarize MSAs<a class="headerlink" href="#summarize-msas" title="Permalink to this heading">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">M</span></code> (METRO flag) lists the COVID-19 stats for all, or user-selected, MSAs by population. For example, here are the statistics for the top 30 MSAs.</p>
 <div class="highlight-console notranslate" id="demonstration-simple-format"><div class="highlight"><pre><span></span><span class="go">covid19_create_movie_or_summary M --topN=30</span>
 
@@ -193,7 +268,7 @@
 </ul>
 </section>
 <section id="show-mode">
-<span id="id4"></span><h2><span class="section-number">3.2.2. </span>show mode<a class="headerlink" href="#show-mode" title="Permalink to this heading"></a></h2>
+<span id="id4"></span><h2><span class="section-number">3.2.2. </span>show mode<a class="headerlink" href="#show-mode" title="Permalink to this heading">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">s</span></code> (SHOW flag) summarizes the latest COVID-19 statistics for a specified MSA. The help output, while running <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">s</span> <span class="pre">-h</span></code>, is shown below,</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: covid19_create_movie_or_summary s [-h] [-n NAME] [-M MAXNUM] [--conus]</span>
 <span class="go">                                         [-y]</span>
@@ -231,12 +306,12 @@
 </div>
 <p>This mode of operation, for example for NYC, will output seven files:</p>
 <ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">covid19_nyc_LATEST.pkl.gz</span></code> is the serialized <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pandas</span> <span class="pre">DataFrame</span></code></a> of the COVID-19 cases and deaths, total and per county, from the date of first incident to the latest incident.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">covid19_nyc_LATEST.pkl.gz</span></code> is the serialized <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pandas</span> <span class="pre">DataFrame</span></code></a> of the COVID-19 cases and deaths, total and per county, from the date of first incident to the latest incident.</p></li>
 <li><p><a class="reference external" href="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_cds_LATEST.pdf">covid19_nyc_cds_LATEST.pdf</a> and <a class="reference external" href="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_cds_LATEST.png">covid19_nyc_cds_LATEST.png</a> are the PDF and PNG showing the trend of COVID-19 cases and deaths in the NYC metro area.</p>
 <figure class="align-left" id="id7">
 <a class="reference internal image-reference" href="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_cds_LATEST.png"><img alt="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_cds_LATEST.png" src="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_cds_LATEST.png" style="width: 100%;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 3.2 </span><span class="caption-text">The <em>latest</em> trend lines of cumulative cases and deaths in the NYC metropolitan area.</span><a class="headerlink" href="#id7" title="Permalink to this image"></a></p>
+<p><span class="caption-number">Fig. 3.2 </span><span class="caption-text">The <em>latest</em> trend lines of cumulative cases and deaths in the NYC metropolitan area.</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 </li>
@@ -244,7 +319,7 @@
 <figure class="align-left" id="id8">
 <a class="reference internal image-reference" href="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_cases_LATEST.png"><img alt="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_cases_LATEST.png" src="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_cases_LATEST.png" style="width: 100%;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 3.3 </span><span class="caption-text">The <em>latest</em> image of cumulative cases in the NYC metropolitan area.</span><a class="headerlink" href="#id8" title="Permalink to this image"></a></p>
+<p><span class="caption-number">Fig. 3.3 </span><span class="caption-text">The <em>latest</em> image of cumulative cases in the NYC metropolitan area.</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 </li>
@@ -252,14 +327,14 @@
 <figure class="align-left" id="id9">
 <a class="reference internal image-reference" href="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_death_LATEST.png"><img alt="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_death_LATEST.png" src="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_death_LATEST.png" style="width: 100%;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 3.4 </span><span class="caption-text">The <em>latest</em> image of cumulative deaths in the NYC metropolitan area.</span><a class="headerlink" href="#id9" title="Permalink to this image"></a></p>
+<p><span class="caption-number">Fig. 3.4 </span><span class="caption-text">The <em>latest</em> image of cumulative deaths in the NYC metropolitan area.</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 </li>
 </ul>
 </section>
 <section id="movie-mode">
-<span id="id5"></span><h2><span class="section-number">3.2.3. </span>movie mode<a class="headerlink" href="#movie-mode" title="Permalink to this heading"></a></h2>
+<span id="id5"></span><h2><span class="section-number">3.2.3. </span>movie mode<a class="headerlink" href="#movie-mode" title="Permalink to this heading">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">m</span></code> (MOVIE flag) creates an <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> movie of COVID-19 cases and deaths for the MSA you specify (see the <a class="reference internal" href="../index.html#gif-animations"><span class="std std-ref">high quality GIF animations</span></a> of these <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> movies). The help output, while running <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">m</span> <span class="pre">-h</span></code>, is shown below,</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: covid19_create_movie_or_summary m [-h] [-n NAME] [-M MAXNUM] [--conus]</span>
 <span class="go">                                         [-y]</span>
@@ -287,7 +362,7 @@
 <figure class="align-left" id="id10">
 <span id="fig-covid19-nyc-latest"></span><a class="reference internal image-reference" href="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_LATEST.gif"><img alt="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_LATEST.gif" src="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_LATEST.gif" style="width: 100%;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 3.5 </span><span class="caption-text">The four-quadrant movie, that <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">m</span></code> creates, of the cumulative COVID-19 cases and deaths in the NYC metropolitan area. Upper left quad is the summary information for the MSA. Lower left quad is the running tally of cumulative cases and deaths, by day from first incident. Upper right is <em>logarithmic</em> coloration of cumulative deaths, by day from first incident. Lower right is <em>logarithmic</em> coloration of cumulative cases, by day from first incident.</span><a class="headerlink" href="#id10" title="Permalink to this image"></a></p>
+<p><span class="caption-number">Fig. 3.5 </span><span class="caption-text">The four-quadrant movie, that <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">m</span></code> creates, of the cumulative COVID-19 cases and deaths in the NYC metropolitan area. Upper left quad is the summary information for the MSA. Lower left quad is the running tally of cumulative cases and deaths, by day from first incident. Upper right is <em>logarithmic</em> coloration of cumulative deaths, by day from first incident. Lower right is <em>logarithmic</em> coloration of cumulative cases, by day from first incident.</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>Note also that the created <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> files have metadata associated with them. You can either inspect them using <a class="reference external" href="https://www.bento4.com/documentation/mp4info">mp4info</a> or using code in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">mutagen.mp4.MP4</span></code>. Here is what <code class="docutils literal notranslate"><span class="pre">mp4info</span> <span class="pre">covid19_nyc_LATEST.mp4</span></code> returns,</p>
@@ -328,7 +403,7 @@
 </ul>
 </section>
 <section id="movie-cases-deaths-mode">
-<span id="id6"></span><h2><span class="section-number">3.2.4. </span>movie cases deaths mode<a class="headerlink" href="#movie-cases-deaths-mode" title="Permalink to this heading"></a></h2>
+<span id="id6"></span><h2><span class="section-number">3.2.4. </span>movie cases deaths mode<a class="headerlink" href="#movie-cases-deaths-mode" title="Permalink to this heading">¶</a></h2>
 <p>This is similar to <a class="reference internal" href="#movie-mode"><span class="std std-ref">movie mode</span></a>, except now we can visualize movies of cases or deaths, and optionally <em>save</em>, the collection of <a class="reference external" href="https://en.wikipedia.org/wiki/Portable_Network_Graphics">PNG</a> images used to create the movie, into a zip file. The help output, while running <code class="docutils literal notranslate"><span class="pre">covid19_create_movie_or_summary</span> <span class="pre">mcd</span> <span class="pre">-h</span></code>, is shown below,</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: covid19_create_movie_or_summary mcd [-h] [-n NAME] [-d DISP] [-M MAXNUM] [-s] [--conus] [-y]</span>
 
@@ -354,7 +429,7 @@
 <figure class="align-left" id="id11">
 <span id="fig-covid19-nyc-cases-latest"></span><a class="reference internal image-reference" href="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_cases_LATEST.gif"><img alt="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_cases_LATEST.gif" src="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_cases_LATEST.gif" style="width: 100%;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 3.6 </span><span class="caption-text">The trend of latest COVID-19 cumulative cases (lower right quadrant in <a class="reference internal" href="#fig-covid19-nyc-latest"><span class="std std-numref">Fig. 3.5</span></a>) in the NYC metropolitan area. The underlying MP4 file is <a class="reference external" href="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_cases_LATEST.mp4">covid19_nyc_cases_LATEST.mp4</a>. The syntax used to create this movie is,</span><a class="headerlink" href="#id11" title="Permalink to this image"></a></p>
+<p><span class="caption-number">Fig. 3.6 </span><span class="caption-text">The trend of latest COVID-19 cumulative cases (lower right quadrant in <a class="reference internal" href="#fig-covid19-nyc-latest"><span class="std std-numref">Fig. 3.5</span></a>) in the NYC metropolitan area. The underlying MP4 file is <a class="reference external" href="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_cases_LATEST.mp4">covid19_nyc_cases_LATEST.mp4</a>. The syntax used to create this movie is,</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
 <div class="legend">
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">covid19_create_movie_or_summary mcd -n nyc -d cases -y</span>
 </pre></div>
@@ -365,7 +440,7 @@
 <figure class="align-left" id="id12">
 <span id="fig-covid19-nyc-death-latest"></span><a class="reference internal image-reference" href="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_deaths_LATEST.gif"><img alt="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_deaths_LATEST.gif" src="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_deaths_LATEST.gif" style="width: 100%;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 3.7 </span><span class="caption-text">The trend of latest COVID-19 cumulative deaths (upper right quadrant in <a class="reference internal" href="#fig-covid19-nyc-latest"><span class="std std-numref">Fig. 3.5</span></a>) in the NYC metropolitan area. The underlying MP4 file is <a class="reference external" href="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_deaths_LATEST.mp4">covid19_nyc_deaths_LATEST.mp4</a>. The syntax used to create this movie is,</span><a class="headerlink" href="#id12" title="Permalink to this image"></a></p>
+<p><span class="caption-number">Fig. 3.7 </span><span class="caption-text">The trend of latest COVID-19 cumulative deaths (upper right quadrant in <a class="reference internal" href="#fig-covid19-nyc-latest"><span class="std std-numref">Fig. 3.5</span></a>) in the NYC metropolitan area. The underlying MP4 file is <a class="reference external" href="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_nyc_deaths_LATEST.mp4">covid19_nyc_deaths_LATEST.mp4</a>. The syntax used to create this movie is,</span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
 <div class="legend">
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">covid19_create_movie_or_summary mcd -n nyc -d death -y</span>
 </pre></div>
@@ -380,7 +455,7 @@
 <figure class="align-left" id="id13">
 <span id="fig-covid19-conus-cases-latest"></span><a class="reference internal image-reference" href="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_conus_cases_LATEST.gif"><img alt="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_conus_cases_LATEST.gif" src="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_conus_cases_LATEST.gif" style="width: 100%;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 3.8 </span><span class="caption-text">The trend of latest COVID-19 cumulative cases for the <a class="reference external" href="https://en.wikipedia.org/wiki/Contiguous_United_States">CONUS</a>. The underlying MP4 file is <a class="reference external" href="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_conus_cases_LATEST.mp4">covid19_conus_cases_LATEST.mp4</a>. I <em>deliberately</em> limit the maximum value of cases, in the colorbar, to the maximum cumulative COVID-19 <em>deaths</em> in a county in the region, for psychological effect; it’s distressing to see the COVID-19 cumulative case map fill up with red as time goes on.</span><a class="headerlink" href="#id13" title="Permalink to this image"></a></p>
+<p><span class="caption-number">Fig. 3.8 </span><span class="caption-text">The trend of latest COVID-19 cumulative cases for the <a class="reference external" href="https://en.wikipedia.org/wiki/Contiguous_United_States">CONUS</a>. The underlying MP4 file is <a class="reference external" href="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_conus_cases_LATEST.mp4">covid19_conus_cases_LATEST.mp4</a>. I <em>deliberately</em> limit the maximum value of cases, in the colorbar, to the maximum cumulative COVID-19 <em>deaths</em> in a county in the region, for psychological effect; it’s distressing to see the COVID-19 cumulative case map fill up with red as time goes on.</span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>Note also that the created <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> files have metadata associated with them. You can either inspect them using <a class="reference external" href="https://www.bento4.com/documentation/mp4info">mp4info</a> or using code in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">mutagen.mp4.MP4</span></code>. Here is what <code class="docutils literal notranslate"><span class="pre">mp4info</span> <span class="pre">covid19_nyc_cases_LATEST.mp4</span></code> returns,</p>
@@ -413,34 +488,57 @@
 </section>
 
 
-           </div>
+            <div class="clearer"></div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="covid19_update_database.html" class="btn btn-neutral float-left" title="3.1. covid19_update_database" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="covid19_state_summary.html" class="btn btn-neutral float-right" title="3.3. covid19_state_summary" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2021, Tanim Islam.</p>
-  </div>
-
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
-
-</footer>
         </div>
       </div>
-    </section>
-  </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
+    
+        <div id="show_right_sidebar">
+            <p><a class="toggle_right_sidebar" href="#"><span class="icon"><</span><span>Page contents<span></a></p>
+        </div>
 
-</body>
+        <div id="right_sidebar">
+            <p><a class="toggle_right_sidebar" href="#"><span class="icon">></span><span>Page contents:<span></a></p>
+            <div class="page_toc">
+                <ul>
+<li><a class="reference internal" href="#">3.2. covid19_create_movie_or_summary</a><ul>
+<li><a class="reference internal" href="#summarize-msas">3.2.1. summarize MSAs</a></li>
+<li><a class="reference internal" href="#show-mode">3.2.2. show mode</a></li>
+<li><a class="reference internal" href="#movie-mode">3.2.3. movie mode</a></li>
+<li><a class="reference internal" href="#movie-cases-deaths-mode">3.2.4. movie cases deaths mode</a></li>
+</ul>
+</li>
+</ul>
+
+            </div>
+        </div>
+    
+
+      <div class="clearer"></div>
+    </div>
+    <div class="button_nav_wrapper">
+        <div class="button_nav">
+            <div class="left">
+                
+                <a href="covid19_update_database.html">
+                    <span class="icon"><</span><span><span class="section-number">3.1. </span>covid19_update_database</span></a>
+                
+            </div>
+
+            <div class="right">
+                
+                    <a href="covid19_state_summary.html"><span><span class="section-number">3.3. </span>covid19_state_summary</span><span class="icon">></span></a>
+                
+            </div>
+        </div>
+    </div>
+
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Tanim Islam.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    </div>
+
+<p id="theme_credit">Styled using the <a href="https://github.com/piccolo-orm/piccolo_theme">Piccolo Theme</a></p>
+  </body>
 </html>
