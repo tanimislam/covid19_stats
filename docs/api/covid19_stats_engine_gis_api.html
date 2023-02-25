@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>4.3. covid19_stats.engine.gis module &mdash; COVID19_STATS 1.0 documentation</title>
@@ -38,15 +38,11 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="../index.html" class="icon icon-home">
-            COVID19_STATS
+            <a href="../index.html" class="icon icon-home"> COVID19_STATS
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -92,7 +88,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li><a href="../index.html" class="icon icon-home"></a></li>
           <li class="breadcrumb-item"><a href="api.html"><span class="section-number">4. </span>THE COVID19_STATS API</a></li>
       <li class="breadcrumb-item active"><span class="section-number">4.3. </span>covid19_stats.engine.gis module</li>
       <li class="wy-breadcrumbs-aside">
@@ -120,13 +116,13 @@
 </figure>
 <p>Now here is the API description.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>shapes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a>) – A <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of shapes. Each shape is an <span class="math notranslate nohighlight">\(N \times 2\)</span> shaped <code class="xref py py-class docutils literal notranslate"><span class="pre">array</span></code>, with <span class="math notranslate nohighlight">\(N\)</span> points describing the boundary. Each row is the latitude and longitude of a point – first is the latitude, and second is the longitude. See <a class="reference download internal" download="" href="../_downloads/fd9403d1c766a71b9e77174e8db8426e/gis_calculate_total_bbox_sacramento.pkl.gz"><code class="xref download docutils literal notranslate"><span class="pre">gis_calculate_total_bbox_sacramento.pkl.gz</span></code></a> for a clear example given by <a class="reference internal" href="#gis-calculate-total-bbox-sacramento"><span class="std std-numref">Fig. 4.2</span></a>.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>a four element <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a> of the total bounding box of the shape collection: minimum longitude, minimum latitude, maximum longitude, and maximum latitude.</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)">tuple</a></p>
 </dd>
 </dl>
@@ -134,19 +130,19 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="covid19_stats.engine.gis.construct_adjacency">
-<span class="sig-prename descclassname"><span class="pre">covid19_stats.engine.gis.</span></span><span class="sig-name descname"><span class="pre">construct_adjacency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fips_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'/Users/islam5/.local/src/covid19_stats/covid19_stats/resources/fips_2019_adj.pkl.gz'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.engine.gis.construct_adjacency" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">covid19_stats.engine.gis.</span></span><span class="sig-name descname"><span class="pre">construct_adjacency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fips_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'/usr/WS2/islam5/covid19_stats/covid19_stats/resources/fips_2019_adj.pkl.gz'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.engine.gis.construct_adjacency" title="Permalink to this definition"></a></dt>
 <dd><p>Creates, and then stores (or loads) the adjacency dictionary of all US counties and territorial units. If the storage file, which is by default <a class="reference download internal" download="" href="../_downloads/09c70b295d08e66f6009c0045bf34f85/fips_2019_adj.pkl.gz"><code class="xref download docutils literal notranslate"><span class="pre">fips_2019_adj.pkl.gz</span></code></a>, does not exist, then will create and store this data into the storage file. Will return the data in the end.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fips_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><em>dict</em></a>) – the US county <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> produced by, for example, <code class="xref py py-meth docutils literal notranslate"><span class="pre">create_and_store_fips_2018</span></code>.</p></li>
 <li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – the location of the adjacency dictionary file, which is by default <a class="reference download internal" download="" href="../_downloads/09c70b295d08e66f6009c0045bf34f85/fips_2019_adj.pkl.gz"><code class="xref download docutils literal notranslate"><span class="pre">fips_2019_adj.pkl.gz</span></code></a> located in the <code class="docutils literal notranslate"><span class="pre">covid19_stats</span></code> resource directory.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> of adjacency. Each key is a <a class="reference external" href="https://en.wikipedia.org/wiki/FIPS_county_code">FIPS code</a> of a county, and each value is a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">set</span></code></a> of counties and other territories adjacent to it. See <a class="reference internal" href="#covid19_stats.engine.gis.get_fips_adjacency" title="covid19_stats.engine.gis.get_fips_adjacency"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_fips_adjacency</span></code></a> to see an example of this adjacency information for a single county.</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)">dict</a></p>
 </dd>
 </dl>
@@ -159,7 +155,7 @@
 <p>If there is no serialized version of this dictionary, this method <em>also</em> serializes the data structure, <a class="reference download internal" download="" href="../_downloads/607b33927c78a28b1e4d60b439add143/fips_2019_data.pkl.gz"><code class="xref download docutils literal notranslate"><span class="pre">fips_2019_data.pkl.gz</span></code></a>, for easy reloading.</p>
 <p>Subsequently, if <a class="reference download internal" download="" href="../_downloads/607b33927c78a28b1e4d60b439add143/fips_2019_data.pkl.gz"><code class="xref download docutils literal notranslate"><span class="pre">fips_2019_data.pkl.gz</span></code></a> exists, then loads that file and returns that object.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p><p>a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> of US county geographic data. The key is the <a class="reference external" href="https://en.wikipedia.org/wiki/FIPS_county_code">FIPS code</a> for the county. Each value is a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">bbox</span></code> is the lat/lng bounding box for that county.</p></li>
@@ -175,14 +171,14 @@
 <dt class="sig sig-object py" id="covid19_stats.engine.gis.create_and_store_fips_counties_2019">
 <span class="sig-prename descclassname"><span class="pre">covid19_stats.engine.gis.</span></span><span class="sig-name descname"><span class="pre">create_and_store_fips_counties_2019</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.engine.gis.create_and_store_fips_counties_2019" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p><p>a two element <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>. The first element is a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> of <cite>FIPS code</cite> to a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> value: <code class="docutils literal notranslate"><span class="pre">county</span></code> and <code class="docutils literal notranslate"><span class="pre">state</span></code>. The second element is the reverse <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> of a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a> (of county and state) to its <a class="reference external" href="https://en.wikipedia.org/wiki/FIPS_county_code">FIPS code</a>.</p>
 <p>The first <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> is stored in <a class="reference download internal" download="" href="../_downloads/156030e49b412adf13b1a4e5b3f21e79/all_2019_fips_cs_dict.pkl.gz"><code class="xref download docutils literal notranslate"><span class="pre">all_2019_fips_cs_dict.pkl.gz</span></code></a>, and the second <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> is stored in <a class="reference download internal" download="" href="../_downloads/f7abe92a820944e22928437ca18d8f57/all_2019_cs_fips_dict.pkl.gz"><code class="xref download docutils literal notranslate"><span class="pre">all_2019_cs_fips_dict.pkl.gz</span></code></a>.</p>
 <p>If either file does not exist, then the dictionary is created and stored into the appropriate file.</p>
 <p>If the file exists, then the object is loaded from that file.</p>
 </p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dt class="field-even">Return type</dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)">tuple</a></p>
 </dd>
 </dl>
@@ -200,7 +196,7 @@
 <li><p>merges Los Angeles, Riverside, and Oxnard <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a>s into the “Los Angeles” metro area (<a class="reference external" href="https://en.wikipedia.org/wiki/Greater_Los_Angeles">greater Los Angeles</a>).</p></li>
 </ul>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p><p>a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> of <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a> information. The key is the <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a> data <code class="docutils literal notranslate"><span class="pre">prefix</span></code>, and the value is a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> of <code class="docutils literal notranslate"><span class="pre">prefix</span></code>, <code class="docutils literal notranslate"><span class="pre">region</span> <span class="pre">name</span></code>, <code class="docutils literal notranslate"><span class="pre">fips</span></code>, and <code class="docutils literal notranslate"><span class="pre">population</span></code>. For example, for <a class="reference external" href="https://en.wikipedia.org/wiki/Greater_St._Louis">St. Louis</a>, it is,</p>
 <span class="target" id="stlouis-msa-example-data"></span><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;stlouis&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;prefix&#39;</span><span class="p">:</span> <span class="s1">&#39;stlouis&#39;</span><span class="p">,</span>
   <span class="s1">&#39;region name&#39;</span><span class="p">:</span> <span class="s1">&#39;St. Louis Metro Area&#39;</span><span class="p">,</span>
@@ -224,7 +220,7 @@
 </div>
 </p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dt class="field-even">Return type</dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)">dict</a></p>
 </dd>
 </dl>
@@ -235,10 +231,10 @@
 <span class="sig-prename descclassname"><span class="pre">covid19_stats.engine.gis.</span></span><span class="sig-name descname"><span class="pre">create_fips_popmap_2019</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.engine.gis.create_fips_popmap_2019" title="Permalink to this definition"></a></dt>
 <dd><p>Creates a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> of estimated 2019 US Census population in each US county or territory. Also stores this data into the file, <a class="reference download internal" download="" href="../_downloads/806a1806612c15caf767a52017c99ae2/fips_2019_popdict.pkl.gz"><code class="xref download docutils literal notranslate"><span class="pre">fips_2019_popdict.pkl.gz</span></code></a>, if it does not exist. If it does exist, then loads the file <a class="reference download internal" download="" href="../_downloads/806a1806612c15caf767a52017c99ae2/fips_2019_popdict.pkl.gz"><code class="xref download docutils literal notranslate"><span class="pre">fips_2019_popdict.pkl.gz</span></code></a> and returns that data.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> of <a class="reference external" href="https://en.wikipedia.org/wiki/FIPS_county_code">FIPS code</a> to estimated 2019 US census population.</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dt class="field-even">Return type</dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)">dict</a></p>
 </dd>
 </dl>
@@ -275,10 +271,10 @@
 <p>The keys for each MSA are <code class="docutils literal notranslate"><span class="pre">msa</span></code> (an integer code), <code class="docutils literal notranslate"><span class="pre">pop</span> <span class="pre">est</span> <span class="pre">2019</span></code> is the US Census 2019 estimated population, <code class="docutils literal notranslate"><span class="pre">fips</span></code> is a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">set</span></code></a> of counties by <a class="reference external" href="https://en.wikipedia.org/wiki/FIPS_county_code">FIPS code</a> located in this MSA, the <code class="docutils literal notranslate"><span class="pre">state</span></code> are the states this MSA covers, <code class="docutils literal notranslate"><span class="pre">RNAME</span></code> is a legend name for plotting, <code class="docutils literal notranslate"><span class="pre">prefix</span></code> is the name used to identify those files that contain data for this MSA, and <code class="docutils literal notranslate"><span class="pre">region</span> <span class="pre">name</span></code> is the common and accepted MSA name.</p>
 <p><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_and_store_msas_and_fips</span></code> contains the fully normalized <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> of <cite>Metropolitan statistical area</cite>s used by the NY Times COVID-19 database, and <a class="reference internal" href="#covid19_stats.engine.gis.merge_msas" title="covid19_stats.engine.gis.merge_msas"><code class="xref py py-meth docutils literal notranslate"><span class="pre">merge_msas</span></code></a> performs the normalization.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>a sorted, but unnormalized, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of <cite>Metropolitan statistical area</cite>s as defined by the 2019 US Census.</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dt class="field-even">Return type</dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a></p>
 </dd>
 </dl>
@@ -289,16 +285,16 @@
 <span class="sig-prename descclassname"><span class="pre">covid19_stats.engine.gis.</span></span><span class="sig-name descname"><span class="pre">do_bbox_intersect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bbox1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.engine.gis.do_bbox_intersect" title="Permalink to this definition"></a></dt>
 <dd><p>Checks if two bounding boxes intersect.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>bbox1</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a>) – the four-element <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a> of bounding box #1: minimum lng/lat, and maximum lng/lat.</p></li>
 <li><p><strong>bbox2</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a>) – the four-element <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a> of bounding box #2: minimum lng/lat, and maximum lng/lat.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if intersect, <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a></p>
 </dd>
 </dl>
@@ -316,16 +312,16 @@
 </figure>
 <p>Now here is the API description.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fips</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – the <a class="reference external" href="https://en.wikipedia.org/wiki/FIPS_county_code">FIPS code</a> of the US county or territorial unit.</p></li>
 <li><p><strong>fips_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><em>dict</em></a>) – the US county <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> produced by, for example, <a class="reference internal" href="#covid19_stats.engine.gis.create_and_store_fips_2019" title="covid19_stats.engine.gis.create_and_store_fips_2019"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_and_store_fips_2019</span></code></a>.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">set</span></code></a> of <a class="reference external" href="https://en.wikipedia.org/wiki/FIPS_county_code">FIPS code</a>s of counties adjacent to <code class="docutils literal notranslate"><span class="pre">fips</span></code>.</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.11)">set</a></p>
 </dd>
 </dl>
@@ -337,7 +333,7 @@
 <dd><p>This takes an input <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a>, defined by its <code class="docutils literal notranslate"><span class="pre">prefix</span></code>, gives it a new or existing <code class="docutils literal notranslate"><span class="pre">regionName</span></code>, by merging one or more <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">set</span></code></a> of <code class="docutils literal notranslate"><span class="pre">msaids</span></code>, in a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a>s as returned by, e.g., <a class="reference internal" href="#covid19_stats.engine.gis.create_msa_2019" title="covid19_stats.engine.gis.create_msa_2019"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_msa_2019</span></code></a>. It then returns a new <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a>s in the same format as <code class="docutils literal notranslate"><span class="pre">all_data_msas</span></code>.</p>
 <p>This is used by, for example, normalizing the <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a> data by merging <em>all</em> five boroughs in NYC into a single fake county, <code class="docutils literal notranslate"><span class="pre">NYC</span></code>, in the New York City MSA.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>regionName</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – the region name (<code class="docutils literal notranslate"><span class="pre">region</span> <span class="pre">name</span></code> key) of the merged <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a>.</p></li>
 <li><p><strong>prefix</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – the named identifier of the <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a> to be merged.</p></li>
@@ -345,10 +341,10 @@
 <li><p><strong>all_data_msas</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a>) – the input <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of county or US territory <a class="reference external" href="https://en.wikipedia.org/wiki/FIPS_county_code">FIPS code</a>s. Implicitly, <code class="docutils literal notranslate"><span class="pre">all_data_msas</span></code> must contain those the <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a>s identified by <code class="docutils literal notranslate"><span class="pre">prefix</span></code>.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>a new <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a>s in the same style as <code class="docutils literal notranslate"><span class="pre">all_data_msas</span></code>, sorted by population from lowest to highest. None of the <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a>s in this new collection contain <a class="reference external" href="https://en.wikipedia.org/wiki/Metropolitan_statistical_area">MSA</a>s in <code class="docutils literal notranslate"><span class="pre">msaids</span></code>.</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a></p>
 </dd>
 </dl>
