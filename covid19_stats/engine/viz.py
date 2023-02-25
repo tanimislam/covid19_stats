@@ -13,7 +13,7 @@ from matplotlib.figure import Figure
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from shutil import which
-from iv_tanim.core import autocrop_image
+from ive_tanim.core import autocrop_image
 #
 from covid19_stats.engine import gis, core, get_string_commas_num, find_plausible_maxnum
 

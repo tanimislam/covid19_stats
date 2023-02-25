@@ -12,7 +12,7 @@ from matplotlib.colors import LogNorm, to_rgba, Normalize
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 from shutil import which
-from iv_tanim.core import autocrop_image
+from ive_tanim.core import autocrop_image
 #
 from covid19_stats.engine import core, get_string_commas_num, get_string_commas_num_float, find_plausible_maxnum
 from covid19_stats.engine.viz import (
