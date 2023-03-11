@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>4.6. covid19_stats.engine.viz2 module &mdash; COVID19_STATS 1.0 documentation</title>
@@ -17,10 +17,8 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
         <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -37,11 +35,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> COVID19_STATS
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            COVID19_STATS
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -83,7 +85,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="api.html"><span class="section-number">4. </span>THE COVID19_STATS API</a></li>
       <li class="breadcrumb-item active"><span class="section-number">4.6. </span>covid19_stats.engine.viz2 module</li>
       <li class="wy-breadcrumbs-aside">
@@ -117,17 +119,17 @@
 </figure>
 <p>The collection of <a class="reference external" href="https://en.wikipedia.org/wiki/Portable_Network_Graphics">PNG</a> images that this method creates are auto-cropped and, where needed, <em>resized</em> so that their widths and heights are even numbers. <a class="reference external" href="https://en.wikipedia.org/wiki/FFmpeg">FFmpeg</a>, run through <a class="reference internal" href="#covid19_stats.engine.viz2.create_summary_rate_movie_frombeginning" title="covid19_stats.engine.viz2.create_summary_rate_movie_frombeginning"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_summary_rate_movie_frombeginning</span></code></a>, cannot create an <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> from <a class="reference external" href="https://en.wikipedia.org/wiki/Portable_Network_Graphics">PNG</a>s unless the images’ widths and heights are divisible by 2.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>inc_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><em>dict</em></a>) – the data for incidence of COVID-19 cases and deaths for a given geographical region. See <a class="reference internal" href="covid19_stats_engine_core_api.html#covid19_stats.engine.core.get_incident_data" title="covid19_stats.engine.core.get_incident_data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_incident_data</span></code></a> for the format of the output data.</p></li>
 <li><p><strong>days_from_beginning</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a>) – the <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of days to create quad <a class="reference external" href="https://en.wikipedia.org/wiki/Portable_Network_Graphics">PNG</a> images. Must be nonempty, and every element must be <span class="math notranslate nohighlight">\(\ge 0\)</span>. Default is <code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">0,</span> <span class="pre">]</span></code>.</p></li>
 <li><p><strong>dirname</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – the directory into which to save the quad <a class="reference external" href="https://en.wikipedia.org/wiki/Portable_Network_Graphics">PNG</a> images. The default is the current working directory.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>the <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of filenames of <a class="reference external" href="https://en.wikipedia.org/wiki/Portable_Network_Graphics">PNG</a> quad images that this method creates, into <code class="docutils literal notranslate"><span class="pre">dirname</span></code>. For example, in the method invocation shown in <a class="reference internal" href="#viz2-create-plots-rate-daysfrombeginning-nyc"><span class="std std-numref">Fig. 4.11</span></a>, <code class="docutils literal notranslate"><span class="pre">days_from_beginning</span> <span class="pre">=</span> <span class="pre">[</span> <span class="pre">150,</span> <span class="pre">]</span></code>, and the list this method returns is <code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">'&lt;dirname&gt;/covid19_nyc_LATEST.0143.png',</span> <span class="pre">]</span></code>.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a></p>
 </dd>
 </dl>
@@ -137,7 +139,7 @@
 <dt class="sig sig-object py" id="covid19_stats.engine.viz2.create_summary_cases_or_deaths_rate_movie_frombeginning">
 <span class="sig-prename descclassname"><span class="pre">covid19_stats.engine.viz2.</span></span><span class="sig-name descname"><span class="pre">create_summary_cases_or_deaths_rate_movie_frombeginning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inc_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_disp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cases'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dirname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'/usr/WS2/islam5/covid19_stats/docsrc'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_imgfiles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.engine.viz2.create_summary_cases_or_deaths_rate_movie_frombeginning" title="Permalink to this definition"></a></dt>
 <dd><p>This method is similar to <a class="reference internal" href="covid19_stats_engine_viz_api.html#covid19_stats.engine.viz.create_summary_cases_or_deaths_movie_frombeginning" title="covid19_stats.engine.viz.create_summary_cases_or_deaths_movie_frombeginning"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_summary_cases_or_deaths_movie_frombeginning</span></code></a> in the <a class="reference internal" href="covid19_stats_engine_viz_api.html#module-covid19_stats.engine.viz" title="covid19_stats.engine.viz"><code class="xref py py-mod docutils literal notranslate"><span class="pre">viz</span></code></a> module. This is the back-end method for <a class="reference internal" href="../cli/covid19_region_summary_rate.html#movie-cases-deaths-mode-region-rate"><span class="std std-ref">movie cases deaths mode</span></a> for <a class="reference internal" href="../cli/covid19_region_summary_rate.html#covid19-region-summary-rate"><span class="std std-ref">covid19_region_summary_rate</span></a>. This creates an <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> movie file of <em>seven-day averaged</em> COVID-19 new cases/day <em>or</em> deaths/day, with identifying metadata, for a given geographical region. <a class="reference internal" href="#viz2-create-summary-cases-or-deaths-rate-movie-frombeginning-table"><span class="std std-numref">Table 4.4</span></a> shows the <em>resulting</em> <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> movie files, of cumulative COVID-19 cases and deaths, for the NYC metro area (top row), and the state of <a class="reference external" href="https://en.wikipedia.org/wiki/Virginia">Virginia</a> (bottom row).</p>
-<span id="viz2-create-summary-cases-or-deaths-rate-movie-frombeginning-table"></span><table class="colwidths-auto docutils align-default" id="id3">
+<span id="viz2-create-summary-cases-or-deaths-rate-movie-frombeginning-table"></span><table class="docutils align-default" id="id3">
 <caption><span class="caption-number">Table 4.4 </span><span class="caption-text">Latest <em>seven-day averaged</em> COVID-19 new cases/day, and deaths/day, for the NYC metro area and <a class="reference external" href="https://en.wikipedia.org/wiki/Virginia">Virginia</a></span><a class="headerlink" href="#id3" title="Permalink to this table"></a></caption>
 <tbody>
 <tr class="row-odd"><td><p><video controls width="100%">
@@ -164,7 +166,7 @@
 </table>
 <p>Here are the arguments,</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>inc_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><em>dict</em></a>) – the data for incidence of COVID-19 cases and deaths for a given geographical region. See <a class="reference internal" href="covid19_stats_engine_core_api.html#covid19_stats.engine.core.get_incident_data" title="covid19_stats.engine.core.get_incident_data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_incident_data</span></code></a> for the format of the output data.</p></li>
 <li><p><strong>type_disp</strong> – if <code class="docutils literal notranslate"><span class="pre">cases</span></code>, then show cumulative COVID-19 cases. If <code class="docutils literal notranslate"><span class="pre">deaths</span></code>, then show cumulative COVID-19 deaths. Can only be <code class="docutils literal notranslate"><span class="pre">cases</span></code> or <code class="docutils literal notranslate"><span class="pre">deaths</span></code>.</p></li>
@@ -172,10 +174,10 @@
 <li><p><strong>save_imgfiles</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – if <code class="docutils literal notranslate"><span class="pre">True</span></code>, then will create a <a class="reference external" href="https://en.wikipedia.org/wiki/ZIP_(file_format)">zip archive</a> of the <a class="reference external" href="https://en.wikipedia.org/wiki/Portable_Network_Graphics">PNG</a> image files used to create the <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> movie. Its full name is <code class="docutils literal notranslate"><span class="pre">&lt;dirname&gt;/covid19_7day_&lt;prefix&gt;_&lt;type_disp&gt;_LATEST_imagefiles.zip</span></code>. <code class="docutils literal notranslate"><span class="pre">&lt;dirname&gt;</span></code> is the directory to save the <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> file, <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;</span></code> is the region name prefix (for example <code class="docutils literal notranslate"><span class="pre">nyc</span></code> for the NYC metro area) located in <code class="docutils literal notranslate"><span class="pre">inc_data['prefix']</span></code>, and <code class="docutils literal notranslate"><span class="pre">&lt;type_disp&gt;</span></code> is either <code class="docutils literal notranslate"><span class="pre">cases</span></code> or <code class="docutils literal notranslate"><span class="pre">death</span></code>. The default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>the base name of the <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> movie file it creates. For example, if <code class="docutils literal notranslate"><span class="pre">inc_data['prefix']</span></code> is <code class="docutils literal notranslate"><span class="pre">nyc</span></code> and <code class="docutils literal notranslate"><span class="pre">type_disp</span></code> is <code class="docutils literal notranslate"><span class="pre">cases</span></code>, this method returns <code class="docutils literal notranslate"><span class="pre">covid19_7day_nyc_cases_LATEST.mp4</span></code>. This method also saves the <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> file as <code class="docutils literal notranslate"><span class="pre">&lt;dirname&gt;/covid19_7day_nyc_cases_LATEST.mp4</span></code>, where <code class="docutils literal notranslate"><span class="pre">&lt;dirname&gt;</span></code> is the directory to save the <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> file.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a></p>
 </dd>
 </dl>
@@ -185,7 +187,7 @@
 <dt class="sig sig-object py" id="covid19_stats.engine.viz2.create_summary_rate_movie_frombeginning">
 <span class="sig-prename descclassname"><span class="pre">covid19_stats.engine.viz2.</span></span><span class="sig-name descname"><span class="pre">create_summary_rate_movie_frombeginning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inc_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dirname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'/usr/WS2/islam5/covid19_stats/docsrc'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_imgfiles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#covid19_stats.engine.viz2.create_summary_rate_movie_frombeginning" title="Permalink to this definition"></a></dt>
 <dd><p>This method is similar to <code class="xref py py-meth docutils literal notranslate"><span class="pre">create_summary_rate_movie_frombeginning</span></code> in the <a class="reference internal" href="covid19_stats_engine_viz_api.html#module-covid19_stats.engine.viz" title="covid19_stats.engine.viz"><code class="xref py py-mod docutils literal notranslate"><span class="pre">viz</span></code></a> module. This is the back-end method for <a class="reference internal" href="../cli/covid19_region_summary_rate.html#movie-mode-region-rate"><span class="std std-ref">movie mode</span></a> for <a class="reference internal" href="../cli/covid19_region_summary_rate.html#covid19-region-summary-rate"><span class="std std-ref">covid19_region_summary_rate</span></a>. This creates an <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> quad movie file of both <em>seven day averaged</em> COVID-19 new cases/day and deaths/day for a geographical region, and <em>optionally</em> a <a class="reference external" href="https://en.wikipedia.org/wiki/ZIP_(file_format)">zip archive</a> of <a class="reference external" href="https://en.wikipedia.org/wiki/Portable_Network_Graphics">PNG</a> images used to create the <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> file. This uses <a class="reference internal" href="#covid19_stats.engine.viz2.create_plots_rate_daysfrombeginning" title="covid19_stats.engine.viz2.create_plots_rate_daysfrombeginning"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_plots_rate_daysfrombeginning</span></code></a> in a multiprocessing fashion, to create sub-collections of <a class="reference external" href="https://en.wikipedia.org/wiki/Portable_Network_Graphics">PNG</a> quad images, and then collate them into an <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> file using <a class="reference external" href="https://en.wikipedia.org/wiki/FFmpeg">FFmpeg</a>. <a class="reference internal" href="#viz2-create-summary-rate-movie-frombeginning-table"><span class="std std-numref">Table 4.5</span></a> shows the <em>resulting</em> <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> movie files, of <em>seven day averged</em> COVID-19 new cases/day and deaths/day, for the NYC metro area and the state of <a class="reference external" href="https://en.wikipedia.org/wiki/Virginia">Virginia</a>.</p>
-<span id="viz2-create-summary-rate-movie-frombeginning-table"></span><table class="colwidths-auto docutils align-default" id="id4">
+<span id="viz2-create-summary-rate-movie-frombeginning-table"></span><table class="docutils align-default" id="id4">
 <caption><span class="caption-number">Table 4.5 </span><span class="caption-text">Latest quad movies of COVID-19 for the NYC metro area and <a class="reference external" href="https://en.wikipedia.org/wiki/Virginia">Virginia</a></span><a class="headerlink" href="#id4" title="Permalink to this table"></a></caption>
 <tbody>
 <tr class="row-odd"><td><p><video controls width="100%">
@@ -202,17 +204,17 @@
 </table>
 <p>Here are the arguments,</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>inc_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><em>dict</em></a>) – the data for incidence of COVID-19 cases and deaths for a given geographical region. See <a class="reference internal" href="covid19_stats_engine_core_api.html#covid19_stats.engine.core.get_incident_data" title="covid19_stats.engine.core.get_incident_data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_incident_data</span></code></a> for the format of the output data.</p></li>
 <li><p><strong>dirname</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – the directory into which to save the <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> movie file, and optionally a <a class="reference external" href="https://en.wikipedia.org/wiki/ZIP_(file_format)">zip archive</a> of the <a class="reference external" href="https://en.wikipedia.org/wiki/Portable_Network_Graphics">PNG</a> image files used to create the <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> movie. The default is the current working directory.</p></li>
 <li><p><strong>save_imgfiles</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – if <code class="docutils literal notranslate"><span class="pre">True</span></code>, then will create a <a class="reference external" href="https://en.wikipedia.org/wiki/ZIP_(file_format)">zip archive</a> of the <a class="reference external" href="https://en.wikipedia.org/wiki/Portable_Network_Graphics">PNG</a> image files used to create the <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> movie. Its full name is <code class="docutils literal notranslate"><span class="pre">&lt;dirname&gt;/covid19_7day_&lt;prefix&gt;_LATEST_imagefiles.zip</span></code>. <code class="docutils literal notranslate"><span class="pre">&lt;dirname&gt;</span></code> is the directory to save the <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> file, and <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;</span></code> is the region name prefix (for example <code class="docutils literal notranslate"><span class="pre">nyc</span></code> for the NYC metro area) located in <code class="docutils literal notranslate"><span class="pre">inc_data['prefix']</span></code>. The default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>the base name of the <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> movie file it creates. For example, if <code class="docutils literal notranslate"><span class="pre">inc_data['prefix']</span></code> is <code class="docutils literal notranslate"><span class="pre">nyc</span></code>, this method returns <code class="docutils literal notranslate"><span class="pre">covid19_7day_nyc_LATEST.mp4</span></code>. This method also saves the <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> file as <code class="docutils literal notranslate"><span class="pre">&lt;dirname&gt;/covid19_7day_nyc_LATEST.mp4</span></code>, where <code class="docutils literal notranslate"><span class="pre">&lt;dirname&gt;</span></code> is the directory to save the <a class="reference external" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">MP4</a> file.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a></p>
 </dd>
 </dl>
@@ -233,7 +235,7 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">covid19_7day_&lt;prefix&gt;_LATEST.pkl.gz</span></code> is the <em>one day averaged</em> serialized <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pandas</span> <span class="pre">DataFrame</span></code></a> for the region. This runs from the first day after the first incident to the last day. An example for the NYC metro area is <a class="reference download internal" download="" href="../_downloads/6dc11f17473f97cceb609258c27aefcf/covid19_1day_nyc_LATEST.pkl.gz"><code class="xref download docutils literal notranslate"><span class="pre">covid19_1day_nyc_LATEST.pkl.gz</span></code></a>.</p></li>
 </ul>
 <p><a class="reference internal" href="#viz2-get-summary-demo-rate-data-nyc"><span class="std std-numref">Table 4.6</span></a> displays the <em>latest</em> output for the NYC metro area.</p>
-<span id="viz2-get-summary-demo-rate-data-nyc"></span><table class="colwidths-auto docutils align-default" id="id5">
+<span id="viz2-get-summary-demo-rate-data-nyc"></span><table class="docutils align-default" id="id5">
 <caption><span class="caption-number">Table 4.6 </span><span class="caption-text">Latest plots of cumulative COVID-19 cases, deaths, and trend lines for the NYC metro area</span><a class="headerlink" href="#id5" title="Permalink to this table"></a></caption>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_7day_nyc_cases_LATEST.png"><img alt="covid19_7day_nyc_cases_latest" class="align-middle" src="https://tanimislam.sfo3.digitaloceanspaces.com/covid19movies/covid19_7day_nyc_cases_LATEST.png" style="width: 100%;" /></a></p></td>
@@ -248,7 +250,7 @@
 </table>
 <p>Here are the arguments.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>inc_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><em>dict</em></a>) – the data for incidence of COVID-19 cases and deaths for a given geographical region. See <a class="reference internal" href="covid19_stats_engine_core_api.html#covid19_stats.engine.core.get_incident_data" title="covid19_stats.engine.core.get_incident_data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_incident_data</span></code></a> for the format of the output data.</p></li>
 <li><p><strong>dirname</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – the directory into which to save the six or seven files. The default is the current working directory.</p></li>
@@ -270,7 +272,7 @@
 </figure>
 <p>Here are the arguments.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>inc_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><em>dict</em></a>) – the data for incidence of COVID-19 cases and deaths for a given geographical region. See <a class="reference internal" href="covid19_stats_engine_core_api.html#covid19_stats.engine.core.get_incident_data" title="covid19_stats.engine.core.get_incident_data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_incident_data</span></code></a> for the format of the output data.</p></li>
 <li><p><strong>ax</strong> – the <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="(in Matplotlib v3.7.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code></a> onto which to make this plot.</p></li>
@@ -309,7 +311,7 @@
 </figure>
 <p>Here are the arguments.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>inc_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><em>dict</em></a>) – the data for incidence of COVID-19 cases and deaths for a given geographical region. See <a class="reference internal" href="covid19_stats_engine_core_api.html#covid19_stats.engine.core.get_incident_data" title="covid19_stats.engine.core.get_incident_data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_incident_data</span></code></a> for the format of the output data.</p></li>
 <li><p><strong>fig</strong> – the <a class="reference external" href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="(in Matplotlib v3.7.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Figure</span></code></a> onto which to create a <a class="reference external" href="https://scitools.org.uk/cartopy/docs/latest/reference/generated/cartopy.mpl.geoaxes.GeoAxes.html#cartopy.mpl.geoaxes.GeoAxes" title="(in cartopy v0.21.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeoAxes</span></code></a> (stored into the <code class="docutils literal notranslate"><span class="pre">plot_artists</span></code> <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>) containing geographic features. Last three arguments – <code class="docutils literal notranslate"><span class="pre">rows</span></code>, <code class="docutils literal notranslate"><span class="pre">cols</span></code>, and <code class="docutils literal notranslate"><span class="pre">num</span></code> – describe the relative placement of the created <a class="reference external" href="https://scitools.org.uk/cartopy/docs/latest/reference/generated/cartopy.mpl.geoaxes.GeoAxes.html#cartopy.mpl.geoaxes.GeoAxes" title="(in cartopy v0.21.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeoAxes</span></code></a>. See <a class="reference external" href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure.add_subplot" title="(in Matplotlib v3.7.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_subplot</span></code></a> for those three arguments’ meanings.</p></li>
