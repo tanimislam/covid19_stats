@@ -566,6 +566,9 @@ def create_plots_daysfrombeginning(
       key = lambda fips_case: fips_case[1] )
     fips_max, cases_max = max_fips_cases
     cs = core.get_county_state( fips_max )
+    #
+    df_dfm = inc_data['df'][ inc_data['df']['days_from_beginning'] == first_day ].copy( )
+    date_s = df_dfm.date.max().strftime( '%d %B %Y' )
     ax_leg = fig.add_subplot(221)
     ax_leg.set_aspect( 1.0 )
     ax_leg.axis('off')
