@@ -1,5 +1,6 @@
 cartopy
 gitpython
+ive_tanim
 mpi4py
 mutagen
 networkx
@@ -8,10 +9,8 @@ pandas
 pyshp
 pathos
 proj
-PyPDF2
 rapidfuzz
 scipy
 shapely
 tabulate
 titlecase
-ive_tanim
