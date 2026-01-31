@@ -1,0 +1,71 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "covid19_stats"
+version = "1.0"
+description = "This is my COVID-19 tracker, which is a front-end to the NY Times's database of COVID-19 cases."
+authors = [
+    {name = "Tanim Islam", email = "tanim.islam@gmail.com"}
+]
+readme = "README.rst"  # Add this file if you have one, or remove this line
+license = {text = "BSD-2-Clause"}
+requires-python = ">=3.9"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: POSIX",
+    "Environment :: Console",
+    "Environment :: X11 Applications :: Qt",
+    "Programming Language :: Python :: 3",
+    "Topic :: Utilities",
+]
+
+# TODO: Add your actual dependencies here from requirements.txt
+# NOTE: The original setup.py had special handling for git+ dependencies
+#       using dependency_links (deprecated). If you have git dependencies,
+#       use the modern PEP 508 format instead:
+#       "package_name @ git+https://github.com/user/repo.git@branch"
+dependencies = [
+    "cartopy",
+    "gitpython",
+    "ive_tanim",
+    "mpi4py",
+    "mutagen",
+    "networkx",
+    "numpy",
+    "pandas",
+    "pathos",
+    "proj",
+    "pyshp",
+    "rapidfuzz",
+    "scipy",
+    "shapely",
+    "sphinx",
+    "sphinx_rtd_theme",
+    "tabulate",
+    "titlecase",
+]
+
+[project.urls]
+Homepage = "https://tanimislam.github.io/covid19_stats"
+Repository = "https://github.com/tanimislam/covid19_stats"
+
+[project.scripts]
+covid19_create_region = "covid19_stats.cli.covid19_create_region:main"
+covid19_create_movie_or_summary = "covid19_stats.cli.covid19_create_movie_or_summary:main"
+covid19_state_summary = "covid19_stats.cli.covid19_state_summary:main"
+covid19_region_summary_rate = "covid19_stats.cli.covid19_region_summary_rate:main"
+covid19_update_database = "covid19_stats.cli.covid19_update_database:main"
+covid19_movie_updates = "covid19_stats.cli.covid19_movie_updates:main"
+covid19_region_updates = "covid19_stats.cli.covid19_region_updates:main"
+covid19_post2server = "covid19_stats.cli.covid19_post2server:main"
+covid19_update_readme = "covid19_stats.cli.covid19_update_readme:main"
+
+[tool.setuptools.packages.find]
+exclude = ["*.tests", "*.tests.*", "tests"]
+
+[tool.setuptools.package-data]
+covid19_stats = ["resources/*"]
